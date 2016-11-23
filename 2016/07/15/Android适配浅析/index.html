@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android适配浅析 | 墨香博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="应朋友之邀，介绍一下关于Android适配的问题。
+做launcher一年了，最多的就是适配，各种分辨各种尺寸的手机，会出现很多问题，今天就借这个机会总结一下，不一定全面，只是根据自己遇到的情况进行总结。
+适配主要包括布局适配，语言适配，还有功能适配。我们遇到做多的就是布局适配问题，其实语言适配问题也主要是影响布局适配，功能适配主要是针对不同厂商出的rom不同导致一些功能调用有所差异，比如相机调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android适配浅析">
+<meta property="og:url" content="http://www.codemx.cn/2016/07/15/Android适配浅析/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="应朋友之邀，介绍一下关于Android适配的问题。
+做launcher一年了，最多的就是适配，各种分辨各种尺寸的手机，会出现很多问题，今天就借这个机会总结一下，不一定全面，只是根据自己遇到的情况进行总结。
+适配主要包括布局适配，语言适配，还有功能适配。我们遇到做多的就是布局适配问题，其实语言适配问题也主要是影响布局适配，功能适配主要是针对不同厂商出的rom不同导致一些功能调用有所差异，比如相机调用">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive01.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive02.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive03.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive04.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive05.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive06.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive07.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive08.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive09.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive10.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive11.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive12.png">
+<meta property="og:image" content="http://www.codemx.cn/images/adaptive/adaptive13.png">
+<meta property="og:updated_time" content="2016-07-15T09:42:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android适配浅析">
+<meta name="twitter:description" content="应朋友之邀，介绍一下关于Android适配的问题。
+做launcher一年了，最多的就是适配，各种分辨各种尺寸的手机，会出现很多问题，今天就借这个机会总结一下，不一定全面，只是根据自己遇到的情况进行总结。
+适配主要包括布局适配，语言适配，还有功能适配。我们遇到做多的就是布局适配问题，其实语言适配问题也主要是影响布局适配，功能适配主要是针对不同厂商出的rom不同导致一些功能调用有所差异，比如相机调用">
+<meta name="twitter:image" content="http://www.codemx.cn/images/adaptive/adaptive01.png">
+  
+    <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/">墨香</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">用代码实现自己的梦想。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">博客归档</a></li>
+                        
+                            <li><a href="/read">静心阅读</a></li>
+                        
+                            <li><a href="/about">雁过留声</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                            
+                                <a class="fl weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                            
+                                <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/Android-open-Source/" style="font-size: 10px;">Android open Source</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 15px;">高效Mac</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.trinea.cn/">Trinea</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.devilwwj.com/">小巫</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.dreamxuwj.com/">梦痕</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenfuduo.me/">菜鸟</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jeffjade.com/">晚晴幽草轩</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://wangkuiwu.github.io">wangkuiwu</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/harvic880925/article/list/3">启航</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://hujiaweibujidao.github.io">潇涧</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">因为梦想来到深圳，因为兴趣选择开发，人生的航程中没有一帆风顺，只有努力加坚持才会成功。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">墨香</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">墨香</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">用代码实现自己的梦想。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">博客归档</a></li>
+                
+                    <li><a href="/read">静心阅读</a></li>
+                
+                    <li><a href="/about">雁过留声</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                    
+                        <a class="weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Android适配浅析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/15/Android适配浅析/" class="article-date">
+      <time datetime="2016-07-15T09:41:22.000Z" itemprop="datePublished">2016-07-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android适配浅析
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>应朋友之邀，介绍一下关于Android适配的问题。</p>
+<p>做launcher一年了，最多的就是适配，各种分辨各种尺寸的手机，会出现很多问题，今天就借这个机会总结一下，不一定全面，只是根据自己遇到的情况进行总结。</p>
+<p>适配主要包括布局适配，语言适配，还有功能适配。我们遇到做多的就是布局适配问题，其实语言适配问题也主要是影响布局适配，功能适配主要是针对不同厂商出的rom不同导致一些功能调用有所差异，比如相机调用等。</p>
+<a id="more"></a>
+<h3 id="布局适配"><a href="#布局适配" class="headerlink" title="布局适配"></a>布局适配</h3><hr>
+<p>要想做好布局适配，首先你要了解几大布局控件的属性和详细使用方法，如果你不了解他的特性就会使用混乱，导致很多问题，布局显示不到位，嵌套太多，导致性能下降等，当然本文不涉及性能问题，只讲适配问题。</p>
+<p>在布局适配中我们会总结出一些原则：左右边距统一原则，居中原则，右对齐原则，左对齐原则，均分原则。</p>
+<p>1.左右边距统一原则：我在项目开发中，遇到过很多次，同一个应用不同页面边距各不相同，这样在我们切换页面时会发现也没的显示跳动，很不美观，这就是我们设计问题。为了美观，方便观看，应用的内容和手机边框都会有一定的距离，有一些新设计者不注重这个问题，导致同一个界面左右边距不同，同一个应用不同页面相同方位的边距不同，这样就很影响美观，布局很难看，为了美观，我们尽量让整个应用的所有界面的所有左右边距都一样，一般设置值为20dp即可，如果时小屏手机可以设置为10dp，这样方便统一界面。如下图所示，在中间蓝色框中的列表，左右边距都是相同的，这样比较美观。</p>
+<p>  图一</p>
+<p>  <img src="/images/adaptive/adaptive01.png" alt="图一"></p>
+<p>2.居中原则：如下图所示，中间黄色部分就是居中的，但是只是左右居中，上下并没有居中，这种布局相对简单，但是适配却比较麻烦，麻烦的原因是如果定死图片宽高大屏手机显得图片很小，如果按照大屏去写在小屏手机上就会显示的非常大，最好的方式就是安装百分比去设置，但是xml设置百分比要引入百分比包，还有方案就是动态设置百分比，也就是在java代码中读取屏幕宽度来设置图片的宽，然后高度自适应就好。</p>
+<p> 图二</p>
+<p> <img src="/images/adaptive/adaptive02.png" alt="图二"></p>
+<p>3.左对齐原则：如下图所示，中间红色框中的部分，每个Item有一个图片和一个标题，这种只要是最典型的右对齐结构，图片和文字均在右边，只要设置右边距就好，这样每个手机都是一样的，不用管右边空白部分，这种适配比较简单。</p>
+<p> 图三</p>
+<p> <img src="/images/adaptive/adaptive03.png" alt="图三"></p>
+<p>4.右对齐原则：如图一所示，中间部分，每个选项后面有一个指示图标，这种表示还能进行其他操作，这种布局都是在右边，这种设置，你只需要让他们右对齐，然后设置相同的边距即可，不用考虑左边的情况，这样的适配就不需要考虑屏幕大小，只要内容不是过长。</p>
+<p>5.均分原则：如小图，中间的标题栏，中间三个标题各占一份，这样的布局就是用线性布局，然后用权重，三个标题均分整个屏幕宽度，然后让标题内容居中显示即可，当然，如果文字过长，需要省略显示，你要设置他们之间的间距和左右边距。（这种情况一般发生在多国语言，如果只是中文那你比较幸福）</p>
+<p> 图四</p>
+<p> <img src="/images/adaptive/adaptive04.png" alt="图四"> </p>
+<p>6.除了上面的一些原则，还有一些是把上面这些原则组合使用的，比如如下图或者图三的标题栏，都是左右对齐和居中原则，中间图标均分，这样显得很整齐。但是在下面的图中的中间标题，显示多个，但是并不是均分，要想适配肯定是不能写死的，那就要用线性布局来，按照一定的比例来分配整个宽度，如果是其他语言或者更多的选项那只能做左右滑动了。</p>
+<p> 图五</p>
+<p> <img src="/images/adaptive/adaptive05.png" alt="图五"> </p>
+<p>7.GridView：常用用法就是设置每行的列数，然后设置又有边距，中间内容均分，但是在如果都是图片，图片大小不一致如何搞，那就要设置图片的scaleType属性，或者在代码中设置，来让图片占满整个图片显示区，当然，有些需求还要求你定义ImageView来设定图片的宽高比，这样每个Item显示的图片都是一样大的，并且没有空白部分。</p>
+<p>  图六</p>
+<p>  <img src="/images/adaptive/adaptive06.png" alt="图六"> </p>
+<p>还有如下情况，卡片效果，为了适配各种图片，各种手机最好的做法就是自定义ImageView，设置好宽高比，这样所有手机显示都相似，不需要特殊适配。</p>
+<p>  图七</p>
+<p>  <img src="/images/adaptive/adaptive07.png" alt="图七"> </p>
+<p>8.比例适配：下图是我使用的一个跑步软件的界面。那个公里和配速占的宽度是不一样的，这样的适配有两种方案，一种是将公里的宽度写死，然后剩下的占满整个屏幕，另一种是按照比例来设置，但是我更趋于第一种写法，因为前面的文字很简单，不会占用很大的距离，如果设置比例，前面的宽度变化很大，要么显得拥挤要么显得空旷。</p>
+<p>  图八</p>
+<p>  <img src="/images/adaptive/adaptive08.png" alt="图八"></p>
+<p>还有就是如下图所示，蓝色框中的内容部分是在宽度上均分的，所以只需要设置宽度均分，然后高度自适应就好，也不需要对不同屏幕进行特殊处理。</p>
+<p>  图九</p>
+<p>  <img src="/images/adaptive/adaptive09.png" alt="图九"></p>
+<h3 id="多语言适配"><a href="#多语言适配" class="headerlink" title="多语言适配"></a>多语言适配</h3><hr>
+<p>不同语言占用长度相差很大，我们现在的项目就是做国际化，很多国家的语言，这就导致很多设计不能像中文一样简练，导致很多布局的设计都要调节。这种就避免左右分配空间，尽量在高度上分配空间。如果实在要在宽度上分配，那么要考虑左右滑动。</p>
+<p>比较特殊的还有阿拉伯语，切换到阿拉伯语之后界面的左右是相反的，也就是左边的按钮到右边，右边的会到左边如果需要做阿拉伯语适配的，就需要考虑在设置左右对齐时要选择好布局。</p>
+<h3 id="绝对适配"><a href="#绝对适配" class="headerlink" title="绝对适配"></a>绝对适配</h3><hr>
+<p>绝对适配就是我们在做Launcher中用到的，所有尺寸写死，然后在res中配置不同屏幕分辨率的dimens.xml文件，这种适配过程需要很大人力物力成本，要有专门的人员进行适配，要有各种手机进行适配，因此这种在应用开发中是不建议做的，如果做也只做系统提供的几种即可，一般按照我上面讲解的进行适配，然后在values-hdpi,values-xhdpi,values-xxhdpi等这些文件夹中的dimens.xml中配置字体大小或者尺寸即可，这用对于我们app的开发是能够满足使用的。</p>
+<p>但是对于Launcher的开却是不行的，需要更详细的配置过程。下面是我们项目中的一个适配尺寸文件：</p>
+<p><img src="/images/adaptive/adaptive10.png" alt="图十"></p>
+<p>可以看到里面有很多文件，没有做过这种适配的可能不太了解，我下面根据实例来讲解一下算法，</p>
+<p>例如：value-sw360-xxhdpi-1920x1080<br>首先介绍sw360的算法，下面是我用安兔兔获取的一个手机的分辨率和屏幕密度，</p>
+<p><img src="/images/adaptive/adaptive11.png" alt="图十一"></p>
+<p>那么，sw = 160 * 1080 / 480 = 360,</p>
+<p>由下面的图标关系可知，1080对应xxhdpi,那么就对应value-sw360-xxhdpi-1920x1080，那么为什么还要写xxhdpi,如果我在来取一个手机的参数，1280x720，分比率为320，那么sw = 160 * 720 / 320 = 360,同样还是360，因此为了更详细后面还要添加xhdpi才能够确定手机分辨率。</p>
+<p><img src="/images/adaptive/adaptive12.png" alt="图十二"></p>
+<p>app图标适配，不同分辨率的手机显示在桌面显示的图标也是有区别的，需要的图标尺寸如下：</p>
+<p><img src="/images/adaptive/adaptive13.png" alt="图十三"></p>
+<p>为了更好的显示图标，你需要UI设计上面几个尺寸的图标放到不同的图片文件夹下面。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><hr>
+<p>上面介绍了多种适配，都是理论性的，因为那些布局的使用基本都没有问题，主要是思想的问题，所以只写了理论，在适配过程中最主要的是宽度方向上，因为高度一般都是可滑动的，因此相对简单，设置好宽度，高度方向可以自适应，或者写死都行，没有太大的影响。</p>
+<p>比较难的就是图片适配，要设置宽高比或者设置scaleType属性来解决比较好。还有一些更复杂的设计需要自己多去实践。还有一个注意的就是如果宽度不能定死那就用边距或者比例来限制宽度，会帮助你解决很多问题。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/07/15/Android适配浅析/">Android适配浅析</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
+        <p><span>发布时间:</span>2016年07月15日 - 17时41分</p>
+        <p><span>最后更新:</span>2016年07月15日 - 17时42分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/07/15/Android适配浅析/" title="Android适配浅析">http://www.codemx.cn/2016/07/15/Android适配浅析/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2016/07/15/Android适配浅析/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/07/25/Android-open-project/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Android开源项目推荐
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/23/Gradle/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Gradle下导入framework.jar</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#布局适配"><span class="toc-number">1.</span> <span class="toc-text">布局适配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多语言适配"><span class="toc-number">2.</span> <span class="toc-text">多语言适配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#绝对适配"><span class="toc-number">3.</span> <span class="toc-text">绝对适配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/07/15/Android适配浅析/" data-title="Android适配浅析" data-url="http://www.codemx.cn/2016/07/15/Android适配浅析/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"codemx"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = '/js/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/07/25/Android-open-project/" title="上一篇: Android开源项目推荐">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/06/23/Gradle/" title="下一篇: Gradle下导入framework.jar">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）--拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）-Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）-数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）--概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 墨香
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站访问量: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页访问量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?[object Object]";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

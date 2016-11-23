@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Understand:高效代码静态分析神器详解（一） | 墨香博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="之前用Windows系统，一直用source insight查看代码非常方便，但是年前换到mac下面，虽说很多东西都方便了，但是却没有了静态代码分析工具，很幸运，前段时间找到一款比source insight软件还强大的代码静态分析工具，堪称神器–Understand。这款软件具有强大的代码静态分析功能，并且可以绘制各种流程图，不幸的是没有发现Windows版本，只看到mac版和Linux版本，因">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Understand:高效代码静态分析神器详解（一）">
+<meta property="og:url" content="http://www.codemx.cn/2016/04/30/Understand01/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="之前用Windows系统，一直用source insight查看代码非常方便，但是年前换到mac下面，虽说很多东西都方便了，但是却没有了静态代码分析工具，很幸运，前段时间找到一款比source insight软件还强大的代码静态分析工具，堪称神器–Understand。这款软件具有强大的代码静态分析功能，并且可以绘制各种流程图，不幸的是没有发现Windows版本，只看到mac版和Linux版本，因">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under01.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under02.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under03.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under04.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under05.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under06.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under07.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under08.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under09.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under10.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under11.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under12.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under13.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under14.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under15.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under16.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under17.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under18.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under19.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under20.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under21.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under22.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under23.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under24.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under25.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under27.png">
+<meta property="og:image" content="http://www.codemx.cn/images/understand/understand1/under26.png">
+<meta property="og:updated_time" content="2016-05-02T08:18:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Understand:高效代码静态分析神器详解（一）">
+<meta name="twitter:description" content="之前用Windows系统，一直用source insight查看代码非常方便，但是年前换到mac下面，虽说很多东西都方便了，但是却没有了静态代码分析工具，很幸运，前段时间找到一款比source insight软件还强大的代码静态分析工具，堪称神器–Understand。这款软件具有强大的代码静态分析功能，并且可以绘制各种流程图，不幸的是没有发现Windows版本，只看到mac版和Linux版本，因">
+<meta name="twitter:image" content="http://www.codemx.cn/images/understand/understand1/under01.png">
+  
+    <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/">墨香</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">用代码实现自己的梦想。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">博客归档</a></li>
+                        
+                            <li><a href="/read">静心阅读</a></li>
+                        
+                            <li><a href="/about">雁过留声</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                            
+                                <a class="fl weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                            
+                                <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/Android-open-Source/" style="font-size: 10px;">Android open Source</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 15px;">高效Mac</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.trinea.cn/">Trinea</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.devilwwj.com/">小巫</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.dreamxuwj.com/">梦痕</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenfuduo.me/">菜鸟</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jeffjade.com/">晚晴幽草轩</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://wangkuiwu.github.io">wangkuiwu</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/harvic880925/article/list/3">启航</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://hujiaweibujidao.github.io">潇涧</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">因为梦想来到深圳，因为兴趣选择开发，人生的航程中没有一帆风顺，只有努力加坚持才会成功。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">墨香</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">墨香</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">用代码实现自己的梦想。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">博客归档</a></li>
+                
+                    <li><a href="/read">静心阅读</a></li>
+                
+                    <li><a href="/about">雁过留声</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                    
+                        <a class="weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Understand01" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/30/Understand01/" class="article-date">
+      <time datetime="2016-04-30T14:25:55.000Z" itemprop="datePublished">2016-04-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Understand:高效代码静态分析神器详解（一）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Understand/">Understand</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>之前用Windows系统，一直用source insight查看代码非常方便，但是年前换到mac下面，虽说很多东西都方便了，但是却没有了静态代码分析工具，很幸运，前段时间找到一款比source insight软件还强大的代码静态分析工具，堪称神器–Understand。这款软件具有强大的代码静态分析功能，并且可以绘制各种流程图，不幸的是没有发现Windows版本，只看到mac版和Linux版本，因此用Windows系统的朋友抱歉了。</p>
+<a id="more"></a>
+<p>因为工作太忙，还没有时间详细的研究一下使用方法，只是简单的了解了一下，由于该软件可以帮助你快速的分析代码结构流程，因此我提前分享给大家，希望和大家一起研究，共同学习，下面我针对这个软件做个初步讲解，后续会出详细讲解，由于软件是全英文的所以有问题的地方望大家指出，我会及时更正。</p>
+<p>由于安装很简单，在此就不说了，直接进入工程配置讲解。</p>
+<h2 id="导入项目"><a href="#导入项目" class="headerlink" title="导入项目"></a>导入项目</h2><p>导入项目有两种方法，一种是从菜单栏点击File–&gt;New–&gt;Project,另一种是点击下面界面中间的New Project</p>
+<p><img src="/images/understand/understand1/under01.png" alt="图1"></p>
+<p>点击后，会进入到如下界面，你可以更改项目名称为你要导入的项目名称，以便于以后查找，你可以直接导入你正在开发的项目，你的代码更改后，这个项目也会自动更新，方便你快速开发，不需要每次导入。</p>
+<p><img src="/images/understand/understand1/under02.png" alt="图2"></p>
+<p>更改名称后点击Next进入如下界面，这个界面是让你选择你要导入项目包含了哪几种语言，注意，在C/C++后面有两种模式，下面有注释，其中Strict模式包含Object-C和Object—C++，还有Web的注释，自己看看就好了，在此就不再解释，</p>
+<p><img src="/images/understand/understand1/under03.png" alt="图3"></p>
+<p>然后点击Next进入下面界面：</p>
+<p><img src="/images/understand/understand1/under04.png" alt="图4"></p>
+<p>在此界面点击上面的“Add a Directory”,也就是添加你要导入项目的路径，点击后会弹出如下界面,此时有个奇葩就是弹出的界面会被上图界面遮挡，此时你要移开该界面，然后会出现下面界面：</p>
+<p><img src="/images/understand/understand1/under05.png" alt="图5"></p>
+<p>点击后面的带有三个点的按钮选择你要加入的项目文件夹，此处不用打开文件夹，只要点中文件夹点击open按钮：</p>
+<p><img src="/images/understand/understand1/under06.png" alt="图6"></p>
+<p>此时只需要点击OK即可，界面会跳转到如下界面：</p>
+<p><img src="/images/understand/understand1/under07.png" alt="图7"></p>
+<p>此时有两个选项，一个是立即分析代码，一个选择配置，对于我们来说只需要默认即可，然后点击OK按钮，此时软件开始分析代码，分析完成后会出现如下界面：</p>
+<p><img src="/images/understand/understand1/under08.png" alt="图8"></p>
+<p>左侧会出你的项目结构，中间出现你项目的名称，此时你可以操作左面项目来查看相关代码，如下图所示：</p>
+<p><img src="/images/understand/understand1/under09.png" alt="图9"></p>
+<p>这么多类和方法如何快速定位，那肯定是搜索，该软件针对不同位置，不同属性有不同的搜索方法，下面介绍搜索功能。</p>
+<h2 id="搜索功能"><a href="#搜索功能" class="headerlink" title="搜索功能"></a>搜索功能</h2><p>1.左侧项目结构中搜索：在这个搜索中你可以快速搜索你要查看的类，快捷键，鼠标点击左侧上面项目结构窗口，然后按command + F键会出现如下图所示的搜索框，在框中输入你想要的类回车即可</p>
+<p><img src="/images/understand/understand1/under10.png" alt="图10"></p>
+<p>2.类中方法搜索：将鼠标定位到右侧代码中，点击command + F，会弹出搜索框，输入方法回车即可：</p>
+<p><img src="/images/understand/understand1/under11.png" alt="图11"></p>
+<p>3.在文件中搜索：也就是全局搜索，快捷键F5或者去上面菜单栏中的search栏中查找，输入你想要的类或者方法，回车查找，下面会列出所有使用的地方：</p>
+<p><img src="/images/understand/understand1/under12.png" alt="图12"></p>
+<p>4.实体类查找：软件菜单栏search中最后一项–Find Entity，点击输入你要查找的实体类，回车查找：</p>
+<p><img src="/images/understand/understand1/under13.png" alt="图13"></p>
+<p>快速搜索是软件快速使用必备的技能，包括我们常用的idea一样，快速定位类，方法，常量等，可以快速帮助我们解决问题。</p>
+<p>上面我介绍改软件时提到可以绘制流程图等功能，下面就针对这个功能介绍一些一些图形的绘制功能，帮助你快速分析代码。</p>
+<h2 id="项目视图"><a href="#项目视图" class="headerlink" title="项目视图"></a>项目视图</h2><p>项目视图包含很多的功能，能够自动生成各种流程图结构图，帮助你快速理清代码逻辑、结构等，以便快速理解项目流程，快速开发，视图查看方式有两种，一种是鼠标点击你要查看的类或者方法等上面，然后右键弹出菜单，鼠标移动到Graphical Views，然后弹出二级菜单，如下图所示：</p>
+<p><img src="/images/understand/understand1/under14.png" alt="图14"></p>
+<p>另一种方式是点击要查看的类或者方法，然后找到代码上面菜单栏中的如下图标：</p>
+<p><img src="/images/understand/understand1/under15.png" alt="图15"></p>
+<p>然后点击图标右下角的下拉箭头，弹出如下菜单，即可选择查看相关视图：</p>
+<p><img src="/images/understand/understand1/under16.png" alt="图16"></p>
+<h3 id="层级关系视图分类："><a href="#层级关系视图分类：" class="headerlink" title="层级关系视图分类："></a>层级关系视图分类：</h3><p>1.Butterfly：如果两个实体间存在关系，就显示这两个实体间的调用和被调用关系；如下图为Activity中的一个方法的关系图：</p>
+<p><img src="/images/understand/understand1/under17.png" alt="图17"></p>
+<p>2.Calls：展示从你选择的这个方法开始的整个调用链条；</p>
+<p><img src="/images/understand/understand1/under18.png" alt="图18"></p>
+<p>3.Called By：展示了这个实体被哪些代码调用，这个结构图是从底部向上看或者从右到左看；</p>
+<p><img src="/images/understand/understand1/under19.png" alt="图19"></p>
+<p>4.Calls Relationship/Calledby Relationship:展示了两个实体之间的调用和被调用关系，操作方法：首先右键你要选择的第一个实体，然后点击另一个你要选择的实体，如果选择错误，可以再次点击其他正确即可，然后点击ok；</p>
+<p><img src="/images/understand/understand1/under20.png" alt="图20"></p>
+<p><img src="/images/understand/understand1/under21.png" alt="图21"></p>
+<p>5.Contains:展示一个实体中的层级图，也可以是一个文件，一条连接线读作”x includes y“；</p>
+<p><img src="/images/understand/understand1/under22.png" alt="图22"></p>
+<p>6.Extended By:展示这个类被哪些类所继承，</p>
+<p><img src="/images/understand/understand1/under23.png" alt="图23"></p>
+<p>7.Extends:展示这个类继承自那个类：</p>
+<p><img src="/images/understand/understand1/under24.png" alt="图24"></p>
+<h3 id="结构关系视图分类："><a href="#结构关系视图分类：" class="headerlink" title="结构关系视图分类："></a>结构关系视图分类：</h3><p>1.Graph Architecture：展示一个框架节点的结构关系；</p>
+<p>2.Declaration:展示一个实体的结构关系，例如：展示参数，则返回类型和被调用函数，对于类，则展示私有成员变量（谁继承这个类，谁基于这个类）</p>
+<p>3.Parent Declaration:展示这个实体在哪里被声明了的结构关系；</p>
+<p>4.Declaration File:展示所选的文件中所有被定义的实体（例如函数，类型，变量，常量等）；</p>
+<p>5.Declaration Type:展示组成类型；</p>
+<p>6.Class Declaration:展示定义类和父类的成员变量；</p>
+<p>7.Data Members:展示类或者方法的组成，或者包含的类型；</p>
+<p>8.Control Flow:展示一个实体的控制流程图或者类似实体类型；</p>
+<p><img src="/images/understand/understand1/under25.png" alt="图25"></p>
+<p>9.Cluster Control Flow:展示一个实体的流程图或者类似实体类型，这个比上一个更具有交互性；</p>
+<p>10.UML Class Diagram:展示这个项目中或者一个文件中定义的类以及与这个类关联的类</p>
+<p><img src="/images/understand/understand1/under27.png" alt="图27"></p>
+<p>11.UML Sequence Diagram:展示两个实体之间的时序关系图；</p>
+<p><img src="/images/understand/understand1/under26.png" alt="图26"></p>
+<p>12.Package:展示给定包名中声明的所有实体</p>
+<p>13.Task:展示一个任务中的参数，调用，实体</p>
+<p>14.Rename Declaration:展示实体中被重命名的所有实体</p>
+<p>由于视图比较多，所以就一一贴上代码，主要还是需要自己去调试，查看各个功能视图的展示结构以及作用，孰能生巧，多操作几下就会了，所以不再做过多的解释。最终希望这款软件能够帮助你快速开发，快速阅读别人的或者自己的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注: 本文原创，转载请注明出处。</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
+        <p><span>发布时间:</span>2016年04月30日 - 22时25分</p>
+        <p><span>最后更新:</span>2016年05月02日 - 16时18分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/04/30/Understand01/" title="Understand:高效代码静态分析神器详解（一）">http://www.codemx.cn/2016/04/30/Understand01/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2016/04/30/Understand01/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/05/04/2016-05-04-Android-Tree/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Android 知识梳理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/25/code-commend/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android代码推荐（一）</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#导入项目"><span class="toc-number">1.</span> <span class="toc-text">导入项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搜索功能"><span class="toc-number">2.</span> <span class="toc-text">搜索功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目视图"><span class="toc-number">3.</span> <span class="toc-text">项目视图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#层级关系视图分类："><span class="toc-number">3.1.</span> <span class="toc-text">层级关系视图分类：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结构关系视图分类："><span class="toc-number">3.2.</span> <span class="toc-text">结构关系视图分类：</span></a></li></ol></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/04/30/Understand01/" data-title="Understand:高效代码静态分析神器详解（一）" data-url="http://www.codemx.cn/2016/04/30/Understand01/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"codemx"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = '/js/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/05/04/2016-05-04-Android-Tree/" title="上一篇: Android 知识梳理">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/04/25/code-commend/" title="下一篇: Android代码推荐（一）">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）--拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）-Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）-数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）--概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 墨香
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站访问量: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页访问量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?[object Object]";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

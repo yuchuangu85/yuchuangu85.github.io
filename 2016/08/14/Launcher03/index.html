@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget | 墨香博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget">
+<meta property="og:url" content="http://www.codemx.cn/2016/08/14/Launcher03/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image03/launcher01.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image03/launcher02.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image03/launcher03.png">
+<meta property="og:updated_time" content="2016-08-14T03:38:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget">
+<meta name="twitter:description" content="上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。">
+<meta name="twitter:image" content="http://www.codemx.cn/images/launcher/image03/launcher01.png">
+  
+    <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/">墨香</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">用代码实现自己的梦想。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">博客归档</a></li>
+                        
+                            <li><a href="/read">静心阅读</a></li>
+                        
+                            <li><a href="/about">雁过留声</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                            
+                                <a class="fl weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                            
+                                <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/Android-open-Source/" style="font-size: 10px;">Android open Source</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 15px;">高效Mac</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.trinea.cn/">Trinea</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.devilwwj.com/">小巫</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.dreamxuwj.com/">梦痕</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenfuduo.me/">菜鸟</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jeffjade.com/">晚晴幽草轩</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://wangkuiwu.github.io">wangkuiwu</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/harvic880925/article/list/3">启航</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://hujiaweibujidao.github.io">潇涧</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">因为梦想来到深圳，因为兴趣选择开发，人生的航程中没有一帆风顺，只有努力加坚持才会成功。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">墨香</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">墨香</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">用代码实现自己的梦想。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">博客归档</a></li>
+                
+                    <li><a href="/read">静心阅读</a></li>
+                
+                    <li><a href="/about">雁过留声</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                    
+                        <a class="weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Launcher03" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/14/Launcher03/" class="article-date">
+      <time datetime="2016-08-14T01:45:40.000Z" itemprop="datePublished">2016-08-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Launcher/">Launcher</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。</p>
+<a id="more"></a>
+<h2 id="1-默认配置图标、Widget、文件夹的绑定（bind）"><a href="#1-默认配置图标、Widget、文件夹的绑定（bind）" class="headerlink" title="1.默认配置图标、Widget、文件夹的绑定（bind）"></a>1.默认配置图标、Widget、文件夹的绑定（bind）</h2><hr>
+<p>上一章讲到默认配置加载的位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">private void loadAndBindWorkspace() &#123;</span><br><span class="line">           </span><br><span class="line">           ...</span><br><span class="line">           </span><br><span class="line">           if (!mWorkspaceLoaded) &#123;</span><br><span class="line">               loadWorkspace();</span><br><span class="line">               ...</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           // Bind the workspace</span><br><span class="line">           bindWorkspace(-1);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>这里主要是加载默认配置，然后调用bindWorkspace进行绑定，我们先看一下流程图：</p>
+<p><img src="/images/launcher/image03/launcher01.png" alt="01"></p>
+<p>整个流程看似东西很多，其实就是准备数据，然后开始绑定，下面我们看bindWorkspace的主要代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">private void bindWorkspace(int synchronizeBindPage) &#123;</span><br><span class="line">			  //准备参数</span><br><span class="line">            ...</span><br><span class="line"></span><br><span class="line">            //开始绑定</span><br><span class="line">            ...</span><br><span class="line"></span><br><span class="line">            bindWorkspaceScreens(oldCallbacks, orderedScreenIds);</span><br><span class="line"></span><br><span class="line">            // Load items on the current page</span><br><span class="line">            bindWorkspaceItems(oldCallbacks, currentWorkspaceItems, currentAppWidgets,</span><br><span class="line">                    currentFolders, null);</span><br><span class="line">            ...</span><br><span class="line">            </span><br><span class="line">            bindWorkspaceItems(oldCallbacks, otherWorkspaceItems, otherAppWidgets, otherFolders,</span><br><span class="line">                    (isLoadingSynchronously ? mDeferredBindRunnables : null));</span><br><span class="line"></span><br><span class="line">			  //结束绑定</span><br><span class="line">            ...</span><br><span class="line">          </span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>我们先分析第一个方法：bindWorkspaceScreens，我们知道桌面上的图标、文件夹等是放置到CellLayout（实际内部还有一个容器）中的，因此我们要首先添加CellLayout整个容器，<br>也就是这个方法，代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private void bindWorkspaceScreens(final Callbacks oldCallbacks,</span><br><span class="line">                                          final ArrayList&lt;Long&gt; orderedScreens) &#123;</span><br><span class="line">            final Runnable r = new Runnable() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    Callbacks callbacks = tryGetCallbacks(oldCallbacks);</span><br><span class="line">                    if (callbacks != null) &#123;</span><br><span class="line">                        callbacks.bindScreens(orderedScreens);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            runOnMainThread(r);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>代码很简单，就是调用回调函数callbacks.bindScreens，这个回调函数是在Launcher中实现的，因此我们看流程图：</p>
+<p><img src="/images/launcher/image03/launcher02.png" alt="02"></p>
+<p>代码实现就是在bindAddScreens方法中通过for循环添加CellLayout，比较简单不再贴代码。</p>
+<p>我们接着看第二第三个函数，这两个函数是一样的，但是参数不一样，从参数名字可以看到第一个bind当前页面的图标、文件夹、widget的，第二个是bind其他屏幕图标、文件夹、widget的，因此我们只讲一个流程，剩下的是一样的。</p>
+<p>我们先看流程图：</p>
+<p><img src="/images/launcher/image03/launcher03.png" alt="03"></p>
+<p>从流程图看其实就是三个for循环，分别绑定图标、文件夹、小部件，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public void bindItems(final ArrayList&lt;ItemInfo&gt; shortcuts, final int start, final int end,</span><br><span class="line">                          final boolean forceAnimateIcons) &#123;</span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line">        for (int i = start; i &lt; end; i++) &#123;</span><br><span class="line">            final ItemInfo item = shortcuts.get(i);</span><br><span class="line"></span><br><span class="line">            // 如果是在Hotseat中并且没有Hotseat则跳过继续</span><br><span class="line">            if (item.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT &amp;&amp;</span><br><span class="line">                    mHotseat == null) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            final View view;</span><br><span class="line">            switch (item.itemType) &#123;</span><br><span class="line">                case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:</span><br><span class="line">                case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:</span><br><span class="line">                    ShortcutInfo info = (ShortcutInfo) item;</span><br><span class="line">                    view = createShortcut(info);</span><br><span class="line">                    break;</span><br><span class="line">                case LauncherSettings.Favorites.ITEM_TYPE_FOLDER:</span><br><span class="line">                    view = FolderIcon.fromXml(R.layout.folder_icon, this,</span><br><span class="line">                            (ViewGroup) workspace.getChildAt(workspace.getCurrentPage()),</span><br><span class="line">                            (FolderInfo) item, mIconCache);</span><br><span class="line">                    break;</span><br><span class="line">                default:</span><br><span class="line">                    throw new RuntimeException(&quot;Invalid Item Type&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            workspace.addInScreenFromBind(view, item.container, item.screenId, item.cellX,</span><br><span class="line">                    item.cellY, 1, 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的switch语句中判断Item的类型，根据不同类型来生成不同的View,最后通过workspace.addInScreenFromBind方法将view绑定到桌面上，我们接着看一下addInScreenFromBind这个方法，这个方法最后调用到Workspace中的addInScreen方法，在这个方法中有两个参数spanX、spanY没有讲过，我来解释一下，我们第一章讲了图标排列到桌面上是按照4x4后者4x5等形式，那么每个单元是一个图标位置，但是，小部件的占用不只是一个图标，有可能几个图标的位置，而spanX就是横向占用的单元格个数，相应的spanY就是Y方向的占用个数。根据控件的起始位置，以及占用单元格个数就可以确定他在桌面上的位置。addInScreen代码我就不贴了，我只是在这说一下过程，进入这个方法，首先判断container的类型，也就是父容器的类型：CellLayout还是Hotseat，然后判断是文件夹还是图标，最后通过调用layout.addViewToCellLayout方法根据相应的参数来添加到相应的容器里面。</p>
+<p>其他两个的绑定也是差不多的，只是widget的相对复杂一点，这里不再讲解，后面我会单独写一章来讲解widget的加载添加。</p>
+<h2 id="2-所有应用绑定（bind）"><a href="#2-所有应用绑定（bind）" class="headerlink" title="2.所有应用绑定（bind）"></a>2.所有应用绑定（bind）</h2><hr>
+<p>绑定所有应用其实是绑定二级界面的所有应用图标，代码开始位置是：LauncherModel中的loadAllApps方法，首先加载手机里的所有应用信息，然后生成对应的对象，最后通过调用callbacks.bindAllApplications方法将所有应用绑定到二级界面，回调函数依然是在Launcher中实现，二级界面是AllAppsContainerView，根据代码流程调用onAppsUpdated方法，在这个方法中排序最后调用updateAdapterItems方法，这个界面是一个RecyclerView，准备好数据库，刷新适配器即可。</p>
+<h2 id="3-所有Widget的绑定（bind）"><a href="#3-所有Widget的绑定（bind）" class="headerlink" title="3.所有Widget的绑定（bind）"></a>3.所有Widget的绑定（bind）</h2><hr>
+<p>绑定Widget也是从loadAllApps这个方法开始的，在这个方法的最后面有个loadAndBindWidgetsAndShortcuts，通过这个方法绑定快捷方式和widget到小部件界面，看代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public void loadAndBindWidgetsAndShortcuts(final Callbacks callbacks, final boolean refresh) &#123;</span><br><span class="line"></span><br><span class="line">        runOnWorkerThread(new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                updateWidgetsModel(refresh);</span><br><span class="line">                final WidgetsModel model = mBgWidgetsModel.clone();</span><br><span class="line"></span><br><span class="line">                mHandler.post(new Runnable() &#123;</span><br><span class="line">                    @Override</span><br><span class="line">                    public void run() &#123;</span><br><span class="line">                        Callbacks cb = getCallback();</span><br><span class="line">                        if (callbacks == cb &amp;&amp; cb != null) &#123;</span><br><span class="line">                            callbacks.bindAllPackages(model);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                // update the Widget entries inside DB on the worker thread.</span><br><span class="line">                LauncherAppState.getInstance().getWidgetCache().removeObsoletePreviews(</span><br><span class="line">                        model.getRawList());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>首先调用updateWidgetsModel方法，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void updateWidgetsModel(boolean refresh) &#123;</span><br><span class="line">        PackageManager packageManager = mApp.getContext().getPackageManager();</span><br><span class="line">        final ArrayList&lt;Object&gt; widgetsAndShortcuts = new ArrayList&lt;Object&gt;();</span><br><span class="line">        widgetsAndShortcuts.addAll(getWidgetProviders(mApp.getContext(), refresh));</span><br><span class="line">        Intent shortcutsIntent = new Intent(Intent.ACTION_CREATE_SHORTCUT);</span><br><span class="line">        widgetsAndShortcuts.addAll(packageManager.queryIntentActivities(shortcutsIntent, 0));</span><br><span class="line">        mBgWidgetsModel.setWidgetsAndShortcuts(widgetsAndShortcuts);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在这个方法中首先调用getWidgetProviders方法来加载所有的小部件信息，然后通过packageManager.queryIntentActivities方法加载所有的快捷方式信息，最后将所有的信息放置到WidgetsModel中，完成后通过调用callbacks.bindAllPackages回调函数开始绑定所有的小部件和快捷方式，回调函数在Launcher中实现，然后调用WidgetsContainerView中的addWidgets方法传入WidgetsModel对象，然后通过调用刷新适配器来刷新小部件界面。</p>
+<p>最后：这一章相对简单，主要是UI的绘制，有一些流程我没有讲，主要是UI绘制其实和自定义view相关，很多人一看就会了，所以不再讲解，不会的可以去看看源码。</p>
+<p>Github地址：<a href="https://github.com/yuchuangu85/Launcher3_mx" target="_blank" rel="external">https://github.com/yuchuangu85/Launcher3_mx</a></p>
+<p>微信公众账号：Code-MX</p>
+<p>注：本文原创，转载请注明出处，多谢。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
+        <p><span>发布时间:</span>2016年08月14日 - 09时45分</p>
+        <p><span>最后更新:</span>2016年08月14日 - 11时38分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/08/14/Launcher03/" title="墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget">http://www.codemx.cn/2016/08/14/Launcher03/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2016/08/14/Launcher03/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/08/21/Launcher04/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/05/Launcher02/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">墨香带你学Launcher之（二）-数据加载流程</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-默认配置图标、Widget、文件夹的绑定（bind）"><span class="toc-number">1.</span> <span class="toc-text">1.默认配置图标、Widget、文件夹的绑定（bind）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-所有应用绑定（bind）"><span class="toc-number">2.</span> <span class="toc-text">2.所有应用绑定（bind）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-所有Widget的绑定（bind）"><span class="toc-number">3.</span> <span class="toc-text">3.所有Widget的绑定（bind）</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/08/14/Launcher03/" data-title="墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget" data-url="http://www.codemx.cn/2016/08/14/Launcher03/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"codemx"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = '/js/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/08/21/Launcher04/" title="上一篇: 墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/08/05/Launcher02/" title="下一篇: 墨香带你学Launcher之（二）-数据加载流程">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）--拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）-Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）-数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）--概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 墨香
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站访问量: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页访问量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?[object Object]";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

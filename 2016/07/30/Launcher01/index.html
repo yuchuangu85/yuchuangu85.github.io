@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>墨香带你学Launcher之（一）--概述 | 墨香博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="从事launcher开发也有一年有余了，虽然时间比较长了，但是由于是团队开发，其他任务也比较多，所以一直对整个项目的完整情况没有很好的了解，今年换了新的公司，依然是做launcher开发，从新搭建工程，因此借助这个机会完整的学习一下launcher的源码，由于之前没有完全接入，因此也没有做详细的笔记，这次从头参与项目开发，也正好做一下详细的笔记和知识梳理，由于公司项目商业性，为避免泄露公司项目内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="墨香带你学Launcher之（一）--概述">
+<meta property="og:url" content="http://www.codemx.cn/2016/07/30/Launcher01/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="从事launcher开发也有一年有余了，虽然时间比较长了，但是由于是团队开发，其他任务也比较多，所以一直对整个项目的完整情况没有很好的了解，今年换了新的公司，依然是做launcher开发，从新搭建工程，因此借助这个机会完整的学习一下launcher的源码，由于之前没有完全接入，因此也没有做详细的笔记，这次从头参与项目开发，也正好做一下详细的笔记和知识梳理，由于公司项目商业性，为避免泄露公司项目内">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher01.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher02.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher03.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher04.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher05.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher06.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher07.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher08.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher09.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher10.png">
+<meta property="og:image" content="http://www.codemx.cn/images/launcher/image01/launcher11.png">
+<meta property="og:updated_time" content="2016-07-31T08:21:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="墨香带你学Launcher之（一）--概述">
+<meta name="twitter:description" content="从事launcher开发也有一年有余了，虽然时间比较长了，但是由于是团队开发，其他任务也比较多，所以一直对整个项目的完整情况没有很好的了解，今年换了新的公司，依然是做launcher开发，从新搭建工程，因此借助这个机会完整的学习一下launcher的源码，由于之前没有完全接入，因此也没有做详细的笔记，这次从头参与项目开发，也正好做一下详细的笔记和知识梳理，由于公司项目商业性，为避免泄露公司项目内">
+<meta name="twitter:image" content="http://www.codemx.cn/images/launcher/image01/launcher01.png">
+  
+    <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/">墨香</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">用代码实现自己的梦想。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">博客归档</a></li>
+                        
+                            <li><a href="/read">静心阅读</a></li>
+                        
+                            <li><a href="/about">雁过留声</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                            
+                                <a class="fl weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                            
+                                <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/Android-open-Source/" style="font-size: 10px;">Android open Source</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 15px;">高效Mac</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.trinea.cn/">Trinea</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.devilwwj.com/">小巫</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.dreamxuwj.com/">梦痕</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenfuduo.me/">菜鸟</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jeffjade.com/">晚晴幽草轩</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://wangkuiwu.github.io">wangkuiwu</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/harvic880925/article/list/3">启航</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://hujiaweibujidao.github.io">潇涧</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">因为梦想来到深圳，因为兴趣选择开发，人生的航程中没有一帆风顺，只有努力加坚持才会成功。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">墨香</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">墨香</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">用代码实现自己的梦想。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">博客归档</a></li>
+                
+                    <li><a href="/read">静心阅读</a></li>
+                
+                    <li><a href="/about">雁过留声</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                    
+                        <a class="weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Launcher01" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/30/Launcher01/" class="article-date">
+      <time datetime="2016-07-30T10:07:01.000Z" itemprop="datePublished">2016-07-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      墨香带你学Launcher之（一）--概述
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Launcher/">Launcher</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>从事launcher开发也有一年有余了，虽然时间比较长了，但是由于是团队开发，其他任务也比较多，所以一直对整个项目的完整情况没有很好的了解，今年换了新的公司，依然是做launcher开发，从新搭建工程，因此借助这个机会完整的学习一下launcher的源码，由于之前没有完全接入，因此也没有做详细的笔记，这次从头参与项目开发，也正好做一下详细的笔记和知识梳理，由于公司项目商业性，为避免泄露公司项目内容，因此本系列教程只做双层launcher的详解，后续会教大家来定制自己的launcher。</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="桌面使用操作"><a href="#桌面使用操作" class="headerlink" title="桌面使用操作"></a>桌面使用操作</h3><hr>
+<p>说到launcher，大家也不会陌生，launcher其实就是一个app，从功能上说，是对手机上其他app的一个管理和启动，从代码上说比其他app多了一个属性，就是在AndroidManifest.xml文件中多了一个“<category android:name="android.intent.category.HOME">”属性，这个属性就是在启动系统或者按Home键时会过滤这个属性，如果系统中只要一个应用具有这个属性，就会直接跳转到这个界面，也就是这个launcher，如果有多个，会弹出选择框让用户选择并且提示用户是否选择默认设置。</category></p>
+<p>首先我们看一下我运行好的launcher效果图，代码在文章的最后给出，有兴趣的可以star或者fork。下面这两张图是进入桌面后的效果图，第一张为首页图，一般为默认页面，第二张为桌面向左滑动后的效果图。双层桌面一般第一层放制快捷方式和小部件。</p>
+<p><img src="/images/launcher/image01/launcher01.png" alt="01"><br><img src="/images/launcher/image01/launcher02.png" alt="02"></p>
+<p>下面这张是第二层界面图，主要是所有应用的列表图。</p>
+<p><img src="/images/launcher/image01/launcher03.png" alt="03"></p>
+<p>下面一张是长按桌面缩小后显示的菜单界面，主要包含，壁纸、小部件和设置选项。</p>
+<p><img src="/images/launcher/image01/launcher04.png" alt="04"></p>
+<p>点击壁纸按钮，跳转到下面的壁纸界面，在这个界面你可以更换桌面壁纸。</p>
+<p><img src="/images/launcher/image01/launcher05.png" alt="05"></p>
+<p>点击小部件按钮，跳转到小部件展示界面，在此界面你可以通过长按拖拽将小部件添加到桌面上面，方便使用和操作。</p>
+<p><img src="/images/launcher/image01/launcher06.png" alt="06"></p>
+<p>点击设置按钮，跳转到设置界面，你可以设置是否旋转屏幕和设置默认桌面。</p>
+<p><img src="/images/launcher/image01/launcher07.png" alt="07"></p>
+<p>在桌面上长按应用图标或者小部件，桌面上的搜索框会消失，替代的是一个删除框，你将应用图标或者小部件拖拽于此，会执行删除图标或者删除小部件的功能，如果你从第二层应用图标列表长按图标移动到该删除框会执行卸载应用的操作。</p>
+<p><img src="/images/launcher/image01/launcher08.png" alt="08"></p>
+<h3 id="桌面结构"><a href="#桌面结构" class="headerlink" title="桌面结构"></a>桌面结构</h3><hr>
+<p>上面介绍了桌面的基本操作，下面介绍一下桌面的基本结构。首先看下图：</p>
+<p><img src="/images/launcher/image01/launcher09.png" alt="09"></p>
+<p>最外层，也就是手机显示层是一个叫做Workspace的控件，其实在Workspace外层还有一个DragLayer层，在他的里面的最上面，是一个叫做SearchDropTargetView的控件，该控件就是搜索或者删除应用的控件。中间最大的一块是CellLayout，一个Workspace包含一个或者多个CellLayout，多个CellLayout横向并排排列，每个CellLayout在宽度上占用一屏，如下图所示：</p>
+<p><img src="/images/launcher/image01/launcher10.png" alt="10"></p>
+<p>当用户左右滑动时会切换中间的CellLayout部分，如下图所示：</p>
+<p><img src="/images/launcher/image01/launcher11.png" alt="11"></p>
+<p>CellLayout主要的作用是装在快捷方式或者小部件等。用户通过点击这些快捷方式打开应用。中间的指示点叫做PageIndicator，用来指示你当前处于第几个屏幕上面，也就是第几个CellLayout。最下面的四个图标所占的位置叫做Hotseat，主要是放置短信，拨号等最常用的应用图标。用户左右滑动屏幕时，该控件不做滑动处理。</p>
+<p>当用户长按桌面时，中间的CellLayout会缩小，下面的Hotseat和上面的SearchDropTargetView会隐藏，从而显示出隐藏的三个菜单按钮。</p>
+<p>桌面的基本操作和结构就是这么多，本章只是对桌面的操作和结构做一个概述，从下一篇文章开始讲解桌面的详细信息，包括桌面的启动过程，数据加载过程，应用拖拽等功能。最后附上源码，有兴趣的朋友可以自己下载先行研究。</p>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><hr>
+<p>Github代码：<a href="https://github.com/yuchuangu85/Launcher3_mx" target="_blank" rel="external">Launcher3_mx</a></p>
+<h3 id="注"><a href="#注" class="headerlink" title="注"></a>注</h3><hr>
+<p>本系列教程均为原创，转载请注明出处，多谢。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）--概述</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
+        <p><span>发布时间:</span>2016年07月30日 - 18时07分</p>
+        <p><span>最后更新:</span>2016年07月31日 - 16时21分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/07/30/Launcher01/" title="墨香带你学Launcher之（一）--概述">http://www.codemx.cn/2016/07/30/Launcher01/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2016/07/30/Launcher01/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2016/08/05/Launcher02/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          墨香带你学Launcher之（二）-数据加载流程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/25/Android-open-project/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android开源项目推荐</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#桌面使用操作"><span class="toc-number">1.</span> <span class="toc-text">桌面使用操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#桌面结构"><span class="toc-number">2.</span> <span class="toc-text">桌面结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#源码"><span class="toc-number">3.</span> <span class="toc-text">源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注"><span class="toc-number">4.</span> <span class="toc-text">注</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/07/30/Launcher01/" data-title="墨香带你学Launcher之（一）--概述" data-url="http://www.codemx.cn/2016/07/30/Launcher01/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"codemx"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = '/js/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/08/05/Launcher02/" title="上一篇: 墨香带你学Launcher之（二）-数据加载流程">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2016/07/25/Android-open-project/" title="下一篇: Android开源项目推荐">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）--拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）-Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）-数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）--概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 墨香
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站访问量: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页访问量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?[object Object]";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
