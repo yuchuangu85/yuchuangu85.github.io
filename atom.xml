@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2016-11-23T06:35:14.000Z</updated>
+  <updated>2016-12-16T02:53:37.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.codemx.cn/2016/11/21/Launcher06/"/>
     <id>http://www.codemx.cn/2016/11/21/Launcher06/</id>
     <published>2016-11-21T01:56:19.000Z</published>
-    <updated>2016-11-23T06:35:14.000Z</updated>
+    <updated>2016-12-16T02:53:37.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/10/16/Launcher05/&quot;&gt;墨香带你学Launcher之（五）-Workspace滑动&lt;/a&gt;介绍了workspace的形成以及滑动过程处理，本章我们介绍桌面图标的拖拽过程，这个拖拽过程设计非常巧妙，设计的东西很多，所以我尽量详细讲解。&lt;/p&gt;
@@ -98,7 +98,7 @@
 &lt;p&gt;看到handleMoveEvent整个函数我们就很熟悉，整个事件就和上面的workspace处理方式是一样的，这里就不再重复讲解，整个流程相对比较复杂，本来打算很详细的讲解，但是还是比价粗糙，但是整个流程是全面的，所以还希望自己多研究代码，里面涉及到一些位置的算法，我这里没有讲，自己看看也就会了，没有那么难。&lt;/p&gt;
 &lt;h3 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;微信公众账号：Code-MX&lt;/p&gt;
+&lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
     
@@ -120,7 +120,7 @@
     <link href="http://www.codemx.cn/2016/10/16/Launcher05/"/>
     <id>http://www.codemx.cn/2016/10/16/Launcher05/</id>
     <published>2016-10-16T00:34:25.000Z</published>
-    <updated>2016-10-18T09:19:25.000Z</updated>
+    <updated>2016-12-16T02:53:33.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/08/21/Launcher04/&quot;&gt;墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载&lt;/a&gt;介绍了应用的安装、更新、卸载时的数据加载和图标绘制流程，本章我们来介绍承载图标、小部件等的Workspace的布局和滑动操作。&lt;/p&gt;
@@ -168,7 +168,7 @@
 （2）snapToPage方法：这个方法最终调用mScroller.startScroll(),计算出最终位置，然后滑动到相应位置即可。
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;微信公众账号：Code-MX&lt;/p&gt;
+&lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
     
@@ -190,7 +190,7 @@
     <link href="http://www.codemx.cn/2016/09/29/DefineView1/"/>
     <id>http://www.codemx.cn/2016/09/29/DefineView1/</id>
     <published>2016-09-29T01:31:26.000Z</published>
-    <updated>2016-09-30T04:21:29.000Z</updated>
+    <updated>2016-12-16T02:53:29.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;最近项目中用到渐变圆环进度条，自己也写了一下，用到一些知识，以前没有用过，使用过程中有一些问题，在此做一下笔记。&lt;/p&gt;
@@ -233,7 +233,7 @@
 &lt;p&gt;此时我们看到，绿色是从（图一）0.75位置开始的，并且圆环也是从这个位置开始画的，但是此时我的颜色值和位置增加了，主要是后面部分，倒数第二个颜色值是绿色，对应位置是0.75，也是就分段设置颜色值，0.75的位置为绿色，最后一个也是绿色，则说明从0.75之后到1的位置都是绿色，然后0后面的颜色根据位置数组第一个参数开始计算，如果角度不是0就要按照这个计算进行调整。&lt;/p&gt;
 &lt;p&gt;另外，最后一个例子中相同颜色设置了多个，这个是调节渐变和纯色位置的，也就是相同颜色位置间的颜色是纯色的，不同颜色值中间的颜色是过度的，自己可以调节一下掌握以下技巧。&lt;/p&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/OpenSource_MX&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/OpenSource_MX&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;微信公众账号：Code-MX&lt;/p&gt;
+&lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
     
@@ -255,7 +255,7 @@
     <link href="http://www.codemx.cn/2016/08/21/Launcher04/"/>
     <id>http://www.codemx.cn/2016/08/21/Launcher04/</id>
     <published>2016-08-21T05:13:15.000Z</published>
-    <updated>2016-10-16T11:08:11.000Z</updated>
+    <updated>2016-12-16T02:53:26.000Z</updated>
     
     <content type="html">&lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/08/14/墨香带你学Launcher之-绑定/&quot;&gt;墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget&lt;/a&gt;讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -302,7 +302,7 @@
 &lt;p&gt;对于系统怎么卸载应用的这里就不讲了，有兴趣的可以去看源码处理。&lt;/p&gt;
 &lt;h3 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;微信公众账号：Code-MX&lt;/p&gt;
+&lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
     
@@ -322,7 +322,7 @@
     <link href="http://www.codemx.cn/2016/08/14/Launcher03/"/>
     <id>http://www.codemx.cn/2016/08/14/Launcher03/</id>
     <published>2016-08-14T01:45:40.000Z</published>
-    <updated>2016-08-14T03:38:42.000Z</updated>
+    <updated>2016-12-16T02:53:22.000Z</updated>
     
     <content type="html">&lt;p&gt;上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -355,7 +355,7 @@
 &lt;p&gt;在这个方法中首先调用getWidgetProviders方法来加载所有的小部件信息，然后通过packageManager.queryIntentActivities方法加载所有的快捷方式信息，最后将所有的信息放置到WidgetsModel中，完成后通过调用callbacks.bindAllPackages回调函数开始绑定所有的小部件和快捷方式，回调函数在Launcher中实现，然后调用WidgetsContainerView中的addWidgets方法传入WidgetsModel对象，然后通过调用刷新适配器来刷新小部件界面。&lt;/p&gt;
 &lt;p&gt;最后：这一章相对简单，主要是UI的绘制，有一些流程我没有讲，主要是UI绘制其实和自定义view相关，很多人一看就会了，所以不再讲解，不会的可以去看看源码。&lt;/p&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;微信公众账号：Code-MX&lt;/p&gt;
+&lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
     
@@ -375,7 +375,7 @@
     <link href="http://www.codemx.cn/2016/08/05/Launcher02/"/>
     <id>http://www.codemx.cn/2016/08/05/Launcher02/</id>
     <published>2016-08-05T14:20:08.000Z</published>
-    <updated>2016-08-07T06:32:50.000Z</updated>
+    <updated>2016-12-16T02:53:16.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一篇&lt;a href=&quot;http://www.codemx.cn/2016/07/30/墨香带你学Launcher之-概述/&quot;&gt;墨香带你学Launcher之-概述&lt;/a&gt;,我已经介绍了Launcher的布局以及相关的界面跳转,今天我们继续学习,按照计划,我们开始学习Launcher启动之数据加载,主要是图标、Widget和文件夹的加载.&lt;/p&gt;
@@ -485,6 +485,7 @@
 &lt;h3 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;本文的源码是基于Android 6.0系统；&lt;/p&gt;
 &lt;p&gt;Launcher源码：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;微信公众号:Code_MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;本文原创，转载请注明出处。&lt;/p&gt;
 </content>
     
@@ -506,7 +507,7 @@
     <link href="http://www.codemx.cn/2016/07/30/Launcher01/"/>
     <id>http://www.codemx.cn/2016/07/30/Launcher01/</id>
     <published>2016-07-30T10:07:01.000Z</published>
-    <updated>2016-07-31T08:21:03.000Z</updated>
+    <updated>2016-12-16T02:53:08.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;从事launcher开发也有一年有余了，虽然时间比较长了，但是由于是团队开发，其他任务也比较多，所以一直对整个项目的完整情况没有很好的了解，今年换了新的公司，依然是做launcher开发，从新搭建工程，因此借助这个机会完整的学习一下launcher的源码，由于之前没有完全接入，因此也没有做详细的笔记，这次从头参与项目开发，也正好做一下详细的笔记和知识梳理，由于公司项目商业性，为避免泄露公司项目内容，因此本系列教程只做双层launcher的详解，后续会教大家来定制自己的launcher。&lt;/p&gt;
@@ -540,6 +541,7 @@
 &lt;p&gt;桌面的基本操作和结构就是这么多，本章只是对桌面的操作和结构做一个概述，从下一篇文章开始讲解桌面的详细信息，包括桌面的启动过程，数据加载过程，应用拖拽等功能。最后附上源码，有兴趣的朋友可以自己下载先行研究。&lt;/p&gt;
 &lt;h3 id=&quot;源码&quot;&gt;&lt;a href=&quot;#源码&quot; class=&quot;headerlink&quot; title=&quot;源码&quot;&gt;&lt;/a&gt;源码&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;Github代码：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Launcher3_mx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;本系列教程均为原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
@@ -731,7 +733,7 @@
     <link href="http://www.codemx.cn/2016/05/15/2016-05-15-mac03/"/>
     <id>http://www.codemx.cn/2016/05/15/2016-05-15-mac03/</id>
     <published>2016-05-15T14:32:21.000Z</published>
-    <updated>2016-05-15T15:23:01.000Z</updated>
+    <updated>2016-12-16T02:43:40.000Z</updated>
     
     <content type="html">&lt;p&gt;最近程序开发，对公司设计的交互原型很是感兴趣，但那些工具开发出的交互原型真的无法忍受，就想找一款能搞真是模拟软件的交互工具，功夫不负有心人，终于找到一款非常完美的交互设计工具，相对其他工具来说学习成本较高，但是对于会代码的人来说相对简单，也很有意思，搞了一天还没完全搞定，但是还是忍不住先介绍出来让大家尝尝鲜，下面进入正题。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -763,6 +765,7 @@
 &lt;p&gt;  教程介绍了从位置打下调成，到颜色值调整，到动画使用，都做了非常详细的介绍，简单易学。功能强大，希望该软件帮你设计出更好的交互原型。&lt;/p&gt;
 &lt;p&gt;  附上：&lt;a href=&quot;http://framerjs.com/gallery/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方实例&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;  首发：&lt;a href=&quot;http://www.codemx.cn&quot;&gt;墨香博客&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;  微信公众号:Code-MX&lt;br&gt;  &lt;img src=&quot;media/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -1099,7 +1102,7 @@
     <link href="http://www.codemx.cn/2016/04/30/Understand01/"/>
     <id>http://www.codemx.cn/2016/04/30/Understand01/</id>
     <published>2016-04-30T14:25:55.000Z</published>
-    <updated>2016-05-02T08:18:51.000Z</updated>
+    <updated>2016-12-16T02:30:27.000Z</updated>
     
     <content type="html">&lt;p&gt;之前用Windows系统，一直用source insight查看代码非常方便，但是年前换到mac下面，虽说很多东西都方便了，但是却没有了静态代码分析工具，很幸运，前段时间找到一款比source insight软件还强大的代码静态分析工具，堪称神器–Understand。这款软件具有强大的代码静态分析功能，并且可以绘制各种流程图，不幸的是没有发现Windows版本，只看到mac版和Linux版本，因此用Windows系统的朋友抱歉了。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -1173,7 +1176,8 @@
 &lt;p&gt;13.Task:展示一个任务中的参数，调用，实体&lt;/p&gt;
 &lt;p&gt;14.Rename Declaration:展示实体中被重命名的所有实体&lt;/p&gt;
 &lt;p&gt;由于视图比较多，所以就一一贴上代码，主要还是需要自己去调试，查看各个功能视图的展示结构以及作用，孰能生巧，多操作几下就会了，所以不再做过多的解释。最终希望这款软件能够帮助你快速开发，快速阅读别人的或者自己的代码。&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;注: 本文原创，转载请注明出处。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;注: 本文原创，转载请注明出处。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
     
     <summary type="html">
     
@@ -1227,12 +1231,16 @@
     <link href="http://www.codemx.cn/2016/04/24/2016-04-26.mac02/"/>
     <id>http://www.codemx.cn/2016/04/24/2016-04-26.mac02/</id>
     <published>2016-04-24T07:23:24.000Z</published>
-    <updated>2016-04-24T11:53:16.000Z</updated>
+    <updated>2016-12-16T02:26:52.000Z</updated>
     
-    <content type="html">&lt;p&gt;上一篇&lt;a href=&quot;/2016/04/24/mac01/&quot;&gt;高效mac（一）&lt;/a&gt;介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。&lt;/p&gt;
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;上一篇 &lt;a href=&quot;/2016/04/24/mac01/&quot;&gt;高效mac（一）&lt;/a&gt;介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h3 id=&quot;Go2Shell工具&quot;&gt;&lt;a href=&quot;#Go2Shell工具&quot; class=&quot;headerlink&quot; title=&quot;Go2Shell工具&quot;&gt;&lt;/a&gt;Go2Shell工具&lt;/h3&gt;&lt;p&gt;在Windows电脑中我们执行git命令只需要在相关项目的文件夹下面右键打开git即可，但是在mac下没有右键打开，如果你想快速打开又不需要输入命令，那你就需要一个工具，就是Go2Shell工具，这个工具现已更新到3的版本了，但是打开会到设置界面，而不是打开命令工具到相关文件夹，因此建议到Appstore下载老的版本，下载安装完成会让你设置默认启动shell工具，可以选择系统自带的Terminal或者自己安装iTerm工具，配置完成之后就可以用Finder工具打开相关文件夹然后点击Go2Shell图标即可启动命令工具。&lt;br&gt;为了方便也可以将Go2Shell工具图标放置到Finder上面，操作为，按住commend键，用鼠标拖动Go2Shell图标拖动到Finder上方即可，删除也是相关操作。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/mac/mac02/mac_go2shell.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;!-- more --&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Go2Shell工具&quot;&gt;&lt;a href=&quot;#Go2Shell工具&quot; class=&quot;headerlink&quot; title=&quot;Go2Shell工具&quot;&gt;&lt;/a&gt;Go2Shell工具&lt;/h3&gt;&lt;p&gt;在Windows电脑中我们执行git命令只需要在相关项目的文件夹下面右键打开git即可，但是在mac下没有右键打开，如果你想快速打开又不需要输入命令，那你就需要一个工具，就是Go2Shell工具，这个工具现已更新到3的版本了，但是打开会到设置界面，而不是打开命令工具到相关文件夹，因此建议到Appstore下载老的版本，下载安装完成会让你设置默认启动shell工具，可以选择系统自带的Terminal或者自己安装iTerm工具，配置完成之后就可以用Finder工具打开相关文件夹然后点击Go2Shell图标即可启动命令工具。&lt;/p&gt;
+&lt;p&gt;为了方便也可以将Go2Shell工具图标放置到Finder上面，操作为，按住commend键，用鼠标拖动Go2Shell图标拖动到Finder上方即可，删除也是相关操作。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/mac/mac02/mac_go2shell.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;!-- more --&gt;
 &lt;h3 id=&quot;Manico工具&quot;&gt;&lt;a href=&quot;#Manico工具&quot; class=&quot;headerlink&quot; title=&quot;Manico工具&quot;&gt;&lt;/a&gt;Manico工具&lt;/h3&gt;&lt;p&gt;这是一款快速切换App工具，你可以设置要切换的应用，比如Dock栏的应用，或者自定义的应用，不需要再按command + Tab键，只需要设置一个快速显示键，长按会在屏幕出现应用列表，按相依编号即可快速切换:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/images/mac/mac02/mac_manico.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;Dash工具&quot;&gt;&lt;a href=&quot;#Dash工具&quot; class=&quot;headerlink&quot; title=&quot;Dash工具&quot;&gt;&lt;/a&gt;Dash工具&lt;/h3&gt;&lt;p&gt;Dash工具是开发者阅读文档的终极工具，尤其国内，使用该工具再也不用担心不能翻墙了，该工具基本包含开发的所有开发接口文档，开发的介绍文档，以及Stack Overflow的问题等，先来看图：&lt;/p&gt;
@@ -1250,7 +1258,9 @@
     
     <summary type="html">
     
-      &lt;p&gt;上一篇&lt;a href=&quot;/2016/04/24/mac01/&quot;&gt;高效mac（一）&lt;/a&gt;介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。&lt;/p&gt;
+      &lt;blockquote&gt;
+&lt;p&gt;上一篇 &lt;a href=&quot;/2016/04/24/mac01/&quot;&gt;高效mac（一）&lt;/a&gt;介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。&lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
@@ -1266,7 +1276,7 @@
     <link href="http://www.codemx.cn/2016/04/24/2016-04-24.mac01/"/>
     <id>http://www.codemx.cn/2016/04/24/2016-04-24.mac01/</id>
     <published>2016-04-24T07:12:20.000Z</published>
-    <updated>2016-04-24T11:48:07.000Z</updated>
+    <updated>2016-12-16T02:27:48.000Z</updated>
     
     <content type="html">&lt;p&gt;磨刀不误砍柴工，一个好的工具能让我们的工作事倍功半。作为一名开发者，一台好的电脑是必备的，本人推荐条件允许入手一台mac还是很有必要的。虽然我入手mac只有半年多点，但是各种好处还是比较了解的，为了让mac新手快速熟练使用mac开发程序，因此总结日常使用软件和技巧分享给大家。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;

@@ -14,7 +14,8 @@
 <meta property="og:image" content="http://www.codemx.cn/images/launcher/image03/launcher01.png">
 <meta property="og:image" content="http://www.codemx.cn/images/launcher/image03/launcher02.png">
 <meta property="og:image" content="http://www.codemx.cn/images/launcher/image03/launcher03.png">
-<meta property="og:updated_time" content="2016-08-14T03:38:42.000Z">
+<meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
+<meta property="og:updated_time" content="2016-12-16T02:53:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget">
 <meta name="twitter:description" content="上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。">
@@ -306,7 +307,7 @@
 <p>在这个方法中首先调用getWidgetProviders方法来加载所有的小部件信息，然后通过packageManager.queryIntentActivities方法加载所有的快捷方式信息，最后将所有的信息放置到WidgetsModel中，完成后通过调用callbacks.bindAllPackages回调函数开始绑定所有的小部件和快捷方式，回调函数在Launcher中实现，然后调用WidgetsContainerView中的addWidgets方法传入WidgetsModel对象，然后通过调用刷新适配器来刷新小部件界面。</p>
 <p>最后：这一章相对简单，主要是UI的绘制，有一些流程我没有讲，主要是UI绘制其实和自定义view相关，很多人一看就会了，所以不再讲解，不会的可以去看看源码。</p>
 <p>Github地址：<a href="https://github.com/yuchuangu85/Launcher3_mx" target="_blank" rel="external">https://github.com/yuchuangu85/Launcher3_mx</a></p>
-<p>微信公众账号：Code-MX</p>
+<p>微信公众账号：Code-MX<br><img src="/images/codemx/qr_code_mx.jpg" alt="qr_code_mx"></p>
 <p>注：本文原创，转载请注明出处，多谢。</p>
 
       
@@ -319,7 +320,7 @@
         <p><span>本文标题:</span><a href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2016年08月14日 - 09时45分</p>
-        <p><span>最后更新:</span>2016年08月14日 - 11时38分</p>
+        <p><span>最后更新:</span>2016年12月16日 - 10时53分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/08/14/Launcher03/" title="墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget">http://www.codemx.cn/2016/08/14/Launcher03/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2016/08/14/Launcher03/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
