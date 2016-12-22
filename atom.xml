@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2016-12-22T12:17:26.000Z</updated>
+  <updated>2016-12-22T12:38:29.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -20,11 +20,12 @@
     <link href="http://www.codemx.cn/2016/12/21/OpenOrganiztion/"/>
     <id>http://www.codemx.cn/2016/12/21/OpenOrganiztion/</id>
     <published>2016-12-21T06:21:13.000Z</published>
-    <updated>2016-12-22T12:17:26.000Z</updated>
+    <updated>2016-12-22T12:38:29.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文主要是整理一些开源的组织，主要是以Android为主的Github上的开源组织，当然也包含一些其他的组织，像iOS等，方便大家查找资源。&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h2 id=&quot;Android&quot;&gt;&lt;a href=&quot;#Android&quot; class=&quot;headerlink&quot; title=&quot;Android&quot;&gt;&lt;/a&gt;Android&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;&lt;p&gt;SmartisanTech（锤子科技）：&lt;br&gt; Github地址：&lt;a href=&quot;https://github.com/SmartisanTech&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/SmartisanTech&lt;/a&gt;&lt;br&gt;  开源项目包含系统层，OneStep代码。&lt;/p&gt;
 &lt;/li&gt;
@@ -59,7 +60,6 @@
       &lt;blockquote&gt;
 &lt;p&gt;本文主要是整理一些开源的组织，主要是以Android为主的Github上的开源组织，当然也包含一些其他的组织，像iOS等，方便大家查找资源。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&quot;Android&quot;&gt;&lt;a href=&quot;#Android&quot;
     
     </summary>
     
@@ -73,11 +73,12 @@
     <link href="http://www.codemx.cn/2016/12/18/Launcher07/"/>
     <id>http://www.codemx.cn/2016/12/18/Launcher07/</id>
     <published>2016-12-18T03:21:03.000Z</published>
-    <updated>2016-12-22T12:21:45.000Z</updated>
+    <updated>2016-12-22T12:38:03.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/11/21/Launcher06/&quot;&gt;墨香带你学Launcher之（六）–拖拽&lt;/a&gt;我们介绍了Launcher的拖拽过程，涉及到的范围比较广，包括图标的拖拽，桌面上CellLayout的拖拽，小部件的拖拽，以及跨不同部件的拖拽，设计思想非常巧妙，不过整个流程相对也比较好掌握，只要跟着上一章的流程自己多跟踪几遍基本就熟悉了。按照计划本章我们继续学习Launcher的Widget的加载、添加以及Widget的大小调节。&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h2 id=&quot;Widget的数据加载&quot;&gt;&lt;a href=&quot;#Widget的数据加载&quot; class=&quot;headerlink&quot; title=&quot;Widget的数据加载&quot;&gt;&lt;/a&gt;Widget的数据加载&lt;/h2&gt;&lt;p&gt;其实我们在第二章&lt;a href=&quot;http://www.codemx.cn/2016/08/05/Launcher02/&quot;&gt;墨香带你学Launcher之（二）-数据加载流程&lt;/a&gt;介绍过Widget数据的加载，相对只是简单的做了介绍，下面我们稍微讲的详细点。&lt;/p&gt;
 &lt;p&gt;我们知道Widget的数据加载开始在LauncherModel中的updateWidgetsModel方法中，我们看下代码：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;void updateWidgetsModel(boolean refresh) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    PackageManager packageManager = mApp.getContext().getPackageManager();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    final ArrayList&amp;lt;Object&amp;gt; widgetsAndShortcuts = new ArrayList&amp;lt;Object&amp;gt;();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    widgetsAndShortcuts.addAll(getWidgetProviders(mApp.getContext(), refresh));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Intent shortcutsIntent = new Intent(Intent.ACTION_CREATE_SHORTCUT);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    widgetsAndShortcuts.addAll(packageManager.queryIntentActivities(shortcutsIntent, 0));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    mBgWidgetsModel.setWidgetsAndShortcuts(widgetsAndShortcuts);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -169,7 +170,8 @@
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/11/21/Launcher06/&quot;&gt;墨香带你学Launcher之（六）–拖拽&lt;/a&gt;我们介绍了Launcher的拖拽过程，涉及到的范围比较广，包括图标的拖拽，桌面上Cel
+&lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/11/21/Launcher06/&quot;&gt;墨香带你学Launcher之（六）–拖拽&lt;/a&gt;我们介绍了Launcher的拖拽过程，涉及到的范围比较广，包括图标的拖拽，桌面上CellLayout的拖拽，小部件的拖拽，以及跨不同部件的拖拽，设计思想非常巧妙，不过整个流程相对也比较好掌握，只要跟着上一章的流程自己多跟踪几遍基本就熟悉了。按照计划本章我们继续学习Launcher的Widget的加载、添加以及Widget的大小调节。&lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
