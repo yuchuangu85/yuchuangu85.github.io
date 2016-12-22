@@ -145,7 +145,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/Android-open-Source/" style="font-size: 10px;">Android open Source</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 15px;">高效Mac</a>
+                        <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/Android-open-Source/" style="font-size: 10px;">Android open Source</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 15px;">高效Mac</a>
                     </div>
                 </section>
                 
@@ -236,6 +236,132 @@
     </div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Android适配浅析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/07/15/Android适配浅析/" class="article-date">
+      <time datetime="2016-07-15T09:41:22.000Z" itemprop="datePublished">2016-07-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/15/Android适配浅析/">Android适配浅析</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>应朋友之邀，介绍一下关于Android适配的问题。</p>
+<p>做launcher一年了，最多的就是适配，各种分辨各种尺寸的手机，会出现很多问题，今天就借这个机会总结一下，不一定全面，只是根据自己遇到的情况进行总结。</p>
+<p>适配主要包括布局适配，语言适配，还有功能适配。我们遇到做多的就是布局适配问题，其实语言适配问题也主要是影响布局适配，功能适配主要是针对不同厂商出的rom不同导致一些功能调用有所差异，比如相机调用等。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/07/15/Android适配浅析/#more">详细内容 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Gradle" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/23/Gradle/" class="article-date">
+      <time datetime="2016-06-23T08:56:29.000Z" itemprop="datePublished">2016-06-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>最近公司项目在做launcher，设计过程中与系统设计到了对接，需要实现一些官方没有的功能，就需要在系统层添加一些接口，然而官方的sdk中没有这些接口，需要导入framework.jar，在eclipse或者idea中都是可以将framwork包放在android.jar前面编译的，但是在gradle中却不支持之前的做法，查了很多资料，都没有找到合适的方案，在最近有朋友提醒的情况下研究出了相关问题，需要在项目根目录下的gradle.build中配置下面信息：</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gradle/">Gradle</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/2016/06/23/Gradle/#more">详细内容 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-2016-05-15-mac03" class="article article-type-post" itemscope itemprop="blogPost">
   
