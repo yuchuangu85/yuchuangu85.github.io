@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2016-12-22T12:38:29.000Z</updated>
+  <updated>2016-12-23T01:18:35.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Github开源组织整理</title>
+    <title>Github完整开源项目</title>
     <link href="http://www.codemx.cn/2016/12/21/OpenOrganiztion/"/>
     <id>http://www.codemx.cn/2016/12/21/OpenOrganiztion/</id>
     <published>2016-12-21T06:21:13.000Z</published>
-    <updated>2016-12-22T12:38:29.000Z</updated>
+    <updated>2016-12-23T01:18:35.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文主要是整理一些开源的组织，主要是以Android为主的Github上的开源组织，当然也包含一些其他的组织，像iOS等，方便大家查找资源。&lt;/p&gt;
