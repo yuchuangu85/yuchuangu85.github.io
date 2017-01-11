@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2017-01-11T06:34:26.000Z</updated>
+  <updated>2017-01-11T06:51:36.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -14,6 +14,24 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android常用UI代码（1）界面跳转</title>
+    <link href="http://www.codemx.cn/2017/01/11/Android-UI-01/"/>
+    <id>http://www.codemx.cn/2017/01/11/Android-UI-01/</id>
+    <published>2017-01-11T06:49:42.000Z</published>
+    <updated>2017-01-11T06:51:36.000Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Android UI" scheme="http://www.codemx.cn/tags/Android-UI/"/>
+    
+  </entry>
   
   <entry>
     <title>Android 常用框架集合</title>
@@ -171,32 +189,6 @@
     
       &lt;blockquote&gt;
 &lt;p&gt;本章户要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="Resource" scheme="http://www.codemx.cn/tags/Resource/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android 常用UI代码</title>
-    <link href="http://www.codemx.cn/2016/12/21/OpenOrganiztion/"/>
-    <id>http://www.codemx.cn/2016/12/21/OpenOrganiztion/</id>
-    <published>2016-12-21T06:21:13.000Z</published>
-    <updated>2017-01-11T03:28:54.000Z</updated>
-    
-    <content type="html">&lt;blockquote&gt;
-&lt;p&gt;我们在开发中都离不开页面，但是看到别人的酷炫界面总是羡慕不已，不知道别人怎么实现的，其实很多效果网上都有代码，只是我们平时很少积累，导致需要时不知从何入手，本章我就对那些酷炫的界面资源进行整理，帮助大家方便的查找自己的资源。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;我们在开发中都离不开页面，但是看到别人的酷炫界面总是羡慕不已，不知道别人怎么实现的，其实很多效果网上都有代码，只是我们平时很少积累，导致需要时不知从何入手，本章我就对那些酷炫的界面资源进行整理，帮助大家方便的查找自己的资源。&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>

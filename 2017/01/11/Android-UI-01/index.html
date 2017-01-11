@@ -3,25 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>高效Mac（二） | 墨香博客</title>
+  <title>Android常用UI代码（1）界面跳转 | 墨香博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="上一篇 高效mac（一）介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。">
+  <meta name="description" content="用代码实现自己的梦想。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="高效Mac（二）">
-<meta property="og:url" content="http://www.codemx.cn/2016/04/24/2016-04-26.mac02/index.html">
+<meta property="og:title" content="Android常用UI代码（1）界面跳转">
+<meta property="og:url" content="http://www.codemx.cn/2017/01/11/Android-UI-01/index.html">
 <meta property="og:site_name" content="墨香博客">
-<meta property="og:description" content="上一篇 高效mac（一）介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。">
-<meta property="og:image" content="http://www.codemx.cn/images/mac/mac02/mac_go2shell.png">
-<meta property="og:image" content="http://www.codemx.cn/images/mac/mac02/mac_manico.png">
-<meta property="og:image" content="http://www.codemx.cn/images/mac/mac02/mac_dash.png">
-<meta property="og:image" content="http://www.codemx.cn/images/mac/mac02/mac_dash_pre.png">
-<meta property="og:image" content="http://www.codemx.cn/images/mac/mac02/mac_dash_android.png">
-<meta property="og:image" content="http://www.codemx.cn/images/mac/mac02/mac_dash_search.png">
-<meta property="og:updated_time" content="2016-12-16T02:26:52.000Z">
+<meta property="og:description" content="用代码实现自己的梦想。">
+<meta property="og:updated_time" content="2017-01-11T06:51:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="高效Mac（二）">
-<meta name="twitter:description" content="上一篇 高效mac（一）介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。">
-<meta name="twitter:image" content="http://www.codemx.cn/images/mac/mac02/mac_go2shell.png">
+<meta name="twitter:title" content="Android常用UI代码（1）界面跳转">
+<meta name="twitter:description" content="用代码实现自己的梦想。">
   
     <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
   
@@ -240,11 +233,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-2016-04-26.mac02" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Android-UI-01" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/04/24/2016-04-26.mac02/" class="article-date">
-      <time datetime="2016-04-24T07:23:24.000Z" itemprop="datePublished">2016-04-24</time>
+      <a href="/2017/01/11/Android-UI-01/" class="article-date">
+      <time datetime="2017-01-11T06:49:42.000Z" itemprop="datePublished">2017-01-11</time>
 </a>
     </div>
   
@@ -257,7 +250,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      高效Mac（二）
+      Android常用UI代码（1）界面跳转
     </h1>
   
 
@@ -265,14 +258,10 @@
       
       <div class="article-info article-info-post">
         
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/高效Mac/">高效Mac</a>
-    </div>
-
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高效Mac/">高效Mac</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-UI/">Android UI</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -282,28 +271,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <blockquote>
-<p>上一篇 <a href="/2016/04/24/mac01/">高效mac（一）</a>介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。</p>
-</blockquote>
-<a id="more"></a>
-<h3 id="Go2Shell工具"><a href="#Go2Shell工具" class="headerlink" title="Go2Shell工具"></a>Go2Shell工具</h3><p>在Windows电脑中我们执行git命令只需要在相关项目的文件夹下面右键打开git即可，但是在mac下没有右键打开，如果你想快速打开又不需要输入命令，那你就需要一个工具，就是Go2Shell工具，这个工具现已更新到3的版本了，但是打开会到设置界面，而不是打开命令工具到相关文件夹，因此建议到Appstore下载老的版本，下载安装完成会让你设置默认启动shell工具，可以选择系统自带的Terminal或者自己安装iTerm工具，配置完成之后就可以用Finder工具打开相关文件夹然后点击Go2Shell图标即可启动命令工具。</p>
-<p>为了方便也可以将Go2Shell工具图标放置到Finder上面，操作为，按住commend键，用鼠标拖动Go2Shell图标拖动到Finder上方即可，删除也是相关操作。</p>
-<p><img src="/images/mac/mac02/mac_go2shell.png" alt=""></p>
-<!-- more -->
-<h3 id="Manico工具"><a href="#Manico工具" class="headerlink" title="Manico工具"></a>Manico工具</h3><p>这是一款快速切换App工具，你可以设置要切换的应用，比如Dock栏的应用，或者自定义的应用，不需要再按command + Tab键，只需要设置一个快速显示键，长按会在屏幕出现应用列表，按相依编号即可快速切换:</p>
-<p><img src="/images/mac/mac02/mac_manico.png" alt=""></p>
-<h3 id="Dash工具"><a href="#Dash工具" class="headerlink" title="Dash工具"></a>Dash工具</h3><p>Dash工具是开发者阅读文档的终极工具，尤其国内，使用该工具再也不用担心不能翻墙了，该工具基本包含开发的所有开发接口文档，开发的介绍文档，以及Stack Overflow的问题等，先来看图：</p>
-<p><img src="/images/mac/mac02/mac_dash.png" alt=""></p>
-<p>上图为dash软件的主界面，左侧为你已经下载的语言的列表,右侧为展示界面</p>
-<p><img src="/images/mac/mac02/mac_dash_pre.png" alt=""></p>
-<p>上图为软件的Preference中的download选项界面，你可以在该界面选择你要下载的语言，可直接下载所有语言而不需要翻墙，</p>
-<p><img src="/images/mac/mac02/mac_dash_android.png" alt=""></p>
-<p>该界面为Android开发文档界面，里面有详细的Api文档及谷歌官网Android相关的所有介绍文档，该软件对于Android开发最好的优点是不需要翻墙就能查看，</p>
-<p><img src="/images/mac/mac02/mac_dash_search.png" alt=""></p>
-<p>在该软件中你可以在左上角输入你要搜索的关键词进行快速搜索。</p>
-<p>该软件分为免费版本和收费版本，免费版本就是每次点开相关文档需要等待8秒钟，而收费则不需要，收费版本为198人民币，对于想快速开发的来说这个价钱还是相当低得，你也可以省去翻墙的麻烦，最大缺点是该软件只有mac版本没有window版本。</p>
-<p>下一篇我会介绍mac终极搜索工具Alfred工具和Source Insight工具的mac替代工具。</p>
-
+        
       
     </div>
     
@@ -311,13 +279,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></p>
+        <p><span>本文标题:</span><a href="/2017/01/11/Android-UI-01/">Android常用UI代码（1）界面跳转</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
-        <p><span>发布时间:</span>2016年04月24日 - 15时23分</p>
-        <p><span>最后更新:</span>2016年12月16日 - 10时26分</p>
+        <p><span>发布时间:</span>2017年01月11日 - 14时49分</p>
+        <p><span>最后更新:</span>2017年01月11日 - 14时51分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/04/24/2016-04-26.mac02/" title="高效Mac（二）">http://www.codemx.cn/2016/04/24/2016-04-26.mac02/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2016/04/24/2016-04-26.mac02/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/11/Android-UI-01/" title="Android常用UI代码（1）界面跳转">http://www.codemx.cn/2017/01/11/Android-UI-01/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/01/11/Android-UI-01/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -330,18 +298,9 @@
 
 <nav id="article-nav">
   
-    <a href="/2016/04/25/code-commend/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Android代码推荐（一）
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/04/24/2016-04-24.mac01/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">高效Mac（一）</div>
+    <a href="/2017/01/10/FrameCollection/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android 常用框架集合</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -352,7 +311,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Go2Shell工具"><span class="toc-number">1.</span> <span class="toc-text">Go2Shell工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Manico工具"><span class="toc-number">2.</span> <span class="toc-text">Manico工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dash工具"><span class="toc-number">3.</span> <span class="toc-text">Dash工具</span></a></li></ol>
+    
 </div>
 <style>
     .left-col .switch-btn {
@@ -414,7 +373,7 @@
     
       <div class="duoshuo" id="comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="2016/04/24/2016-04-26.mac02/" data-title="高效Mac（二）" data-url="http://www.codemx.cn/2016/04/24/2016-04-26.mac02/"></div>
+    <div class="ds-thread" data-thread-key="2017/01/11/Android-UI-01/" data-title="Android常用UI代码（1）界面跳转" data-url="http://www.codemx.cn/2017/01/11/Android-UI-01/"></div>
     <!-- 多说评论框 end -->
     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
     <script type="text/javascript">
@@ -437,13 +396,11 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2016/04/25/code-commend/" title="上一篇: Android代码推荐（一）">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2016/04/24/2016-04-24.mac01/" title="下一篇: 高效Mac（一）">
+            <a href="/2017/01/10/FrameCollection/" title="下一篇: Android 常用框架集合">
                 <i class="fa fa-angle-right"></i>
             </a>
         
