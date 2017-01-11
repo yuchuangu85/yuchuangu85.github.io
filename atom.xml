@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2017-01-11T03:29:03.000Z</updated>
+  <updated>2017-01-11T03:56:49.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.codemx.cn/2017/01/10/FrameCollection/"/>
     <id>http://www.codemx.cn/2017/01/10/FrameCollection/</id>
     <published>2017-01-10T09:13:25.000Z</published>
-    <updated>2017-01-11T03:29:03.000Z</updated>
+    <updated>2017-01-11T03:56:49.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章户要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。&lt;/p&gt;
@@ -60,7 +60,7 @@
 &lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/t12x3456/article/details/9221611&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 网络通信框架Volley简介(Google IO 2013)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/guolin_blog/article/details/17482095&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android Volley完全解析(系列)&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&quot;ReactiveX&quot;&gt;&lt;a href=&quot;#ReactiveX&quot; class=&quot;headerlink&quot; title=&quot;ReactiveX&quot;&gt;&lt;/a&gt;ReactiveX&lt;/h2&gt;&lt;p&gt;知名的响应式开发Rx系列，根据语音包含：&lt;/p&gt;
+&lt;h2 id=&quot;ReactiveX&quot;&gt;&lt;a href=&quot;#ReactiveX&quot; class=&quot;headerlink&quot; title=&quot;ReactiveX&quot;&gt;&lt;/a&gt;ReactiveX&lt;/h2&gt;&lt;p&gt;知名的响应式开发Rx系列，根据语言包含：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Java: &lt;a href=&quot;https://github.com/ReactiveX/RxJava&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxJava&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;JavaScript: &lt;a href=&quot;https://github.com/Reactive-Extensions/RxJS&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxJS&lt;/a&gt;&lt;/li&gt;
