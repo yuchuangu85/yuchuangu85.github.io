@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2017-01-11T06:51:36.000Z</updated>
+  <updated>2017-01-11T06:34:26.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -14,24 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>Android常用UI代码（1）界面跳转</title>
-    <link href="http://www.codemx.cn/2017/01/11/Android-UI-01/"/>
-    <id>http://www.codemx.cn/2017/01/11/Android-UI-01/</id>
-    <published>2017-01-11T06:49:42.000Z</published>
-    <updated>2017-01-11T06:51:36.000Z</updated>
-    
-    <content type="html"></content>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-      <category term="Android UI" scheme="http://www.codemx.cn/tags/Android-UI/"/>
-    
-  </entry>
   
   <entry>
     <title>Android 常用框架集合</title>
