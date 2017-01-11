@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2016-12-23T01:18:35.000Z</updated>
+  <updated>2017-01-11T03:24:20.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -16,64 +16,202 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Github完整开源项目</title>
-    <link href="http://www.codemx.cn/2016/12/21/OpenOrganiztion/"/>
-    <id>http://www.codemx.cn/2016/12/21/OpenOrganiztion/</id>
-    <published>2016-12-21T06:21:13.000Z</published>
-    <updated>2016-12-23T01:18:35.000Z</updated>
+    <title>常用框架集合</title>
+    <link href="http://www.codemx.cn/2017/01/10/FrameCollection/"/>
+    <id>http://www.codemx.cn/2017/01/10/FrameCollection/</id>
+    <published>2017-01-10T09:13:25.000Z</published>
+    <updated>2017-01-11T03:24:20.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
-&lt;p&gt;本文主要是整理一些开源的组织，主要是以Android为主的Github上的开源组织，当然也包含一些其他的组织，像iOS等，方便大家查找资源。&lt;/p&gt;
+&lt;p&gt;本章户要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h2 id=&quot;Android&quot;&gt;&lt;a href=&quot;#Android&quot; class=&quot;headerlink&quot; title=&quot;Android&quot;&gt;&lt;/a&gt;Android&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;SmartisanTech（锤子科技）：&lt;br&gt; Github地址：&lt;a href=&quot;https://github.com/SmartisanTech&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/SmartisanTech&lt;/a&gt;&lt;br&gt;  开源项目包含系统层，OneStep代码。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;小米科技：&lt;br&gt; Github地址：&lt;a href=&quot;https://github.com/MiCode/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/MiCode/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt; 主要开源项目：&lt;/p&gt;
+&lt;h2 id=&quot;网络&quot;&gt;&lt;a href=&quot;#网络&quot; class=&quot;headerlink&quot; title=&quot;网络&quot;&gt;&lt;/a&gt;网络&lt;/h2&gt;&lt;h4 id=&quot;1-android-async-http&quot;&gt;&lt;a href=&quot;#1-android-async-http&quot; class=&quot;headerlink&quot; title=&quot;1.android-async-http:&quot;&gt;&lt;/a&gt;1.android-async-http:&lt;/h4&gt;&lt;p&gt;一个比较老的网络框架项目，虽然已经很少使用了，但是可以学习一下里面的写作方法。&lt;/p&gt;
+&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/loopj/android-async-http&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-async-http&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://loopj.com/android-async-http/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方网址&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.cnblogs.com/angeldevil/p/3729808.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;快速Android开发系列网络篇之Android-Async-Http&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/yanbober/article/details/45307549&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-async-http框架库使用基础&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;2-retrofit&quot;&gt;&lt;a href=&quot;#2-retrofit&quot; class=&quot;headerlink&quot; title=&quot;2.retrofit:&quot;&gt;&lt;/a&gt;2.retrofit:&lt;/h4&gt;&lt;p&gt;retrofit是由square开源组织开源的一款非常流行的网络请求框架，现在使用已经非常广泛。&lt;/p&gt;
+&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/square/retrofit&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;retrofit&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://square.github.io/retrofit/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方详解&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://duanyytop.github.io/2016/08/06/Retrofit用法详解/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Retrofit用法详解&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/45cb536be2f4&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Retrofit分析-漂亮的解耦套路&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0915/3460.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Retrofit 2.0：有史以来最大的改进&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;3-okhttp&quot;&gt;&lt;a href=&quot;#3-okhttp&quot; class=&quot;headerlink&quot; title=&quot;3.okhttp:&quot;&gt;&lt;/a&gt;3.okhttp:&lt;/h4&gt;&lt;p&gt;okhttp也是由square开源组织开源的一款网络底层封装库，上面介绍的Retrofit也是基于此库进行的二次封装。&lt;/p&gt;
+&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/square/okhttp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;okhttp&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://square.github.io/okhttp/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方详解&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://brucezz.itscoder.com/effective-okhttp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;如何更高效地使用 OkHttp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.ibm.com/developerworks/cn/java/j-lo-okhttp/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OkHttp：Java 平台上的新一代 HTTP 客户端&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://frodoking.github.io/2015/03/12/android-okhttp/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OKHttp源码解析&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://frodoking.github.io/2015/06/29/android-okhttp-connectionpool-http1-x-http2-x/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OKHttp源码解析-ConnectionPool对Connection重用机制&amp;amp;Http/Https/SPDY协议选择&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;4-Volley&quot;&gt;&lt;a href=&quot;#4-Volley&quot; class=&quot;headerlink&quot; title=&quot;4.Volley&quot;&gt;&lt;/a&gt;4.Volley&lt;/h4&gt;&lt;p&gt;Volley是由谷歌开源的一款网络请求框架。&lt;/p&gt;
+&lt;p&gt;源码地址：&lt;a href=&quot;https://android.googlesource.com/platform/frameworks/volley&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Volley&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/t12x3456/article/details/9221611&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 网络通信框架Volley简介(Google IO 2013)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/guolin_blog/article/details/17482095&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android Volley完全解析(系列)&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;ReactiveX&quot;&gt;&lt;a href=&quot;#ReactiveX&quot; class=&quot;headerlink&quot; title=&quot;ReactiveX&quot;&gt;&lt;/a&gt;ReactiveX&lt;/h2&gt;&lt;p&gt;知名的响应式开发Rx系列，根据语音包含：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/FileExplorer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MIUI文件管理器社区开源版&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/Notes&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;小米便签社区开源版&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/SoundRecorder&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MIUI录音机社区开源版&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/Compass&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MIUI指南针社区开源版&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;其他系统源码&lt;/li&gt;
+&lt;li&gt;Java: &lt;a href=&quot;https://github.com/ReactiveX/RxJava&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxJava&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;JavaScript: &lt;a href=&quot;https://github.com/Reactive-Extensions/RxJS&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxJS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;C#: &lt;a href=&quot;https://github.com/Reactive-Extensions/Rx.NET&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rx.NET&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;C#(Unity): &lt;a href=&quot;https://github.com/neuecc/UniRx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;UniRx&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Scala: &lt;a href=&quot;https://github.com/ReactiveX/RxScala&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxScala&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Clojure: &lt;a href=&quot;https://github.com/ReactiveX/RxClojure&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxClojure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;C++: &lt;a href=&quot;https://github.com/Reactive-Extensions/RxCpp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxCpp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Lua: &lt;a href=&quot;https://github.com/bjornbytes/RxLua&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxLua&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Ruby: &lt;a href=&quot;https://github.com/ReactiveX/RxRuby&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Rx.rb&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Python: &lt;a href=&quot;https://github.com/ReactiveX/RxPY&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxPY&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Groovy: &lt;a href=&quot;https://github.com/ReactiveX/RxGroovy&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxGroovy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;JRuby: &lt;a href=&quot;https://github.com/ReactiveX/RxJRuby&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxJRuby&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Kotlin: &lt;a href=&quot;https://github.com/ReactiveX/RxKotlin&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxKotlin&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Swift: &lt;a href=&quot;https://github.com/ReactiveX/RxSwift&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxSwift&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;PHP: &lt;a href=&quot;https://github.com/ReactiveX/RxPHP&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxPHP&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;根据平台包含：&lt;br&gt;RxNetty：&lt;a href=&quot;https://github.com/ReactiveX/RxNetty&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxNetty&lt;/a&gt;&lt;br&gt;RxAndroid：&lt;a href=&quot;https://github.com/ReactiveX/RxAndroid&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxAndroid&lt;/a&gt;&lt;br&gt;RxCocoa：&lt;a href=&quot;https://github.com/ReactiveX/RxSwift&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxCocoa&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://reactivex.io&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方网址&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://gank.io/post/560e15be2dca930e00da1083&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;给 Android 开发者的 RxJava 详解&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://gank.io/post/56e80c2c677659311bed9841&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxJava 与 Retrofit 结合的最佳实践&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;图片加载及显示&quot;&gt;&lt;a href=&quot;#图片加载及显示&quot; class=&quot;headerlink&quot; title=&quot;图片加载及显示&quot;&gt;&lt;/a&gt;图片加载及显示&lt;/h2&gt;&lt;h4 id=&quot;1-Android-Universal-Image-Loader&quot;&gt;&lt;a href=&quot;#1-Android-Universal-Image-Loader&quot; class=&quot;headerlink&quot; title=&quot;1.Android-Universal-Image-Loader:&quot;&gt;&lt;/a&gt;1.Android-Universal-Image-Loader:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/nostra13/Android-Universal-Image-Loader&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android-Universal-Image-Loader&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/xiaanming/article/details/26810303&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 开源框架Universal-Image-Loader完全解析（一）— 基本介绍及使用&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/xiaanming/article/details/27525741&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 开源框架Universal-Image-Loader完全解析（二）— 图片缓存策略详解&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/xiaanming/article/details/39057201&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 开源框架Universal-Image-Loader完全解析（三）—源代码解读&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;2-fresco：&quot;&gt;&lt;a href=&quot;#2-fresco：&quot; class=&quot;headerlink&quot; title=&quot;2.fresco：&quot;&gt;&lt;/a&gt;2.fresco：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/facebook/fresco&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;fresco&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;a href=&quot;https://www.fresco-cn.org/docs/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3-glide&quot;&gt;&lt;a href=&quot;#3-glide&quot; class=&quot;headerlink&quot; title=&quot;3.glide:&quot;&gt;&lt;/a&gt;3.glide:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/bumptech/glide&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;glide&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://www.jianshu.com/p/4a3177b57949&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Glide 一个专注于平滑滚动的图片加载和缓存库&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0327/2650.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Google推荐的图片加载库Glide介绍&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;4-picasso&quot;&gt;&lt;a href=&quot;#4-picasso&quot; class=&quot;headerlink&quot; title=&quot;4.picasso:&quot;&gt;&lt;/a&gt;4.picasso:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/square/picasso&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;picasso&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://square.github.io/picasso/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0731/1639.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;picasso-强大的Android图片下载缓存库&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;5-PhotoView&quot;&gt;&lt;a href=&quot;#5-PhotoView&quot; class=&quot;headerlink&quot; title=&quot;5.PhotoView&quot;&gt;&lt;/a&gt;5.PhotoView&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/chrisbanes/PhotoView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;PhotoView&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;a href=&quot;http://a.codekk.com/detail/Android/dkmeteor/PhotoView%20源码解析&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;PhotoView 源码解析&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;热更新&quot;&gt;&lt;a href=&quot;#热更新&quot; class=&quot;headerlink&quot; title=&quot;热更新&quot;&gt;&lt;/a&gt;热更新&lt;/h2&gt;&lt;h4 id=&quot;1-AndFix-–Alibaba&quot;&gt;&lt;a href=&quot;#1-AndFix-–Alibaba&quot; class=&quot;headerlink&quot; title=&quot;1.AndFix:–Alibaba&quot;&gt;&lt;/a&gt;1.AndFix:–Alibaba&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/alibaba/AndFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndFix&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;a href=&quot;http://blog.csdn.net/qxs965266509/article/details/49816007&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Alibaba-AndFix Bug热修复框架原理及源码解析&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://w4lle.github.io/2016/03/03/Android热补丁之AndFix原理解析/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热补丁之AndFix原理解析&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;2-AndroidInstantRun-–google&quot;&gt;&lt;a href=&quot;#2-AndroidInstantRun-–google&quot; class=&quot;headerlink&quot; title=&quot;2.AndroidInstantRun:–google&quot;&gt;&lt;/a&gt;2.AndroidInstantRun:–google&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://android.googlesource.com/platform/tools/base/+/gradle_2.0.0/instant-run/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;instant-run&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://www.jianshu.com/p/780eb85260b3&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;深度理解Android InstantRun原理以及源码分析&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://medium.com/google-developers/instant-run-how-does-it-work-294a1633367f#.5n510pbv2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Instant Run: How Does it Work?!&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3-DroidFix&quot;&gt;&lt;a href=&quot;#3-DroidFix&quot; class=&quot;headerlink&quot; title=&quot;3.DroidFix:&quot;&gt;&lt;/a&gt;3.DroidFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/bunnyblue/DroidFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DroidFix&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;amp;mid=400118620&amp;amp;idx=1&amp;amp;sn=b4fdd5055731290eef12ad0d17f39d4a&amp;amp;scene=1&amp;amp;srcid=1106Imu9ZgwybID13e7y2nEi#wechat_redirect&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安卓App热补丁动态修复技术介绍&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;4-HotFix&quot;&gt;&lt;a href=&quot;#4-HotFix&quot; class=&quot;headerlink&quot; title=&quot;4.HotFix:&quot;&gt;&lt;/a&gt;4.HotFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/HotFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HotFix&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;a href=&quot;http://www.jianshu.com/p/72c17fb76f21&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;基于Nuwa实现Android自动化HotFix&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;5-Nuwa&quot;&gt;&lt;a href=&quot;#5-Nuwa&quot; class=&quot;headerlink&quot; title=&quot;5.Nuwa&quot;&gt;&lt;/a&gt;5.Nuwa&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/jasonross/Nuwa&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nuwa&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/sbsujjbcy/article/details/50812674&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 热修复Nuwa的原理及Gradle插件源码解析&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/fanfu1/p/5506149.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安卓热更新之Nuwa实现步骤&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;6-Tinker&quot;&gt;&lt;a href=&quot;#6-Tinker&quot; class=&quot;headerlink&quot; title=&quot;6.Tinker&quot;&gt;&lt;/a&gt;6.Tinker&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/Tencent/tinker&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;tinker&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;https://github.com/Tencent/tinker/wiki&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;amp;mid=2649286341&amp;amp;idx=1&amp;amp;sn=054d595af6e824cbe4edd79427fc2706&amp;amp;scene=0#wechat_redirect&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android N混合编译与对热补丁影响解析&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://halfstackdeveloper.github.io/2016/10/19/tinker源码研读（一）：补丁生成之DexDiff原理简析/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;tinker源码研读（一）：补丁生成之DexDiff原理简析&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;7-RocooFix&quot;&gt;&lt;a href=&quot;#7-RocooFix&quot; class=&quot;headerlink&quot; title=&quot;7.RocooFix:&quot;&gt;&lt;/a&gt;7.RocooFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/RocooFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RocooFix&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;8-AnoleFix&quot;&gt;&lt;a href=&quot;#8-AnoleFix&quot; class=&quot;headerlink&quot; title=&quot;8.AnoleFix:&quot;&gt;&lt;/a&gt;8.AnoleFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/AnoleFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AnoleFix&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;9-Robust-–美团&quot;&gt;&lt;a href=&quot;#9-Robust-–美团&quot; class=&quot;headerlink&quot; title=&quot;9.Robust:–美团&quot;&gt;&lt;/a&gt;9.Robust:–美团&lt;/h4&gt;&lt;p&gt;详解：&lt;a href=&quot;http://tech.meituan.com/android_robust.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热更新方案Robust&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;注解&quot;&gt;&lt;a href=&quot;#注解&quot; class=&quot;headerlink&quot; title=&quot;注解&quot;&gt;&lt;/a&gt;注解&lt;/h2&gt;&lt;h4 id=&quot;1-dagger&quot;&gt;&lt;a href=&quot;#1-dagger&quot; class=&quot;headerlink&quot; title=&quot;1.dagger:&quot;&gt;&lt;/a&gt;1.dagger:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/square/dagger&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dagger&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;a href=&quot;http://square.github.io/dagger/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;2-butterknife&quot;&gt;&lt;a href=&quot;#2-butterknife&quot; class=&quot;headerlink&quot; title=&quot;2.butterknife&quot;&gt;&lt;/a&gt;2.butterknife&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/JakeWharton/butterknife&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;butterknife&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;a href=&quot;http://jakewharton.github.io/butterknife/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3-androidannotations：&quot;&gt;&lt;a href=&quot;#3-androidannotations：&quot; class=&quot;headerlink&quot; title=&quot;3.androidannotations：&quot;&gt;&lt;/a&gt;3.androidannotations：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/androidannotations/androidannotations&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;androidannotations&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;a href=&quot;https://github.com/androidannotations/androidannotations/wiki&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;图表&quot;&gt;&lt;a href=&quot;#图表&quot; class=&quot;headerlink&quot; title=&quot;图表&quot;&gt;&lt;/a&gt;图表&lt;/h2&gt;&lt;h4 id=&quot;1-WilliamChart：&quot;&gt;&lt;a href=&quot;#1-WilliamChart：&quot; class=&quot;headerlink&quot; title=&quot;1.WilliamChart：&quot;&gt;&lt;/a&gt;1.WilliamChart：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/diogobernardino/WilliamChart&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;WilliamChart&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;功能：绘制图表的库，支持 LineChartView、BarChartView 和 StackBarChartView 三中图表类型，并且支持 Android 2.2 及以上的系统。&lt;/p&gt;
+&lt;h4 id=&quot;2-XCL-Charts：&quot;&gt;&lt;a href=&quot;#2-XCL-Charts：&quot; class=&quot;headerlink&quot; title=&quot;2.XCL-Charts：&quot;&gt;&lt;/a&gt;2.XCL-Charts：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/xcltapestry/XCL-Charts&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;XCL-Charts&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;功能：XCL-Charts 基于原生的 Canvas 来绘制各种图表,在设计时，尽量在保证开发效率的同时，给使用者提供足够多的定制化能力。因此使用简便,同时具有相当灵活的定制能力。目前支持 3D/非 3D 柱形图(Bar Chart)、3D/非 3D 饼图(Pie Chart)、堆积图(Stacked Bar Chart)、面积图(Area Chart)、 折线图(Line Chart)、曲线图(Spline Chart)、环形图(Dount Chart)、南丁格尔玫瑰图(Rose Chart)、仪表盘(Dial Chart)、刻度盘(Gauge Chart)、雷达图(Radar Chart)、圆形图(Circle Chart)等图表。其它特性还包括支持图表缩放、手势移动、动画显示效果、高密度柱形显示、图表分界定制线、多图表的混合显示及同数据源不同类型图表切换等。&lt;/p&gt;
+&lt;h4 id=&quot;3-HelloCharts-for-Android：&quot;&gt;&lt;a href=&quot;#3-HelloCharts-for-Android：&quot; class=&quot;headerlink&quot; title=&quot;3.HelloCharts for Android：&quot;&gt;&lt;/a&gt;3.HelloCharts for Android：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/lecho/hellocharts-android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HelloCharts for Android&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;功能：支持折线图、柱状图、饼图、气泡图、组合图；支持预览、放大缩小，滚动，部分图表支持动画；支持 Android 2.2 以上&lt;/p&gt;
+&lt;h4 id=&quot;4-MPAndroidChart：&quot;&gt;&lt;a href=&quot;#4-MPAndroidChart：&quot; class=&quot;headerlink&quot; title=&quot;4.MPAndroidChart：&quot;&gt;&lt;/a&gt;4.MPAndroidChart：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/PhilJay/MPAndroidChart&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MPAndroidChart&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;功能：强大的图表绘制工具，支持折线图、面积图、散点图、时间图、柱状图、条图、饼图、气泡图、圆环图、范围（高至低）条形图、网状图等；支持图的拖拽缩放；支持 Android 2.2 以上，支持横纵轴缩放，多指缩放，展现动画、高亮、保存到 sdcard、从文件读取图表&lt;/p&gt;
+&lt;h4 id=&quot;5-achartengine：&quot;&gt;&lt;a href=&quot;#5-achartengine：&quot; class=&quot;headerlink&quot; title=&quot;5.achartengine：&quot;&gt;&lt;/a&gt;5.achartengine：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://code.google.com/p/achartengine/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;achartengine&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;功能：强大的图表绘制工具，支持折线图、面积图、散点图、时间图、柱状图、条图、饼图、气泡图、圆环图、范围（高至低）条形图、拨号图/表、立方线图及各种图的结合&lt;/p&gt;
+&lt;h4 id=&quot;6-GraphView：&quot;&gt;&lt;a href=&quot;#6-GraphView：&quot; class=&quot;headerlink&quot; title=&quot;6.GraphView：&quot;&gt;&lt;/a&gt;6.GraphView：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/jjoe64/GraphView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GraphView&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;功能：绘制图表和曲线图的 View，可用于 Android 上的曲形图、柱状图、波浪图展示&lt;/p&gt;
+&lt;h4 id=&quot;7-HoloGraphLibrary：&quot;&gt;&lt;a href=&quot;#7-HoloGraphLibrary：&quot; class=&quot;headerlink&quot; title=&quot;7.HoloGraphLibrary：&quot;&gt;&lt;/a&gt;7.HoloGraphLibrary：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://bitbucket.org/danielnadeau/holographlibrary/src&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HoloGraphLibrary&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;功能：绘制现状图、柱状图、饼状图&lt;/p&gt;
+&lt;h4 id=&quot;8-EazeGraph：&quot;&gt;&lt;a href=&quot;#8-EazeGraph：&quot; class=&quot;headerlink&quot; title=&quot;8.EazeGraph：&quot;&gt;&lt;/a&gt;8.EazeGraph：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/blackfizz/EazeGraph&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;EazeGraph&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;功能：Android 图表库，支持柱状图、分层柱状图、饼状图、线性图&lt;/p&gt;
+&lt;h4 id=&quot;9-PieChartView：&quot;&gt;&lt;a href=&quot;#9-PieChartView：&quot; class=&quot;headerlink&quot; title=&quot;9.PieChartView：&quot;&gt;&lt;/a&gt;9.PieChartView：&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/wuseal/PieChartView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;PieChartView&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;功能：比较简单直接的饼状统计报表图，使用方便，设置相应的属性参数即可&lt;/p&gt;
+&lt;h2 id=&quot;设计模式&quot;&gt;&lt;a href=&quot;#设计模式&quot; class=&quot;headerlink&quot; title=&quot;设计模式&quot;&gt;&lt;/a&gt;设计模式&lt;/h2&gt;&lt;p&gt;此处说的设计模式是谷歌官方公开的对MVP模式的代码示例，大家可以做为参考学习一下：&lt;/p&gt;
+&lt;h4 id=&quot;Stable-samples&quot;&gt;&lt;a href=&quot;#Stable-samples&quot; class=&quot;headerlink&quot; title=&quot;Stable samples&quot;&gt;&lt;/a&gt;Stable samples&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/googlesamples/android-architecture/tree/todo-mvp/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp&lt;/a&gt; - Basic Model-View-Presenter architecture.&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Google：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/google&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/google&lt;/a&gt;&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/googlesamples&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/googlesamples&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt; 主要开源项目：&lt;br&gt; &lt;a href=&quot;https://github.com/google/dagger&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dagger&lt;/a&gt;&lt;br&gt; &lt;a href=&quot;https://github.com/googlesamples/android-UniversalMusicPlayer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;UniversalMusicPlayer&lt;/a&gt;&lt;br&gt; &lt;a href=&quot;https://github.com/googlesamples/android-architecture&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-architecture&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/googlesamples/android-architecture/tree/todo-mvp-loaders/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp-loaders&lt;/a&gt; - Based on todo-mvp, fetches data using Loaders.&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;kickstarter：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/kickstarter&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter&lt;/a&gt;&lt;br&gt; 开源项目：&lt;br&gt; &lt;a href=&quot;https://github.com/kickstarter/android-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-oss&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/googlesamples/android-architecture/tree/todo-databinding/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-databinding&lt;/a&gt; - Based on todo-mvp, uses the Data Binding Library.&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Gitskarios:&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/gitskarios&lt;/a&gt;&lt;br&gt; 开源项目：Github非官方Android客户端&lt;br&gt; &lt;a href=&quot;https://github.com/gitskarios/Gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gitskarios&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp-clean&lt;/a&gt; - Based on todo-mvp, uses concepts from Clean Architecture.&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;iOS&quot;&gt;&lt;a href=&quot;#iOS&quot; class=&quot;headerlink&quot; title=&quot;iOS&quot;&gt;&lt;/a&gt;iOS&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;kickstarter：&lt;/p&gt;
-&lt;p&gt; Github地址：&lt;a href=&quot;https://github.com/kickstarter&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter&lt;/a&gt;&lt;br&gt; 开源项目：&lt;br&gt; &lt;a href=&quot;https://github.com/kickstarter/ios-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ios-oss&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/googlesamples/android-architecture/tree/todo-mvp-dagger/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp-dagger&lt;/a&gt; - Based on todo-mvp, uses Dagger2 for Dependency Injection&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;Kapeli：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/Kapeli&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Kapeli&lt;/a&gt;&lt;br&gt; 开源项目：&lt;br&gt;&lt;a href=&quot;https://github.com/Kapeli/Dash-iOS&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Dash-iOS&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;Mac&quot;&gt;&lt;a href=&quot;#Mac&quot; class=&quot;headerlink&quot; title=&quot;Mac&quot;&gt;&lt;/a&gt;Mac&lt;/h2&gt;</content>
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/googlesamples/android-architecture/tree/todo-mvp-contentproviders/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp-contentproviders&lt;/a&gt; - Based on todo-mvp-loaders, fetches data using Loaders and uses Content Providers&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/googlesamples/android-architecture/tree/todo-mvp-rxjava/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp-rxjava&lt;/a&gt; - Based on todo-mvp, uses RxJava for concurrency and data layer abstraction.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;Samples-in-progress&quot;&gt;&lt;a href=&quot;#Samples-in-progress&quot; class=&quot;headerlink&quot; title=&quot;Samples in progress&quot;&gt;&lt;/a&gt;Samples in progress&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/googlesamples/android-architecture/tree/dev-todo-mvp-tablet/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dev-todo-mvp-tablet&lt;/a&gt; - Based on todo-mvp, adds a master/detail view for tablets.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;External-samples&quot;&gt;&lt;a href=&quot;#External-samples&quot; class=&quot;headerlink&quot; title=&quot;External samples&quot;&gt;&lt;/a&gt;External samples&lt;/h4&gt;&lt;p&gt;External samples are variants that may not be in sync with the rest of the branches.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/Syhids/android-architecture/tree/todo-mvp-fragmentless&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp-fragmentless&lt;/a&gt; - Based on todo-mvp, uses Android views instead of Fragments.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/grepx/android-architecture/tree/todo-mvp-conductor&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp-conductor&lt;/a&gt; - Based on todo-mvp, uses the Conductor framework to refactor to a single Activity architecture.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
     
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;本文主要是整理一些开源的组织，主要是以Android为主的Github上的开源组织，当然也包含一些其他的组织，像iOS等，方便大家查找资源。&lt;/p&gt;
+&lt;p&gt;本章户要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
     
     
-      <category term="Github" scheme="http://www.codemx.cn/tags/Github/"/>
+      <category term="Resource" scheme="http://www.codemx.cn/tags/Resource/"/>
     
   </entry>
   
   <entry>
-    <title>墨香带你学Launcher之（七）--小部件的加载、添加以及大小调节</title>
+    <title>常用UI代码</title>
+    <link href="http://www.codemx.cn/2016/12/21/OpenOrganiztion/"/>
+    <id>http://www.codemx.cn/2016/12/21/OpenOrganiztion/</id>
+    <published>2016-12-21T06:21:13.000Z</published>
+    <updated>2017-01-11T01:24:00.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;我们在开发中都离不开页面，但是看到别人的酷炫界面总是羡慕不已，不知道别人怎么实现的，其实很多效果网上都有代码，只是我们平时很少积累，导致需要时不知从何入手，本章我就对那些酷炫的界面资源进行整理，帮助大家方便的查找自己的资源。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;我们在开发中都离不开页面，但是看到别人的酷炫界面总是羡慕不已，不知道别人怎么实现的，其实很多效果网上都有代码，只是我们平时很少积累，导致需要时不知从何入手，本章我就对那些酷炫的界面资源进行整理，帮助大家方便的查找自己的资源。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="Resource" scheme="http://www.codemx.cn/tags/Resource/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>墨香带你学Launcher之（七）-小部件的加载、添加以及大小调节</title>
     <link href="http://www.codemx.cn/2016/12/18/Launcher07/"/>
     <id>http://www.codemx.cn/2016/12/18/Launcher07/</id>
     <published>2016-12-18T03:21:03.000Z</published>
-    <updated>2016-12-22T12:38:03.000Z</updated>
+    <updated>2016-12-23T01:59:52.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/11/21/Launcher06/&quot;&gt;墨香带你学Launcher之（六）–拖拽&lt;/a&gt;我们介绍了Launcher的拖拽过程，涉及到的范围比较广，包括图标的拖拽，桌面上CellLayout的拖拽，小部件的拖拽，以及跨不同部件的拖拽，设计思想非常巧妙，不过整个流程相对也比较好掌握，只要跟着上一章的流程自己多跟踪几遍基本就熟悉了。按照计划本章我们继续学习Launcher的Widget的加载、添加以及Widget的大小调节。&lt;/p&gt;
@@ -181,11 +319,11 @@
   </entry>
   
   <entry>
-    <title>墨香带你学Launcher之（六）--拖拽</title>
+    <title>墨香带你学Launcher之（六）-拖拽</title>
     <link href="http://www.codemx.cn/2016/11/21/Launcher06/"/>
     <id>http://www.codemx.cn/2016/11/21/Launcher06/</id>
     <published>2016-11-21T01:56:19.000Z</published>
-    <updated>2016-12-16T02:53:37.000Z</updated>
+    <updated>2016-12-23T01:59:49.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/10/16/Launcher05/&quot;&gt;墨香带你学Launcher之（五）-Workspace滑动&lt;/a&gt;介绍了workspace的形成以及滑动过程处理，本章我们介绍桌面图标的拖拽过程，这个拖拽过程设计非常巧妙，设计的东西很多，所以我尽量详细讲解。&lt;/p&gt;
@@ -285,7 +423,7 @@
     <link href="http://www.codemx.cn/2016/10/16/Launcher05/"/>
     <id>http://www.codemx.cn/2016/10/16/Launcher05/</id>
     <published>2016-10-16T00:34:25.000Z</published>
-    <updated>2016-12-16T02:53:33.000Z</updated>
+    <updated>2016-12-23T01:59:46.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/08/21/Launcher04/&quot;&gt;墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载&lt;/a&gt;介绍了应用的安装、更新、卸载时的数据加载和图标绘制流程，本章我们来介绍承载图标、小部件等的Workspace的布局和滑动操作。&lt;/p&gt;
@@ -420,7 +558,7 @@
     <link href="http://www.codemx.cn/2016/08/21/Launcher04/"/>
     <id>http://www.codemx.cn/2016/08/21/Launcher04/</id>
     <published>2016-08-21T05:13:15.000Z</published>
-    <updated>2016-12-16T02:53:26.000Z</updated>
+    <updated>2016-12-23T01:59:44.000Z</updated>
     
     <content type="html">&lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/08/14/墨香带你学Launcher之-绑定/&quot;&gt;墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget&lt;/a&gt;讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -487,7 +625,7 @@
     <link href="http://www.codemx.cn/2016/08/14/Launcher03/"/>
     <id>http://www.codemx.cn/2016/08/14/Launcher03/</id>
     <published>2016-08-14T01:45:40.000Z</published>
-    <updated>2016-12-16T02:53:22.000Z</updated>
+    <updated>2016-12-23T01:59:43.000Z</updated>
     
     <content type="html">&lt;p&gt;上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -540,7 +678,7 @@
     <link href="http://www.codemx.cn/2016/08/05/Launcher02/"/>
     <id>http://www.codemx.cn/2016/08/05/Launcher02/</id>
     <published>2016-08-05T14:20:08.000Z</published>
-    <updated>2016-12-16T02:53:16.000Z</updated>
+    <updated>2016-12-23T01:59:42.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一篇&lt;a href=&quot;http://www.codemx.cn/2016/07/30/墨香带你学Launcher之-概述/&quot;&gt;墨香带你学Launcher之-概述&lt;/a&gt;,我已经介绍了Launcher的布局以及相关的界面跳转,今天我们继续学习,按照计划,我们开始学习Launcher启动之数据加载,主要是图标、Widget和文件夹的加载.&lt;/p&gt;
@@ -668,11 +806,11 @@
   </entry>
   
   <entry>
-    <title>墨香带你学Launcher之（一）--概述</title>
+    <title>墨香带你学Launcher之（一）-概述</title>
     <link href="http://www.codemx.cn/2016/07/30/Launcher01/"/>
     <id>http://www.codemx.cn/2016/07/30/Launcher01/</id>
     <published>2016-07-30T10:07:01.000Z</published>
-    <updated>2016-12-16T02:53:08.000Z</updated>
+    <updated>2016-12-23T01:59:40.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;从事launcher开发也有一年有余了，虽然时间比较长了，但是由于是团队开发，其他任务也比较多，所以一直对整个项目的完整情况没有很好的了解，今年换了新的公司，依然是做launcher开发，从新搭建工程，因此借助这个机会完整的学习一下launcher的源码，由于之前没有完全接入，因此也没有做详细的笔记，这次从头参与项目开发，也正好做一下详细的笔记和知识梳理，由于公司项目商业性，为避免泄露公司项目内容，因此本系列教程只做双层launcher的详解，后续会教大家来定制自己的launcher。&lt;/p&gt;
@@ -725,66 +863,101 @@
   </entry>
   
   <entry>
-    <title>Android开源项目推荐</title>
+    <title>Android、iOS、Mac开源项目推荐</title>
     <link href="http://www.codemx.cn/2016/07/25/Android-open-project/"/>
     <id>http://www.codemx.cn/2016/07/25/Android-open-project/</id>
     <published>2016-07-25T12:09:12.000Z</published>
-    <updated>2016-12-20T12:04:50.000Z</updated>
+    <updated>2017-01-11T03:27:30.000Z</updated>
     
     <content type="html">&lt;p&gt;很多新手（包括我在内）在写项目的时候不知道项目框架如何搭建，很多时候计划的很好，但是随着项目大额增大，最后还是写的一塌糊涂，没有条理，结构很烂，导致我们项目问题不断，最近一直总结这个原因，其实是我们脑袋里没有这些东西，没有这些逻辑结构，缺乏框架的思维，对于我们这些经验比较少的，如果想提高，前期要去模仿，这样让自己熟悉人家写代码的框架，熟悉各种框架之后我们大脑中的这些思维就会存在，才能写出好的项目结构。&lt;/p&gt;
 &lt;p&gt;为了帮助大家能够学习一些好的项目经验，本篇文章给大家介绍一些国内外的比较好的开源项目，让大家有一个好的学习目标。希望对大家有帮助，以后找到更多开源项目也会不断添加。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h3 id=&quot;小米开源项目&quot;&gt;&lt;a href=&quot;#小米开源项目&quot; class=&quot;headerlink&quot; title=&quot;小米开源项目&quot;&gt;&lt;/a&gt;小米开源项目&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;  首先介绍几个小米的开源项目，虽然比较老了，但是毕竟是大公司开源出来的，相对写的很好，尤其是文件管理器的代码，希望大家好好研究一下。&lt;/p&gt;
-&lt;p&gt;  MIUI文件管理器社区开源版:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/MiCode/FileExplorer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/MiCode/FileExplorer&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;  MIUI指南针社区开源版:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/MiCode/Compass&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/MiCode/Compass&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;  MIUI录音机社区开源版:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/MiCode/SoundRecorder&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/MiCode/SoundRecorder&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;  小米便签社区开源版:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/MiCode/Notes&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/MiCode/Notes&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Wire&quot;&gt;&lt;a href=&quot;#Wire&quot; class=&quot;headerlink&quot; title=&quot;Wire&quot;&gt;&lt;/a&gt;Wire&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;  这个是一个朋友推荐的国外开源的一个IM项目，各种代码都有，喜欢IM的可以看一下。&lt;/p&gt;
-&lt;p&gt;  IM 方案全套，包含iOS、Android、webapp。&lt;/p&gt;
-&lt;p&gt;  Wire:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/wireapp/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/wireapp/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;  官方网站:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://wire.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Wire&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Leanote–蚂蚁笔记&quot;&gt;&lt;a href=&quot;#Leanote–蚂蚁笔记&quot; class=&quot;headerlink&quot; title=&quot;Leanote–蚂蚁笔记&quot;&gt;&lt;/a&gt;Leanote–蚂蚁笔记&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;  这个是我参与的一个笔记软件的开源项目，包括服务端（Go语言），客户端。由于之前Android代码有点问题，我这边的代码能跑起来但是还没有调试完成，因此先添加我的链接，如果有兴趣的可以一起研究，开发,欢迎各位朋友start。&lt;/p&gt;
-&lt;p&gt;  leanote-android:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/yuchuangu85/leanote-android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/leanote-android&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;  leanote-ios:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/leanote/leanote-ios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote-ios&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;  leanote:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/leanote/leanote&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;  leanote-chrome:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/leanote/leanote-chrome&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote-chrome&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;  desktop-app:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/leanote/desktop-app&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/desktop-app&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;  官网：&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;http://leanote.org&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://leanote.org&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;android-UniversalMusicPlayer&quot;&gt;&lt;a href=&quot;#android-UniversalMusicPlayer&quot; class=&quot;headerlink&quot; title=&quot;android-UniversalMusicPlayer&quot;&gt;&lt;/a&gt;android-UniversalMusicPlayer&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;  这个项目是谷歌开源的一个音乐播放器项目，意在帮助开发者学习音频文件的一个开源项目。&lt;/p&gt;
-&lt;p&gt;  android-UniversalMusicPlayer:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/googlesamples/android-UniversalMusicPlayer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/googlesamples/android-UniversalMusicPlayer&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;JamsMusicPlayer&quot;&gt;&lt;a href=&quot;#JamsMusicPlayer&quot; class=&quot;headerlink&quot; title=&quot;JamsMusicPlayer&quot;&gt;&lt;/a&gt;JamsMusicPlayer&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;  这是国外开发的一个很好音乐播放器，项目做的非常好，希望能帮助大家学习。&lt;/p&gt;
-&lt;p&gt;  JamsMusicPlayer:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/psaravan/JamsMusicPlayer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/psaravan/JamsMusicPlayer&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Launcher-mx&quot;&gt;&lt;a href=&quot;#Launcher-mx&quot; class=&quot;headerlink&quot; title=&quot;Launcher-mx&quot;&gt;&lt;/a&gt;Launcher-mx&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;  这是我准备开源的一个手机桌面项目，由于时间关系暂时没有做修改，不够最近会开始进行改造，做个轻量级、美丽的桌面，希望大家能够提出更多的意见。&lt;/p&gt;
-&lt;p&gt;  Launcher-mx:&lt;/p&gt;
-&lt;p&gt;  &lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Github客户端源码：Gitskarios&quot;&gt;&lt;a href=&quot;#Github客户端源码：Gitskarios&quot; class=&quot;headerlink&quot; title=&quot;Github客户端源码：Gitskarios&quot;&gt;&lt;/a&gt;Github客户端源码：Gitskarios&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;由于原作者不再进行维护，所我Fork到了我自己的仓库。&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Gitskarios&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Kickstarter&quot;&gt;&lt;a href=&quot;#Kickstarter&quot; class=&quot;headerlink&quot; title=&quot;Kickstarter&quot;&gt;&lt;/a&gt;Kickstarter&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/kickstarter/android-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter/android-oss&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;Android&quot;&gt;&lt;a href=&quot;#Android&quot; class=&quot;headerlink&quot; title=&quot;Android&quot;&gt;&lt;/a&gt;Android&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;SmartisanTech（锤子科技）：开源项目包含系统层，OneStep代码。&lt;br&gt; Github地址：&lt;a href=&quot;https://github.com/SmartisanTech&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/SmartisanTech&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;小米科技：&lt;br&gt; Github地址：&lt;a href=&quot;https://github.com/MiCode/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/MiCode/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt; 主要开源项目：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/FileExplorer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MIUI文件管理器社区开源版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/Notes&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;小米便签社区开源版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/SoundRecorder&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MIUI录音机社区开源版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/Compass&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MIUI指南针社区开源版&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;其他系统源码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Google：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/google&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/google&lt;/a&gt;&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/googlesamples&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/googlesamples&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt; 主要开源项目：&lt;br&gt; &lt;a href=&quot;https://github.com/google/dagger&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dagger&lt;/a&gt;&lt;br&gt; &lt;a href=&quot;https://github.com/googlesamples/android-UniversalMusicPlayer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;UniversalMusicPlayer&lt;/a&gt;&lt;br&gt; &lt;a href=&quot;https://github.com/googlesamples/android-architecture&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-architecture&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;kickstarter：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/kickstarter&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter&lt;/a&gt;&lt;br&gt; 开源项目： &lt;a href=&quot;https://github.com/kickstarter/android-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-oss&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Gitskarios：Github非官方Android客户端&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/gitskarios&lt;/a&gt;&lt;br&gt; 开源项目：&lt;a href=&quot;https://github.com/gitskarios/Gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gitskarios&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Wire:&lt;br&gt;这个是一个朋友推荐的国外开源的一个IM项目，各种代码都有，喜欢IM的可以看一下。&lt;br&gt;IM 方案全套，包含iOS、Android、webapp。&lt;/p&gt;
+&lt;p&gt;Wire：&lt;a href=&quot;https://github.com/wireapp/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/wireapp/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;官方网站： &lt;a href=&quot;https://wire.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Wire&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Leanote–蚂蚁笔记&lt;/p&gt;
+&lt;p&gt;这个是我参与的一个笔记软件的开源项目，包括服务端（Go语言），客户端。由于之前Android代码有点问题，我这边的代码能跑起来但是还没有调试完成，因此先添加我的链接，如果有兴趣的可以一起研究，开发,欢迎各位朋友start。&lt;/p&gt;
+&lt;p&gt;leanote-android：&lt;a href=&quot;https://github.com/yuchuangu85/leanote-android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/leanote-android&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;leanote-ios：&lt;a href=&quot;https://github.com/leanote/leanote-ios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote-ios&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;leanote：&lt;a href=&quot;https://github.com/leanote/leanote&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;leanote-chrome：&lt;a href=&quot;https://github.com/leanote/leanote-chrome&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote-chrome&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;desktop-app：&lt;a href=&quot;https://github.com/leanote/desktop-app&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/desktop-app&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;官网：&lt;a href=&quot;http://leanote.org&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://leanote.org&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;android-UniversalMusicPlayer:&lt;/p&gt;
+&lt;p&gt;这个项目是谷歌开源的一个音乐播放器项目，意在帮助开发者学习音频文件的一个开源项目。&lt;/p&gt;
+&lt;p&gt;android-UniversalMusicPlayer：&lt;a href=&quot;https://github.com/googlesamples/android-UniversalMusicPlayer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/googlesamples/android-UniversalMusicPlayer&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;JamsMusicPlayer&lt;/p&gt;
+&lt;p&gt;这是国外开发的一个很好音乐播放器，项目做的非常好，希望能帮助大家学习。&lt;/p&gt;
+&lt;p&gt;JamsMusicPlayer：&lt;a href=&quot;https://github.com/psaravan/JamsMusicPlayer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/psaravan/JamsMusicPlayer&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Launcher-mx:&lt;/p&gt;
+&lt;p&gt;这是我准备开源的一个手机桌面项目，由于时间关系暂时没有做修改，不够最近会开始进行改造，做个轻量级、美丽的桌面，希望大家能够提出更多的意见。&lt;/p&gt;
+&lt;p&gt;Launcher-mx：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Github客户端源码：Gitskarios&lt;br&gt;由于原作者不再进行维护，所我Fork到了我自己的仓库。&lt;/p&gt;
+&lt;p&gt;Gitskarios：&lt;a href=&quot;https://github.com/yuchuangu85/Gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Gitskarios&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Kickstarter：&lt;a href=&quot;https://github.com/kickstarter/android-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter/android-oss&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;iOS&quot;&gt;&lt;a href=&quot;#iOS&quot; class=&quot;headerlink&quot; title=&quot;iOS&quot;&gt;&lt;/a&gt;iOS&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;kickstarter：&lt;/p&gt;
+&lt;p&gt; Github地址：&lt;a href=&quot;https://github.com/kickstarter&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter&lt;/a&gt;&lt;br&gt; 开源项目：&lt;a href=&quot;https://github.com/kickstarter/ios-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ios-oss&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;Kapeli：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/Kapeli&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Kapeli&lt;/a&gt;&lt;br&gt; 开源项目：  &lt;a href=&quot;https://github.com/Kapeli/Dash-iOS&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Dash-iOS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;Mac&quot;&gt;&lt;a href=&quot;#Mac&quot; class=&quot;headerlink&quot; title=&quot;Mac&quot;&gt;&lt;/a&gt;Mac&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;macdown：一款开源的macdown软件&lt;/p&gt;
+&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/MacDownApp/macdown&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;macdown&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;2016年12月20日更新&lt;/p&gt;
+&lt;p&gt;2017年1月11日更新&lt;/p&gt;
 &lt;p&gt;后续会持续更新…&lt;/p&gt;
+&lt;p&gt;微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -795,7 +968,7 @@
     </summary>
     
     
-      <category term="Android open Source" scheme="http://www.codemx.cn/tags/Android-open-Source/"/>
+      <category term="Resource" scheme="http://www.codemx.cn/tags/Resource/"/>
     
   </entry>
   
