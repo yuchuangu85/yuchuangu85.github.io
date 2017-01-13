@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2017-01-11T06:34:26.000Z</updated>
+  <updated>2017-01-13T06:34:45.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.codemx.cn/2017/01/10/FrameCollection/"/>
     <id>http://www.codemx.cn/2017/01/10/FrameCollection/</id>
     <published>2017-01-10T09:13:25.000Z</published>
-    <updated>2017-01-11T06:34:26.000Z</updated>
+    <updated>2017-01-13T06:34:45.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章户要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。&lt;/p&gt;
@@ -42,6 +42,7 @@
 &lt;li&gt;&lt;a href=&quot;http://duanyytop.github.io/2016/08/06/Retrofit用法详解/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Retrofit用法详解&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/45cb536be2f4&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Retrofit分析-漂亮的解耦套路&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0915/3460.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Retrofit 2.0：有史以来最大的改进&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.jianshu.com/p/73216939806a&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 手把手教你使用Retrofit2&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h4 id=&quot;3-okhttp&quot;&gt;&lt;a href=&quot;#3-okhttp&quot; class=&quot;headerlink&quot; title=&quot;3.okhttp:&quot;&gt;&lt;/a&gt;3.okhttp:&lt;/h4&gt;&lt;p&gt;okhttp也是由square开源组织开源的一款网络底层封装库，上面介绍的Retrofit也是基于此库进行的二次封装。&lt;/p&gt;
 &lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/square/okhttp&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;okhttp&lt;/a&gt;&lt;/p&gt;
