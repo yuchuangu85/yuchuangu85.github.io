@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2017-02-13T08:36:33.000Z</updated>
+  <updated>2017-03-27T05:47:38.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -16,11 +16,189 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>开源算法集合</title>
+    <link href="http://www.codemx.cn/2017/03/23/OpenArithmetic/"/>
+    <id>http://www.codemx.cn/2017/03/23/OpenArithmetic/</id>
+    <published>2017-03-23T01:12:59.000Z</published>
+    <updated>2017-03-27T05:47:38.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;本文主要是收集一些大的公司开源的算法项目，以方便我们开发使用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;Google&quot;&gt;&lt;a href=&quot;#Google&quot; class=&quot;headerlink&quot; title=&quot;Google&quot;&gt;&lt;/a&gt;Google&lt;/h2&gt;&lt;h3 id=&quot;【guetzli】&quot;&gt;&lt;a href=&quot;#【guetzli】&quot; class=&quot;headerlink&quot; title=&quot;【guetzli】&quot;&gt;&lt;/a&gt;【guetzli】&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/google/guetzli/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;guetzli&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;简介：Google 又开源了，这次开源了一款图像算法工具 Guetzli。Guetzli，在瑞士德语中是“cookie（曲奇）”的意思，是一个针对数码图像和网页图像的 JPEG 编码器，能够通过产生更小的 JPEG 文件来达到更快的在线体验，并且同时保持与当前浏览器，图像处理应用和 JPEG 标准的兼容性。Google 称 Guetzli 创建高质量的 JPEG 图像文件的大小比当前的压缩方法要再小 35％。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;简介来源：&lt;a href=&quot;https://www.oschina.net/news/82988/google-opensource-guetzli&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;开源中国：Google 开源图像算法工具 Guetzli，高质量压缩图片&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;【brotli】&quot;&gt;&lt;a href=&quot;#【brotli】&quot; class=&quot;headerlink&quot; title=&quot;【brotli】&quot;&gt;&lt;/a&gt;【brotli】&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/google/brotli&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;brotli&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;简介：Zotfli压缩算法在默认设置下的输出比zlib的最大压缩比输出还要小3-8%。PNG优化器、Web内容预处理等许多压缩方案中都集成了该算法。基于该算法的应用情况，结合其它现代压缩需求，谷歌开发并开源了一个新的算法——Brotli压缩算法。该算法由谷歌压缩团队的Jyrki Alakuijala和Zoltan Szabadka开发，其中Jyrki亦是Zotfli压缩算法的创建者。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;简介来源：&lt;a href=&quot;http://www.infoq.com/cn/news/2015/10/Google-Brotli-Zotfli&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Google开源Brotli压缩算法&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
+&lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx-w240&quot;&gt;&lt;/p&gt;
+&lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;本文主要是收集一些大的公司开源的算法项目，以方便我们开发使用。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="Resource" scheme="http://www.codemx.cn/tags/Resource/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用UI框架汇总（一）</title>
+    <link href="http://www.codemx.cn/2017/03/13/UICollection01/"/>
+    <id>http://www.codemx.cn/2017/03/13/UICollection01/</id>
+    <published>2017-03-13T14:38:41.000Z</published>
+    <updated>2017-03-27T05:56:01.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;本章户要是对常用的UI框架进行整理，帮助大家更方便的查找资源。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;UI&quot;&gt;&lt;a href=&quot;#UI&quot; class=&quot;headerlink&quot; title=&quot;UI&quot;&gt;&lt;/a&gt;UI&lt;/h2&gt;&lt;h3 id=&quot;ViewPager&quot;&gt;&lt;a href=&quot;#ViewPager&quot; class=&quot;headerlink&quot; title=&quot;ViewPager&quot;&gt;&lt;/a&gt;ViewPager&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;YViewPagerDemo&lt;br&gt;&lt;a href=&quot;https://github.com/youngkaaa/YViewPagerDemo&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;YViewPagerDemo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/youngkaaa/YViewPagerDemo/raw/master/screens/record.gif&quot; alt=&quot;YViewPagerDemo-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/youngkaaa/YViewPagerDemo/raw/master/screens/record_circle.gif&quot; alt=&quot;YViewPagerDemo-w240&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;RecyclerView&quot;&gt;&lt;a href=&quot;#RecyclerView&quot; class=&quot;headerlink&quot; title=&quot;RecyclerView&quot;&gt;&lt;/a&gt;RecyclerView&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;excelPanel&lt;br&gt;&lt;a href=&quot;https://github.com/zhouchaoyuan/excelPanel&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;excelPanel&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/zhouchaoyuan/excelPanel/master/app/src/main/assets/roomFormDemo.gif&quot; alt=&quot;excelPanel-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ShimmerRecyclerView&lt;br&gt;&lt;a href=&quot;https://github.com/sharish/ShimmerRecyclerView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ShimmerRecyclerView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/sharish/ShimmerRecyclerView/raw/master/screenshots/list_demo.gif&quot; alt=&quot;ShimmerRecyclerView-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/sharish/ShimmerRecyclerView/raw/master/screenshots/grid_demo.gif&quot; alt=&quot;ShimmerRecyclerView-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;FanLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/Cleveroad/FanLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;FanLayoutManager&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/Cleveroad/FanLayoutManager/blob/master/images/demo_.gif&quot; alt=&quot;FanLayoutManager-w480&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CarouselLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/Azoft/CarouselLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CarouselLayoutManager&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/Azoft/CarouselLayoutManager/blob/master/resources/carousel_work_small.gif&quot; alt=&quot;CarouseLayoutManager-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/Azoft/CarouselLayoutManager/blob/master/resources/carousel_double_work_small.gif&quot; alt=&quot;CarouseLayoutManager-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ChipsLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/BelooS/ChipsLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ChipsLayoutManager&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/BelooS/ChipsLayoutManager/blob/master/images/demo.gif&quot; alt=&quot;ChipsLayoutManager-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HiveLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/Chacojack/HiveLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HiveLayoutManager&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://camo.githubusercontent.com/95017f4fb554f84efd65f0ad6bc35c304737832b/68747470733a2f2f636861636f6a61636b2e6769746875622e696f2f323031362f30392f32392f52656379636c6572566965772545372539412538342545342542382538302545342542382541412545392541392541432545382539432538322545372541412539442545352542382538332545352542312538302f6164642e676966&quot; alt=&quot;HiveLayoutManager-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/2b33f64f003d0158cbb2470035c5388f35e0244b/68747470733a2f2f636861636f6a61636b2e6769746875622e696f2f323031362f30392f32392f52656379636c6572566965772545372539412538342545342542382538302545342542382541412545392541392541432545382539432538322545372541412539442545352542382538332545352542312538302f72656d6f76652e676966&quot; alt=&quot;HiveLayoutManager-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/e1446259aac1aa4727d289af5834839c2f58e5cf/68747470733a2f2f636861636f6a61636b2e6769746875622e696f2f323031362f30392f32392f52656379636c6572566965772545372539412538342545342542382538302545342542382541412545392541392541432545382539432538322545372541412539442545352542382538332545352542312538302f6d6f76652e676966&quot; alt=&quot;HiveLayoutManager-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;vlayout&lt;br&gt;&lt;a href=&quot;https://github.com/alibaba/vlayout&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;vlayout&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://camo.githubusercontent.com/2b947a15f5502af5a4639a5927d68052ccfb54a3/687474703a2f2f696d67332e746263646e2e636e2f4c312f3436312f312f31623962666234323030393034376637356365653038616537343135303564653263373461633061&quot; alt=&quot;vlayout-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;flexbox-layout&lt;br&gt;&lt;a href=&quot;https://github.com/google/flexbox-layout&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;vlaflexbox-layoutyout&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/google/flexbox-layout/blob/master/assets/flex-wrap.gif&quot; alt=&quot;flexbox-layout-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/google/flexbox-layout/blob/master/assets/justify-content.gif&quot; alt=&quot;flexbox-layout-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/google/flexbox-layout/blob/master/assets/align-items.gif&quot; alt=&quot;flexbox-layout-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LondonEyeLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/danylovolokh/LondonEyeLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;LondonEyeLayoutManager&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://cloud.githubusercontent.com/assets/2686355/11742412/651bc71e-a008-11e5-9a5e-4f10be4adbd8.gif&quot; alt=&quot;LondonEyeLayoutManager-w240&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Toast&quot;&gt;&lt;a href=&quot;#Toast&quot; class=&quot;headerlink&quot; title=&quot;Toast&quot;&gt;&lt;/a&gt;Toast&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Toasty&lt;br&gt;&lt;a href=&quot;https://github.com/GrenderG/Toasty&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Toasty&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/GrenderG/Toasty/master/art/scr_1.png&quot; alt=&quot;Toasty&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;StyleableToast&lt;br&gt;&lt;a href=&quot;https://github.com/Muddz/StyleableToast&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;StyleableToast&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/Muddz/StyleableToast/raw/master/showcase.png&quot; alt=&quot;StyleableToast&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/a7edeb11d67c6192d90506df396258597ca84951/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f686f7136366e614a516b4543492f67697068792e676966&quot; alt=&quot;StyleableToast&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Notification&quot;&gt;&lt;a href=&quot;#Notification&quot; class=&quot;headerlink&quot; title=&quot;Notification&quot;&gt;&lt;/a&gt;Notification&lt;/h3&gt;&lt;h3 id=&quot;CoordinatorLayout&quot;&gt;&lt;a href=&quot;#CoordinatorLayout&quot; class=&quot;headerlink&quot; title=&quot;CoordinatorLayout&quot;&gt;&lt;/a&gt;CoordinatorLayout&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;CoordinatorTabLayout&lt;br&gt;&lt;a href=&quot;https://github.com/hugeterry/CoordinatorTabLayout&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CoordinatorTabLayout&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/hugeterry/CoordinatorTabLayout/raw/master/showUI/show2.gif&quot; alt=&quot;CoordinatorTabLayout&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;动画&quot;&gt;&lt;a href=&quot;#动画&quot; class=&quot;headerlink&quot; title=&quot;动画&quot;&gt;&lt;/a&gt;动画&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;recyclerview-animators&lt;br&gt;&lt;a href=&quot;https://github.com/wasabeef/recyclerview-animators&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;recyclerview-animators&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/wasabeef/recyclerview-animators/blob/master/art/demo1.gif&quot; alt=&quot;recyclerview-animators-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/wasabeef/recyclerview-animators/blob/master/art/demo2.gif&quot; alt=&quot;recyclerview-animators-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/wasabeef/recyclerview-animators/blob/master/art/demo3.gif&quot; alt=&quot;recyclerview-animators-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GestureViews&lt;br&gt;&lt;a href=&quot;https://github.com/alexvasilkov/GestureViews&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GestureViews&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/alexvasilkov/GestureViews/raw/master/sample/art/demo.gif&quot; alt=&quot;GestureViews-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DiscreteScrollView&lt;br&gt;&lt;a href=&quot;https://github.com/yarolegovich/DiscreteScrollView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DiscreteScrollView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/yarolegovich/DiscreteScrollView/raw/master/images/cards_weather.gif&quot; alt=&quot;DiscreteScrollView&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;lottie-android&lt;br&gt;&lt;a href=&quot;https://github.com/airbnb/lottie-android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;lottie-android&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/airbnb/lottie-android/raw/master/gifs/Example2.gif&quot; alt=&quot;lottie-android-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/airbnb/lottie-android/raw/master/gifs/Example1.gif&quot; alt=&quot;lottie-android-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ZoomHeader&lt;br&gt;&lt;a href=&quot;https://github.com/githubwing/ZoomHeader&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ZoomHeader&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/githubwing/ZoomHeader/raw/master/img.gif&quot; alt=&quot;ZoomHeader-w240&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;界面切换&quot;&gt;&lt;a href=&quot;#界面切换&quot; class=&quot;headerlink&quot; title=&quot;界面切换&quot;&gt;&lt;/a&gt;界面切换&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;ActivitySwitcher&lt;br&gt;&lt;a href=&quot;https://github.com/Hitomis/ActivitySwitcher&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ActivitySwitcher&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/Hitomis/ActivitySwitcher/blob/master/preview/activity_swither.gif&quot; alt=&quot;ActivitySwitcher-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Depth&lt;br&gt;&lt;a href=&quot;https://github.com/florent37/Depth&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Depth&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/florent37/Depth/master/media/default.gif&quot; alt=&quot;Depth-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/florent37/Depth/master/media/revert.gif&quot; alt=&quot;Depth-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Depth-LIB-Android&lt;br&gt;&lt;a href=&quot;https://github.com/danielzeller/Depth-LIB-Android-&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Depth-LIB-Android&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/images/ui/UICollection/Depth-LIB-Android.gif&quot; alt=&quot;Depth-LIB-Android-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ExpectAnim&lt;br&gt;&lt;a href=&quot;https://github.com/florent37/ExpectAnim&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ExpectAnim&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/florent37/ExpectAnim/master/media/sample.gif&quot; alt=&quot;ExpectAnim-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://raw.githubusercontent.com/florent37/ExpectAnim/master/media/scroll.gif&quot; alt=&quot;ExpectAnim-w240&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;日历&quot;&gt;&lt;a href=&quot;#日历&quot; class=&quot;headerlink&quot; title=&quot;日历&quot;&gt;&lt;/a&gt;日历&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;OneCalendarView&lt;br&gt;&lt;a href=&quot;https://github.com/MorochoRochaDarwin/OneCalendarView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OneCalendarView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://cloud.githubusercontent.com/assets/15864336/23593785/7f9fc8f6-01e1-11e7-909f-c19f0829dded.png&quot; alt=&quot;OneCalendarView-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;material-calendarview&lt;br&gt;&lt;a href=&quot;https://github.com/prolificinteractive/material-calendarview&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;material-calendarview&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/prolificinteractive/material-calendarview/blob/master/images/screencast.gif&quot; alt=&quot;material-calendarview-w240&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;高斯模糊&quot;&gt;&lt;a href=&quot;#高斯模糊&quot; class=&quot;headerlink&quot; title=&quot;高斯模糊&quot;&gt;&lt;/a&gt;高斯模糊&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;BlurKit-Android&lt;br&gt;&lt;a href=&quot;https://github.com/flurgle/BlurKit-Android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;BlurKit-Android&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/flurgle/BlurKit-Android/master/.repo/demo.gif&quot; alt=&quot;BlurKit-Android-w240&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;菜单&quot;&gt;&lt;a href=&quot;#菜单&quot; class=&quot;headerlink&quot; title=&quot;菜单&quot;&gt;&lt;/a&gt;菜单&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;CircleMenu&lt;br&gt;&lt;a href=&quot;https://github.com/ImangazalievM/CircleMenu&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CircleMenu&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/ImangazalievM/CircleMenu/raw/master/art/preview.gif&quot; alt=&quot;CircleMenu-w240&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
+&lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx-w240&quot;&gt;&lt;/p&gt;
+&lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;本章户要是对常用的UI框架进行整理，帮助大家更方便的查找资源。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="Resource" scheme="http://www.codemx.cn/tags/Resource/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Android 常用框架集合</title>
     <link href="http://www.codemx.cn/2017/01/10/FrameCollection/"/>
     <id>http://www.codemx.cn/2017/01/10/FrameCollection/</id>
     <published>2017-01-10T09:13:25.000Z</published>
-    <updated>2017-02-13T08:36:33.000Z</updated>
+    <updated>2017-03-18T01:43:05.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章户要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。&lt;/p&gt;
@@ -95,26 +273,24 @@
 &lt;p&gt;&lt;a href=&quot;http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0731/1639.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;picasso-强大的Android图片下载缓存库&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id=&quot;5-PhotoView&quot;&gt;&lt;a href=&quot;#5-PhotoView&quot; class=&quot;headerlink&quot; title=&quot;5.PhotoView&quot;&gt;&lt;/a&gt;5.PhotoView&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/chrisbanes/PhotoView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;PhotoView&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;详解：&lt;a href=&quot;http://a.codekk.com/detail/Android/dkmeteor/PhotoView%20源码解析&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;PhotoView 源码解析&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;热更新&quot;&gt;&lt;a href=&quot;#热更新&quot; class=&quot;headerlink&quot; title=&quot;热更新&quot;&gt;&lt;/a&gt;热更新&lt;/h2&gt;&lt;h4 id=&quot;1-AndFix-–Alibaba&quot;&gt;&lt;a href=&quot;#1-AndFix-–Alibaba&quot; class=&quot;headerlink&quot; title=&quot;1.AndFix:–Alibaba&quot;&gt;&lt;/a&gt;1.AndFix:–Alibaba&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/alibaba/AndFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndFix&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;详解：&lt;a href=&quot;http://blog.csdn.net/qxs965266509/article/details/49816007&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Alibaba-AndFix Bug热修复框架原理及源码解析&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://w4lle.github.io/2016/03/03/Android热补丁之AndFix原理解析/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热补丁之AndFix原理解析&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&quot;2-AndroidInstantRun-–google&quot;&gt;&lt;a href=&quot;#2-AndroidInstantRun-–google&quot; class=&quot;headerlink&quot; title=&quot;2.AndroidInstantRun:–google&quot;&gt;&lt;/a&gt;2.AndroidInstantRun:–google&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://android.googlesource.com/platform/tools/base/+/gradle_2.0.0/instant-run/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;instant-run&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://www.jianshu.com/p/780eb85260b3&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;深度理解Android InstantRun原理以及源码分析&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://medium.com/google-developers/instant-run-how-does-it-work-294a1633367f#.5n510pbv2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Instant Run: How Does it Work?!&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&quot;3-DroidFix&quot;&gt;&lt;a href=&quot;#3-DroidFix&quot; class=&quot;headerlink&quot; title=&quot;3.DroidFix:&quot;&gt;&lt;/a&gt;3.DroidFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/bunnyblue/DroidFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DroidFix&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;详解：&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;amp;mid=400118620&amp;amp;idx=1&amp;amp;sn=b4fdd5055731290eef12ad0d17f39d4a&amp;amp;scene=1&amp;amp;srcid=1106Imu9ZgwybID13e7y2nEi#wechat_redirect&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安卓App热补丁动态修复技术介绍&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&quot;4-HotFix&quot;&gt;&lt;a href=&quot;#4-HotFix&quot; class=&quot;headerlink&quot; title=&quot;4.HotFix:&quot;&gt;&lt;/a&gt;4.HotFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/HotFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HotFix&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;详解：&lt;a href=&quot;http://www.jianshu.com/p/72c17fb76f21&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;基于Nuwa实现Android自动化HotFix&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&quot;5-Nuwa&quot;&gt;&lt;a href=&quot;#5-Nuwa&quot; class=&quot;headerlink&quot; title=&quot;5.Nuwa&quot;&gt;&lt;/a&gt;5.Nuwa&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/jasonross/Nuwa&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nuwa&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/sbsujjbcy/article/details/50812674&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 热修复Nuwa的原理及Gradle插件源码解析&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/fanfu1/p/5506149.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安卓热更新之Nuwa实现步骤&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&quot;6-Tinker&quot;&gt;&lt;a href=&quot;#6-Tinker&quot; class=&quot;headerlink&quot; title=&quot;6.Tinker&quot;&gt;&lt;/a&gt;6.Tinker&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/Tencent/tinker&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;tinker&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;热更新&quot;&gt;&lt;a href=&quot;#热更新&quot; class=&quot;headerlink&quot; title=&quot;热更新&quot;&gt;&lt;/a&gt;热更新&lt;/h2&gt;&lt;h4 id=&quot;1-Robust-–美团&quot;&gt;&lt;a href=&quot;#1-Robust-–美团&quot; class=&quot;headerlink&quot; title=&quot;1.Robust:–美团&quot;&gt;&lt;/a&gt;1.Robust:–美团&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/Meituan-Dianping/Robust&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Robust&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://tech.meituan.com/android_robust.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热更新方案Robust&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://tech.meituan.com/android_autopatch.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热更新方案Robust开源，新增自动化补丁工具&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;2-Tinker&quot;&gt;&lt;a href=&quot;#2-Tinker&quot; class=&quot;headerlink&quot; title=&quot;2.Tinker&quot;&gt;&lt;/a&gt;2.Tinker&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/Tencent/tinker&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;tinker&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;https://github.com/Tencent/tinker/wiki&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;amp;mid=2649286341&amp;amp;idx=1&amp;amp;sn=054d595af6e824cbe4edd79427fc2706&amp;amp;scene=0#wechat_redirect&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android N混合编译与对热补丁影响解析&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://halfstackdeveloper.github.io/2016/10/19/tinker源码研读（一）：补丁生成之DexDiff原理简析/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;tinker源码研读（一）：补丁生成之DexDiff原理简析&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&quot;7-RocooFix&quot;&gt;&lt;a href=&quot;#7-RocooFix&quot; class=&quot;headerlink&quot; title=&quot;7.RocooFix:&quot;&gt;&lt;/a&gt;7.RocooFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/RocooFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RocooFix&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&quot;8-AnoleFix&quot;&gt;&lt;a href=&quot;#8-AnoleFix&quot; class=&quot;headerlink&quot; title=&quot;8.AnoleFix:&quot;&gt;&lt;/a&gt;8.AnoleFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/AnoleFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AnoleFix&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&quot;9-Robust-–美团&quot;&gt;&lt;a href=&quot;#9-Robust-–美团&quot; class=&quot;headerlink&quot; title=&quot;9.Robust:–美团&quot;&gt;&lt;/a&gt;9.Robust:–美团&lt;/h4&gt;&lt;p&gt;详解：&lt;a href=&quot;http://tech.meituan.com/android_robust.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热更新方案Robust&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3-AndFix-–Alibaba&quot;&gt;&lt;a href=&quot;#3-AndFix-–Alibaba&quot; class=&quot;headerlink&quot; title=&quot;3.AndFix:–Alibaba&quot;&gt;&lt;/a&gt;3.AndFix:–Alibaba&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/alibaba/AndFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndFix&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/qxs965266509/article/details/49816007&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Alibaba-AndFix Bug热修复框架原理及源码解析&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://w4lle.github.io/2016/03/03/Android热补丁之AndFix原理解析/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android热补丁之AndFix原理解析&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;4-AndroidInstantRun-–google&quot;&gt;&lt;a href=&quot;#4-AndroidInstantRun-–google&quot; class=&quot;headerlink&quot; title=&quot;4.AndroidInstantRun:–google&quot;&gt;&lt;/a&gt;4.AndroidInstantRun:–google&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://android.googlesource.com/platform/tools/base/+/gradle_2.0.0/instant-run/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;instant-run&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://www.jianshu.com/p/780eb85260b3&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;深度理解Android InstantRun原理以及源码分析&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://medium.com/google-developers/instant-run-how-does-it-work-294a1633367f#.5n510pbv2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Instant Run: How Does it Work?!&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;5-DroidFix&quot;&gt;&lt;a href=&quot;#5-DroidFix&quot; class=&quot;headerlink&quot; title=&quot;5.DroidFix:&quot;&gt;&lt;/a&gt;5.DroidFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/bunnyblue/DroidFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DroidFix&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&amp;amp;mid=400118620&amp;amp;idx=1&amp;amp;sn=b4fdd5055731290eef12ad0d17f39d4a&amp;amp;scene=1&amp;amp;srcid=1106Imu9ZgwybID13e7y2nEi#wechat_redirect&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安卓App热补丁动态修复技术介绍&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;6-HotFix&quot;&gt;&lt;a href=&quot;#6-HotFix&quot; class=&quot;headerlink&quot; title=&quot;6.HotFix:&quot;&gt;&lt;/a&gt;6.HotFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/HotFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HotFix&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://www.jianshu.com/p/72c17fb76f21&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;基于Nuwa实现Android自动化HotFix&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;7-Nuwa&quot;&gt;&lt;a href=&quot;#7-Nuwa&quot; class=&quot;headerlink&quot; title=&quot;7.Nuwa&quot;&gt;&lt;/a&gt;7.Nuwa&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/jasonross/Nuwa&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Nuwa&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/sbsujjbcy/article/details/50812674&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 热修复Nuwa的原理及Gradle插件源码解析&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.cnblogs.com/fanfu1/p/5506149.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安卓热更新之Nuwa实现步骤&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;8-RocooFix&quot;&gt;&lt;a href=&quot;#8-RocooFix&quot; class=&quot;headerlink&quot; title=&quot;8.RocooFix:&quot;&gt;&lt;/a&gt;8.RocooFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/RocooFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RocooFix&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;9-AnoleFix&quot;&gt;&lt;a href=&quot;#9-AnoleFix&quot; class=&quot;headerlink&quot; title=&quot;9.AnoleFix:&quot;&gt;&lt;/a&gt;9.AnoleFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/AnoleFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AnoleFix&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注解&quot;&gt;&lt;a href=&quot;#注解&quot; class=&quot;headerlink&quot; title=&quot;注解&quot;&gt;&lt;/a&gt;注解&lt;/h2&gt;&lt;h4 id=&quot;1-dagger&quot;&gt;&lt;a href=&quot;#1-dagger&quot; class=&quot;headerlink&quot; title=&quot;1.dagger:&quot;&gt;&lt;/a&gt;1.dagger:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/square/dagger&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dagger&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;详解：&lt;a href=&quot;http://square.github.io/dagger/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id=&quot;2-butterknife&quot;&gt;&lt;a href=&quot;#2-butterknife&quot; class=&quot;headerlink&quot; title=&quot;2.butterknife&quot;&gt;&lt;/a&gt;2.butterknife&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/JakeWharton/butterknife&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;butterknife&lt;/a&gt;&lt;/p&gt;
@@ -191,6 +367,8 @@
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/square/sqlbrite&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;sqlbrite&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/LitePalFramework/LitePal&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;LitePal&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;网络解析&quot;&gt;&lt;a href=&quot;#网络解析&quot; class=&quot;headerlink&quot; title=&quot;网络解析&quot;&gt;&lt;/a&gt;网络解析&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/google/gson&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gson&lt;/a&gt;&lt;/p&gt;
@@ -204,7 +382,8 @@
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/jhy/jsoup&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;jsoup&lt;/a&gt; &lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&quot;Animation&quot;&gt;&lt;a href=&quot;#Animation&quot; class=&quot;headerlink&quot; title=&quot;Animation&quot;&gt;&lt;/a&gt;Animation&lt;/h2&gt;&lt;ul&gt;
+&lt;p&gt;`## Animation&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/airbnb/lottie-android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;lottie-android&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/airbnb/lottie-ios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;lottie-ios&lt;/a&gt;&lt;/p&gt;
@@ -252,7 +431,8 @@
 &lt;li&gt;&lt;a href=&quot;https://github.com/Bilibili/MagicaSakura&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Bilibili/MagicaSakura&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;其他&quot;&gt;&lt;a href=&quot;#其他&quot; class=&quot;headerlink&quot; title=&quot;其他&quot;&gt;&lt;/a&gt;其他&lt;/h2&gt;&lt;p&gt;谷歌开源手机号验证库：&lt;br&gt;&lt;a href=&quot;https://github.com/googlei18n/libphonenumber&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;libphonenumber&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;2017年2月13日更新。&lt;/p&gt;
+&lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
+&lt;p&gt;2017年3月18日更新。&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -273,7 +453,7 @@
     <link href="http://www.codemx.cn/2016/12/18/Launcher07/"/>
     <id>http://www.codemx.cn/2016/12/18/Launcher07/</id>
     <published>2016-12-18T03:21:03.000Z</published>
-    <updated>2016-12-23T01:59:52.000Z</updated>
+    <updated>2017-03-09T03:54:10.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/11/21/Launcher06/&quot;&gt;墨香带你学Launcher之（六）–拖拽&lt;/a&gt;我们介绍了Launcher的拖拽过程，涉及到的范围比较广，包括图标的拖拽，桌面上CellLayout的拖拽，小部件的拖拽，以及跨不同部件的拖拽，设计思想非常巧妙，不过整个流程相对也比较好掌握，只要跟着上一章的流程自己多跟踪几遍基本就熟悉了。按照计划本章我们继续学习Launcher的Widget的加载、添加以及Widget的大小调节。&lt;/p&gt;
@@ -363,6 +543,7 @@
 &lt;p&gt;这个方法是调整完widget大小手指离开屏幕时调用的，主要调用了snapToWidget方法，这个方法代码就不贴了，主要是四个点的动画，代码很简单。&lt;/p&gt;
 &lt;p&gt;到此widget的加载、添加以及大小调整就介绍完了，整个过程也是比较复杂的，所以还是要好好熟悉一下。&lt;/p&gt;
 &lt;h2 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h2&gt;&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
@@ -385,7 +566,7 @@
     <link href="http://www.codemx.cn/2016/11/21/Launcher06/"/>
     <id>http://www.codemx.cn/2016/11/21/Launcher06/</id>
     <published>2016-11-21T01:56:19.000Z</published>
-    <updated>2016-12-23T01:59:49.000Z</updated>
+    <updated>2017-03-09T03:54:22.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/10/16/Launcher05/&quot;&gt;墨香带你学Launcher之（五）-Workspace滑动&lt;/a&gt;介绍了workspace的形成以及滑动过程处理，本章我们介绍桌面图标的拖拽过程，这个拖拽过程设计非常巧妙，设计的东西很多，所以我尽量详细讲解。&lt;/p&gt;
@@ -463,6 +644,7 @@
 &lt;p&gt;看到handleMoveEvent整个函数我们就很熟悉，整个事件就和上面的workspace处理方式是一样的，这里就不再重复讲解，整个流程相对比较复杂，本来打算很详细的讲解，但是还是比价粗糙，但是整个流程是全面的，所以还希望自己多研究代码，里面涉及到一些位置的算法，我这里没有讲，自己看看也就会了，没有那么难。&lt;/p&gt;
 &lt;h3 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
@@ -485,7 +667,7 @@
     <link href="http://www.codemx.cn/2016/10/16/Launcher05/"/>
     <id>http://www.codemx.cn/2016/10/16/Launcher05/</id>
     <published>2016-10-16T00:34:25.000Z</published>
-    <updated>2016-12-23T01:59:46.000Z</updated>
+    <updated>2017-03-09T03:54:37.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/08/21/Launcher04/&quot;&gt;墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载&lt;/a&gt;介绍了应用的安装、更新、卸载时的数据加载和图标绘制流程，本章我们来介绍承载图标、小部件等的Workspace的布局和滑动操作。&lt;/p&gt;
@@ -533,6 +715,7 @@
 （2）snapToPage方法：这个方法最终调用mScroller.startScroll(),计算出最终位置，然后滑动到相应位置即可。
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
@@ -555,7 +738,7 @@
     <link href="http://www.codemx.cn/2016/09/29/DefineView1/"/>
     <id>http://www.codemx.cn/2016/09/29/DefineView1/</id>
     <published>2016-09-29T01:31:26.000Z</published>
-    <updated>2016-12-16T02:53:29.000Z</updated>
+    <updated>2017-03-09T03:54:31.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;最近项目中用到渐变圆环进度条，自己也写了一下，用到一些知识，以前没有用过，使用过程中有一些问题，在此做一下笔记。&lt;/p&gt;
@@ -598,6 +781,7 @@
 &lt;p&gt;此时我们看到，绿色是从（图一）0.75位置开始的，并且圆环也是从这个位置开始画的，但是此时我的颜色值和位置增加了，主要是后面部分，倒数第二个颜色值是绿色，对应位置是0.75，也是就分段设置颜色值，0.75的位置为绿色，最后一个也是绿色，则说明从0.75之后到1的位置都是绿色，然后0后面的颜色根据位置数组第一个参数开始计算，如果角度不是0就要按照这个计算进行调整。&lt;/p&gt;
 &lt;p&gt;另外，最后一个例子中相同颜色设置了多个，这个是调节渐变和纯色位置的，也就是相同颜色位置间的颜色是纯色的，不同颜色值中间的颜色是过度的，自己可以调节一下掌握以下技巧。&lt;/p&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/OpenSource_MX&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/OpenSource_MX&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
@@ -620,7 +804,7 @@
     <link href="http://www.codemx.cn/2016/08/21/Launcher04/"/>
     <id>http://www.codemx.cn/2016/08/21/Launcher04/</id>
     <published>2016-08-21T05:13:15.000Z</published>
-    <updated>2016-12-23T01:59:44.000Z</updated>
+    <updated>2017-03-09T03:54:43.000Z</updated>
     
     <content type="html">&lt;p&gt;上一章&lt;a href=&quot;http://www.codemx.cn/2016/08/14/墨香带你学Launcher之-绑定/&quot;&gt;墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget&lt;/a&gt;讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -667,6 +851,7 @@
 &lt;p&gt;对于系统怎么卸载应用的这里就不讲了，有兴趣的可以去看源码处理。&lt;/p&gt;
 &lt;h3 id=&quot;最后&quot;&gt;&lt;a href=&quot;#最后&quot; class=&quot;headerlink&quot; title=&quot;最后&quot;&gt;&lt;/a&gt;最后&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
@@ -687,7 +872,7 @@
     <link href="http://www.codemx.cn/2016/08/14/Launcher03/"/>
     <id>http://www.codemx.cn/2016/08/14/Launcher03/</id>
     <published>2016-08-14T01:45:40.000Z</published>
-    <updated>2017-01-13T09:01:26.000Z</updated>
+    <updated>2017-03-09T03:54:49.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。&lt;/p&gt;
@@ -722,6 +907,7 @@
 &lt;p&gt;在这个方法中首先调用getWidgetProviders方法来加载所有的小部件信息，然后通过packageManager.queryIntentActivities方法加载所有的快捷方式信息，最后将所有的信息放置到WidgetsModel中，完成后通过调用callbacks.bindAllPackages回调函数开始绑定所有的小部件和快捷方式，回调函数在Launcher中实现，然后调用WidgetsContainerView中的addWidgets方法传入WidgetsModel对象，然后通过调用刷新适配器来刷新小部件界面。&lt;/p&gt;
 &lt;p&gt;最后：这一章相对简单，主要是UI的绘制，有一些流程我没有讲，主要是UI绘制其实和自定义view相关，很多人一看就会了，所以不再讲解，不会的可以去看看源码。&lt;/p&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
 </content>
@@ -744,7 +930,7 @@
     <link href="http://www.codemx.cn/2016/08/05/Launcher02/"/>
     <id>http://www.codemx.cn/2016/08/05/Launcher02/</id>
     <published>2016-08-05T14:20:08.000Z</published>
-    <updated>2016-12-23T01:59:42.000Z</updated>
+    <updated>2017-03-09T03:54:56.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一篇&lt;a href=&quot;http://www.codemx.cn/2016/07/30/墨香带你学Launcher之-概述/&quot;&gt;墨香带你学Launcher之-概述&lt;/a&gt;,我已经介绍了Launcher的布局以及相关的界面跳转,今天我们继续学习,按照计划,我们开始学习Launcher启动之数据加载,主要是图标、Widget和文件夹的加载.&lt;/p&gt;
@@ -854,6 +1040,7 @@
 &lt;h3 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;本文的源码是基于Android 6.0系统；&lt;/p&gt;
 &lt;p&gt;Launcher源码：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Launcher3_mx&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众号:Code_MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;p&gt;本文原创，转载请注明出处。&lt;/p&gt;
 </content>
@@ -876,7 +1063,7 @@
     <link href="http://www.codemx.cn/2016/07/30/Launcher01/"/>
     <id>http://www.codemx.cn/2016/07/30/Launcher01/</id>
     <published>2016-07-30T10:07:01.000Z</published>
-    <updated>2017-01-13T08:39:09.000Z</updated>
+    <updated>2017-03-09T03:55:14.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;从事launcher开发也有一年有余了，虽然时间比较长了，但是由于是团队开发，其他任务也比较多，所以一直对整个项目的完整情况没有很好的了解，今年换了新的公司，依然是做launcher开发，从新搭建工程，因此借助这个机会完整的学习一下launcher的源码，由于之前没有完全接入，因此也没有做详细的笔记，这次从头参与项目开发，也正好做一下详细的笔记和知识梳理，由于公司项目商业性，为避免泄露公司项目内容，因此本系列教程只做双层launcher的详解，后续会教大家来定制自己的launcher。&lt;/p&gt;
@@ -911,9 +1098,10 @@
 &lt;p&gt;桌面的基本操作和结构就是这么多，本章只是对桌面的操作和结构做一个概述，从下一篇文章开始讲解桌面的详细信息，包括桌面的启动过程，数据加载过程，应用拖拽等功能。最后附上源码，有兴趣的朋友可以自己下载先行研究。&lt;/p&gt;
 &lt;h3 id=&quot;源码&quot;&gt;&lt;a href=&quot;#源码&quot; class=&quot;headerlink&quot; title=&quot;源码&quot;&gt;&lt;/a&gt;源码&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;Github代码：&lt;a href=&quot;https://github.com/yuchuangu85/Launcher3_mx&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Launcher3_mx&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;本系列教程均为原创，转载请注明出处，多谢。&lt;/p&gt;
+&lt;p&gt;Android开发群：192508518&lt;/p&gt;
+&lt;p&gt;微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -934,19 +1122,19 @@
     <link href="http://www.codemx.cn/2016/07/25/Android-open-project/"/>
     <id>http://www.codemx.cn/2016/07/25/Android-open-project/</id>
     <published>2016-07-25T12:09:12.000Z</published>
-    <updated>2017-02-13T09:03:09.000Z</updated>
+    <updated>2017-03-22T05:49:51.000Z</updated>
     
     <content type="html">&lt;p&gt;很多新手（包括我在内）在写项目的时候不知道项目框架如何搭建，很多时候计划的很好，但是随着项目大额增大，最后还是写的一塌糊涂，没有条理，结构很烂，导致我们项目问题不断，最近一直总结这个原因，其实是我们脑袋里没有这些东西，没有这些逻辑结构，缺乏框架的思维，对于我们这些经验比较少的，如果想提高，前期要去模仿，这样让自己熟悉人家写代码的框架，熟悉各种框架之后我们大脑中的这些思维就会存在，才能写出好的项目结构。&lt;/p&gt;
 &lt;p&gt;为了帮助大家能够学习一些好的项目经验，本篇文章给大家介绍一些国内外的比较好的开源项目，让大家有一个好的学习目标。希望对大家有帮助，以后找到更多开源项目也会不断添加。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h2 id=&quot;Android&quot;&gt;&lt;a href=&quot;#Android&quot; class=&quot;headerlink&quot; title=&quot;Android&quot;&gt;&lt;/a&gt;Android&lt;/h2&gt;&lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;SmartisanTech（锤子科技）：开源项目包含系统层，OneStep代码。&lt;br&gt; Github地址：&lt;a href=&quot;https://github.com/SmartisanTech&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/SmartisanTech&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SmartisanTech（锤子科技）：开源项目包含系统层，OneStep代码。&lt;br&gt;Github地址：&lt;a href=&quot;https://github.com/SmartisanTech&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/SmartisanTech&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;小米科技：&lt;br&gt; Github地址：&lt;a href=&quot;https://github.com/MiCode/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/MiCode/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt; 主要开源项目：&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;小米科技：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/MiCode/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/MiCode/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;  主要开源项目：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/FileExplorer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MIUI文件管理器社区开源版&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/MiCode/Notes&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;小米便签社区开源版&lt;/a&gt;&lt;/li&gt;
@@ -958,17 +1146,17 @@
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Google：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/google&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/google&lt;/a&gt;&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/googlesamples&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/googlesamples&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt; 主要开源项目：&lt;br&gt; &lt;a href=&quot;https://github.com/google/dagger&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dagger&lt;/a&gt;&lt;br&gt; &lt;a href=&quot;https://github.com/googlesamples/android-UniversalMusicPlayer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;UniversalMusicPlayer&lt;/a&gt;&lt;br&gt; &lt;a href=&quot;https://github.com/googlesamples/android-architecture&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-architecture&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Google：&lt;br&gt;Github地址：&lt;a href=&quot;https://github.com/google&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/google&lt;/a&gt;&lt;br&gt;Github地址：&lt;a href=&quot;https://github.com/googlesamples&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/googlesamples&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;  主要开源项目：&lt;br&gt;  &lt;a href=&quot;https://github.com/google/dagger&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dagger&lt;/a&gt;&lt;br&gt;  &lt;a href=&quot;https://github.com/googlesamples/android-UniversalMusicPlayer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;UniversalMusicPlayer&lt;/a&gt;&lt;br&gt;  &lt;a href=&quot;https://github.com/googlesamples/android-architecture&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-architecture&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;kickstarter：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/kickstarter&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter&lt;/a&gt;&lt;br&gt; 开源项目： &lt;a href=&quot;https://github.com/kickstarter/android-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-oss&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;kickstarter：&lt;br&gt;   Github地址：&lt;a href=&quot;https://github.com/kickstarter&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter&lt;/a&gt;&lt;br&gt;  开源项目： &lt;a href=&quot;https://github.com/kickstarter/android-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-oss&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Gitskarios：Github非官方Android客户端&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/gitskarios&lt;/a&gt;&lt;br&gt; 开源项目：&lt;a href=&quot;https://github.com/gitskarios/Gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gitskarios&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Gitskarios：Github非官方Android客户端&lt;br&gt;   Github地址：&lt;a href=&quot;https://github.com/gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/gitskarios&lt;/a&gt;&lt;br&gt;  开源项目：&lt;a href=&quot;https://github.com/gitskarios/Gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gitskarios&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
@@ -981,7 +1169,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Leanote–蚂蚁笔记&lt;/p&gt;
 &lt;p&gt;这个是我参与的一个笔记软件的开源项目，包括服务端（Go语言），客户端。由于之前Android代码有点问题，我这边的代码能跑起来但是还没有调试完成，因此先添加我的链接，如果有兴趣的可以一起研究，开发,欢迎各位朋友start。&lt;/p&gt;
-&lt;p&gt;leanote-android：&lt;a href=&quot;https://github.com/yuchuangu85/leanote-android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/leanote-android&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;leanote-android：&lt;a href=&quot;https://github.com/leanote/leanote-android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote-android&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;leanote-ios：&lt;a href=&quot;https://github.com/leanote/leanote-ios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote-ios&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;leanote：&lt;a href=&quot;https://github.com/leanote/leanote&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;leanote-chrome：&lt;a href=&quot;https://github.com/leanote/leanote-chrome&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/leanote/leanote-chrome&lt;/a&gt;&lt;/p&gt;
@@ -1021,15 +1209,19 @@
 &lt;li&gt;Kickstarter：&lt;a href=&quot;https://github.com/kickstarter/android-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter/android-oss&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;EasyPusher_Android：&lt;a href=&quot;https://github.com/EasyDarwin/EasyPusher_Android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/EasyDarwin/EasyPusher_Android&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;h2 id=&quot;iOS&quot;&gt;&lt;a href=&quot;#iOS&quot; class=&quot;headerlink&quot; title=&quot;iOS&quot;&gt;&lt;/a&gt;iOS&lt;/h2&gt;&lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;kickstarter：&lt;/p&gt;
-&lt;p&gt; Github地址：&lt;a href=&quot;https://github.com/kickstarter&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter&lt;/a&gt;&lt;br&gt; 开源项目：&lt;a href=&quot;https://github.com/kickstarter/ios-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ios-oss&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;  Github地址：&lt;a href=&quot;https://github.com/kickstarter&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter&lt;/a&gt;&lt;br&gt;  开源项目：&lt;a href=&quot;https://github.com/kickstarter/ios-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ios-oss&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Kapeli：&lt;br&gt;  Github地址：&lt;a href=&quot;https://github.com/Kapeli&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Kapeli&lt;/a&gt;&lt;br&gt; 开源项目：  &lt;a href=&quot;https://github.com/Kapeli/Dash-iOS&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Dash-iOS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Kapeli：&lt;br&gt;   Github地址：&lt;a href=&quot;https://github.com/Kapeli&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Kapeli&lt;/a&gt;&lt;br&gt;  开源项目：  &lt;a href=&quot;https://github.com/Kapeli/Dash-iOS&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Dash-iOS&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;h2 id=&quot;Mac&quot;&gt;&lt;a href=&quot;#Mac&quot; class=&quot;headerlink&quot; title=&quot;Mac&quot;&gt;&lt;/a&gt;Mac&lt;/h2&gt;&lt;p&gt;=======================================================================================&lt;/p&gt;
@@ -1051,6 +1243,7 @@
 &lt;h3 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;2017年2月13日更新&lt;/p&gt;
 &lt;p&gt;后续会持续更新…&lt;/p&gt;
+&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 </content>
     
@@ -1171,7 +1364,7 @@
     <link href="http://www.codemx.cn/2016/05/15/2016-05-15-mac03/"/>
     <id>http://www.codemx.cn/2016/05/15/2016-05-15-mac03/</id>
     <published>2016-05-15T14:32:21.000Z</published>
-    <updated>2016-12-20T01:46:18.000Z</updated>
+    <updated>2017-03-09T03:55:40.000Z</updated>
     
     <content type="html">&lt;p&gt;最近程序开发，对公司设计的交互原型很是感兴趣，但那些工具开发出的交互原型真的无法忍受，就想找一款能搞真是模拟软件的交互工具，功夫不负有心人，终于找到一款非常完美的交互设计工具，相对其他工具来说学习成本较高，但是对于会代码的人来说相对简单，也很有意思，搞了一天还没完全搞定，但是还是忍不住先介绍出来让大家尝尝鲜，下面进入正题。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -1203,6 +1396,7 @@
 &lt;p&gt;  教程介绍了从位置打下调成，到颜色值调整，到动画使用，都做了非常详细的介绍，简单易学。功能强大，希望该软件帮你设计出更好的交互原型。&lt;/p&gt;
 &lt;p&gt;  附上：&lt;a href=&quot;http://framerjs.com/gallery/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方实例&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;  首发：&lt;a href=&quot;http://www.codemx.cn&quot;&gt;墨香博客&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;  Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;  微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 </content>
     
@@ -1224,7 +1418,7 @@
     <link href="http://www.codemx.cn/2016/05/04/2016-05-04-Android-Tree/"/>
     <id>http://www.codemx.cn/2016/05/04/2016-05-04-Android-Tree/</id>
     <published>2016-05-04T01:43:20.000Z</published>
-    <updated>2017-01-17T09:44:42.000Z</updated>
+    <updated>2017-03-09T03:56:05.000Z</updated>
     
     <content type="html">&lt;p&gt;说明：本篇博客只是一个知识整理，因为网上对于Android的知识介绍足够多，因此我不再写相关文章（主要是因为我写的不如人家好），所以所有文章均来自网络，不贴原文章，只提供连接，因此本文旨在减少你对相关知识的搜索过程，方便查找相关知识。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -1526,6 +1720,8 @@
 &lt;p&gt;  集合了动画、自定义控件以及Android各种知识的详解。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2 id=&quot;注：&quot;&gt;&lt;a href=&quot;#注：&quot; class=&quot;headerlink&quot; title=&quot;注：&quot;&gt;&lt;/a&gt;注：&lt;/h2&gt;&lt;p&gt;  Android开发群：192508518&lt;/p&gt;
+&lt;p&gt;  微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -1544,7 +1740,7 @@
     <link href="http://www.codemx.cn/2016/04/30/Understand01/"/>
     <id>http://www.codemx.cn/2016/04/30/Understand01/</id>
     <published>2016-04-30T14:25:55.000Z</published>
-    <updated>2016-12-16T02:30:27.000Z</updated>
+    <updated>2017-03-09T03:56:15.000Z</updated>
     
     <content type="html">&lt;p&gt;之前用Windows系统，一直用source insight查看代码非常方便，但是年前换到mac下面，虽说很多东西都方便了，但是却没有了静态代码分析工具，很幸运，前段时间找到一款比source insight软件还强大的代码静态分析工具，堪称神器–Understand。这款软件具有强大的代码静态分析功能，并且可以绘制各种流程图，不幸的是没有发现Windows版本，只看到mac版和Linux版本，因此用Windows系统的朋友抱歉了。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -1619,6 +1815,8 @@
 &lt;p&gt;14.Rename Declaration:展示实体中被重命名的所有实体&lt;/p&gt;
 &lt;p&gt;由于视图比较多，所以就一一贴上代码，主要还是需要自己去调试，查看各个功能视图的展示结构以及作用，孰能生巧，多操作几下就会了，所以不再做过多的解释。最终希望这款软件能够帮助你快速开发，快速阅读别人的或者自己的代码。&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;注: 本文原创，转载请注明出处。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;  Android开发群：192508518&lt;/p&gt;
+&lt;p&gt;  微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -1637,7 +1835,7 @@
     <link href="http://www.codemx.cn/2016/04/25/code-commend/"/>
     <id>http://www.codemx.cn/2016/04/25/code-commend/</id>
     <published>2016-04-25T01:00:13.000Z</published>
-    <updated>2016-04-25T01:01:55.000Z</updated>
+    <updated>2017-03-09T03:56:26.000Z</updated>
     
     <content type="html">&lt;p&gt;作为第一篇Android代码推荐，先给大家推荐一些很炫的特效代码，让大家增加点开发兴趣。首先介绍一个非常优秀的团队–Yalantis，他们写出了很多动画效果的代码，而且全部公开出来，我们可以直接使用，下面我提供一下连接和效果图，方便大家查找。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -1653,6 +1851,8 @@
 &lt;p&gt;Github地址:&lt;a href=&quot;https://github.com/Yalantis/Taurus&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Yalantis/Taurus&lt;/a&gt;&lt;br&gt;&lt;br&gt;效果图：&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/3a24e22eb3f8338573dba0701c089c12f6b70f11/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3132353035362f73637265656e73686f74732f313632333133312f746f7572732d70756c6c2d616972706c616e655f322d322d332e676966&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;Side-Menu&quot;&gt;&lt;a href=&quot;#Side-Menu&quot; class=&quot;headerlink&quot; title=&quot;Side Menu&quot;&gt;&lt;/a&gt;Side Menu&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;Github地址:&lt;a href=&quot;https://github.com/Yalantis/Side-Menu.Android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Yalantis/Side-Menu.Android&lt;/a&gt;&lt;br&gt;&lt;br&gt;效果图:&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/cb6caa7a392d01d46bca9d9485c01fc173f55fac/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3132353035362f73637265656e73686f74732f313638393932322f6576656e74732d6d656e755f312d312d362e676966&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;注：&quot;&gt;&lt;a href=&quot;#注：&quot; class=&quot;headerlink&quot; title=&quot;注：&quot;&gt;&lt;/a&gt;注：&lt;/h3&gt;&lt;p&gt;  Android开发群：192508518&lt;/p&gt;
+&lt;p&gt;  微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -1718,7 +1918,7 @@
     <link href="http://www.codemx.cn/2016/04/24/2016-04-24.mac01/"/>
     <id>http://www.codemx.cn/2016/04/24/2016-04-24.mac01/</id>
     <published>2016-04-24T07:12:20.000Z</published>
-    <updated>2016-12-16T02:27:48.000Z</updated>
+    <updated>2017-03-15T01:08:21.000Z</updated>
     
     <content type="html">&lt;p&gt;磨刀不误砍柴工，一个好的工具能让我们的工作事倍功半。作为一名开发者，一台好的电脑是必备的，本人推荐条件允许入手一台mac还是很有必要的。虽然我入手mac只有半年多点，但是各种好处还是比较了解的，为了让mac新手快速熟练使用mac开发程序，因此总结日常使用软件和技巧分享给大家。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -1775,38 +1975,6 @@
     
     
       <category term="高效Mac" scheme="http://www.codemx.cn/tags/%E9%AB%98%E6%95%88Mac/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello Hexo</title>
-    <link href="http://www.codemx.cn/2016/04/24/hello-world/"/>
-    <id>http://www.codemx.cn/2016/04/24/hello-world/</id>
-    <published>2016-04-24T07:06:00.000Z</published>
-    <updated>2016-04-24T11:47:44.000Z</updated>
-    
-    <content type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick Start&quot;&gt;&lt;/a&gt;Quick Start&lt;/h2&gt;&lt;h3 id=&quot;Create-a-new-post&quot;&gt;&lt;a href=&quot;#Create-a-new-post&quot; class=&quot;headerlink&quot; title=&quot;Create a new post&quot;&gt;&lt;/a&gt;Create a new post&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo new &lt;span class=&quot;string&quot;&gt;&quot;My New Post&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/writing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Writing&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Run-server&quot;&gt;&lt;a href=&quot;#Run-server&quot; class=&quot;headerlink&quot; title=&quot;Run server&quot;&gt;&lt;/a&gt;Run server&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/server.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Server&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Generate-static-files&quot;&gt;&lt;a href=&quot;#Generate-static-files&quot; class=&quot;headerlink&quot; title=&quot;Generate static files&quot;&gt;&lt;/a&gt;Generate static files&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/generating.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Generating&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Deploy-to-remote-sites&quot;&gt;&lt;a href=&quot;#Deploy-to-remote-sites&quot; class=&quot;headerlink&quot; title=&quot;Deploy to remote sites&quot;&gt;&lt;/a&gt;Deploy to remote sites&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/deployment.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Hexo" scheme="http://www.codemx.cn/categories/Hexo/"/>
-    
-    
-      <category term="Hexo" scheme="http://www.codemx.cn/tags/Hexo/"/>
     
   </entry>
   
