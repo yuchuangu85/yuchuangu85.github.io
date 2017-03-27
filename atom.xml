@@ -65,7 +65,7 @@
     <link href="http://www.codemx.cn/2017/03/13/UICollection01/"/>
     <id>http://www.codemx.cn/2017/03/13/UICollection01/</id>
     <published>2017-03-13T14:38:41.000Z</published>
-    <updated>2017-03-27T06:15:43.000Z</updated>
+    <updated>2017-03-27T06:24:20.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章户要是对常用的UI框架进行整理，帮助大家更方便的查找资源。&lt;/p&gt;
@@ -86,15 +86,15 @@
 &lt;ul&gt;
 &lt;li&gt;FanLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/Cleveroad/FanLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;FanLayoutManager&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;http://mmbiz.qpic.cn/mmbiz_gif/ujaEPeJyrxtiaSpEHH5qKb3VRQMXiadhZVaLYVUW1QjfGeaVzJTKZXWsG6hr3fdEkyNyqm4eOK4WY8qzUBw4TGPw/0/mmbizgif?wxfrom=5&amp;amp;wx_lazy=1&quot; alt=&quot;FanLayoutManager-w480&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/Cleveroad/FanLayoutManager/raw/master/images/demo_.gif&quot; alt=&quot;FanLayoutManager-w480&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;CarouselLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/Azoft/CarouselLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CarouselLayoutManager&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;http://mmbiz.qpic.cn/mmbiz_gif/ujaEPeJyrxtiaSpEHH5qKb3VRQMXiadhZVbG4DicOmdHAOpzUGtLMKnY3rSjbKlIjgJxY11H9tPicxr9w0R0lmdVKQ/0/mmbizgif?wxfrom=5&amp;amp;wx_lazy=1&quot; alt=&quot;CarouseLayoutManager-w240&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/Azoft/CarouselLayoutManager/raw/master/resources/carousel_work_small.gif&quot; alt=&quot;CarouseLayoutManager-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/Azoft/CarouselLayoutManager/raw/master/resources/carousel_double_work_small.gif&quot; alt=&quot;CarouseLayoutManager-w240&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;ChipsLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/BelooS/ChipsLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ChipsLayoutManager&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;http://mmbiz.qpic.cn/mmbiz_gif/ujaEPeJyrxtiaSpEHH5qKb3VRQMXiadhZVibU3tvZWzwPNRweljo24dgicKGqYpZ6PzDeibKGVWrIvsG4U7DDxXQ56g/0/mmbizgif?wxfrom=5&amp;amp;wx_lazy=1&quot; alt=&quot;ChipsLayoutManager-w240&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/BelooS/ChipsLayoutManager/raw/master/images/demo.gif&quot; alt=&quot;ChipsLayoutManager-w240&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;HiveLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/Chacojack/HiveLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HiveLayoutManager&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -106,7 +106,7 @@
 &lt;ul&gt;
 &lt;li&gt;flexbox-layout&lt;br&gt;&lt;a href=&quot;https://github.com/google/flexbox-layout&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;vlaflexbox-layoutyout&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;http://mmbiz.qpic.cn/mmbiz_gif/ujaEPeJyrxt1MHzDrFKeRXeGTniaGXGH8DSytDloEO8XaBWVXtl96MkwqkHWyKqon3jxSfR9g6x6Uhg6M3npZpA/0/mmbizgif?wxfrom=5&amp;amp;wx_lazy=1&quot; alt=&quot;flexbox-layout-w240&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/google/flexbox-layout/raw/master/assets/flex-direction.gif&quot; alt=&quot;flexbox-layout-w240&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;LondonEyeLayoutManager&lt;br&gt;&lt;a href=&quot;https://github.com/danylovolokh/LondonEyeLayoutManager&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;LondonEyeLayoutManager&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -134,11 +134,11 @@
 &lt;ul&gt;
 &lt;li&gt;DiscreteScrollView&lt;br&gt;&lt;a href=&quot;https://github.com/yarolegovich/DiscreteScrollView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DiscreteScrollView&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;https://github.com/yarolegovich/DiscreteScrollView/raw/master/images/cards_weather.gif&quot; alt=&quot;DiscreteScrollView&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/yarolegovich/DiscreteScrollView/raw/master/images/cards_weather.gif&quot; alt=&quot;DiscreteScrollView-w240&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;lottie-android&lt;br&gt;&lt;a href=&quot;https://github.com/airbnb/lottie-android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;lottie-android&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;https://github.com/airbnb/lottie-android/raw/master/gifs/Example2.gif&quot; alt=&quot;lottie-android-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/airbnb/lottie-android/raw/master/gifs/Example1.gif&quot; alt=&quot;lottie-android-w240&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/airbnb/lottie-android/raw/master/gifs/Example1.gif&quot; alt=&quot;lottie-android-w240&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/airbnb/lottie-android/raw/master/gifs/Example2.gif&quot; alt=&quot;lottie-android-w240&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;ZoomHeader&lt;br&gt;&lt;a href=&quot;https://github.com/githubwing/ZoomHeader&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ZoomHeader&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -162,7 +162,7 @@
 &lt;h2 id=&quot;日历&quot;&gt;&lt;a href=&quot;#日历&quot; class=&quot;headerlink&quot; title=&quot;日历&quot;&gt;&lt;/a&gt;日历&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;OneCalendarView&lt;br&gt;&lt;a href=&quot;https://github.com/MorochoRochaDarwin/OneCalendarView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OneCalendarView&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;https://cloud.githubusercontent.com/assets/15864336/23593785/7f9fc8f6-01e1-11e7-909f-c19f0829dded.png&quot; alt=&quot;OneCalendarView-w240&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cloud.githubusercontent.com/assets/15864336/23593793/7fb78d10-01e1-11e7-8bf1-36c57f2f515d.png&quot; alt=&quot;OneCalendarView -w240&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;material-calendarview&lt;br&gt;&lt;a href=&quot;https://github.com/prolificinteractive/material-calendarview&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;material-calendarview&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
