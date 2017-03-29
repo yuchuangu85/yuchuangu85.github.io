@@ -1418,7 +1418,7 @@
     <link href="http://www.codemx.cn/2016/05/04/2016-05-04-Android-Tree/"/>
     <id>http://www.codemx.cn/2016/05/04/2016-05-04-Android-Tree/</id>
     <published>2016-05-04T01:43:20.000Z</published>
-    <updated>2017-03-09T03:56:05.000Z</updated>
+    <updated>2017-03-29T09:16:43.000Z</updated>
     
     <content type="html">&lt;p&gt;说明：本篇博客只是一个知识整理，因为网上对于Android的知识介绍足够多，因此我不再写相关文章（主要是因为我写的不如人家好），所以所有文章均来自网络，不贴原文章，只提供连接，因此本文旨在减少你对相关知识的搜索过程，方便查找相关知识。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -1450,6 +1450,8 @@
 &lt;p&gt;  &lt;a href=&quot;http://blog.csdn.net/qinjuning/article/details/8074262&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android中measure过程、WRAP_CONTENT详解以及xml布局文件解析流程浅析(下)&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;  &lt;a href=&quot;http://blog.csdn.net/qinjuning/article/details/7474827&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android中View(视图)绘制不同状态背景图片原理深入分析以及StateListDrawable使用详解&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;  &lt;a href=&quot;http://blog.csdn.net/qinjuning/article/details/7226787&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android中将布局文件/View添加至窗口过程分析 —- 从setContentView()谈起&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;  &lt;a href=&quot;http://www.cnblogs.com/nanxiaojue/p/3536381.html?utm_source=tuicool&amp;amp;utm_medium=referral&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MeasureSpec介绍及使用&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;  &lt;a href=&quot;http://www.cnblogs.com/sueZheng/p/4046869.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MeasureSpec 解析&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;View的事件分发原理；&lt;/p&gt;
 &lt;p&gt;  &lt;a href=&quot;http://www.jianshu.com/p/e99b5e8bd67b#&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;图解 Android 事件分发机制&lt;/a&gt;&lt;/p&gt;
