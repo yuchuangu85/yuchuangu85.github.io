@@ -65,7 +65,7 @@
     <link href="http://www.codemx.cn/2017/03/13/UICollection01/"/>
     <id>http://www.codemx.cn/2017/03/13/UICollection01/</id>
     <published>2017-03-13T14:38:41.000Z</published>
-    <updated>2017-04-21T08:20:16.000Z</updated>
+    <updated>2017-04-21T08:25:29.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。&lt;/p&gt;
@@ -162,7 +162,7 @@
 &lt;h2 id=&quot;日历&quot;&gt;&lt;a href=&quot;#日历&quot; class=&quot;headerlink&quot; title=&quot;日历&quot;&gt;&lt;/a&gt;日历&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;OneCalendarView&lt;br&gt;&lt;a href=&quot;https://github.com/MorochoRochaDarwin/OneCalendarView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OneCalendarView&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;https://cloud.githubusercontent.com/assets/15864336/23593793/7fb78d10-01e1-11e7-8bf1-36c57f2f515d.png&quot; alt=&quot;OneCalendarView-w240&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cloud.githubusercontent.com/assets/15864336/23593793/7fb78d10-01e1-11e7-8bf1-36c57f2f515d.png&quot; alt=&quot;OneCalendarView-w200&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;material-calendarview&lt;br&gt;&lt;a href=&quot;https://github.com/prolificinteractive/material-calendarview&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;material-calendarview&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -174,7 +174,7 @@
 &lt;h2 id=&quot;菜单&quot;&gt;&lt;a href=&quot;#菜单&quot; class=&quot;headerlink&quot; title=&quot;菜单&quot;&gt;&lt;/a&gt;菜单&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;CircleMenu&lt;br&gt;&lt;a href=&quot;https://github.com/ImangazalievM/CircleMenu&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CircleMenu&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;https://github.com/ImangazalievM/CircleMenu/blob/master/art/preview.gif&quot; alt=&quot;CircleMenu-w240&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/ImangazalievM/CircleMenu/blob/master/art/preview.gif?raw=true&quot; alt=&quot;CircleMenu-w240&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
