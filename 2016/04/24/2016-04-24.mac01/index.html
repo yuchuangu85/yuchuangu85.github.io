@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="墨香博客">
 <meta property="og:description" content="磨刀不误砍柴工，一个好的工具能让我们的工作事倍功半。作为一名开发者，一台好的电脑是必备的，本人推荐条件允许入手一台mac还是很有必要的。虽然我入手mac只有半年多点，但是各种好处还是比较了解的，为了让mac新手快速熟练使用mac开发程序，因此总结日常使用软件和技巧分享给大家。">
 <meta property="og:image" content="http://www.codemx.cn/images/mac/mac01/mac01.png">
-<meta property="og:updated_time" content="2017-04-26T01:33:35.000Z">
+<meta property="og:updated_time" content="2017-04-26T01:41:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高效Mac（一）">
 <meta name="twitter:description" content="磨刀不误砍柴工，一个好的工具能让我们的工作事倍功半。作为一名开发者，一台好的电脑是必备的，本人推荐条件允许入手一台mac还是很有必要的。虽然我入手mac只有半年多点，但是各种好处还是比较了解的，为了让mac新手快速熟练使用mac开发程序，因此总结日常使用软件和技巧分享给大家。">
@@ -290,74 +290,40 @@
 <p>卸载git：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew uninstall git</span><br></pre></td></tr></table></figure>
 <p>使用非常方便，常见命令如下;</p>
-<ul>
-<li>列出已安装的软件：</li>
-</ul>
+<p>列出已安装的软件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew list</span><br></pre></td></tr></table></figure>
-<ul>
-<li>找出过期的包： </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># brew outdated</span><br></pre></td></tr></table></figure>
-<ul>
-<li>升级所有过期的软件包：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># brew upgrade</span><br></pre></td></tr></table></figure>
-<ul>
-<li>升级指定的过期软件包:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># brew upgrade $FORMULA</span><br></pre></td></tr></table></figure>
-<ul>
-<li>升级过程中要暂停软件包的安装过程:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># brew pin $FORMULA</span><br></pre></td></tr></table></figure>
-<ul>
-<li>升级过程中要恢复软件包的安装过程</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># brew unpin $FORMULA</span><br></pre></td></tr></table></figure>
-<ul>
-<li>清除指定软件包的所有老版本:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># brew cleanup $FORMULA</span><br></pre></td></tr></table></figure>
-<ul>
-<li>清除所有软件包的所有老版本:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># brew cleanup</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看哪些软件包要被清除:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># brew cleanup -n</span><br></pre></td></tr></table></figure>
-<ul>
-<li>彻底卸载某个软件包:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># brew uninstall formula_name --force</span><br></pre></td></tr></table></figure>
-<ul>
-<li>用浏览器打开brew的官方网站：</li>
-</ul>
+<p>找出过期的包： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew outdated</span><br></pre></td></tr></table></figure>
+<p>升级所有过期的软件包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew upgrade</span><br></pre></td></tr></table></figure>
+<p>升级指定的过期软件包:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew upgrade $FORMULA</span><br></pre></td></tr></table></figure>
+<p>升级过程中要暂停软件包的安装过程:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew pin $FORMULA</span><br></pre></td></tr></table></figure>
+<p>升级过程中要恢复软件包的安装过程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew unpin $FORMULA</span><br></pre></td></tr></table></figure>
+<p>清除指定软件包的所有老版本:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cleanup $FORMULA</span><br></pre></td></tr></table></figure>
+<p>清除所有软件包的所有老版本:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cleanup</span><br></pre></td></tr></table></figure>
+<p>查看哪些软件包要被清除:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cleanup -n</span><br></pre></td></tr></table></figure>
+<p>彻底卸载某个软件包:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew uninstall formula_name --force</span><br></pre></td></tr></table></figure>
+<p>用浏览器打开brew的官方网站：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew home</span><br></pre></td></tr></table></figure>
-<ul>
-<li>显示软件信息：</li>
-</ul>
+<p>显示软件信息：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew info</span><br></pre></td></tr></table></figure>
-<ul>
-<li>显示包依赖：</li>
-</ul>
+<p>显示包依赖：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew deps</span><br></pre></td></tr></table></figure>
 <p>3.终极shell：<a href="http://ohmyz.sh" target="_blank" rel="external">oh-my-zsh</a></p>
-<ul>
-<li>安装命令：</li>
-</ul>
+<p>安装命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>安装wget：</li>
-</ul>
+<p>安装wget：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sh -c &quot;$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)&quot;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>切换到zsh：</li>
-</ul>
+<p>切换到zsh：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
-<ul>
-<li>切换到bash：</li>
-</ul>
+<p>切换到bash：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/bash</span><br></pre></td></tr></table></figure>
 <p>4.Git: 作为开发主流的版本控制工具，也是必须的，安装：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install git</span><br></pre></td></tr></table></figure>
@@ -391,7 +357,7 @@
         <p><span>本文标题:</span><a href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2016年04月24日 - 15时12分</p>
-        <p><span>最后更新:</span>2017年04月26日 - 09时33分</p>
+        <p><span>最后更新:</span>2017年04月26日 - 09时41分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/04/24/2016-04-24.mac01/" title="高效Mac（一）">http://www.codemx.cn/2016/04/24/2016-04-24.mac01/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2016/04/24/2016-04-24.mac01/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
