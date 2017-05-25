@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8">
   
-  <title>墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载 | 墨香博客</title>
+  <title>墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载 | 墨香博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="上一章墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。">
+  <meta name="description" content="上一章墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载">
+<meta property="og:title" content="墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载">
 <meta property="og:url" content="http://www.codemx.cn/2016/08/21/Launcher04/index.html">
 <meta property="og:site_name" content="墨香博客">
-<meta property="og:description" content="上一章墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。">
+<meta property="og:description" content="上一章墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。">
 <meta property="og:image" content="http://www.codemx.cn/images/launcher/image04/launcher01.png">
 <meta property="og:image" content="http://www.codemx.cn/images/launcher/image04/launcher02.png">
 <meta property="og:image" content="http://www.codemx.cn/images/launcher/image04/launcher03.png">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2017-04-27T08:02:25.000Z">
+<meta property="og:updated_time" content="2017-05-19T09:40:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载">
-<meta name="twitter:description" content="上一章墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。">
+<meta name="twitter:title" content="墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载">
+<meta name="twitter:description" content="上一章墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。">
 <meta name="twitter:image" content="http://www.codemx.cn/images/launcher/image04/launcher01.png">
   
     <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
@@ -255,7 +255,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载
+      墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载
     </h1>
   
 
@@ -276,7 +276,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>上一章<a href="http://www.codemx.cn/2016/08/14/墨香带你学Launcher之-绑定/">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</a>讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。</p>
+        <p>上一章<a href="http://www.codemx.cn/2016/08/14/墨香带你学Launcher之-绑定/">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</a>讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。</p>
 <a id="more"></a>
 <p>我们知道应用的安装和更新都是通过应用市场来启动，而应用的卸载是通过桌面或者系统的app管理来启动的，因此我们将应用的安装和更新一起来讲，而应用的卸载单独来讲。首先我们先看一下应用的安装和更新时桌面的数据加载。</p>
 <h3 id="应用安装和更新"><a href="#应用安装和更新" class="headerlink" title="应用安装和更新"></a>应用安装和更新</h3><hr>
@@ -320,7 +320,7 @@
 <p>首先判断startUninstallActivity，这个方法中调用startApplicationUninstallActivity方法，如果是系统应用返回false，如果不是启动卸载界面并且返回true，启动卸载界面是通过Intent.ACTION_DELETE这个action启动的，如果能够卸载，执行完卸载返回到桌面时，或者取消返回到桌面时，检测是否卸载成功，然后调用sendUninstallResult方法，在这个方法中调用onUninstallActivityReturned回调函数，这个回调函数是在Folder或者workspace中实现的，其实代码这两个地方都一样，最后都执行onDropCompleted方法，如果移除成功，则调用removeWorkspaceItem方法，这个方法主要是从CellLayout中删除对应的图标，如果没有成功则刷新UI，也就是对应的图标放回原处。</p>
 <p>对于系统怎么卸载应用的这里就不讲了，有兴趣的可以去看源码处理。</p>
 <h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><hr>
-<p>Github地址：<a href="https://github.com/yuchuangu85/Launcher3_mx" target="_blank" rel="external">https://github.com/yuchuangu85/Launcher3_mx</a></p>
+<p>Github地址：<a href="https://github.com/yuchuangu85/Launcher3_mx/tree/launcher3_6.0" target="_blank" rel="external">https://github.com/yuchuangu85/Launcher3_mx/tree/launcher3_6.0</a></p>
 <p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img src="/images/codemx/qr_code_mx.jpg" alt="qr_code_mx"></p>
 <p>注：本文原创，转载请注明出处，多谢。</p>
@@ -332,12 +332,12 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载</a></p>
+        <p><span>本文标题:</span><a href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2016年08月21日 - 13时13分</p>
-        <p><span>最后更新:</span>2017年04月27日 - 16时02分</p>
+        <p><span>最后更新:</span>2017年05月19日 - 17时40分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/08/21/Launcher04/" title="墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载">http://www.codemx.cn/2016/08/21/Launcher04/</a>
+            <span>原始链接:</span><a class="post-url" href="/2016/08/21/Launcher04/" title="墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载">http://www.codemx.cn/2016/08/21/Launcher04/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2016/08/21/Launcher04/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
@@ -362,7 +362,7 @@
   
   
     <a href="/2016/08/14/Launcher03/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</div>
+      <div class="article-nav-title">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -434,8 +434,12 @@
 
     
         <section class="youyan" id="comments">
-  <div id="uyan_frame"></div>
-  <script src="http://v2.uyan.cc/code/uyan.js?uid=2108999"></script>
+  <!--<div id="uyan_frame"></div>-->
+  <!--<script src="http://v2.uyan.cc/code/uyan.js?uid=2108999"></script>-->
+  <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2108999"></script>
+<!-- UY END -->
 </section>
 
     
@@ -450,12 +454,12 @@
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2016/08/14/Launcher03/" title="下一篇: 墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget">
+            <a href="/2016/08/14/Launcher03/" title="下一篇: 墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget">
                 <i class="fa fa-angle-right"></i>
             </a>
         
     </div>
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/OpenArithmetic/">开源算法集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/UICollection01/">常用UI框架汇总（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Launcher07/">墨香带你学Launcher之（七）-小部件的加载、添加以及大小调节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）-拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）-Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）-数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）-概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android、iOS、Mac开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/19/Launcher08/">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/OpenArithmetic/">开源算法集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/UICollection01/">常用UI框架汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Launcher07/">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）- 拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）- Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）- 数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）- 概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android、iOS、Mac开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
     <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
     <script>
         $(".post-list").addClass("toc-article");

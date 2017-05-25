@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   
-  <title>常用UI框架汇总（一） | 墨香博客</title>
+  <title>常用UI框架汇总 | 墨香博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。">
+  <meta name="description" content="本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。主要包括：ViewPager、RecyclerView、Toast、Notification、CoordinatorLayout、Animation、界面切换、日历、高斯模糊、菜单、图片选择器、切换主题等。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="常用UI框架汇总（一）">
+<meta property="og:title" content="常用UI框架汇总">
 <meta property="og:url" content="http://www.codemx.cn/2017/03/13/UICollection01/index.html">
 <meta property="og:site_name" content="墨香博客">
-<meta property="og:description" content="本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。">
+<meta property="og:description" content="本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。主要包括：ViewPager、RecyclerView、Toast、Notification、CoordinatorLayout、Animation、界面切换、日历、高斯模糊、菜单、图片选择器、切换主题等。">
 <meta property="og:image" content="https://github.com/youngkaaa/YViewPagerDemo/raw/master/screens/record.gif">
 <meta property="og:image" content="https://github.com/youngkaaa/YViewPagerDemo/raw/master/screens/record_circle.gif">
 <meta property="og:image" content="https://raw.githubusercontent.com/zhouchaoyuan/excelPanel/master/app/src/main/assets/roomFormDemo.gif">
@@ -29,6 +29,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/GrenderG/Toasty/master/art/scr_1.png">
 <meta property="og:image" content="https://github.com/Muddz/StyleableToast/raw/master/showcase.png">
 <meta property="og:image" content="https://camo.githubusercontent.com/a7edeb11d67c6192d90506df396258597ca84951/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f686f7136366e614a516b4543492f67697068792e676966">
+<meta property="og:image" content="https://camo.githubusercontent.com/1a1353d4e208d871470db2b892b2e3a96dfb7964/687474703a2f2f6f67656d646c7261702e626b742e636c6f7564646e2e636f6d2f537570657254657874566965775f636f766572302e706e67">
 <meta property="og:image" content="https://github.com/hugeterry/CoordinatorTabLayout/raw/master/showUI/show1.gif">
 <meta property="og:image" content="https://github.com/wasabeef/recyclerview-animators/raw/master/art/demo.gif">
 <meta property="og:image" content="https://github.com/wasabeef/recyclerview-animators/raw/master/art/demo2.gif">
@@ -48,11 +49,18 @@
 <meta property="og:image" content="https://github.com/prolificinteractive/material-calendarview/raw/master/images/screencast.gif">
 <meta property="og:image" content="https://raw.githubusercontent.com/flurgle/BlurKit-Android/master/.repo/demo.gif">
 <meta property="og:image" content="http://www.codemx.cn/images/ui/UICollection/preview.git">
+<meta property="og:image" content="https://github.com/zhihu/Matisse/raw/master/image/screenshot_zhihu.png">
+<meta property="og:image" content="https://github.com/zhihu/Matisse/raw/master/image/screenshot_dracula.png">
+<meta property="og:image" content="https://github.com/zhihu/Matisse/raw/master/image/screenshot_preview.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/afollestad/aesthetic/master/images/showcase1.png">
+<meta property="og:image" content="https://github.com/xyczero/MagicaSakura/raw/master/screenshot/magicasakura.gif">
+<meta property="og:image" content="https://github.com/xmuSistone/android-pile-layout/raw/master/capture/capture1.gif">
+<meta property="og:image" content="https://github.com/xmuSistone/android-pile-layout/raw/master/capture/capture2.gif">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2017-04-26T01:45:08.000Z">
+<meta property="og:updated_time" content="2017-05-24T02:04:11.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="常用UI框架汇总（一）">
-<meta name="twitter:description" content="本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。">
+<meta name="twitter:title" content="常用UI框架汇总">
+<meta name="twitter:description" content="本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。主要包括：ViewPager、RecyclerView、Toast、Notification、CoordinatorLayout、Animation、界面切换、日历、高斯模糊、菜单、图片选择器、切换主题等。">
 <meta name="twitter:image" content="https://github.com/youngkaaa/YViewPagerDemo/raw/master/screens/record.gif">
   
     <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
@@ -289,7 +297,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      常用UI框架汇总（一）
+      常用UI框架汇总
     </h1>
   
 
@@ -311,13 +319,13 @@
       
           
         <blockquote>
-<p>本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。</p>
+<p>本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。主要包括：ViewPager、RecyclerView、Toast、Notification、CoordinatorLayout、Animation、界面切换、日历、高斯模糊、菜单、图片选择器、切换主题等。</p>
 </blockquote>
 <a id="more"></a>
 <h2 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h2><h3 id="ViewPager"><a href="#ViewPager" class="headerlink" title="ViewPager"></a>ViewPager</h3><ul>
 <li>YViewPagerDemo<br><a href="https://github.com/youngkaaa/YViewPagerDemo" target="_blank" rel="external">YViewPagerDemo</a></li>
 </ul>
-<p><img src="https://github.com/youngkaaa/YViewPagerDemo/raw/master/screens/record.gif" alt="YViewPagerDemo-w240"><br><img src="https://github.com/youngkaaa/YViewPagerDemo/raw/master/screens/record_circle.gif" alt="YViewPagerDemo-w240"></p>
+<p><img width="240" src="https://github.com/youngkaaa/YViewPagerDemo/raw/master/screens/record.gif">  <img width="240" src="https://github.com/youngkaaa/YViewPagerDemo/raw/master/screens/record_circle.gif"></p>
 <h3 id="RecyclerView"><a href="#RecyclerView" class="headerlink" title="RecyclerView"></a>RecyclerView</h3><ul>
 <li>excelPanel<br><a href="https://github.com/zhouchaoyuan/excelPanel" target="_blank" rel="external">excelPanel</a></li>
 </ul>
@@ -325,7 +333,7 @@
 <ul>
 <li>ShimmerRecyclerView<br><a href="https://github.com/sharish/ShimmerRecyclerView" target="_blank" rel="external">ShimmerRecyclerView</a></li>
 </ul>
-<p><img src="https://github.com/sharish/ShimmerRecyclerView/raw/master/screenshots/list_demo.gif" alt="ShimmerRecyclerView-w240"><br><img src="https://github.com/sharish/ShimmerRecyclerView/raw/master/screenshots/grid_demo.gif" alt="ShimmerRecyclerView-w240"></p>
+<p><img width="240" src="https://github.com/sharish/ShimmerRecyclerView/raw/master/screenshots/list_demo.gif">  <img width="240" src="https://github.com/sharish/ShimmerRecyclerView/raw/master/screenshots/grid_demo.gif"></p>
 <ul>
 <li>FanLayoutManager<br><a href="https://github.com/Cleveroad/FanLayoutManager" target="_blank" rel="external">FanLayoutManager</a></li>
 </ul>
@@ -333,7 +341,7 @@
 <ul>
 <li>CarouselLayoutManager<br><a href="https://github.com/Azoft/CarouselLayoutManager" target="_blank" rel="external">CarouselLayoutManager</a></li>
 </ul>
-<p><img src="https://github.com/Azoft/CarouselLayoutManager/raw/master/resources/carousel_work_small.gif" alt="CarouseLayoutManager-w240"><br><img src="https://github.com/Azoft/CarouselLayoutManager/raw/master/resources/carousel_double_work_small.gif" alt="CarouseLayoutManager-w240"></p>
+<p><img width="240" src="https://github.com/Azoft/CarouselLayoutManager/raw/master/resources/carousel_work_small.gif">  <img width="240" src="https://github.com/Azoft/CarouselLayoutManager/raw/master/resources/carousel_double_work_small.gif"></p>
 <ul>
 <li>ChipsLayoutManager<br><a href="https://github.com/BelooS/ChipsLayoutManager" target="_blank" rel="external">ChipsLayoutManager</a></li>
 </ul>
@@ -341,7 +349,7 @@
 <ul>
 <li>HiveLayoutManager<br><a href="https://github.com/Chacojack/HiveLayoutManager" target="_blank" rel="external">HiveLayoutManager</a></li>
 </ul>
-<p><img src="https://camo.githubusercontent.com/95017f4fb554f84efd65f0ad6bc35c304737832b/68747470733a2f2f636861636f6a61636b2e6769746875622e696f2f323031362f30392f32392f52656379636c6572566965772545372539412538342545342542382538302545342542382541412545392541392541432545382539432538322545372541412539442545352542382538332545352542312538302f6164642e676966" alt="HiveLayoutManager-w240"><br><img src="https://camo.githubusercontent.com/2b33f64f003d0158cbb2470035c5388f35e0244b/68747470733a2f2f636861636f6a61636b2e6769746875622e696f2f323031362f30392f32392f52656379636c6572566965772545372539412538342545342542382538302545342542382541412545392541392541432545382539432538322545372541412539442545352542382538332545352542312538302f72656d6f76652e676966" alt="HiveLayoutManager-w240"><br><img src="https://camo.githubusercontent.com/e1446259aac1aa4727d289af5834839c2f58e5cf/68747470733a2f2f636861636f6a61636b2e6769746875622e696f2f323031362f30392f32392f52656379636c6572566965772545372539412538342545342542382538302545342542382541412545392541392541432545382539432538322545372541412539442545352542382538332545352542312538302f6d6f76652e676966" alt="HiveLayoutManager-w240"></p>
+<p><img width="240" src="https://camo.githubusercontent.com/95017f4fb554f84efd65f0ad6bc35c304737832b/68747470733a2f2f636861636f6a61636b2e6769746875622e696f2f323031362f30392f32392f52656379636c6572566965772545372539412538342545342542382538302545342542382541412545392541392541432545382539432538322545372541412539442545352542382538332545352542312538302f6164642e676966">  <img width="240" src="https://camo.githubusercontent.com/2b33f64f003d0158cbb2470035c5388f35e0244b/68747470733a2f2f636861636f6a61636b2e6769746875622e696f2f323031362f30392f32392f52656379636c6572566965772545372539412538342545342542382538302545342542382541412545392541392541432545382539432538322545372541412539442545352542382538332545352542312538302f72656d6f76652e676966">  <img width="240" src="https://camo.githubusercontent.com/e1446259aac1aa4727d289af5834839c2f58e5cf/68747470733a2f2f636861636f6a61636b2e6769746875622e696f2f323031362f30392f32392f52656379636c6572566965772545372539412538342545342542382538302545342542382541412545392541392541432545382539432538322545372541412539442545352542382538332545352542312538302f6d6f76652e676966"></p>
 <ul>
 <li>vlayout<br><a href="https://github.com/alibaba/vlayout" target="_blank" rel="external">vlayout</a></li>
 </ul>
@@ -361,15 +369,19 @@
 <ul>
 <li>StyleableToast<br><a href="https://github.com/Muddz/StyleableToast" target="_blank" rel="external">StyleableToast</a></li>
 </ul>
-<p><img src="https://github.com/Muddz/StyleableToast/raw/master/showcase.png" alt="StyleableToast"><br><img src="https://camo.githubusercontent.com/a7edeb11d67c6192d90506df396258597ca84951/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f686f7136366e614a516b4543492f67697068792e676966" alt="StyleableToast"></p>
+<p><img width="240" src="https://github.com/Muddz/StyleableToast/raw/master/showcase.png">  <img width="240" src="https://camo.githubusercontent.com/a7edeb11d67c6192d90506df396258597ca84951/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f686f7136366e614a516b4543492f67697068792e676966"></p>
+<h3 id="TextView"><a href="#TextView" class="headerlink" title="TextView"></a>TextView</h3><ul>
+<li>SuperTextView<br><a href="https://github.com/chenBingX/SuperTextView" target="_blank" rel="external">SuperTextView</a></li>
+</ul>
+<p><img src="https://camo.githubusercontent.com/1a1353d4e208d871470db2b892b2e3a96dfb7964/687474703a2f2f6f67656d646c7261702e626b742e636c6f7564646e2e636f6d2f537570657254657874566965775f636f766572302e706e67" alt="SuperTextView-w480"></p>
 <h3 id="Notification"><a href="#Notification" class="headerlink" title="Notification"></a>Notification</h3><h3 id="CoordinatorLayout"><a href="#CoordinatorLayout" class="headerlink" title="CoordinatorLayout"></a>CoordinatorLayout</h3><ul>
 <li>CoordinatorTabLayout<br><a href="https://github.com/hugeterry/CoordinatorTabLayout" target="_blank" rel="external">CoordinatorTabLayout</a></li>
 </ul>
 <p><img src="https://github.com/hugeterry/CoordinatorTabLayout/raw/master/showUI/show1.gif" alt="CoordinatorTabLayout"></p>
-<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><ul>
+<h2 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h2><ul>
 <li>recyclerview-animators<br><a href="https://github.com/wasabeef/recyclerview-animators" target="_blank" rel="external">recyclerview-animators</a></li>
 </ul>
-<p><img src="https://github.com/wasabeef/recyclerview-animators/raw/master/art/demo.gif" alt="recyclerview-animators-w240"><br><img src="https://github.com/wasabeef/recyclerview-animators/raw/master/art/demo2.gif" alt="recyclerview-animators-w240"><br><img src="https://github.com/wasabeef/recyclerview-animators/raw/master/art/demo3.gif" alt="recyclerview-animators-w240"></p>
+<p><img width="240" src="https://github.com/wasabeef/recyclerview-animators/raw/master/art/demo.gif">  <img width="240" src="https://github.com/wasabeef/recyclerview-animators/raw/master/art/demo2.gif">  <img width="240" src="https://github.com/wasabeef/recyclerview-animators/raw/master/art/demo3.gif"></p>
 <ul>
 <li>GestureViews<br><a href="https://github.com/alexvasilkov/GestureViews" target="_blank" rel="external">GestureViews</a></li>
 </ul>
@@ -381,7 +393,7 @@
 <ul>
 <li>lottie-android<br><a href="https://github.com/airbnb/lottie-android" target="_blank" rel="external">lottie-android</a></li>
 </ul>
-<p><img src="https://github.com/airbnb/lottie-android/raw/master/gifs/Example1.gif" alt="lottie-android-w240"><br><img src="https://github.com/airbnb/lottie-android/raw/master/gifs/Example2.gif" alt="lottie-android-w240"></p>
+<p><img width="240" src="https://github.com/airbnb/lottie-android/raw/master/gifs/Example1.gif">  <img width="240" src="https://github.com/airbnb/lottie-android/raw/master/gifs/Example2.gif"></p>
 <ul>
 <li>ZoomHeader<br><a href="https://github.com/githubwing/ZoomHeader" target="_blank" rel="external">ZoomHeader</a></li>
 </ul>
@@ -393,7 +405,7 @@
 <ul>
 <li>Depth<br><a href="https://github.com/florent37/Depth" target="_blank" rel="external">Depth</a></li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/florent37/Depth/master/media/default.gif" alt="Depth-w240"><br><img src="https://raw.githubusercontent.com/florent37/Depth/master/media/revert.gif" alt="Depth-w240"></p>
+<p><img width="240" src="https://raw.githubusercontent.com/florent37/Depth/master/media/default.gif">  <img width="240" src="https://raw.githubusercontent.com/florent37/Depth/master/media/revert.gif"></p>
 <ul>
 <li>Depth-LIB-Android<br><a href="https://github.com/danielzeller/Depth-LIB-Android-" target="_blank" rel="external">Depth-LIB-Android</a></li>
 </ul>
@@ -401,7 +413,7 @@
 <ul>
 <li>ExpectAnim<br><a href="https://github.com/florent37/ExpectAnim" target="_blank" rel="external">ExpectAnim</a></li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/florent37/ExpectAnim/master/media/sample.gif" alt="ExpectAnim-w240"><br><img src="https://raw.githubusercontent.com/florent37/ExpectAnim/master/media/scroll.gif" alt="ExpectAnim-w240"></p>
+<p><img width="240" src="https://raw.githubusercontent.com/florent37/ExpectAnim/master/media/sample.gif">  <img width="240" src="https://raw.githubusercontent.com/florent37/ExpectAnim/master/media/scroll.gif"></p>
 <h2 id="日历"><a href="#日历" class="headerlink" title="日历"></a>日历</h2><ul>
 <li>OneCalendarView<br><a href="https://github.com/MorochoRochaDarwin/OneCalendarView" target="_blank" rel="external">OneCalendarView</a></li>
 </ul>
@@ -418,6 +430,22 @@
 <li>CircleMenu<br><a href="https://github.com/ImangazalievM/CircleMenu" target="_blank" rel="external">CircleMenu</a></li>
 </ul>
 <p><img width="200" src="/images/ui/UICollection/preview.git"></p>
+<h2 id="照片选择器"><a href="#照片选择器" class="headerlink" title="照片选择器"></a>照片选择器</h2><ul>
+<li>Matisse<br><a href="https://github.com/zhihu/Matisse" target="_blank" rel="external">Matisse</a></li>
+</ul>
+<p><img width="240" src="https://github.com/zhihu/Matisse/raw/master/image/screenshot_zhihu.png">  <img width="240" src="https://github.com/zhihu/Matisse/raw/master/image/screenshot_dracula.png">  <img width="240" src="https://github.com/zhihu/Matisse/raw/master/image/screenshot_preview.png"></p>
+<h2 id="切换主题"><a href="#切换主题" class="headerlink" title="切换主题"></a>切换主题</h2><ul>
+<li>aesthetic–Rxjava切换主题<br><a href="https://github.com/afollestad/aesthetic" target="_blank" rel="external">aesthetic</a></li>
+</ul>
+<p><img width="480" src="https://raw.githubusercontent.com/afollestad/aesthetic/master/images/showcase1.png"></p>
+<ul>
+<li>MagicaSakura<br><a href="https://github.com/Bilibili/MagicaSakura" target="_blank" rel="external">MagicaSakura</a></li>
+</ul>
+<p><img src="https://github.com/xyczero/MagicaSakura/raw/master/screenshot/magicasakura.gif" alt="MagicaSakura-w240"></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>横向堆叠效果的自定义Layout<br><a href="https://github.com/xmuSistone/android-pile-layout" target="_blank" rel="external">android-pile-layout</a></li>
+</ul>
+<p><img width="240" src="https://github.com/xmuSistone/android-pile-layout/raw/master/capture/capture1.gif">  <img width="240" src="https://github.com/xmuSistone/android-pile-layout/raw/master/capture/capture2.gif"></p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
 <p>注：本文原创，转载请注明出处，多谢。</p>
@@ -429,12 +457,12 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/13/UICollection01/">常用UI框架汇总（一）</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/13/UICollection01/">常用UI框架汇总</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2017年03月13日 - 22时38分</p>
-        <p><span>最后更新:</span>2017年04月26日 - 09时45分</p>
+        <p><span>最后更新:</span>2017年05月24日 - 10时04分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/13/UICollection01/" title="常用UI框架汇总（一）">http://www.codemx.cn/2017/03/13/UICollection01/</a>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/13/UICollection01/" title="常用UI框架汇总">http://www.codemx.cn/2017/03/13/UICollection01/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/03/13/UICollection01/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
@@ -470,7 +498,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#UI"><span class="toc-number">1.</span> <span class="toc-text">UI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ViewPager"><span class="toc-number">1.1.</span> <span class="toc-text">ViewPager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RecyclerView"><span class="toc-number">1.2.</span> <span class="toc-text">RecyclerView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Toast"><span class="toc-number">1.3.</span> <span class="toc-text">Toast</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Notification"><span class="toc-number">1.4.</span> <span class="toc-text">Notification</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CoordinatorLayout"><span class="toc-number">1.5.</span> <span class="toc-text">CoordinatorLayout</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动画"><span class="toc-number">2.</span> <span class="toc-text">动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#界面切换"><span class="toc-number">3.</span> <span class="toc-text">界面切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日历"><span class="toc-number">4.</span> <span class="toc-text">日历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高斯模糊"><span class="toc-number">5.</span> <span class="toc-text">高斯模糊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#菜单"><span class="toc-number">6.</span> <span class="toc-text">菜单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注"><span class="toc-number">7.</span> <span class="toc-text">注</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#UI"><span class="toc-number">1.</span> <span class="toc-text">UI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ViewPager"><span class="toc-number">1.1.</span> <span class="toc-text">ViewPager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RecyclerView"><span class="toc-number">1.2.</span> <span class="toc-text">RecyclerView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Toast"><span class="toc-number">1.3.</span> <span class="toc-text">Toast</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TextView"><span class="toc-number">1.4.</span> <span class="toc-text">TextView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Notification"><span class="toc-number">1.5.</span> <span class="toc-text">Notification</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CoordinatorLayout"><span class="toc-number">1.6.</span> <span class="toc-text">CoordinatorLayout</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Animation"><span class="toc-number">2.</span> <span class="toc-text">Animation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#界面切换"><span class="toc-number">3.</span> <span class="toc-text">界面切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日历"><span class="toc-number">4.</span> <span class="toc-text">日历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高斯模糊"><span class="toc-number">5.</span> <span class="toc-text">高斯模糊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#菜单"><span class="toc-number">6.</span> <span class="toc-text">菜单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#照片选择器"><span class="toc-number">7.</span> <span class="toc-text">照片选择器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#切换主题"><span class="toc-number">8.</span> <span class="toc-text">切换主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">9.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注"><span class="toc-number">10.</span> <span class="toc-text">注</span></a></li></ol>
 </div>
 <style>
     .left-col .switch-btn {
@@ -531,8 +559,12 @@
 
     
         <section class="youyan" id="comments">
-  <div id="uyan_frame"></div>
-  <script src="http://v2.uyan.cc/code/uyan.js?uid=2108999"></script>
+  <!--<div id="uyan_frame"></div>-->
+  <!--<script src="http://v2.uyan.cc/code/uyan.js?uid=2108999"></script>-->
+  <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2108999"></script>
+<!-- UY END -->
 </section>
 
     
@@ -552,7 +584,7 @@
             </a>
         
     </div>
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/OpenArithmetic/">开源算法集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/UICollection01/">常用UI框架汇总（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Launcher07/">墨香带你学Launcher之（七）-小部件的加载、添加以及大小调节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）-拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）-Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）-应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）-绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）-数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）-概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android、iOS、Mac开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/19/Launcher08/">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/OpenArithmetic/">开源算法集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/UICollection01/">常用UI框架汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Launcher07/">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）- 拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）- Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）- 数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）- 概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android、iOS、Mac开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
     <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
     <script>
         $(".post-list").addClass("toc-article");
