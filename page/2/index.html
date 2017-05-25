@@ -18,10 +18,10 @@
     <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
   
   
-    <link rel="icon" href="/img/favicon.png">
+    <link rel="icon" href="//img/favicon.png">
   
   
-  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
   
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
@@ -38,6 +38,7 @@
     <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
   <script>
       var yiliaConfig = {
+          rootUrl: '/',
           fancybox: true,
           animate: true,
           isHome: true,
@@ -57,12 +58,12 @@
     <header id="header" class="inner">
         <a href="/" class="profilepic">
             
-            <img lazy-src="/img/head.jpg" class="js-avatar">
+            <img lazy-src="//img/head.jpg" class="js-avatar">
             
         </a>
 
         <hgroup>
-          <h1 class="header-author"><a href="/">墨香</a></h1>
+          <h1 class="header-author"><a href="/" title="Hi Mate">墨香</a></h1>
         </hgroup>
 
         
@@ -190,17 +191,17 @@
       <nav id="mobile-nav">
       <div class="overlay">
           <div class="slider-trigger"></div>
-          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">墨香</a></h1>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">墨香</a></h1>
       </div>
     <div class="intrude-less">
         <header id="header" class="inner">
             <a href="/" class="profilepic">
                 
-                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                    <img lazy-src="//img/head.jpg" class="js-avatar">
                 
             </a>
             <hgroup>
-              <h1 class="header-author"><a href="/" title="回到主页">墨香</a></h1>
+              <h1 class="header-author"><a href="/" title="Me">墨香</a></h1>
             </hgroup>
             
             <p class="header-subtitle">用代码实现自己的梦想。</p>
@@ -269,6 +270,7 @@
 </blockquote>
           
       
+      
     </div>
     
     <div class="article-info article-info-index">
@@ -333,6 +335,7 @@
 </blockquote>
           
       
+      
     </div>
     
     <div class="article-info article-info-index">
@@ -395,6 +398,7 @@
               <p>很多新手（包括我在内）在写项目的时候不知道项目框架如何搭建，很多时候计划的很好，但是随着项目大额增大，最后还是写的一塌糊涂，没有条理，结构很烂，导致我们项目问题不断，最近一直总结这个原因，其实是我们脑袋里没有这些东西，没有这些逻辑结构，缺乏框架的思维，对于我们这些经验比较少的，如果想提高，前期要去模仿，这样让自己熟悉人家写代码的框架，熟悉各种框架之后我们大脑中的这些思维就会存在，才能写出好的项目结构。</p>
 <p>为了帮助大家能够学习一些好的项目经验，本篇文章给大家介绍一些国内外的比较好的开源项目，让大家有一个好的学习目标。希望对大家有帮助，以后找到更多开源项目也会不断添加。</p>
           
+      
       
     </div>
     
@@ -460,6 +464,7 @@
 <p>适配主要包括布局适配，语言适配，还有功能适配。我们遇到做多的就是布局适配问题，其实语言适配问题也主要是影响布局适配，功能适配主要是针对不同厂商出的rom不同导致一些功能调用有所差异，比如相机调用等。</p>
           
       
+      
     </div>
     
     <div class="article-info article-info-index">
@@ -522,6 +527,7 @@
               <p>最近公司项目在做launcher，设计过程中与系统设计到了对接，需要实现一些官方没有的功能，就需要在系统层添加一些接口，然而官方的sdk中没有这些接口，需要导入framework.jar，在eclipse或者idea中都是可以将framwork包放在android.jar前面编译的，但是在gradle中却不支持之前的做法，查了很多资料，都没有找到合适的方案，在最近有朋友提醒的情况下研究出了相关问题，需要在项目根目录下的gradle.build中配置下面信息：</p>
           
       
+      
     </div>
     
     <div class="article-info article-info-index">
@@ -583,6 +589,7 @@
           
               <p>最近程序开发，对公司设计的交互原型很是感兴趣，但那些工具开发出的交互原型真的无法忍受，就想找一款能搞真是模拟软件的交互工具，功夫不负有心人，终于找到一款非常完美的交互设计工具，相对其他工具来说学习成本较高，但是对于会代码的人来说相对简单，也很有意思，搞了一天还没完全搞定，但是还是忍不住先介绍出来让大家尝尝鲜，下面进入正题。</p>
           
+      
       
     </div>
     
@@ -650,6 +657,7 @@
               <p>说明：本篇博客只是一个知识整理，因为网上对于Android的知识介绍足够多，因此我不再写相关文章（主要是因为我写的不如人家好），所以所有文章均来自网络，不贴原文章，只提供连接，因此本文旨在减少你对相关知识的搜索过程，方便查找相关知识。</p>
           
       
+      
     </div>
     
     <div class="article-info article-info-index">
@@ -712,6 +720,7 @@
               <p>之前用Windows系统，一直用source insight查看代码非常方便，但是年前换到mac下面，虽说很多东西都方便了，但是却没有了静态代码分析工具，很幸运，前段时间找到一款比source insight软件还强大的代码静态分析工具，堪称神器–Understand。这款软件具有强大的代码静态分析功能，并且可以绘制各种流程图，不幸的是没有发现Windows版本，只看到mac版和Linux版本，因此用Windows系统的朋友抱歉了。</p>
           
       
+      
     </div>
     
     <div class="article-info article-info-index">
@@ -773,6 +782,7 @@
           
               <p>作为第一篇Android代码推荐，先给大家推荐一些很炫的特效代码，让大家增加点开发兴趣。首先介绍一个非常优秀的团队–Yalantis，他们写出了很多动画效果的代码，而且全部公开出来，我们可以直接使用，下面我提供一下连接和效果图，方便大家查找。</p>
           
+      
       
     </div>
     
@@ -841,6 +851,7 @@
 <p>上一篇 <a href="/2016/04/24/mac01/">高效mac（一）</a>介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。</p>
 </blockquote>
           
+      
       
     </div>
     
@@ -919,7 +930,7 @@
 </footer>
 
     </div>
-    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
 <script src="/js/main.js"></script>
 
     <script>
