@@ -115,7 +115,7 @@
     <link href="http://www.codemx.cn/2017/03/23/OpenArithmetic/"/>
     <id>http://www.codemx.cn/2017/03/23/OpenArithmetic/</id>
     <published>2017-03-23T01:12:59.000Z</published>
-    <updated>2017-05-24T03:52:40.000Z</updated>
+    <updated>2017-05-27T02:39:27.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文主要是收集一些大的公司开源的算法项目，以方便我们开发使用。包括：guetzli（图像算法）、brotli（压缩算法）、face_classification（人脸分类以及情感算法）。&lt;/p&gt;
@@ -143,6 +143,22 @@
 &lt;li&gt;&lt;p&gt;简介：人脸分类和情感识别算法 &lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2 id=&quot;图片压缩算法&quot;&gt;&lt;a href=&quot;#图片压缩算法&quot; class=&quot;headerlink&quot; title=&quot;图片压缩算法&quot;&gt;&lt;/a&gt;图片压缩算法&lt;/h2&gt;&lt;h3 id=&quot;【Luban】&quot;&gt;&lt;a href=&quot;#【Luban】&quot; class=&quot;headerlink&quot; title=&quot;【Luban】&quot;&gt;&lt;/a&gt;【Luban】&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/Curzibn/Luban&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Luban&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;简介：Luban，也称鲁班。该库作者一针见血的提出当前图片压缩处理的一些问题：单纯对图片进行裁切，压缩已经有很多文章介绍。但是裁切成多少，压缩成多少却很难控制好，裁切过头图片太小，质量压缩过头则显示效果太差。所以，他通过微信朋友圈发送近100张不同分辨率图片，对比原图与微信压缩后的图片逆向推算出来的压缩算法，具体的算法实现在项目中有详细说明介绍。使用上，支持普通调用方式外，也支持RxJava！&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/images/arithmetic/luban1.png&quot; alt=&quot;00&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/arithmetic/luban2.png&quot; alt=&quot;00&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;【Compressor】&quot;&gt;&lt;a href=&quot;#【Compressor】&quot; class=&quot;headerlink&quot; title=&quot;【Compressor】&quot;&gt;&lt;/a&gt;【Compressor】&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/zetbaitsu/Compressor&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Compressor&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;简介：它可以满足动则几MB的图片高保真的压缩到几十KB的效果。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/images/arithmetic/compressor1.png&quot; alt=&quot;00&quot;&gt;&lt;/p&gt;
+&lt;p&gt;API调用上和Luban一样，支持普通方式也支持RxJava。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/arithmetic/compressor2.png&quot; alt=&quot;00&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx-w240&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -166,7 +182,7 @@
     <link href="http://www.codemx.cn/2017/03/13/UICollection01/"/>
     <id>http://www.codemx.cn/2017/03/13/UICollection01/</id>
     <published>2017-03-13T14:38:41.000Z</published>
-    <updated>2017-05-24T02:04:11.000Z</updated>
+    <updated>2017-05-26T03:58:17.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。主要包括：ViewPager、RecyclerView、Toast、Notification、CoordinatorLayout、Animation、界面切换、日历、高斯模糊、菜单、图片选择器、切换主题等。&lt;/p&gt;
@@ -279,11 +295,11 @@
 &lt;h2 id=&quot;菜单&quot;&gt;&lt;a href=&quot;#菜单&quot; class=&quot;headerlink&quot; title=&quot;菜单&quot;&gt;&lt;/a&gt;菜单&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;CircleMenu&lt;br&gt;&lt;a href=&quot;https://github.com/ImangazalievM/CircleMenu&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CircleMenu&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img width=&quot;200&quot; src=&quot;/images/ui/UICollection/preview.git&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/ui/UICollection/preview.git&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;照片选择器&quot;&gt;&lt;a href=&quot;#照片选择器&quot; class=&quot;headerlink&quot; title=&quot;照片选择器&quot;&gt;&lt;/a&gt;照片选择器&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;Matisse&lt;br&gt;&lt;a href=&quot;https://github.com/zhihu/Matisse&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Matisse&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://github.com/zhihu/Matisse/raw/master/image/screenshot_zhihu.png&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/zhihu/Matisse/raw/master/image/screenshot_dracula.png&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/zhihu/Matisse/raw/master/image/screenshot_preview.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img width=&quot;200&quot; src=&quot;https://github.com/zhihu/Matisse/raw/master/image/screenshot_zhihu.png&quot;&gt;  &lt;img width=&quot;200&quot; src=&quot;https://github.com/zhihu/Matisse/raw/master/image/screenshot_dracula.png&quot;&gt;  &lt;img width=&quot;200&quot; src=&quot;https://github.com/zhihu/Matisse/raw/master/image/screenshot_preview.png&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;切换主题&quot;&gt;&lt;a href=&quot;#切换主题&quot; class=&quot;headerlink&quot; title=&quot;切换主题&quot;&gt;&lt;/a&gt;切换主题&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;aesthetic–Rxjava切换主题&lt;br&gt;&lt;a href=&quot;https://github.com/afollestad/aesthetic&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;aesthetic&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -295,7 +311,7 @@
 &lt;h2 id=&quot;其他&quot;&gt;&lt;a href=&quot;#其他&quot; class=&quot;headerlink&quot; title=&quot;其他&quot;&gt;&lt;/a&gt;其他&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;横向堆叠效果的自定义Layout&lt;br&gt;&lt;a href=&quot;https://github.com/xmuSistone/android-pile-layout&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-pile-layout&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://github.com/xmuSistone/android-pile-layout/raw/master/capture/capture1.gif&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/xmuSistone/android-pile-layout/raw/master/capture/capture2.gif&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://github.com/xmuSistone/android-pile-layout/raw/master/capture/capture1.gif&quot;&gt; &lt;img width=&quot;240&quot; src=&quot;https://github.com/xmuSistone/android-pile-layout/raw/master/capture/capture2.gif&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
