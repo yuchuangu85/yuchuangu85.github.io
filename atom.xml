@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2017-05-25T08:34:26.000Z</updated>
+  <updated>2017-06-03T07:48:42.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -14,6 +14,94 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>IntelliJ IDEA导入Android源码</title>
+    <link href="http://www.codemx.cn/2017/06/03/AndroidOS001/"/>
+    <id>http://www.codemx.cn/2017/06/03/AndroidOS001/</id>
+    <published>2017-06-03T05:38:34.000Z</published>
+    <updated>2017-06-03T07:48:42.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;我们知道在Windows系统下阅读源码利器是Source Insight，但是没有Mac版本，阅读源码一直是个问题，之前我写过关于阅读源码神器的Understand，但是如果项目过大则很慢，所以也不能用来阅读Android系统源码，在网上也查过Sublime text配置ctag，但是相对来说也是不方便，后来使用Visual Studio Code和Sublime text相差不多，最后想到用IntelliJ IDEA来阅读源码，如果直接导入则会分为很多module。最近从网上看到可以导入IntelliJ IDEA软件，所以给大家分享一下。本教程基于Mac OS X 10.12。Android系统版本为：7.1.2_r11(7.1.2最终版)。先介绍方法，后面会给出各种问题解决方案。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h4 id=&quot;生成导入idea或者eclipse需要的文件：&quot;&gt;&lt;a href=&quot;#生成导入idea或者eclipse需要的文件：&quot; class=&quot;headerlink&quot; title=&quot;生成导入idea或者eclipse需要的文件：&quot;&gt;&lt;/a&gt;生成导入idea或者eclipse需要的文件：&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;1.首先是idea和eclipse导入项目需要的文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;.classpath (Eclipse)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;android.ipr (IntelliJ / Android Studio)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;android.iml (IntelliJ / Android Studio)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;1.修改MacOS sdk 版本：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;路径Android-7.1.2_r11/build/core/combo/mac_version.mk，加上你现在系统的版本：&lt;/p&gt;
+ &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;mac_sdk_versions_supported :=  10.8 10.9 10.10 10.11 10.12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;2.生成idegen.jar过程：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;命令：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ source build/envsetup.sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;执行结果：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;including device/asus/fugu/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/generic/mini-emulator-arm64/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/generic/mini-emulator-armv7-a-neon/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/generic/mini-emulator-mips/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/generic/mini-emulator-mips64/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/generic/mini-emulator-x86/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/generic/mini-emulator-x86_64/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/google/dragon/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/google/marlin/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/htc/flounder/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/huawei/angler/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/lge/bullhead/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/linaro/hikey/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including device/moto/shamu/vendorsetup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;including sdk/bash_completion/adb.bash&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;命令：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ mmm development/tools/idegen&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;执行结果：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;date: 1496452336: No such file or directory&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Starting build with ninja&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ninja: Entering directory `.&amp;apos;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[ 25% 1/4] host Java: idegen (out/host/com...VA_LIBRARIES/idegen_intermediates/classes)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;注: 某些输入文件使用或覆盖了已过时的 API。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[100% 4/4] Install: out/host/darwin-x86/framework/idegen.jar&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#### make completed successfully (18 seconds) ####&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;命令：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ development/tools/idegen/idegen.sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;执行结果：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;bash-3.2$ development/tools/idegen/idegen.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Read excludes: 4ms&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Traversed tree: 44148ms&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;此时会在根目录生成两个文件：android.ipr和android.iml，然后打开idea软件，执行下面操作：&lt;br&gt;&lt;img src=&quot;/images/android/idea/idea1.png&quot; alt=&quot;idea1&quot;&gt;&lt;br&gt;接着打开如下界面，找到Android源码位置，然后找到生成的android.iml文件，鼠标选中，然后点击open即可。&lt;br&gt;&lt;img src=&quot;/images/android/idea/idea2.png&quot; alt=&quot;idea2&quot;&gt;&lt;/p&gt;
+&lt;p&gt;注：mmm命令要先执行第一条命令。&lt;/p&gt;
+&lt;h4 id=&quot;生成文件出现的问题：&quot;&gt;&lt;a href=&quot;#生成文件出现的问题：&quot; class=&quot;headerlink&quot; title=&quot;生成文件出现的问题：&quot;&gt;&lt;/a&gt;生成文件出现的问题：&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;1.在执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ source build/envsetup.sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;命令时会遇到下面问题：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;build/envsetup.sh:630: command not found: complete&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;WARNING: Only bash is supported, use of other shell would lead to erroneous results&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;警告需要再bash下执行命令，我用的是zsh，临时切换回bash,直接输入bash：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ bash&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;如果不切换回bash输入&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ mmm development/tools/idegen&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;命令则会报下面错误：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Couldn&amp;apos;t locate the directory development/tools/idegen&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;2.由于生成该文件需要MacOS SDK，所以需要安装Xcode,最新版Xcode里面的sdk是10.12（与最新系统一样），而在Android源码里面最高到10.11，所以不支持，需要修改源码中的对sdk的支持：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;打开路径Android-7.1.2_r11/build/core/combo/mac_version.mk，加上你现在系统的版本：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;mac_sdk_versions_supported :=  10.8 10.9 10.10 10.11 10.12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;其实这个方法也不能解决，因为后面的编译中还是不支持10.12，由于对里面不熟，所以采用了另一个方法，在Xcode中添加sdk，见下面方法。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;3.问题：不支持Mac OS X 10.12，添加sdk&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;system/core/libcutils/threads.c:38:10: error: &amp;apos;syscall&amp;apos; is deprecated: first deprecated in OS X 10.12 - syscall(2) is unsupported; please switch to a supported interface. For SYS_kdebug_trace use kdebug_signpost(). [-Werror,-Wdeprecated-declarations]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  return syscall(SYS_thread_selfid);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         ^&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/include/unistd.h:733:6: note: &amp;apos;syscall&amp;apos; has been explicitly marked deprecated here&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int      syscall(int, ...);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         ^&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1 error generated.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ninja: build stopped: subcommand failed.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;make: *** [ninja_wrapper] Error 1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;解决办法：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Here is how I fixed it:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Download earlier Mac OSX SDK(10.11 worked for me) from&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;https://github.com/phracker/MacOSX-SDKs/releases&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Unzip and copy to /Applications/XCode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;也可以到下面地址下载：&lt;/p&gt;
+&lt;p&gt;链接: &lt;a href=&quot;https://pan.baidu.com/s/1sl4lI49&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://pan.baidu.com/s/1sl4lI49&lt;/a&gt; 密码: mxzx&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;4.Mac默认系统不区分大小问题：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;报错：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Checking build tools versions...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:90: ************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:91: You are building on a case-insensitive filesystem.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:92: Please move your source tree to a case-sensitive filesystem.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:93: ************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:94: *** Case-insensitive filesystems not supported. Stop.&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;此时你可以建一个磁盘镜像，步骤如下：&lt;br&gt;打开磁盘工具–&amp;gt;文件–&amp;gt;新建映像–&amp;gt;空白映像–&amp;gt;弹出如下界面，填写下面框内的信息，格式选择区分大小写格式，点击存储，然后会在你的位置文件夹内生成一个Android.dmg文件，双击即可安装，然后将Android源码考入即可操作。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/android/idea/idea3.png&quot; alt=&quot;idea3&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
+&lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
+&lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;我们知道在Windows系统下阅读源码利器是Source Insight，但是没有Mac版本，阅读源码一直是个问题，之前我写过关于阅读源码神器的Understand，但是如果项目过大则很慢，所以也不能用来阅读Android系统源码，在网上也查过Sublime text配置ctag，但是相对来说也是不方便，后来使用Visual Studio Code和Sublime text相差不多，最后想到用IntelliJ IDEA来阅读源码，如果直接导入则会分为很多module。最近从网上看到可以导入IntelliJ IDEA软件，所以给大家分享一下。本教程基于Mac OS X 10.12。Android系统版本为：7.1.2_r11(7.1.2最终版)。先介绍方法，后面会给出各种问题解决方案。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="AndroidOS" scheme="http://www.codemx.cn/tags/AndroidOS/"/>
+    
+  </entry>
   
   <entry>
     <title>墨香带你学Launcher之（八）- 加载Icon、设置壁纸</title>
@@ -2013,51 +2101,6 @@
     
     
       <category term="Android" scheme="http://www.codemx.cn/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>高效Mac（二）</title>
-    <link href="http://www.codemx.cn/2016/04/24/2016-04-26.mac02/"/>
-    <id>http://www.codemx.cn/2016/04/24/2016-04-26.mac02/</id>
-    <published>2016-04-24T07:23:24.000Z</published>
-    <updated>2016-12-16T02:26:52.000Z</updated>
-    
-    <content type="html">&lt;blockquote&gt;
-&lt;p&gt;上一篇 &lt;a href=&quot;/2016/04/24/mac01/&quot;&gt;高效mac（一）&lt;/a&gt;介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h3 id=&quot;Go2Shell工具&quot;&gt;&lt;a href=&quot;#Go2Shell工具&quot; class=&quot;headerlink&quot; title=&quot;Go2Shell工具&quot;&gt;&lt;/a&gt;Go2Shell工具&lt;/h3&gt;&lt;p&gt;在Windows电脑中我们执行git命令只需要在相关项目的文件夹下面右键打开git即可，但是在mac下没有右键打开，如果你想快速打开又不需要输入命令，那你就需要一个工具，就是Go2Shell工具，这个工具现已更新到3的版本了，但是打开会到设置界面，而不是打开命令工具到相关文件夹，因此建议到Appstore下载老的版本，下载安装完成会让你设置默认启动shell工具，可以选择系统自带的Terminal或者自己安装iTerm工具，配置完成之后就可以用Finder工具打开相关文件夹然后点击Go2Shell图标即可启动命令工具。&lt;/p&gt;
-&lt;p&gt;为了方便也可以将Go2Shell工具图标放置到Finder上面，操作为，按住commend键，用鼠标拖动Go2Shell图标拖动到Finder上方即可，删除也是相关操作。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/mac/mac02/mac_go2shell.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;!-- more --&gt;
-&lt;h3 id=&quot;Manico工具&quot;&gt;&lt;a href=&quot;#Manico工具&quot; class=&quot;headerlink&quot; title=&quot;Manico工具&quot;&gt;&lt;/a&gt;Manico工具&lt;/h3&gt;&lt;p&gt;这是一款快速切换App工具，你可以设置要切换的应用，比如Dock栏的应用，或者自定义的应用，不需要再按command + Tab键，只需要设置一个快速显示键，长按会在屏幕出现应用列表，按相依编号即可快速切换:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/mac/mac02/mac_manico.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Dash工具&quot;&gt;&lt;a href=&quot;#Dash工具&quot; class=&quot;headerlink&quot; title=&quot;Dash工具&quot;&gt;&lt;/a&gt;Dash工具&lt;/h3&gt;&lt;p&gt;Dash工具是开发者阅读文档的终极工具，尤其国内，使用该工具再也不用担心不能翻墙了，该工具基本包含开发的所有开发接口文档，开发的介绍文档，以及Stack Overflow的问题等，先来看图：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/mac/mac02/mac_dash.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;上图为dash软件的主界面，左侧为你已经下载的语言的列表,右侧为展示界面&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/mac/mac02/mac_dash_pre.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;上图为软件的Preference中的download选项界面，你可以在该界面选择你要下载的语言，可直接下载所有语言而不需要翻墙，&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/mac/mac02/mac_dash_android.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;该界面为Android开发文档界面，里面有详细的Api文档及谷歌官网Android相关的所有介绍文档，该软件对于Android开发最好的优点是不需要翻墙就能查看，&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/mac/mac02/mac_dash_search.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;在该软件中你可以在左上角输入你要搜索的关键词进行快速搜索。&lt;/p&gt;
-&lt;p&gt;该软件分为免费版本和收费版本，免费版本就是每次点开相关文档需要等待8秒钟，而收费则不需要，收费版本为198人民币，对于想快速开发的来说这个价钱还是相当低得，你也可以省去翻墙的麻烦，最大缺点是该软件只有mac版本没有window版本。&lt;/p&gt;
-&lt;p&gt;下一篇我会介绍mac终极搜索工具Alfred工具和Source Insight工具的mac替代工具。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;上一篇 &lt;a href=&quot;/2016/04/24/mac01/&quot;&gt;高效mac（一）&lt;/a&gt;介绍了mac中配置终极命令zsh、iTerm、brewhome和git工具，本篇针对这些工具以及其他操作继续介绍，帮你快速开发。&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-      <category term="高效Mac" scheme="http://www.codemx.cn/categories/%E9%AB%98%E6%95%88Mac/"/>
-    
-    
-      <category term="高效Mac" scheme="http://www.codemx.cn/tags/%E9%AB%98%E6%95%88Mac/"/>
     
   </entry>
   
