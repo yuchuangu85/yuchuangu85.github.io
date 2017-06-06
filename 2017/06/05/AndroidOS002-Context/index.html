@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android系统源码分析--Context | 墨香博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1最终版代码）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android系统源码分析--Context">
+<meta property="og:url" content="http://www.codemx.cn/2017/06/05/AndroidOS002-Context/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1最终版代码）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。">
+<meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/002Context/android.png">
+<meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/002Context/Context.jpg">
+<meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
+<meta property="og:updated_time" content="2017-06-06T10:12:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android系统源码分析--Context">
+<meta name="twitter:description" content="Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1最终版代码）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。">
+<meta name="twitter:image" content="http://www.codemx.cn/images/AndroidOS/002Context/android.png">
+  
+    <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">墨香</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">用代码实现自己的梦想。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/Home">博客首页</a></li>
+                        
+                            <li><a href="/archives">博客归档</a></li>
+                        
+                            <li><a href="/read">静心阅读</a></li>
+                        
+                            <li><a href="/about">雁过留声</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                            
+                                <a class="fl weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                            
+                                <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 12.5px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 17.5px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 15px;">高效Mac</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.trinea.cn/">Trinea</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.devilwwj.com/">小巫</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.dreamxuwj.com/">梦痕</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jeffjade.com/">晚晴幽草轩</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://wangkuiwu.github.io">wangkuiwu</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/harvic880925/article/list/3">启航</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://hujiaweibujidao.github.io">潇涧</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">因为梦想来到深圳，因为兴趣选择开发，人生的航程中没有一帆风顺，只有努力加坚持才会成功。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">墨香</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">墨香</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">用代码实现自己的梦想。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/Home">博客首页</a></li>
+                
+                    <li><a href="/archives">博客归档</a></li>
+                
+                    <li><a href="/read">静心阅读</a></li>
+                
+                    <li><a href="/about">雁过留声</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                    
+                        <a class="weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-AndroidOS002-Context" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/05/AndroidOS002-Context/" class="article-date">
+      <time datetime="2017-06-05T10:00:19.000Z" itemprop="datePublished">2017-06-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android系统源码分析--Context
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。<br>声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1最终版代码）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。</p>
+</blockquote>
+<a id="more"></a>
+<p>在开始介绍Context前我们先看一张Android系统框架层的图：</p>
+<p><img src="/images/AndroidOS/002Context/android.png" alt="android-w500"></p>
+<p>从上面图可以看到Android系统主要分为五层：应用层，应用框架层，Native库和运行环境，硬件抽象层和Linux内核层。本章不重点讲Android系统框架，只是开始给大家展示一下，有个了解，我们先从Framework层开始学习，首先学习Context，下面进入正题。</p>
+<h2 id="概述："><a href="#概述：" class="headerlink" title="概述："></a>概述：</h2><p>做Android开发的朋友在开发过程中时刻用到Context，那么Context到底是什么，到底是做什么的我们详细分析一下。源码中解释Context是一个面向应用全局信息的接口，那么我看看哪些信息与Context有关：</p>
+<ul>
+<li>获取AssetManager：getAssets();</li>
+<li>获取Resources：getResources();</li>
+<li>获取PackageManager：getPackageManager();</li>
+<li>获取ContentResolver：getContentResolver();</li>
+<li>获取主线程Looper：getMainLooper();</li>
+<li>获取Application的Context：getApplicationContext();</li>
+<li>获取资源文件：getText，getString，getColor，getDrawable，getColorStateList;</li>
+<li>设置主题，获取主题资源id：setTheme，getThemeResId;</li>
+<li>获取样式属性TypedArray：obtainStyledAttributes();</li>
+<li>获取类加载器ClassLoader：getClassLoader();</li>
+<li>获取应用信息对象ApplicationInfo：getApplicationInfo();</li>
+<li>获取SharedPreferences：getSharedPreferences();</li>
+<li>打开文件FileInputStream：openFileInput();</li>
+<li>删除文件：deleteFile();</li>
+<li>获取文件File：getFileStreamPath();</li>
+<li>打开或者创建数据库：openOrCreateDatabase();</li>
+<li>移除或者删除数据库：moveDatabaseFrom(),deleteDatabase();</li>
+<li>启动Activity：startActivity(),startActivityAsUser(),startActivityForResult(),startActivities();</li>
+<li>注册、发送、注销广播：registerReceiver(),sendBroadcast(),sendOrderedBroadcast(),unregisterReceiver();</li>
+<li>启动、绑定、解除绑定、停止服务：startService(),bindService(),unbindService(),stopService();</li>
+<li>获取系统服务：getSystemService();</li>
+<li>检查权限(Android 6.0以上)：checkPermission();</li>
+<li>根据应用名创建Context：createPackageContext();</li>
+<li>根据应用信息创建Context：createApplicationContext();</li>
+<li>获取显示信息对象Display：getDisplay();</li>
+</ul>
+<p>主要的信息关联就是这些，还有一些不常用的或者废弃的没有再展示，有兴趣自己看看源码，官方解释很清晰。上面有个获取系统服务，我们下面把所有的系统服务列举一下(前面是服务，后面是获取服务的名称)：</p>
+<ul>
+<li>android.view.WindowManager–#WINDOW_SERVICE—————————–窗口管理</li>
+<li>android.view.LayoutInflater–#LAYOUT_INFLATER_SERVICE——————-布局加载器</li>
+<li>android.app.ActivityManager–#ACTIVITY_SERVICE————————–Activity管理器</li>
+<li>android.os.PowerManager–#POWER_SERVICE———————————电源管理</li>
+<li>android.app.AlarmManager–#ALARM_SERVICE——————————–提醒管理</li>
+<li>android.app.NotificationManager–#NOTIFICATION_SERVICE——————通知管理</li>
+<li>android.app.KeyguardManager–#KEYGUARD_SERVICE————————–键盘管理</li>
+<li>android.location.LocationManager–#LOCATION_SERVICE———————定位管理</li>
+<li>android.app.SearchManager–#SEARCH_SERVICE——————————搜索管理</li>
+<li>android.hardware.SensorManager–#SENSOR_SERVICE————————-传感器管理</li>
+<li>android.os.storage.StorageManager–#STORAGE_SERVICE———————存储管理</li>
+<li>android.os.Vibrator–#VIBRATOR_SERVICE———————————-震动管理</li>
+<li>android.net.ConnectivityManager–#CONNECTIVITY_SERVICE——————网络管理</li>
+<li>android.net.wifi.WifiManager–#WIFI_SERVICE—————————–Wifi管理</li>
+<li>android.media.AudioManager–#AUDIO_SERVICE——————————音频管理</li>
+<li>android.media.MediaRouter–#MEDIA_ROUTER_SERVICE————————媒体路由器</li>
+<li>android.telephony.TelephonyManager–#TELEPHONY_SERVICE——————电话管理</li>
+<li>android.telephony.SubscriptionManager–#TELEPHONY_SUBSCRIPTION_SERVICE–双卡信息管理</li>
+<li>android.telephony.CarrierConfigManager–#CARRIER_CONFIG_SERVICE———电话配置信息管理</li>
+<li>android.view.inputmethod.InputMethodManager–#INPUT_METHOD_SERVICE——输入法管理</li>
+<li>android.app.UiModeManager–#UI_MODE_SERVICE—————————–UI模式管理</li>
+<li>android.app.DownloadManager–#DOWNLOAD_SERVICE————————–下载管理</li>
+<li>android.os.BatteryManager–#BATTERY_SERVICE—————————–电池管理</li>
+<li>android.app.job.JobScheduler–#JOB_SCHEDULER_SERVICE——————–任务执行者</li>
+<li>android.app.usage.NetworkStatsManager–#NETWORK_STATS_SERVICE———–网络状态管理</li>
+<li>android.os.HardwarePropertiesManager–#HARDWARE_PROPERTIES_SERVICE——硬件属性管理</li>
+</ul>
+<p>上面这些服务，你可以通过Context.getSystemService(Context.名称)直接获取，然后进行操作。</p>
+<h2 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h2><p>首先看一下类图关系：</p>
+<p><img src="/images/AndroidOS/002Context/Context.jpg" alt="Context"></p>
+<h4 id="讲解："><a href="#讲解：" class="headerlink" title="讲解："></a>讲解：</h4><p>1.ContextImpl、ContextWrapper与Context的关系</p>
+<p>Context是一个静态类，ContextImpl和ContextWrapper都继承了Context，也就是都实现了Context的静态方法，但是，从代码中我们看到ContextImpl是Context静态方法的详细实现类，而ContextWrapper是调用了mBase对应的方法，而mBase是Context，从代码跟踪看mBase其实就是ContextImpl，因此ContextWrapper最终是调用ContextImpl中的实现方法。也就是说我们调用的Context中的任何方法都是在ContextImpl中处理的，因此我们在跟踪代码时只需要去ContextImpl中查看对应方法处理就好了。上面只是介绍，下面我们根据具体代码来分析一下到底怎么实现的。</p>
+<p>从ContextWrapper代码中我们可以看到(不贴全部代码了)，只有构造函数、attachBaseContext方法以及getBaseContext方法不是复写方法，其他方方法均为复写方法：</p>
+<p>【ContextWrapper.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Context mBase;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ContextWrapper</span><span class="params">(Context base)</span> </span>&#123;</span><br><span class="line">    mBase = base;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Set the base context for this ContextWrapper.  All calls will then be</span><br><span class="line"> * delegated to the base context.  Throws</span><br><span class="line"> * IllegalStateException if a base context has already been set.</span><br><span class="line"> * </span><br><span class="line"> * <span class="doctag">@param</span> base The new base context for this wrapper.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">attachBaseContext</span><span class="params">(Context base)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mBase != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Base context already set"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    mBase = base;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * <span class="doctag">@return</span> the base context as set by the constructor or setBaseContext</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Context <span class="title">getBaseContext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mBase;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以看到只有构造函数和attachBaseContext方法传入了mBase，那么从attachBaseContext方法中我们看到如果mBase存在又调用了该方法就会抛出异常，因此我们知道如果调用了该方法，那么构造函数不能传入这个值，我们看一下哪些地方调用了这个attachBaseContext方法，由代码可以看到Application、activity和service均调用了这个方法，首先我们来看Application中的代码：</p>
+<p>【Application.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * <span class="doctag">@hide</span></span><br><span class="line"> */</span></span><br><span class="line"><span class="comment">/* package */</span> <span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">attach</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    attachBaseContext(context);</span><br><span class="line">    mLoadedApk = ContextImpl.getImpl(context).mPackageInfo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Application中的attach方法中调用了attachBaseContext方法，参数context也是通过attach方法传入的，那么我们再跟踪这个attach方法：</p>
+<p>是在Instrumentation类中调用的：</p>
+<p>【Instrumentation.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">public</span> Application <span class="title">newApplication</span><span class="params">(Class&lt;?&gt; clazz, Context context)</span></span><br><span class="line">        <span class="keyword">throws</span> InstantiationException, IllegalAccessException, </span><br><span class="line">        ClassNotFoundException </span>&#123;</span><br><span class="line">    Application app = (Application)clazz.newInstance();</span><br><span class="line">    app.attach(context);</span><br><span class="line">    <span class="keyword">return</span> app;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面方法调用地方是：</p>
+<p>【Instrumentation.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Application <span class="title">newApplication</span><span class="params">(ClassLoader cl, String className, Context context)</span></span><br><span class="line">        <span class="keyword">throws</span> InstantiationException, IllegalAccessException, </span><br><span class="line">        ClassNotFoundException </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> newApplication(cl.loadClass(className), context);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码可以看到是在new Application时调用的，那么我们接着看哪里调用了这个方法：</p>
+<p>【LoadedApk.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Application <span class="title">makeApplication</span><span class="params">(<span class="keyword">boolean</span> forceDefaultAppClass,</span><br><span class="line">            Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ...</span><br><span class="line">            ContextImpl appContext = ContextImpl.createAppContext(mActivityThread, <span class="keyword">this</span>);</span><br><span class="line">            app = mActivityThread.mInstrumentation.newApplication(</span><br><span class="line">                    cl, appClass, appContext);</span><br><span class="line">            appContext.setOuterContext(app);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">return</span> app;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>上面方法是在LoadedApk类中调用的，我们先不分析这个类，后续我们会详细讲这个过程，我们先分析上面这段代码，我们看到这里面通过调用ContextImpl.createAppContext方法来创建ContextImpl，然后将参数传入newApplication方法，因此我们看到上面的mBase就是ContextImpl，那么还有Activity和Service.我们先分析Service，因为从关系图可以看到Service和Application都是直接继承ContextWrapper，而Activity则是继承ContextThemeWrapper，ContextThemeWrapper继承ContextWrapper。</p>
+<p>【Service.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">attach</span><span class="params">(</span><br><span class="line">            Context context,</span><br><span class="line">            ActivityThread thread, String className, IBinder token,</span><br><span class="line">            Application application, Object activityManager)</span> </span>&#123;</span><br><span class="line">        attachBaseContext(context);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>attachBaseContext方法是在Service中的attach方法中调用的，接着看attach方法的调用：</p>
+<p>【ActivityThread.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleCreateService</span><span class="params">(CreateServiceData data)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">            ContextImpl context = ContextImpl.createAppContext(<span class="keyword">this</span>, packageInfo);</span><br><span class="line">            context.setOuterContext(service);</span><br><span class="line"></span><br><span class="line">            Application app = packageInfo.makeApplication(<span class="keyword">false</span>, mInstrumentation);</span><br><span class="line">            service.attach(context, <span class="keyword">this</span>, data.info.name, data.token, app,</span><br><span class="line">                    ActivityManagerNative.getDefault());</span><br><span class="line">            service.onCreate();</span><br><span class="line">         ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在这里我们看到传入的context就是ContextImpl，从而得到验证，下面我们还看到service.onCreate方法，我们看到了先调用attach方法然后调用onCreate方法。</p>
+<p>最后我们看一下Activity，从上面关系图我们看到，Activity不是直接继承ContextWrapper，而是继承的ContextThemeWrapper，ContextThemeWrapper继承ContextWrapper。从名字我们可以看到ContextThemeWrapper包含主题的信息，其实不难理解，四大组件只有Activity是带界面的，其他都是没有界面的，因此Activity需要主题信息来显示不同的界面效果。在ContextThemeWrapper中我们看到复写了attachBaseContext方法，方法中只有一行代码就是调用父类的attachBaseContext方法。如下所示：</p>
+<p>【ContextThemeWrapper.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">attachBaseContext</span><span class="params">(Context newBase)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.attachBaseContext(newBase);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Activity中只有一个方法中调用了该方法，看代码：</p>
+<p>【Activity.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">attach</span><span class="params">(Context context, ActivityThread aThread,</span><br><span class="line">            Instrumentation instr, IBinder token, <span class="keyword">int</span> ident,</span><br><span class="line">            Application application, Intent intent, ActivityInfo info,</span><br><span class="line">            CharSequence title, Activity parent, String id,</span><br><span class="line">            NonConfigurationInstances lastNonConfigurationInstances,</span><br><span class="line">            Configuration config, String referrer, IVoiceInteractor voiceInteractor,</span><br><span class="line">            Window window)</span> </span>&#123;</span><br><span class="line">        attachBaseContext(context);</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们接着追踪attach方法，看代码：</p>
+<p>【ActivitThread.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Activity <span class="title">performLaunchActivity</span><span class="params">(ActivityClientRecord r, Intent customIntent)</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">       </span><br><span class="line">           <span class="keyword">if</span> (activity != <span class="keyword">null</span>) &#123;</span><br><span class="line">               Context appContext = createBaseContextForActivity(r, activity);</span><br><span class="line">               ...</span><br><span class="line">               activity.attach(appContext, <span class="keyword">this</span>, getInstrumentation(), r.token,</span><br><span class="line">                       r.ident, app, r.intent, r.activityInfo, title, r.parent,</span><br><span class="line">                       r.embeddedID, r.lastNonConfigurationInstances, config,</span><br><span class="line">                       r.referrer, r.voiceInteractor, window);</span><br><span class="line"></span><br><span class="line">               ...</span><br><span class="line">           &#125;</span><br><span class="line">           ...</span><br><span class="line">       <span class="keyword">return</span> activity;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>方法performLaunchActivity其实是启动Activity的方法，这里我们暂时不讲，后续我们会详细讲解，我们先理清楚Context，从上面代码我们可以看到此处传入的Context是通过createBaseContextForActivity方法创建的，那么我们看一下这个方法：</p>
+<p>【ActivitThread.java】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Context <span class="title">createBaseContextForActivity</span><span class="params">(ActivityClientRecord r, <span class="keyword">final</span> Activity activity)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        ContextImpl appContext = ContextImpl.createActivityContext(</span><br><span class="line">                <span class="keyword">this</span>, r.packageInfo, r.token, displayId, r.overrideConfig);</span><br><span class="line">        appContext.setOuterContext(activity);</span><br><span class="line">        Context baseContext = appContext;</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">return</span> baseContext;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>从上面代码我肯可以清楚的看到baseContext是appContext赋值的，而appContext就是ContextImpl，因此Activity中的Context也是ContextImpl。到现在我们已经搞清楚了ContextImpl、Context、ContextWrapper、ContextThemeWrapper以及Application、Service和Activity的关系，那么以后看源码我们就知道与Context相关的实现方法都在ContextImpl类中，如果需要看详细实现过程只需要去ContextImpl类中找到相应方法开始跟踪即可。</p>
+<p>从下一章我们开始讲解四大组件的启动过程。</p>
+<h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
+<p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
+<p>注：本文原创，转载请注明出处，多谢。</p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，多少你说算</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
+        <p><span>发布时间:</span>2017年06月05日 - 18时00分</p>
+        <p><span>最后更新:</span>2017年06月06日 - 18时12分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/05/AndroidOS002-Context/" title="Android系统源码分析--Context">http://www.codemx.cn/2017/06/05/AndroidOS002-Context/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/06/05/AndroidOS002-Context/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2017/06/03/AndroidOS001/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">IntelliJ IDEA导入Android源码</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述："><span class="toc-number">1.</span> <span class="toc-text">概述：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类图"><span class="toc-number">2.</span> <span class="toc-text">类图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#讲解："><span class="toc-number">2.0.1.</span> <span class="toc-text">讲解：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注"><span class="toc-number">3.</span> <span class="toc-text">注</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <section class="youyan" id="comments">
+<!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="MTAyMC8yODgyOS81Mzk5">
+	<script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+	</script>
+<noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+</section>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/06/03/AndroidOS001/" title="下一篇: IntelliJ IDEA导入Android源码">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/AndroidOS001/">IntelliJ IDEA导入Android源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/19/Launcher08/">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/OpenArithmetic/">开源算法集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/UICollection01/">常用UI框架汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Launcher07/">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）- 拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）- Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）- 数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）- 概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android、iOS、Mac开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 墨香
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站访问量: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页访问量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?[object Object]";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

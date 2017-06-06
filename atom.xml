@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2017-06-03T07:48:42.000Z</updated>
+  <updated>2017-06-06T10:12:17.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -16,11 +16,142 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Android系统源码分析--Context</title>
+    <link href="http://www.codemx.cn/2017/06/05/AndroidOS002-Context/"/>
+    <id>http://www.codemx.cn/2017/06/05/AndroidOS002-Context/</id>
+    <published>2017-06-05T10:00:19.000Z</published>
+    <updated>2017-06-06T10:12:17.000Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。&lt;br&gt;声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1最终版代码）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;在开始介绍Context前我们先看一张Android系统框架层的图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/AndroidOS/002Context/android.png&quot; alt=&quot;android-w500&quot;&gt;&lt;/p&gt;
+&lt;p&gt;从上面图可以看到Android系统主要分为五层：应用层，应用框架层，Native库和运行环境，硬件抽象层和Linux内核层。本章不重点讲Android系统框架，只是开始给大家展示一下，有个了解，我们先从Framework层开始学习，首先学习Context，下面进入正题。&lt;/p&gt;
+&lt;h2 id=&quot;概述：&quot;&gt;&lt;a href=&quot;#概述：&quot; class=&quot;headerlink&quot; title=&quot;概述：&quot;&gt;&lt;/a&gt;概述：&lt;/h2&gt;&lt;p&gt;做Android开发的朋友在开发过程中时刻用到Context，那么Context到底是什么，到底是做什么的我们详细分析一下。源码中解释Context是一个面向应用全局信息的接口，那么我看看哪些信息与Context有关：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;获取AssetManager：getAssets();&lt;/li&gt;
+&lt;li&gt;获取Resources：getResources();&lt;/li&gt;
+&lt;li&gt;获取PackageManager：getPackageManager();&lt;/li&gt;
+&lt;li&gt;获取ContentResolver：getContentResolver();&lt;/li&gt;
+&lt;li&gt;获取主线程Looper：getMainLooper();&lt;/li&gt;
+&lt;li&gt;获取Application的Context：getApplicationContext();&lt;/li&gt;
+&lt;li&gt;获取资源文件：getText，getString，getColor，getDrawable，getColorStateList;&lt;/li&gt;
+&lt;li&gt;设置主题，获取主题资源id：setTheme，getThemeResId;&lt;/li&gt;
+&lt;li&gt;获取样式属性TypedArray：obtainStyledAttributes();&lt;/li&gt;
+&lt;li&gt;获取类加载器ClassLoader：getClassLoader();&lt;/li&gt;
+&lt;li&gt;获取应用信息对象ApplicationInfo：getApplicationInfo();&lt;/li&gt;
+&lt;li&gt;获取SharedPreferences：getSharedPreferences();&lt;/li&gt;
+&lt;li&gt;打开文件FileInputStream：openFileInput();&lt;/li&gt;
+&lt;li&gt;删除文件：deleteFile();&lt;/li&gt;
+&lt;li&gt;获取文件File：getFileStreamPath();&lt;/li&gt;
+&lt;li&gt;打开或者创建数据库：openOrCreateDatabase();&lt;/li&gt;
+&lt;li&gt;移除或者删除数据库：moveDatabaseFrom(),deleteDatabase();&lt;/li&gt;
+&lt;li&gt;启动Activity：startActivity(),startActivityAsUser(),startActivityForResult(),startActivities();&lt;/li&gt;
+&lt;li&gt;注册、发送、注销广播：registerReceiver(),sendBroadcast(),sendOrderedBroadcast(),unregisterReceiver();&lt;/li&gt;
+&lt;li&gt;启动、绑定、解除绑定、停止服务：startService(),bindService(),unbindService(),stopService();&lt;/li&gt;
+&lt;li&gt;获取系统服务：getSystemService();&lt;/li&gt;
+&lt;li&gt;检查权限(Android 6.0以上)：checkPermission();&lt;/li&gt;
+&lt;li&gt;根据应用名创建Context：createPackageContext();&lt;/li&gt;
+&lt;li&gt;根据应用信息创建Context：createApplicationContext();&lt;/li&gt;
+&lt;li&gt;获取显示信息对象Display：getDisplay();&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主要的信息关联就是这些，还有一些不常用的或者废弃的没有再展示，有兴趣自己看看源码，官方解释很清晰。上面有个获取系统服务，我们下面把所有的系统服务列举一下(前面是服务，后面是获取服务的名称)：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;android.view.WindowManager–#WINDOW_SERVICE—————————–窗口管理&lt;/li&gt;
+&lt;li&gt;android.view.LayoutInflater–#LAYOUT_INFLATER_SERVICE——————-布局加载器&lt;/li&gt;
+&lt;li&gt;android.app.ActivityManager–#ACTIVITY_SERVICE————————–Activity管理器&lt;/li&gt;
+&lt;li&gt;android.os.PowerManager–#POWER_SERVICE———————————电源管理&lt;/li&gt;
+&lt;li&gt;android.app.AlarmManager–#ALARM_SERVICE——————————–提醒管理&lt;/li&gt;
+&lt;li&gt;android.app.NotificationManager–#NOTIFICATION_SERVICE——————通知管理&lt;/li&gt;
+&lt;li&gt;android.app.KeyguardManager–#KEYGUARD_SERVICE————————–键盘管理&lt;/li&gt;
+&lt;li&gt;android.location.LocationManager–#LOCATION_SERVICE———————定位管理&lt;/li&gt;
+&lt;li&gt;android.app.SearchManager–#SEARCH_SERVICE——————————搜索管理&lt;/li&gt;
+&lt;li&gt;android.hardware.SensorManager–#SENSOR_SERVICE————————-传感器管理&lt;/li&gt;
+&lt;li&gt;android.os.storage.StorageManager–#STORAGE_SERVICE———————存储管理&lt;/li&gt;
+&lt;li&gt;android.os.Vibrator–#VIBRATOR_SERVICE———————————-震动管理&lt;/li&gt;
+&lt;li&gt;android.net.ConnectivityManager–#CONNECTIVITY_SERVICE——————网络管理&lt;/li&gt;
+&lt;li&gt;android.net.wifi.WifiManager–#WIFI_SERVICE—————————–Wifi管理&lt;/li&gt;
+&lt;li&gt;android.media.AudioManager–#AUDIO_SERVICE——————————音频管理&lt;/li&gt;
+&lt;li&gt;android.media.MediaRouter–#MEDIA_ROUTER_SERVICE————————媒体路由器&lt;/li&gt;
+&lt;li&gt;android.telephony.TelephonyManager–#TELEPHONY_SERVICE——————电话管理&lt;/li&gt;
+&lt;li&gt;android.telephony.SubscriptionManager–#TELEPHONY_SUBSCRIPTION_SERVICE–双卡信息管理&lt;/li&gt;
+&lt;li&gt;android.telephony.CarrierConfigManager–#CARRIER_CONFIG_SERVICE———电话配置信息管理&lt;/li&gt;
+&lt;li&gt;android.view.inputmethod.InputMethodManager–#INPUT_METHOD_SERVICE——输入法管理&lt;/li&gt;
+&lt;li&gt;android.app.UiModeManager–#UI_MODE_SERVICE—————————–UI模式管理&lt;/li&gt;
+&lt;li&gt;android.app.DownloadManager–#DOWNLOAD_SERVICE————————–下载管理&lt;/li&gt;
+&lt;li&gt;android.os.BatteryManager–#BATTERY_SERVICE—————————–电池管理&lt;/li&gt;
+&lt;li&gt;android.app.job.JobScheduler–#JOB_SCHEDULER_SERVICE——————–任务执行者&lt;/li&gt;
+&lt;li&gt;android.app.usage.NetworkStatsManager–#NETWORK_STATS_SERVICE———–网络状态管理&lt;/li&gt;
+&lt;li&gt;android.os.HardwarePropertiesManager–#HARDWARE_PROPERTIES_SERVICE——硬件属性管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上面这些服务，你可以通过Context.getSystemService(Context.名称)直接获取，然后进行操作。&lt;/p&gt;
+&lt;h2 id=&quot;类图&quot;&gt;&lt;a href=&quot;#类图&quot; class=&quot;headerlink&quot; title=&quot;类图&quot;&gt;&lt;/a&gt;类图&lt;/h2&gt;&lt;p&gt;首先看一下类图关系：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/AndroidOS/002Context/Context.jpg&quot; alt=&quot;Context&quot;&gt;&lt;/p&gt;
+&lt;h4 id=&quot;讲解：&quot;&gt;&lt;a href=&quot;#讲解：&quot; class=&quot;headerlink&quot; title=&quot;讲解：&quot;&gt;&lt;/a&gt;讲解：&lt;/h4&gt;&lt;p&gt;1.ContextImpl、ContextWrapper与Context的关系&lt;/p&gt;
+&lt;p&gt;Context是一个静态类，ContextImpl和ContextWrapper都继承了Context，也就是都实现了Context的静态方法，但是，从代码中我们看到ContextImpl是Context静态方法的详细实现类，而ContextWrapper是调用了mBase对应的方法，而mBase是Context，从代码跟踪看mBase其实就是ContextImpl，因此ContextWrapper最终是调用ContextImpl中的实现方法。也就是说我们调用的Context中的任何方法都是在ContextImpl中处理的，因此我们在跟踪代码时只需要去ContextImpl中查看对应方法处理就好了。上面只是介绍，下面我们根据具体代码来分析一下到底怎么实现的。&lt;/p&gt;
+&lt;p&gt;从ContextWrapper代码中我们可以看到(不贴全部代码了)，只有构造函数、attachBaseContext方法以及getBaseContext方法不是复写方法，其他方方法均为复写方法：&lt;/p&gt;
+&lt;p&gt;【ContextWrapper.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Context mBase;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ContextWrapper&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Context base)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    mBase = base;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * Set the base context for this ContextWrapper.  All calls will then be&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * delegated to the base context.  Throws&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * IllegalStateException if a base context has already been set.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@param&lt;/span&gt; base The new base context for this wrapper.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;attachBaseContext&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Context base)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mBase != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; IllegalStateException(&lt;span class=&quot;string&quot;&gt;&quot;Base context already set&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    mBase = base;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@return&lt;/span&gt; the base context as set by the constructor or setBaseContext&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Context &lt;span class=&quot;title&quot;&gt;getBaseContext&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; mBase;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;我们可以看到只有构造函数和attachBaseContext方法传入了mBase，那么从attachBaseContext方法中我们看到如果mBase存在又调用了该方法就会抛出异常，因此我们知道如果调用了该方法，那么构造函数不能传入这个值，我们看一下哪些地方调用了这个attachBaseContext方法，由代码可以看到Application、activity和service均调用了这个方法，首先我们来看Application中的代码：&lt;/p&gt;
+&lt;p&gt;【Application.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@hide&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/* package */&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;attach&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Context context)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    attachBaseContext(context);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    mLoadedApk = ContextImpl.getImpl(context).mPackageInfo;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;Application中的attach方法中调用了attachBaseContext方法，参数context也是通过attach方法传入的，那么我们再跟踪这个attach方法：&lt;/p&gt;
+&lt;p&gt;是在Instrumentation类中调用的：&lt;/p&gt;
+&lt;p&gt;【Instrumentation.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Application &lt;span class=&quot;title&quot;&gt;newApplication&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Class&amp;lt;?&amp;gt; clazz, Context context)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; InstantiationException, IllegalAccessException, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ClassNotFoundException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Application app = (Application)clazz.newInstance();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    app.attach(context);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; app;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;上面方法调用地方是：&lt;/p&gt;
+&lt;p&gt;【Instrumentation.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Application &lt;span class=&quot;title&quot;&gt;newApplication&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ClassLoader cl, String className, Context context)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; InstantiationException, IllegalAccessException, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ClassNotFoundException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; newApplication(cl.loadClass(className), context);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;从代码可以看到是在new Application时调用的，那么我们接着看哪里调用了这个方法：&lt;/p&gt;
+&lt;p&gt;【LoadedApk.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Application &lt;span class=&quot;title&quot;&gt;makeApplication&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; forceDefaultAppClass,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Instrumentation instrumentation)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ContextImpl appContext = ContextImpl.createAppContext(mActivityThread, &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            app = mActivityThread.mInstrumentation.newApplication(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    cl, appClass, appContext);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            appContext.setOuterContext(app);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (Exception e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; app;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;上面方法是在LoadedApk类中调用的，我们先不分析这个类，后续我们会详细讲这个过程，我们先分析上面这段代码，我们看到这里面通过调用ContextImpl.createAppContext方法来创建ContextImpl，然后将参数传入newApplication方法，因此我们看到上面的mBase就是ContextImpl，那么还有Activity和Service.我们先分析Service，因为从关系图可以看到Service和Application都是直接继承ContextWrapper，而Activity则是继承ContextThemeWrapper，ContextThemeWrapper继承ContextWrapper。&lt;/p&gt;
+&lt;p&gt;【Service.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;attach&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Context context,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ActivityThread thread, String className, IBinder token,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Application application, Object activityManager)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        attachBaseContext(context);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;attachBaseContext方法是在Service中的attach方法中调用的，接着看attach方法的调用：&lt;/p&gt;
+&lt;p&gt;【ActivityThread.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;handleCreateService&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(CreateServiceData data)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ContextImpl context = ContextImpl.createAppContext(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, packageInfo);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            context.setOuterContext(service);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Application app = packageInfo.makeApplication(&lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, mInstrumentation);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            service.attach(context, &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, data.info.name, data.token, app,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    ActivityManagerNative.getDefault());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            service.onCreate();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在这里我们看到传入的context就是ContextImpl，从而得到验证，下面我们还看到service.onCreate方法，我们看到了先调用attach方法然后调用onCreate方法。&lt;/p&gt;
+&lt;p&gt;最后我们看一下Activity，从上面关系图我们看到，Activity不是直接继承ContextWrapper，而是继承的ContextThemeWrapper，ContextThemeWrapper继承ContextWrapper。从名字我们可以看到ContextThemeWrapper包含主题的信息，其实不难理解，四大组件只有Activity是带界面的，其他都是没有界面的，因此Activity需要主题信息来显示不同的界面效果。在ContextThemeWrapper中我们看到复写了attachBaseContext方法，方法中只有一行代码就是调用父类的attachBaseContext方法。如下所示：&lt;/p&gt;
+&lt;p&gt;【ContextThemeWrapper.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;attachBaseContext&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Context newBase)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.attachBaseContext(newBase);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在Activity中只有一个方法中调用了该方法，看代码：&lt;/p&gt;
+&lt;p&gt;【Activity.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;attach&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Context context, ActivityThread aThread,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Instrumentation instr, IBinder token, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; ident,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Application application, Intent intent, ActivityInfo info,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            CharSequence title, Activity parent, String id,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            NonConfigurationInstances lastNonConfigurationInstances,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Configuration config, String referrer, IVoiceInteractor voiceInteractor,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Window window)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        attachBaseContext(context);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;我们接着追踪attach方法，看代码：&lt;/p&gt;
+&lt;p&gt;【ActivitThread.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Activity &lt;span class=&quot;title&quot;&gt;performLaunchActivity&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ActivityClientRecord r, Intent customIntent)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;           &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (activity != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               Context appContext = createBaseContextForActivity(r, activity);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               activity.attach(appContext, &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, getInstrumentation(), r.token,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                       r.ident, app, r.intent, r.activityInfo, title, r.parent,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                       r.embeddedID, r.lastNonConfigurationInstances, config,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                       r.referrer, r.voiceInteractor, window);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;           &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;           ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; activity;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;   &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;方法performLaunchActivity其实是启动Activity的方法，这里我们暂时不讲，后续我们会详细讲解，我们先理清楚Context，从上面代码我们可以看到此处传入的Context是通过createBaseContextForActivity方法创建的，那么我们看一下这个方法：&lt;/p&gt;
+&lt;p&gt;【ActivitThread.java】&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Context &lt;span class=&quot;title&quot;&gt;createBaseContextForActivity&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ActivityClientRecord r, &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Activity activity)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ContextImpl appContext = ContextImpl.createActivityContext(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, r.packageInfo, r.token, displayId, r.overrideConfig);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        appContext.setOuterContext(activity);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Context baseContext = appContext;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; baseContext;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;从上面代码我肯可以清楚的看到baseContext是appContext赋值的，而appContext就是ContextImpl，因此Activity中的Context也是ContextImpl。到现在我们已经搞清楚了ContextImpl、Context、ContextWrapper、ContextThemeWrapper以及Application、Service和Activity的关系，那么以后看源码我们就知道与Context相关的实现方法都在ContextImpl类中，如果需要看详细实现过程只需要去ContextImpl类中找到相应方法开始跟踪即可。&lt;/p&gt;
+&lt;p&gt;从下一章我们开始讲解四大组件的启动过程。&lt;/p&gt;
+&lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
+&lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
+&lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。&lt;br&gt;声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1最终版代码）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="AndroidOS" scheme="http://www.codemx.cn/tags/AndroidOS/"/>
+    
+  </entry>
+  
+  <entry>
     <title>IntelliJ IDEA导入Android源码</title>
     <link href="http://www.codemx.cn/2017/06/03/AndroidOS001/"/>
     <id>http://www.codemx.cn/2017/06/03/AndroidOS001/</id>
     <published>2017-06-03T05:38:34.000Z</published>
-    <updated>2017-06-03T07:48:42.000Z</updated>
+    <updated>2017-06-05T10:13:11.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;我们知道在Windows系统下阅读源码利器是Source Insight，但是没有Mac版本，阅读源码一直是个问题，之前我写过关于阅读源码神器的Understand，但是如果项目过大则很慢，所以也不能用来阅读Android系统源码，在网上也查过Sublime text配置ctag，但是相对来说也是不方便，后来使用Visual Studio Code和Sublime text相差不多，最后想到用IntelliJ IDEA来阅读源码，如果直接导入则会分为很多module。最近从网上看到可以导入IntelliJ IDEA软件，所以给大家分享一下。本教程基于Mac OS X 10.12。Android系统版本为：7.1.2_r11(7.1.2最终版)。先介绍方法，后面会给出各种问题解决方案。&lt;/p&gt;
@@ -31,12 +162,12 @@
 &lt;/ul&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;.classpath (Eclipse)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;android.ipr (IntelliJ / Android Studio)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;android.iml (IntelliJ / Android Studio)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;ul&gt;
-&lt;li&gt;1.修改MacOS sdk 版本：&lt;/li&gt;
+&lt;li&gt;2.修改MacOS sdk 版本：&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;路径Android-7.1.2_r11/build/core/combo/mac_version.mk，加上你现在系统的版本：&lt;/p&gt;
  &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;mac_sdk_versions_supported :=  10.8 10.9 10.10 10.11 10.12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;ul&gt;
-&lt;li&gt;2.生成idegen.jar过程：&lt;/li&gt;
+&lt;li&gt;3.生成idegen.jar过程：&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;命令：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ source build/envsetup.sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -50,7 +181,7 @@
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ development/tools/idegen/idegen.sh&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;执行结果：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;bash-3.2$ development/tools/idegen/idegen.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Read excludes: 4ms&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Traversed tree: 44148ms&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;此时会在根目录生成两个文件：android.ipr和android.iml，然后打开idea软件，执行下面操作：&lt;br&gt;&lt;img src=&quot;/images/android/idea/idea1.png&quot; alt=&quot;idea1&quot;&gt;&lt;br&gt;接着打开如下界面，找到Android源码位置，然后找到生成的android.iml文件，鼠标选中，然后点击open即可。&lt;br&gt;&lt;img src=&quot;/images/android/idea/idea2.png&quot; alt=&quot;idea2&quot;&gt;&lt;/p&gt;
+&lt;p&gt;此时会在根目录生成两个文件：android.ipr和android.iml，然后打开idea软件，执行下面操作：&lt;br&gt;&lt;img src=&quot;/images/AndroidOS/001Idea/idea1.png&quot; alt=&quot;idea1&quot;&gt;&lt;br&gt;接着打开如下界面，找到Android源码位置，然后找到生成的android.iml文件，鼠标选中，然后点击open即可。&lt;br&gt;&lt;img src=&quot;/images/AndroidOS/001Idea/idea2.png&quot; alt=&quot;idea2&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：mmm命令要先执行第一条命令。&lt;/p&gt;
 &lt;h4 id=&quot;生成文件出现的问题：&quot;&gt;&lt;a href=&quot;#生成文件出现的问题：&quot; class=&quot;headerlink&quot; title=&quot;生成文件出现的问题：&quot;&gt;&lt;/a&gt;生成文件出现的问题：&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;1.在执行&lt;/li&gt;
@@ -84,7 +215,7 @@
 &lt;p&gt;报错：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Checking build tools versions...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:90: ************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:91: You are building on a case-insensitive filesystem.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:92: Please move your source tree to a case-sensitive filesystem.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:93: ************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;build/core/main.mk:94: *** Case-insensitive filesystems not supported. Stop.&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;此时你可以建一个磁盘镜像，步骤如下：&lt;br&gt;打开磁盘工具–&amp;gt;文件–&amp;gt;新建映像–&amp;gt;空白映像–&amp;gt;弹出如下界面，填写下面框内的信息，格式选择区分大小写格式，点击存储，然后会在你的位置文件夹内生成一个Android.dmg文件，双击即可安装，然后将Android源码考入即可操作。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/android/idea/idea3.png&quot; alt=&quot;idea3&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/AndroidOS/001Idea/idea3.png&quot; alt=&quot;idea3&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -203,7 +334,7 @@
     <link href="http://www.codemx.cn/2017/03/23/OpenArithmetic/"/>
     <id>http://www.codemx.cn/2017/03/23/OpenArithmetic/</id>
     <published>2017-03-23T01:12:59.000Z</published>
-    <updated>2017-05-27T02:39:27.000Z</updated>
+    <updated>2017-06-05T14:27:38.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本文主要是收集一些大的公司开源的算法项目，以方便我们开发使用。包括：guetzli（图像算法）、brotli（压缩算法）、face_classification（人脸分类以及情感算法）。&lt;/p&gt;
@@ -247,6 +378,13 @@
 &lt;p&gt;&lt;img src=&quot;/images/arithmetic/compressor1.png&quot; alt=&quot;00&quot;&gt;&lt;/p&gt;
 &lt;p&gt;API调用上和Luban一样，支持普通方式也支持RxJava。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/images/arithmetic/compressor2.png&quot; alt=&quot;00&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;【digital-video-introduction】&quot;&gt;&lt;a href=&quot;#【digital-video-introduction】&quot; class=&quot;headerlink&quot; title=&quot;【digital_video_introduction】&quot;&gt;&lt;/a&gt;【digital_video_introduction】&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/leandromoreira/digital_video_introduction&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;digital_video_introduction&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;简介：非常好的关于视频的算法教程。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/leandromoreira/digital_video_introduction/raw/master/i/image_3d_matrix_rgb.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx-w240&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -1356,7 +1494,7 @@
     <link href="http://www.codemx.cn/2016/07/25/Android-open-project/"/>
     <id>http://www.codemx.cn/2016/07/25/Android-open-project/</id>
     <published>2016-07-25T12:09:12.000Z</published>
-    <updated>2017-03-22T05:49:51.000Z</updated>
+    <updated>2017-06-05T07:23:49.000Z</updated>
     
     <content type="html">&lt;p&gt;很多新手（包括我在内）在写项目的时候不知道项目框架如何搭建，很多时候计划的很好，但是随着项目大额增大，最后还是写的一塌糊涂，没有条理，结构很烂，导致我们项目问题不断，最近一直总结这个原因，其实是我们脑袋里没有这些东西，没有这些逻辑结构，缺乏框架的思维，对于我们这些经验比较少的，如果想提高，前期要去模仿，这样让自己熟悉人家写代码的框架，熟悉各种框架之后我们大脑中的这些思维就会存在，才能写出好的项目结构。&lt;/p&gt;
 &lt;p&gt;为了帮助大家能够学习一些好的项目经验，本篇文章给大家介绍一些国内外的比较好的开源项目，让大家有一个好的学习目标。希望对大家有帮助，以后找到更多开源项目也会不断添加。&lt;/p&gt;
@@ -1472,6 +1610,11 @@
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Gitbook：mac系统下的文本编辑器&lt;/p&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/GitbookIO/gitbook&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gitbook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Lepton:开源的跨平台代码片段管理工具(Mac OS,Windows,Linux)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/hackjutsu/Lepton&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Lepton&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h3&gt;&lt;hr&gt;
@@ -2063,44 +2206,6 @@
     
     
       <category term="Understand" scheme="http://www.codemx.cn/tags/Understand/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android代码推荐（一）</title>
-    <link href="http://www.codemx.cn/2016/04/25/code-commend/"/>
-    <id>http://www.codemx.cn/2016/04/25/code-commend/</id>
-    <published>2016-04-25T01:00:13.000Z</published>
-    <updated>2017-03-09T03:56:26.000Z</updated>
-    
-    <content type="html">&lt;p&gt;作为第一篇Android代码推荐，先给大家推荐一些很炫的特效代码，让大家增加点开发兴趣。首先介绍一个非常优秀的团队–Yalantis，他们写出了很多动画效果的代码，而且全部公开出来，我们可以直接使用，下面我提供一下连接和效果图，方便大家查找。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h3 id=&quot;ContextMenu&quot;&gt;&lt;a href=&quot;#ContextMenu&quot; class=&quot;headerlink&quot; title=&quot;ContextMenu&quot;&gt;&lt;/a&gt;ContextMenu&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;Github地址:&lt;a href=&quot;https://github.com/Yalantis/Context-Menu.Android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Yalantis/Context-Menu.Android&lt;/a&gt;&lt;br&gt;&lt;br&gt;效果图：&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/46c15734b552ce3afefa7efd1518909046b4677e/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3132353035362f73637265656e73686f74732f313738353237342f39396d696c65732d70726f66696c652d6c696768745f312d312d342e676966&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;FlipViewPager-Draco&quot;&gt;&lt;a href=&quot;#FlipViewPager-Draco&quot; class=&quot;headerlink&quot; title=&quot;FlipViewPager.Draco&quot;&gt;&lt;/a&gt;FlipViewPager.Draco&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/Yalantis/FlipViewPager.Draco&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Yalantis/FlipViewPager.Draco&lt;/a&gt;&lt;br&gt;&lt;br&gt;效果图：&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/db312e031e5f5a445b548d35986b0498caa261d3/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3132353035362f73637265656e73686f74732f313735383239382f39396d696c65732d66696e642d667269656e64732d696e746572666163652d616e696d6174696f6e2e676966&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Phoenix-Pull-to-Refresh&quot;&gt;&lt;a href=&quot;#Phoenix-Pull-to-Refresh&quot; class=&quot;headerlink&quot; title=&quot;Phoenix Pull-to-Refresh&quot;&gt;&lt;/a&gt;Phoenix Pull-to-Refresh&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/Yalantis/Phoenix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Yalantis/Phoenix&lt;/a&gt;&lt;br&gt;&lt;br&gt;效果图：&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/d406ac5a03a2b1fa5cf41fadc8d2408cb8709bdc/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3132353035362f73637265656e73686f74732f313635303331372f7265616c6573746174652d70756c6c5f312d322d332e676966&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Euclid&quot;&gt;&lt;a href=&quot;#Euclid&quot; class=&quot;headerlink&quot; title=&quot;Euclid&quot;&gt;&lt;/a&gt;Euclid&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/Yalantis/Euclid&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Yalantis/Euclid&lt;/a&gt;&lt;br&gt;&lt;br&gt;效果图:&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/b01a910b14ef3573c9e75ce150ef76e155cbbe98/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3132353035362f73637265656e73686f74732f313734343135372f39396d696c65732d7573657270726f66696c652d616e696d6174696f6e5f312d312d332e676966&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Pull-to-Refresh-Tours&quot;&gt;&lt;a href=&quot;#Pull-to-Refresh-Tours&quot; class=&quot;headerlink&quot; title=&quot;Pull-to-Refresh.Tours&quot;&gt;&lt;/a&gt;Pull-to-Refresh.Tours&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;Github地址:&lt;a href=&quot;https://github.com/Yalantis/Taurus&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Yalantis/Taurus&lt;/a&gt;&lt;br&gt;&lt;br&gt;效果图：&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/3a24e22eb3f8338573dba0701c089c12f6b70f11/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3132353035362f73637265656e73686f74732f313632333133312f746f7572732d70756c6c2d616972706c616e655f322d322d332e676966&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Side-Menu&quot;&gt;&lt;a href=&quot;#Side-Menu&quot; class=&quot;headerlink&quot; title=&quot;Side Menu&quot;&gt;&lt;/a&gt;Side Menu&lt;/h3&gt;&lt;hr&gt;
-&lt;p&gt;Github地址:&lt;a href=&quot;https://github.com/Yalantis/Side-Menu.Android&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/Yalantis/Side-Menu.Android&lt;/a&gt;&lt;br&gt;&lt;br&gt;效果图:&lt;br&gt;&lt;img src=&quot;https://camo.githubusercontent.com/cb6caa7a392d01d46bca9d9485c01fc173f55fac/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3132353035362f73637265656e73686f74732f313638393932322f6576656e74732d6d656e755f312d312d362e676966&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;注：&quot;&gt;&lt;a href=&quot;#注：&quot; class=&quot;headerlink&quot; title=&quot;注：&quot;&gt;&lt;/a&gt;注：&lt;/h3&gt;&lt;p&gt;  Android开发群：192508518&lt;/p&gt;
-&lt;p&gt;  微信公众号：Code-MX&lt;br&gt;&lt;img src=&quot;/images/codemx/qr_code_mx.jpg&quot; alt=&quot;qr_code_mx&quot;&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;作为第一篇Android代码推荐，先给大家推荐一些很炫的特效代码，让大家增加点开发兴趣。首先介绍一个非常优秀的团队–Yalantis，他们写出了很多动画效果的代码，而且全部公开出来，我们可以直接使用，下面我提供一下连接和效果图，方便大家查找。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Android代码推荐" scheme="http://www.codemx.cn/categories/Android%E4%BB%A3%E7%A0%81%E6%8E%A8%E8%8D%90/"/>
-    
-    
-      <category term="Android" scheme="http://www.codemx.cn/tags/Android/"/>
     
   </entry>
   
