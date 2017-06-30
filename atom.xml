@@ -408,7 +408,7 @@
     <link href="http://www.codemx.cn/2017/03/13/UICollection01/"/>
     <id>http://www.codemx.cn/2017/03/13/UICollection01/</id>
     <published>2017-03-13T14:38:41.000Z</published>
-    <updated>2017-06-01T15:40:52.000Z</updated>
+    <updated>2017-06-13T05:46:40.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。主要包括：ViewPager、RecyclerView、Toast、Notification、CoordinatorLayout、Animation、界面切换、日历、高斯模糊、菜单、图片选择器、切换主题等。&lt;/p&gt;
@@ -426,7 +426,8 @@
 &lt;li&gt;InfiniteCycleViewPagerXamarin&lt;br&gt;&lt;a href=&quot;https://github.com/martijn00/InfiniteCycleViewPagerXamarin&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;InfiniteCycleViewPagerXamarin&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://camo.githubusercontent.com/45967ca8ab6a4386d783fbfa2c4387e2b1a712d9/68747470733a2f2f6c68352e676f6f676c6575736572636f6e74656e742e636f6d2f2d44705139615f6b784f68672f5637734452753642466c492f414141414141414144454d2f4e4c49596f65687062713431737836715464354a5a3372726b4536784851345251434c30422f773234312d683338312d6e6f2f68696376702e676966&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://camo.githubusercontent.com/cfec8d9c33d2c4495b8088253673bff9b9da9e73/68747470733a2f2f6c68362e676f6f676c6575736572636f6e74656e742e636f6d2f2d656f6a53635f6c314f4c732f5637734452764a594b57492f414141414141414144454d2f5a72576e6c757565466a734b7739764c7272634c61595331502d444d67636f4551434c30422f773234312d683338322d6e6f2f76696376702e676966&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://camo.githubusercontent.com/35cdea653c0cf3dd57ced6c6e997d5b03420e8de/68747470733a2f2f6c68332e676f6f676c6575736572636f6e74656e742e636f6d2f2d7152526d502d62522d66672f56377344526a76694159492f414141414141414144454d2f6a4d6855345052345a71417353636f4d7a2d6b38454343416c4767725932706851434c30422f773234312d683338312d6e6f2f7477696376702e676966&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;RecyclerView&quot;&gt;&lt;a href=&quot;#RecyclerView&quot; class=&quot;headerlink&quot; title=&quot;RecyclerView&quot;&gt;&lt;/a&gt;RecyclerView&lt;/h3&gt;&lt;ul&gt;
+&lt;h3 id=&quot;RecyclerView&quot;&gt;&lt;a href=&quot;#RecyclerView&quot; class=&quot;headerlink&quot; title=&quot;RecyclerView&quot;&gt;&lt;/a&gt;RecyclerView&lt;/h3&gt;&lt;p&gt;部分来源于：&lt;a href=&quot;http://blog.coderclock.com/2017/03/26/android/关于Android%20RecyclerView的那些开源LayoutManager/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;关于Android RecyclerView的那些开源LayoutManager&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;excelPanel&lt;br&gt;&lt;a href=&quot;https://github.com/zhouchaoyuan/excelPanel&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;excelPanel&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/zhouchaoyuan/excelPanel/master/app/src/main/assets/roomFormDemo.gif&quot; alt=&quot;excelPanel-w240&quot;&gt;&lt;/p&gt;
@@ -514,6 +515,10 @@
 &lt;li&gt;ExpectAnim&lt;br&gt;&lt;a href=&quot;https://github.com/florent37/ExpectAnim&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ExpectAnim&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://raw.githubusercontent.com/florent37/ExpectAnim/master/media/sample.gif&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://raw.githubusercontent.com/florent37/ExpectAnim/master/media/scroll.gif&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;android-slidingactivity&lt;br&gt;&lt;a href=&quot;https://github.com/klinker41/android-slidingactivity&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-slidingactivity&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://github.com/klinker41/android-slidingactivity/raw/master/preview.gif&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/klinker41/android-slidingactivity/raw/master/preview_landscape.gif&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/klinker41/android-slidingactivity/raw/master/preview_inbox_animation.gif&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;日历&quot;&gt;&lt;a href=&quot;#日历&quot; class=&quot;headerlink&quot; title=&quot;日历&quot;&gt;&lt;/a&gt;日历&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;OneCalendarView&lt;br&gt;&lt;a href=&quot;https://github.com/MorochoRochaDarwin/OneCalendarView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OneCalendarView&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -569,7 +574,7 @@
     <link href="http://www.codemx.cn/2017/01/10/FrameCollection/"/>
     <id>http://www.codemx.cn/2017/01/10/FrameCollection/</id>
     <published>2017-01-10T09:13:25.000Z</published>
-    <updated>2017-05-08T06:54:25.000Z</updated>
+    <updated>2017-06-30T01:53:09.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章主要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。&lt;/p&gt;
@@ -663,6 +668,12 @@
 &lt;p&gt;详解：&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/sbsujjbcy/article/details/50812674&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 热修复Nuwa的原理及Gradle插件源码解析&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.cnblogs.com/fanfu1/p/5506149.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;安卓热更新之Nuwa实现步骤&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id=&quot;8-RocooFix&quot;&gt;&lt;a href=&quot;#8-RocooFix&quot; class=&quot;headerlink&quot; title=&quot;8.RocooFix:&quot;&gt;&lt;/a&gt;8.RocooFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/RocooFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RocooFix&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id=&quot;9-AnoleFix&quot;&gt;&lt;a href=&quot;#9-AnoleFix&quot; class=&quot;headerlink&quot; title=&quot;9.AnoleFix:&quot;&gt;&lt;/a&gt;9.AnoleFix:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/dodola/AnoleFix&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AnoleFix&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;插件化&quot;&gt;&lt;a href=&quot;#插件化&quot; class=&quot;headerlink&quot; title=&quot;插件化&quot;&gt;&lt;/a&gt;插件化&lt;/h2&gt;&lt;h4 id=&quot;1-VirtualAPK–滴滴&quot;&gt;&lt;a href=&quot;#1-VirtualAPK–滴滴&quot; class=&quot;headerlink&quot; title=&quot;1.VirtualAPK–滴滴&quot;&gt;&lt;/a&gt;1.VirtualAPK–滴滴&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/didi/VirtualAPK&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;VirtualAPK&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;2-ZeusPlugin–iReader&quot;&gt;&lt;a href=&quot;#2-ZeusPlugin–iReader&quot; class=&quot;headerlink&quot; title=&quot;2.ZeusPlugin–iReader&quot;&gt;&lt;/a&gt;2.ZeusPlugin–iReader&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/iReaderAndroid/ZeusPlugin&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ZeusPlugin&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3-dynamic-load-apk（DL）&quot;&gt;&lt;a href=&quot;#3-dynamic-load-apk（DL）&quot; class=&quot;headerlink&quot; title=&quot;3.dynamic-load-apk（DL）&quot;&gt;&lt;/a&gt;3.dynamic-load-apk（DL）&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/singwhatiwanna/dynamic-load-apk&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dynamic-load-apk&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;4-RePlugin–360&quot;&gt;&lt;a href=&quot;#4-RePlugin–360&quot; class=&quot;headerlink&quot; title=&quot;4.RePlugin–360&quot;&gt;&lt;/a&gt;4.RePlugin–360&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/Qihoo360/RePlugin&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RePlugin&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;5-android-pluginmgr&quot;&gt;&lt;a href=&quot;#5-android-pluginmgr&quot; class=&quot;headerlink&quot; title=&quot;5.android-pluginmgr&quot;&gt;&lt;/a&gt;5.android-pluginmgr&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/mmin18/AndroidDynamicLoader&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-pluginmgr&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;6-AndroidDynamicLoader&quot;&gt;&lt;a href=&quot;#6-AndroidDynamicLoader&quot; class=&quot;headerlink&quot; title=&quot;6.AndroidDynamicLoader&quot;&gt;&lt;/a&gt;6.AndroidDynamicLoader&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/mmin18/AndroidDynamicLoader&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AndroidDynamicLoader&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注解&quot;&gt;&lt;a href=&quot;#注解&quot; class=&quot;headerlink&quot; title=&quot;注解&quot;&gt;&lt;/a&gt;注解&lt;/h2&gt;&lt;h4 id=&quot;1-dagger&quot;&gt;&lt;a href=&quot;#1-dagger&quot; class=&quot;headerlink&quot; title=&quot;1.dagger:&quot;&gt;&lt;/a&gt;1.dagger:&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/square/dagger&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dagger&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;详解：&lt;a href=&quot;http://square.github.io/dagger/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;官方文档&lt;/a&gt;&lt;/p&gt;
 &lt;h4 id=&quot;2-butterknife&quot;&gt;&lt;a href=&quot;#2-butterknife&quot; class=&quot;headerlink&quot; title=&quot;2.butterknife&quot;&gt;&lt;/a&gt;2.butterknife&lt;/h4&gt;&lt;p&gt;源码地址：&lt;a href=&quot;https://github.com/JakeWharton/butterknife&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;butterknife&lt;/a&gt;&lt;/p&gt;
@@ -1494,7 +1505,7 @@
     <link href="http://www.codemx.cn/2016/07/25/Android-open-project/"/>
     <id>http://www.codemx.cn/2016/07/25/Android-open-project/</id>
     <published>2016-07-25T12:09:12.000Z</published>
-    <updated>2017-06-05T07:23:49.000Z</updated>
+    <updated>2017-06-16T06:16:26.000Z</updated>
     
     <content type="html">&lt;p&gt;很多新手（包括我在内）在写项目的时候不知道项目框架如何搭建，很多时候计划的很好，但是随着项目大额增大，最后还是写的一塌糊涂，没有条理，结构很烂，导致我们项目问题不断，最近一直总结这个原因，其实是我们脑袋里没有这些东西，没有这些逻辑结构，缺乏框架的思维，对于我们这些经验比较少的，如果想提高，前期要去模仿，这样让自己熟悉人家写代码的框架，熟悉各种框架之后我们大脑中的这些思维就会存在，才能写出好的项目结构。&lt;/p&gt;
 &lt;p&gt;为了帮助大家能够学习一些好的项目经验，本篇文章给大家介绍一些国内外的比较好的开源项目，让大家有一个好的学习目标。希望对大家有帮助，以后找到更多开源项目也会不断添加。&lt;/p&gt;
@@ -1611,12 +1622,73 @@
 &lt;li&gt;&lt;p&gt;Gitbook：mac系统下的文本编辑器&lt;/p&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/GitbookIO/gitbook&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gitbook&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Lepton:开源的跨平台代码片段管理工具(Mac OS,Windows,Linux)&lt;/li&gt;
-&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Lepton:开源的跨平台代码片段管理工具(Mac OS,Windows,Linux)&lt;/p&gt;
 &lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/hackjutsu/Lepton&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Lepton&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Alamofire：Alamofire是一个用Swift编写的HTTP网络库，由此前热门开源项目AFNetworking的的作者mattt开发，可非常简单地用于异步网络通信。&lt;/p&gt;
+&lt;p&gt; 关于何时使用AFNetworking，何时使用Alamofire，可参看作者对&lt;a href=&quot;https://github.com/Alamofire/Alamofire&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;两种情况的分析&lt;/a&gt;，不过很好的一点是AFNetworking和Alamofire两个库并不相互排斥，可以很好地共存于相同的代码库中。&lt;/p&gt;
+&lt;p&gt; Github地址：&lt;a href=&quot;https://github.com/Alamofire/Alamofire&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Alamofire&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Surge（Swift + Accelerate）：Surge基于Accelerate框架开发，用于执行矩阵数学、数字信号处理以及图像处理等方面。换句话说，它可以快速处理复杂的数学、语音以及图像信号。并且依然来自于大神级人物mattt。&lt;/p&gt;
+&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/mattt/Surge&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Surge&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;SwiftyJSON：SwiftyJSON使得用Swift处理JSON数据更加容易。这是解析JSON字符串封装类。实现功能与Javascript中的JSON.parse相近，使用方便。&lt;/p&gt;
+&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/SwiftyJSON/SwiftyJSON&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SwiftyJSON&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Dollar.swift：Dollar是一个Swift库，提供了有用的函数式编程辅助方法，无需扩展任何内置对象。Dollar类似于Lo-Dash或者Javascript中的Underscore。&lt;/p&gt;
+&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/ankurp/Dollar.swift&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Dollar&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;ExSwift：包含一组标准类型和类的Swift扩展。&lt;/p&gt;
+&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/pNre/ExSwift&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ExSwift&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;SwiftTask：SwiftTask是用Swift编写的状态机，综合了 Promise + progress + pause + cancel，使用 SwiftState ( Swift 编写的优雅的状态机)。&lt;/p&gt;
+&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/ReactKit/SwiftTask&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SwiftTask&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;HanekeSwift：Haneke 是一个用 Swift 编写的轻量级iOS通用缓存，易于使用。&lt;/p&gt;
+&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/Haneke/HanekeSwift&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Haneke&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cartography：Swift声明Auto Layout&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Github地址：&lt;a href=&quot;https://github.com/robb/Cartography&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Cartography&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Sleipnir：Sleipnir是一个适用于Swift的BDD（Behavior Driven Development）风格框架，灵感来自于Cedar（一款BDD风格的Objective-C测试框架）。 &lt;/p&gt;
+&lt;p&gt;  核心原则：Sleipnir不依赖NSObject，是纯Swift BDD测试框架；Sleipnir不使用XCTest；有着很好的命令行输出，支持自定义测试报告，等等。&lt;/p&gt;
+&lt;p&gt;  Github地址：&lt;a href=&quot;https://github.com/railsware/Sleipnir&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Sleipnir&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Quick：Quick是一个适用于Swift和Objective-C的行为驱动开发测试框架。借鉴了RSpec, Specta以及Ginkgo。&lt;/p&gt;
+&lt;p&gt;  Github地址：&lt;a href=&quot;https://github.com/Quick/Quick&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Quick&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;h3 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;2017年2月13日更新&lt;/p&gt;
 &lt;p&gt;后续会持续更新…&lt;/p&gt;
