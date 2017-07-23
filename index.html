@@ -146,7 +146,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 12.5px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 17.5px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 15px;">高效Mac</a>
+                        <a href="/tags/Android/" style="font-size: 13.33px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 16.67px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 16.67px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 13.33px;">高效Mac</a>
                     </div>
                 </section>
                 
@@ -236,6 +236,136 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-AndroidOS004-HandleMessageLooper" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/13/AndroidOS004-HandleMessageLooper/" class="article-date">
+      <time datetime="2017-07-12T16:12:33.000Z" itemprop="datePublished">2017-07-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/13/AndroidOS004-HandleMessageLooper/">Android系统源码分析--消息循环机制</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <blockquote>
+<p>上一章我们讲解SystemServer时涉及到了消息机制，因此这一章我们先介绍一下消息循环机制，帮助大家弄清楚消息循环的原理，有助于代码的编写和优化。</p>
+</blockquote>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/07/13/AndroidOS004-HandleMessageLooper/#more">详细内容 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-AndroidOS003-SystemServer" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/12/AndroidOS003-SystemServer/" class="article-date">
+      <time datetime="2017-07-12T02:05:21.000Z" itemprop="datePublished">2017-07-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/12/AndroidOS003-SystemServer/">Android系统源码分析--Zygote和SystemServer启动过程</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <blockquote>
+<p>按计划本来从这章开始写四大组件的启动过程的，但是看看源码结构发现为了说的更明白还是先写一点系统framework层启动的内容，帮助理解四大组件的启动以及管理过程。我们知道四大组件管理是通过一些服务以及线程实现的，所以先把一些基本概念弄清楚比较好，比如AMS（ActivityManagerService）、PMS（PackageManagerService）等系统服务的作用以及调用方式，了解这些之后再看四大组件相对容易些，因此我们本章先介绍系统启动、部分系统服务的作用。</p>
+</blockquote>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/07/12/AndroidOS003-SystemServer/#more">详细内容 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-AndroidOS002-Context" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -264,7 +394,7 @@
       
           
               <blockquote>
-<p>Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。<br>声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1最终版代码）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。</p>
+<p>Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。<br>声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1版本系统）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。</p>
 </blockquote>
           
       
@@ -738,136 +868,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/11/21/Launcher06/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Launcher05" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/16/Launcher05/" class="article-date">
-      <time datetime="2016-10-16T00:34:25.000Z" itemprop="datePublished">2016-10-16</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）- Workspace滑动</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>上一章<a href="http://www.codemx.cn/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a>介绍了应用的安装、更新、卸载时的数据加载和图标绘制流程，本章我们来介绍承载图标、小部件等的Workspace的布局和滑动操作。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Launcher/">Launcher</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/10/16/Launcher05/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-DefineView1" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/29/DefineView1/" class="article-date">
-      <time datetime="2016-09-29T01:31:26.000Z" itemprop="datePublished">2016-09-29</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>最近项目中用到渐变圆环进度条，自己也写了一下，用到一些知识，以前没有用过，使用过程中有一些问题，在此做一下笔记。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/View/">View</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/09/29/DefineView1/#more">详细内容 >></a>
         </p>
       
       <div class="clearfix"></div>
