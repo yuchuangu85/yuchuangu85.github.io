@@ -924,7 +924,7 @@
     <link href="http://www.codemx.cn/2017/03/13/UICollection01/"/>
     <id>http://www.codemx.cn/2017/03/13/UICollection01/</id>
     <published>2017-03-13T14:38:41.000Z</published>
-    <updated>2017-07-17T06:33:15.000Z</updated>
+    <updated>2017-08-16T07:54:27.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。主要包括：ViewPager、RecyclerView、Toast、Notification、CoordinatorLayout、Animation、界面切换、日历、高斯模糊、菜单、图片选择器、切换主题等。&lt;/p&gt;
@@ -991,6 +991,18 @@
 &lt;li&gt;CardSwipeLayout&lt;br&gt;模仿探探卡片滑动效果的布局&lt;br&gt;&lt;a href=&quot;https://github.com/yuqirong/CardSwipeLayout&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CardSwipeLayout&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&quot;https://github.com/yuqirong/CardSwipeLayout/raw/master/screenshots/screenshot.gif&quot; alt=&quot;CardSwipeLayout-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Android-StepsView&lt;br&gt;Android-StepsView &lt;a href=&quot;http://anton46.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://anton46.com&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://github.com/anton46/Android-StepsView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android-StepsView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/anton46/Android-StepsView/raw/master/image1.png&quot; alt=&quot;Android-StepsView-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;StepView&lt;br&gt;Step by step，just use HorizontalStepView，VerticalStepView. step indicator，flow indicator，timeline，order process，express status&lt;br&gt;&lt;a href=&quot;https://github.com/baoyachi/StepView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;StepView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/baoyachi/StepView/raw/master/art/snapshot.png&quot;&gt;&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;https://github.com/baoyachi/StepView/raw/master/art/splash.png&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/baoyachi/StepView/raw/master/art/vertical_stepview.gif&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MultiSnapRecyclerView&lt;br&gt;Android library for multiple snapping of RecyclerView&lt;br&gt;&lt;a href=&quot;https://github.com/TakuSemba/MultiSnapRecyclerView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MultiSnapRecyclerView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://github.com/TakuSemba/MultiSnapRecyclerView/raw/master/arts/gravity.gif&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/TakuSemba/MultiSnapRecyclerView/raw/master/arts/snap_count.gif&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;Toast&quot;&gt;&lt;a href=&quot;#Toast&quot; class=&quot;headerlink&quot; title=&quot;Toast&quot;&gt;&lt;/a&gt;Toast&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;Toasty&lt;br&gt;&lt;a href=&quot;https://github.com/GrenderG/Toasty&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Toasty&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -1027,6 +1039,14 @@
 &lt;li&gt;ZoomHeader&lt;br&gt;&lt;a href=&quot;https://github.com/githubwing/ZoomHeader&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ZoomHeader&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&quot;https://github.com/githubwing/ZoomHeader/raw/master/img.gif&quot; alt=&quot;ZoomHeader-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;AnimatorDurationTile&lt;br&gt;&lt;a href=&quot;https://github.com/nickbutcher/AnimatorDurationTile&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AnimatorDurationTile&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/nickbutcher/AnimatorDurationTile/raw/master/screenshots/duration_scale_toggle_demo.gif&quot; alt=&quot;AnimatorDurationTile-w240&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;Material-Design&quot;&gt;&lt;a href=&quot;#Material-Design&quot; class=&quot;headerlink&quot; title=&quot;Material Design&quot;&gt;&lt;/a&gt;Material Design&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;plaid&lt;br&gt;&lt;a href=&quot;https://github.com/nickbutcher/plaid&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;plaid&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/nickbutcher/plaid/raw/master/screenshots/plaid_demo.gif&quot; alt=&quot;plaid-w240&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;界面切换&quot;&gt;&lt;a href=&quot;#界面切换&quot; class=&quot;headerlink&quot; title=&quot;界面切换&quot;&gt;&lt;/a&gt;界面切换&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;ActivitySwitcher&lt;br&gt;&lt;a href=&quot;https://github.com/Hitomis/ActivitySwitcher&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ActivitySwitcher&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -2038,7 +2058,7 @@
     <link href="http://www.codemx.cn/2016/07/25/Android-open-project/"/>
     <id>http://www.codemx.cn/2016/07/25/Android-open-project/</id>
     <published>2016-07-25T12:09:12.000Z</published>
-    <updated>2017-07-19T03:19:50.000Z</updated>
+    <updated>2017-08-16T07:44:02.000Z</updated>
     
     <content type="html">&lt;p&gt;很多新手（包括我在内）在写项目的时候不知道项目框架如何搭建，很多时候计划的很好，但是随着项目大额增大，最后还是写的一塌糊涂，没有条理，结构很烂，导致我们项目问题不断，最近一直总结这个原因，其实是我们脑袋里没有这些东西，没有这些逻辑结构，缺乏框架的思维，对于我们这些经验比较少的，如果想提高，前期要去模仿，这样让自己熟悉人家写代码的框架，熟悉各种框架之后我们大脑中的这些思维就会存在，才能写出好的项目结构。&lt;/p&gt;
 &lt;p&gt;为了帮助大家能够学习一些好的项目经验，本篇文章给大家介绍一些国内外的比较好的开源项目，让大家有一个好的学习目标。希望对大家有帮助，以后找到更多开源项目也会不断添加。&lt;/p&gt;
@@ -2095,6 +2115,13 @@
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;MusicDNA：&lt;/p&gt;
+&lt;p&gt;  A Music Player for android that renders beautiful DNA(Visualization) of the currently playing music.&lt;/p&gt;
+&lt;p&gt;  MusicDNA：&lt;a href=&quot;https://github.com/harjot-oberai/MusicDNA&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/harjot-oberai/MusicDNA&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;android-UniversalMusicPlayer:&lt;/p&gt;
 &lt;p&gt;这个项目是谷歌开源的一个音乐播放器项目，意在帮助开发者学习音频文件的一个开源项目。&lt;/p&gt;
 &lt;p&gt;android-UniversalMusicPlayer：&lt;a href=&quot;https://github.com/googlesamples/android-UniversalMusicPlayer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/googlesamples/android-UniversalMusicPlayer&lt;/a&gt;&lt;/p&gt;
@@ -2116,10 +2143,22 @@
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Github客户端源码：Gitskarios&lt;br&gt;由于原作者不再进行维护，所我Fork到了我自己的仓库。&lt;/p&gt;
-&lt;p&gt;Gitskarios：&lt;a href=&quot;https://github.com/yuchuangu85/Gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Gitskarios&lt;/a&gt;&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;StormPlane：&lt;/p&gt;
+&lt;p&gt;《沙漠风暴》是一款基于Android开发的纵版飞行射击游戏，以雷电(Shooting Game)为原型，参考微信打飞机大战，通过自定义的SurfaceView来实现游戏，游戏画面、音乐、战斗特效都不错&lt;/p&gt;
+&lt;p&gt;StormPlane：&lt;a href=&quot;https://github.com/HurTeng/StormPlane&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/HurTeng/StormPlane&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Github客户端源码：Gitskarios&lt;br&gt;由于原作者不再进行维护，所我Fork到了我自己的仓库。&lt;/p&gt;
+&lt;p&gt;Gitskarios：&lt;a href=&quot;https://github.com/yuchuangu85/Gitskarios&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/yuchuangu85/Gitskarios&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SmartCropper&lt;br&gt;A library for cropping image in a smart way that can identify the border and correct the cropped image. 智能图片裁剪框架。自动识别边框，手动调节选区，使用透视变换裁剪并矫正选区；适用于身份证，名片，文档等照片的裁剪。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;SmartCropper：&lt;a href=&quot;https://github.com/pqpo/SmartCropper&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/pqpo/SmartCropper&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Kickstarter：&lt;a href=&quot;https://github.com/kickstarter/android-oss&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/kickstarter/android-oss&lt;/a&gt;&lt;/li&gt;
@@ -2231,6 +2270,18 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;iina：The modern video player for macOS. &lt;a href=&quot;https://lhc70000.github.io/iina/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://lhc70000.github.io/iina/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;  Github地址：&lt;a href=&quot;https://github.com/lhc70000/iina&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;iina&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;CotEditor：Lightweight Plain-Text Editor for macOS &lt;a href=&quot;https://coteditor.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://coteditor.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;  Github地址：&lt;a href=&quot;https://github.com/coteditor/CotEditor&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CotEditor&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;=======================================================================================&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;ThemeKit：macOS theming library&lt;/p&gt;
+&lt;p&gt;  Github地址：&lt;a href=&quot;https://github.com/luckymarmot/ThemeKit&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ThemeKit&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;=======================================================================================&lt;/p&gt;
