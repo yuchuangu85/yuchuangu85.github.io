@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android系统源码分析--Process | 墨香博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。">
+<meta name="keywords" content="AndroidOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android系统源码分析--Process">
+<meta property="og:url" content="http://www.codemx.cn/2017/09/13/Android系统源码分析-Process/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/005Process/Process.jpg">
+<meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
+<meta property="og:updated_time" content="2017-09-14T04:09:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android系统源码分析--Process">
+<meta name="twitter:description" content="由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。">
+<meta name="twitter:image" content="http://www.codemx.cn/images/AndroidOS/005Process/Process.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet" />
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">墨香</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">用代码实现自己的梦想。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/archives">博客归档</a></li>
+                        
+                            <li><a href="/read">静心阅读</a></li>
+                        
+                            <li><a href="/about">雁过留声</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                            
+                                <a class="fl zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                            
+                                <a class="fl weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                            
+                                <a class="fl jianshu" target="_blank" href="http://www.jianshu.com/u/3ed3336df2c6" title="jianshu">jianshu</a>
+                            
+                                <a class="fl rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Android/" style="font-size: 12.5px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 17.5px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 20px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 15px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 12.5px;">高效Mac</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.trinea.cn/">Trinea</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.devilwwj.com/">小巫</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.dreamxuwj.com/">梦痕</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.jeffjade.com/">晚晴幽草轩</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://wangkuiwu.github.io">wangkuiwu</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/harvic880925/article/list/3">启航</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://hujiaweibujidao.github.io">潇涧</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">因为梦想来到深圳，因为兴趣选择开发，人生的航程中没有一帆风顺，只有努力加坚持才会成功。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">墨香</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">墨香</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">用代码实现自己的梦想。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/archives">博客归档</a></li>
+                
+                    <li><a href="/read">静心阅读</a></li>
+                
+                    <li><a href="/about">雁过留声</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/yuchuangu85" title="github">github</a>
+                    
+                        <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/mo-xiang-6" title="zhihu">zhihu</a>
+                    
+                        <a class="weibo" target="_blank" href="http://weibo.com/u/2167893837" title="weibo">weibo</a>
+                    
+                        <a class="jianshu" target="_blank" href="http://www.jianshu.com/u/3ed3336df2c6" title="jianshu">jianshu</a>
+                    
+                        <a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-Android系统源码分析-Process" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/13/Android系统源码分析-Process/" class="article-date">
+      <time datetime="2017-09-13T12:45:07.000Z" itemprop="datePublished">2017-09-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android系统源码分析--Process
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>Android应用程序框架层创建的应用程序进程具有两个特点，一是进程的入口函数是ActivityThread.main，二是进程天然支持Binder进程间通信机制；这两个特点都是在进程的初始化过程中实现的。（引用自老罗安卓之旅-<a href="http://blog.csdn.net/luoshengyang/article/details/6747696" target="_blank" rel="external">Android应用程序进程启动过程的源代码分析</a>）</p>
+<p>进程按照重要性可以分为下面五类：</p>
+<ul>
+<li>前台进程(Foreground process)</li>
+<li>可见进程(Visible process)</li>
+<li>服务进程(Service process)</li>
+<li>后台进程(Background process)</li>
+<li>空进程(Empty process)</li>
+</ul>
+<h2 id="进程启动流程"><a href="#进程启动流程" class="headerlink" title="进程启动流程"></a>进程启动流程</h2><p>AMS(ActivityMagagerService)启动进程是从其成员函数startProcessLocked开始调用Process.start方法开始的。我们先看一下进程启动的时序图：</p>
+<p><img src="/images/AndroidOS/005Process/Process.jpg" alt="android"></p>
+<h4 id="1-Process-start方法："><a href="#1-Process-start方法：" class="headerlink" title="1. Process.start方法："></a>1. Process.start方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> ProcessStartResult <span class="title">start</span><span class="params">(<span class="keyword">final</span> String processClass,</span></span></div><div class="line"><span class="function"><span class="params">                                                 <span class="keyword">final</span> String niceName,</span></span></div><div class="line"><span class="function"><span class="params">                                                 <span class="keyword">int</span> uid, <span class="keyword">int</span> gid, <span class="keyword">int</span>[] gids,</span></span></div><div class="line"><span class="function"><span class="params">                                                 <span class="keyword">int</span> debugFlags, <span class="keyword">int</span> mountExternal,</span></span></div><div class="line"><span class="function"><span class="params">                                                 <span class="keyword">int</span> targetSdkVersion,</span></span></div><div class="line"><span class="function"><span class="params">                                                 String seInfo,</span></span></div><div class="line"><span class="function"><span class="params">                                                 String abi,</span></span></div><div class="line"><span class="function"><span class="params">                                                 String instructionSet,</span></span></div><div class="line"><span class="function"><span class="params">                                                 String appDataDir,</span></span></div><div class="line"><span class="function"><span class="params">                                                 String[] zygoteArgs)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 请求Zygote进程创建一个应用进程</span></div><div class="line">        <span class="keyword">return</span> startViaZygote(processClass, niceName, uid, gid, gids,</div><div class="line">                debugFlags, mountExternal, targetSdkVersion, seInfo,</div><div class="line">                abi, instructionSet, appDataDir, zygoteArgs);</div><div class="line">     &#125; <span class="keyword">catch</span> (ZygoteStartFailedEx ex) &#123;</div><div class="line">        Log.e(LOG_TAG,</div><div class="line">                <span class="string">"Starting VM process through Zygote failed"</span>);</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(</div><div class="line">                <span class="string">"Starting VM process through Zygote failed"</span>, ex);</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意：传入的第一个参数是“android.app.ActivityThread”，这是进程初始化要加载的类，这个类加载到进程之后，就会把这个类的静态成员方法main作为进程的入口。然后调用startViaZygote方法。</p>
+<h4 id="2-startViaZygote方法："><a href="#2-startViaZygote方法：" class="headerlink" title="2. startViaZygote方法："></a>2. startViaZygote方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> ProcessStartResult <span class="title">startViaZygote</span><span class="params">(<span class="keyword">final</span> String processClass,</span></span></div><div class="line"><span class="function"><span class="params">                                                     <span class="keyword">final</span> String niceName,</span></span></div><div class="line"><span class="function"><span class="params">                                                     <span class="keyword">final</span> <span class="keyword">int</span> uid, <span class="keyword">final</span> <span class="keyword">int</span> gid,</span></span></div><div class="line"><span class="function"><span class="params">                                                     <span class="keyword">final</span> <span class="keyword">int</span>[] gids,</span></span></div><div class="line"><span class="function"><span class="params">                                                     <span class="keyword">int</span> debugFlags, <span class="keyword">int</span> mountExternal,</span></span></div><div class="line"><span class="function"><span class="params">                                                     <span class="keyword">int</span> targetSdkVersion,</span></span></div><div class="line"><span class="function"><span class="params">                                                     String seInfo,</span></span></div><div class="line"><span class="function"><span class="params">                                                     String abi,</span></span></div><div class="line"><span class="function"><span class="params">                                                     String instructionSet,</span></span></div><div class="line"><span class="function"><span class="params">                                                     String appDataDir,</span></span></div><div class="line"><span class="function"><span class="params">                                                     String[] extraArgs)</span></span></div><div class="line"><span class="function">            <span class="keyword">throws</span> ZygoteStartFailedEx </span>&#123;</div><div class="line">        <span class="keyword">synchronized</span> (Process.class) &#123;</div><div class="line">            ArrayList&lt;String&gt; argsForZygote = <span class="keyword">new</span> ArrayList&lt;String&gt;();</div><div class="line"></div><div class="line">            <span class="comment">// 保存要创建应用程序进程的启动参数到argsForZygote中</span></div><div class="line">            ...</div><div class="line"></div><div class="line">            <span class="comment">// 保存id到argsForZygote中</span></div><div class="line">            ...</div><div class="line"></div><div class="line">            <span class="comment">// 保存其他信息到argsForZygote中</span></div><div class="line">            ...</div><div class="line"></div><div class="line">            <span class="comment">// 请求Zygote进程创建这个应用进程</span></div><div class="line">            <span class="keyword">return</span> zygoteSendArgsAndGetResult(openZygoteSocketIfNeeded(abi), argsForZygote);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这个方法主要是保存信息到argsForZygote中，然后调用openZygoteSocketIfNeeded，然后根据返回的值调用zygoteSendArgsAndGetResult方法，首先先看openZygoteSocketIfNeeded方法。</p>
+<h4 id="3-openZygoteSocketIfNeeded方法："><a href="#3-openZygoteSocketIfNeeded方法：" class="headerlink" title="3. openZygoteSocketIfNeeded方法："></a>3. openZygoteSocketIfNeeded方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> ZygoteState <span class="title">openZygoteSocketIfNeeded</span><span class="params">(String abi)</span> <span class="keyword">throws</span> ZygoteStartFailedEx </span>&#123;</div><div class="line">        <span class="keyword">if</span> (primaryZygoteState == <span class="keyword">null</span> || primaryZygoteState.isClosed()) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="comment">// 通过调用ZygoteState.connect方法创建LocalSocket对象，以便将相应参数传入Zygote进程</span></div><div class="line">                primaryZygoteState = ZygoteState.connect(ZYGOTE_SOCKET);</div><div class="line">            &#125; <span class="keyword">catch</span> (IOException ioe) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> ZygoteStartFailedEx(<span class="string">"Error connecting to primary zygote"</span>, ioe);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (primaryZygoteState.matches(abi)) &#123;</div><div class="line">            <span class="keyword">return</span> primaryZygoteState;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// The primary zygote didn't match. Try the secondary.</span></div><div class="line">        <span class="keyword">if</span> (secondaryZygoteState == <span class="keyword">null</span> || secondaryZygoteState.isClosed()) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="comment">// 通过调用ZygoteState.connect方法创建LocalSocket对象，以便将相应参数传入Zygote进程</span></div><div class="line">                secondaryZygoteState = ZygoteState.connect(SECONDARY_ZYGOTE_SOCKET);</div><div class="line">            &#125; <span class="keyword">catch</span> (IOException ioe) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> ZygoteStartFailedEx(<span class="string">"Error connecting to secondary zygote"</span>, ioe);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (secondaryZygoteState.matches(abi)) &#123;</div><div class="line">            <span class="keyword">return</span> secondaryZygoteState;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ZygoteStartFailedEx(<span class="string">"Unsupported zygote ABI: "</span> + abi);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>通过ZygoteState.connect放创建primaryZygoteState对象，如果第一次创建不成功，创建第二次。connect方法代码如下：</p>
+<h4 id="4-ZygoteState-connect方法："><a href="#4-ZygoteState-connect方法：" class="headerlink" title="4. ZygoteState.connect方法："></a>4. ZygoteState.connect方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ZygoteState <span class="title">connect</span><span class="params">(String socketAddress)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">            DataInputStream zygoteInputStream = <span class="keyword">null</span>;</div><div class="line">            BufferedWriter zygoteWriter = <span class="keyword">null</span>;</div><div class="line">            <span class="comment">// 这个Socket由ZygoteInit.java文件中的ZygoteInit类在runSelectLoopMode函数侦听的。</span></div><div class="line">            <span class="keyword">final</span> LocalSocket zygoteSocket = <span class="keyword">new</span> LocalSocket();</div><div class="line"></div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="comment">// 开始建立连接，在连接过程中，LocalSocket对象zygoteSocket会在/dev/socket目录下找到</span></div><div class="line">                <span class="comment">// 一个对应的zygote文件，然后将它与自己绑定起来，这就相当于与Zygote进程中的名称为“zygote”</span></div><div class="line">                <span class="comment">// 的Socket建立了连接</span></div><div class="line">                zygoteSocket.connect(<span class="keyword">new</span> LocalSocketAddress(socketAddress,</div><div class="line">                        LocalSocketAddress.Namespace.RESERVED));</div><div class="line"></div><div class="line">                <span class="comment">// 连接成功以后，首先获取LocalSocket对象zygoteSocket的一个输入流，并且保存在</span></div><div class="line">                <span class="comment">// zygoteInputStream中，以便获得Zygote进程发送过来的通信数据</span></div><div class="line">                zygoteInputStream = <span class="keyword">new</span> DataInputStream(zygoteSocket.getInputStream());</div><div class="line"></div><div class="line">                <span class="comment">// 又得到LocalSocket对象zygoteSocket的一个输入流，并且保存在zygoteWriter中，以便</span></div><div class="line">                <span class="comment">// 可以向Zygote进程发送通信数据</span></div><div class="line">                zygoteWriter = <span class="keyword">new</span> BufferedWriter(<span class="keyword">new</span> OutputStreamWriter(</div><div class="line">                        zygoteSocket.getOutputStream()), <span class="number">256</span>);</div><div class="line">            &#125; <span class="keyword">catch</span> (IOException ex) &#123;</div><div class="line">                ...</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            String abiListString = getAbiList(zygoteWriter, zygoteInputStream);</div><div class="line">            Log.i(<span class="string">"Zygote"</span>, <span class="string">"Process: zygote socket opened, supported ABIS: "</span> + abiListString);</div><div class="line"></div><div class="line">            <span class="comment">// 创建的LocalSocket对象zygoteSocket会保存在ZygoteState中</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ZygoteState(zygoteSocket, zygoteInputStream, zygoteWriter,</div><div class="line">                    Arrays.asList(abiListString.split(<span class="string">","</span>)));</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>首先创建一个LocalSocket对象，这个LocalSocket对象是在ZygoteInit中的runSelectLoop函数进行监听的。然后通过connect方法并且传入连接地址连接该Socket，连接以后会获取输入流DataInputStream，以便获得Zygote进程发送过来的通信数据，然后又获取BufferedWriter输入流，以便向Zygote进程发送通信数据。最后会返回一个ZygoteState对象。下面我们看一下LocalSocket.connect方法。</p>
+<h4 id="5-LocalSocket-connect方法："><a href="#5-LocalSocket-connect方法：" class="headerlink" title="5. LocalSocket.connect方法："></a>5. LocalSocket.connect方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">connect</span><span class="params">(LocalSocketAddress endpoint)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (isConnected) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IOException(<span class="string">"already connected"</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        implCreateIfNeeded();</div><div class="line">        impl.connect(endpoint, <span class="number">0</span>);</div><div class="line">        isConnected = <span class="keyword">true</span>;</div><div class="line">        isBound = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果已经连接，抛出异常，因为连接完成后，会关闭连接，使用时在打开连接。最后调用native方法连接socket，并且改变连接标签。</p>
+<h4 id="6-回到第二步，调用完openZygoteSocketIfNeeded返回参数ZygoteState传入到zygoteSendArgsAndGetResult方法中："><a href="#6-回到第二步，调用完openZygoteSocketIfNeeded返回参数ZygoteState传入到zygoteSendArgsAndGetResult方法中：" class="headerlink" title="6. 回到第二步，调用完openZygoteSocketIfNeeded返回参数ZygoteState传入到zygoteSendArgsAndGetResult方法中："></a>6. 回到第二步，调用完openZygoteSocketIfNeeded返回参数ZygoteState传入到zygoteSendArgsAndGetResult方法中：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> ProcessStartResult <span class="title">zygoteSendArgsAndGetResult</span><span class="params">(</span></span></div><div class="line"><span class="function"><span class="params">        ZygoteState zygoteState, ArrayList&lt;String&gt; args)</span></span></div><div class="line"><span class="function">        <span class="keyword">throws</span> ZygoteStartFailedEx </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// Throw early if any of the arguments are malformed. This means we can</span></div><div class="line">        <span class="comment">// avoid writing a partial response to the zygote.</span></div><div class="line">        <span class="keyword">int</span> sz = args.size();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; i++) &#123;</div><div class="line">            <span class="keyword">if</span> (args.get(i).indexOf(<span class="string">'\n'</span>) &gt;= <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> ZygoteStartFailedEx(<span class="string">"embedded newlines not allowed"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">final</span> BufferedWriter writer = zygoteState.writer;</div><div class="line">        <span class="keyword">final</span> DataInputStream inputStream = zygoteState.inputStream;</div><div class="line"></div><div class="line">        writer.write(Integer.toString(args.size()));</div><div class="line">        writer.newLine();</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; i++) &#123;</div><div class="line">            String arg = args.get(i);</div><div class="line">            writer.write(arg);</div><div class="line">            writer.newLine();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        writer.flush();</div><div class="line">        <span class="comment">// Zygote进程接收到这些数据之后，就会创建一个新的应用程序进程，并且将这个新创建的应用程序进程</span></div><div class="line">        <span class="comment">// 的PID返回给Activity管理服务AMS</span></div><div class="line"></div><div class="line">        <span class="comment">// Should there be a timeout on this?</span></div><div class="line">        ProcessStartResult result = <span class="keyword">new</span> ProcessStartResult();</div><div class="line"></div><div class="line">        <span class="comment">// Always read the entire result from the input stream to avoid leaving</span></div><div class="line">        <span class="comment">// bytes in the stream for future process starts to accidentally stumble</span></div><div class="line">        <span class="comment">// upon.</span></div><div class="line">        result.pid = inputStream.readInt();</div><div class="line">        result.usingWrapper = inputStream.readBoolean();</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (result.pid &lt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ZygoteStartFailedEx(<span class="string">"fork() failed"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException ex) &#123;</div><div class="line">        zygoteState.close();</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ZygoteStartFailedEx(ex);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这方法通过Socket流的方式将启动进程的信息发送出去，从步骤4可知，这个Socket的监听是ZygoteInit类中的runSelectLoop方法，我们接着看这个方法。</p>
+<h4 id="7-ZygoteInit-runSelectLoop方法："><a href="#7-ZygoteInit-runSelectLoop方法：" class="headerlink" title="7. ZygoteInit.runSelectLoop方法："></a>7. ZygoteInit.runSelectLoop方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">runSelectLoop</span><span class="params">(String abiList)</span> <span class="keyword">throws</span> MethodAndArgsCaller </span>&#123;</div><div class="line">    ArrayList&lt;FileDescriptor&gt; fds = <span class="keyword">new</span> ArrayList&lt;FileDescriptor&gt;();</div><div class="line">    ArrayList&lt;ZygoteConnection&gt; peers = <span class="keyword">new</span> ArrayList&lt;ZygoteConnection&gt;();</div><div class="line"></div><div class="line">    fds.add(sServerSocket.getFileDescriptor());</div><div class="line">    peers.add(<span class="keyword">null</span>);</div><div class="line"></div><div class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">        StructPollfd[] pollFds = <span class="keyword">new</span> StructPollfd[fds.size()];</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pollFds.length; ++i) &#123;</div><div class="line">            pollFds[i] = <span class="keyword">new</span> StructPollfd();</div><div class="line">            pollFds[i].fd = fds.get(i);</div><div class="line">            pollFds[i].events = (<span class="keyword">short</span>) POLLIN;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Os.poll(pollFds, -<span class="number">1</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (ErrnoException ex) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"poll failed"</span>, ex);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = pollFds.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</div><div class="line">            <span class="keyword">if</span> ((pollFds[i].revents &amp; POLLIN) == <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</div><div class="line">                ZygoteConnection newPeer = acceptCommandPeer(abiList);</div><div class="line">                peers.add(newPeer);</div><div class="line">                fds.add(newPeer.getFileDesciptor());</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">boolean</span> done = peers.get(i).runOnce();</div><div class="line">                <span class="keyword">if</span> (done) &#123;</div><div class="line">                    peers.remove(i);</div><div class="line">                    fds.remove(i);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>数据通过Socket发送以后，Zygote进程接收到后会调用peers.get(i).runOnce()方法。这个peers.get(i)是获取ZygoteConnection对象，表示一个Socket连接，然后调用它的runOnce方法。</p>
+<h4 id="8-ZygoteConnection-runOnce方法："><a href="#8-ZygoteConnection-runOnce方法：" class="headerlink" title="8. ZygoteConnection.runOnce方法："></a>8. ZygoteConnection.runOnce方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">runOnce</span><span class="params">()</span> <span class="keyword">throws</span> ZygoteInit.MethodAndArgsCaller </span>&#123;</div><div class="line"></div><div class="line">    String args[];</div><div class="line">    Arguments parsedArgs = <span class="keyword">null</span>;</div><div class="line">    FileDescriptor[] descriptors;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 获得创建应用程序进程需要的启动参数，并且保存在一个Arguments对象parsedArgs中</span></div><div class="line">        args = readArgumentList();</div><div class="line">        descriptors = mSocket.getAncillaryFileDescriptors();</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException ex) &#123;</div><div class="line">        Log.w(TAG, <span class="string">"IOException on command socket "</span> + ex.getMessage());</div><div class="line">        closeSocket();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">/** the stderr of the most recent request, if avail */</span></div><div class="line">    PrintStream newStderr = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (descriptors != <span class="keyword">null</span> &amp;&amp; descriptors.length &gt;= <span class="number">3</span>) &#123;</div><div class="line">        newStderr = <span class="keyword">new</span> PrintStream(</div><div class="line">                <span class="keyword">new</span> FileOutputStream(descriptors[<span class="number">2</span>]));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> pid = -<span class="number">1</span>;</div><div class="line">    FileDescriptor childPipeFd = <span class="keyword">null</span>;</div><div class="line">    FileDescriptor serverPipeFd = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        parsedArgs = <span class="keyword">new</span> Arguments(args);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (parsedArgs.abiListQuery) &#123;</div><div class="line">            <span class="keyword">return</span> handleAbiListQuery();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        ...</div><div class="line"></div><div class="line">        <span class="comment">// 调用forkAndSpecialize方法来创建这个应用程序进程，最终通过函数fork在当前进程中创建一个子进程，</span></div><div class="line">        <span class="comment">// 因此，当它的返回值等于0时，就表示是在新创建的子进程中执行的，这时候ZygoteConnection类就会调用</span></div><div class="line">        <span class="comment">// 成员函数handleChildProc来启动这个子进程</span></div><div class="line">        pid = Zygote.forkAndSpecialize(parsedArgs.uid, parsedArgs.gid, parsedArgs.gids,</div><div class="line">                parsedArgs.debugFlags, rlimits, parsedArgs.mountExternal, parsedArgs.seInfo,</div><div class="line">                parsedArgs.niceName, fdsToClose, parsedArgs.instructionSet,</div><div class="line">                parsedArgs.appDataDir);</div><div class="line">    &#125; <span class="keyword">catch</span> (ErrnoException ex) &#123;</div><div class="line">        ...</div><div class="line">    &#125; <span class="keyword">catch</span> (IllegalArgumentException ex) &#123;</div><div class="line">        ...</div><div class="line">    &#125; <span class="keyword">catch</span> (ZygoteSecurityException ex) &#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123;</div><div class="line">            ...</div><div class="line">            handleChildProc(parsedArgs, descriptors, childPipeFd, newStderr);</div><div class="line"></div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            ...</div><div class="line">            <span class="keyword">return</span> handleParentProc(pid, descriptors, serverPipeFd, parsedArgs);</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先通过Zygote.forkAndSpecialize方法来创建一个新的进程，并且返回其pid。因为我们在分心新建进程，因此我们只分析pid为0的情况，pid为0时会调用handleChildProc方法，</p>
+<h4 id="9-handleChildProc方法："><a href="#9-handleChildProc方法：" class="headerlink" title="9. handleChildProc方法："></a>9. handleChildProc方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleChildProc</span><span class="params">(Arguments parsedArgs,</span></span></div><div class="line"><span class="function"><span class="params">        FileDescriptor[] descriptors, FileDescriptor pipeFd, PrintStream newStderr)</span></span></div><div class="line"><span class="function">        <span class="keyword">throws</span> ZygoteInit.MethodAndArgsCaller </span>&#123;</div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">// End of the postFork event.</span></div><div class="line">    Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);</div><div class="line">    <span class="keyword">if</span> (parsedArgs.invokeWith != <span class="keyword">null</span>) &#123;</div><div class="line">        WrapperInit.execApplication(parsedArgs.invokeWith,</div><div class="line">                parsedArgs.niceName, parsedArgs.targetSdkVersion,</div><div class="line">                VMRuntime.getCurrentInstructionSet(),</div><div class="line">                pipeFd, parsedArgs.remainingArgs);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// 初始化运行库以及启动一个Binder线程池</span></div><div class="line">        RuntimeInit.zygoteInit(parsedArgs.targetSdkVersion,</div><div class="line">                parsedArgs.remainingArgs, <span class="keyword">null</span> <span class="comment">/* classLoader */</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于我们之前加入参数是没有parsedArgs.invokeWith这个参数，因此这里是null，因此会走else里面的代码，执行RuntimeInit.zygoteInit方法。</p>
+<h4 id="10-RuntimeInit-zygoteInit方法："><a href="#10-RuntimeInit-zygoteInit方法：" class="headerlink" title="10. RuntimeInit.zygoteInit方法："></a>10. RuntimeInit.zygoteInit方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">zygoteInit</span><span class="params">(<span class="keyword">int</span> targetSdkVersion, String[] argv, ClassLoader classLoader)</span></span></div><div class="line"><span class="function">        <span class="keyword">throws</span> ZygoteInit.MethodAndArgsCaller </span>&#123;</div><div class="line">    <span class="keyword">if</span> (DEBUG) Slog.d(TAG, <span class="string">"RuntimeInit: Starting application from zygote"</span>);</div><div class="line"></div><div class="line">    Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, <span class="string">"RuntimeInit"</span>);</div><div class="line">    redirectLogStreams();</div><div class="line"></div><div class="line">    <span class="comment">// 首先调用下面函数来设置新创建的应用程序进程的时区和键盘布局等通用信息</span></div><div class="line">    commonInit();</div><div class="line">    <span class="comment">// 然后调用下面Native函数在新创建的应用程序进程中启动一个Binder线程池</span></div><div class="line">    nativeZygoteInit();</div><div class="line">    applicationInit(targetSdkVersion, argv, classLoader);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先调用nativeZygoteInit函数，这是一个native函数，函数的目的是在新创建的应用程序进程中启动一个Binder线程池然后进行进程间通信。然后调用applicationInit函数</p>
+<h4 id="11-applicationInit函数："><a href="#11-applicationInit函数：" class="headerlink" title="11. applicationInit函数："></a>11. applicationInit函数：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">applicationInit</span><span class="params">(<span class="keyword">int</span> targetSdkVersion, String[] argv, ClassLoader classLoader)</span></span></div><div class="line"><span class="function">        <span class="keyword">throws</span> ZygoteInit.MethodAndArgsCaller </span>&#123;</div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">// Remaining arguments are passed to the start class's static main</span></div><div class="line">    <span class="comment">// 我们知道AMS指定了新创建的应用程序进程的入口函数为ActivityThread类的静态成员函数main。实际是</span></div><div class="line">    <span class="comment">// 通过下面方法进入到ActivityThread类的静态成员函数main中的</span></div><div class="line">    invokeStaticMain(args.startClass, args.startArgs, classLoader);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们在前面讲过args.startClass传入进来的是”android.app.ActivityThread”，表示要执行”android.app.ActivityThread”的main函数。</p>
+<h4 id="12-invokeStaticMain函数："><a href="#12-invokeStaticMain函数：" class="headerlink" title="12. invokeStaticMain函数："></a>12. invokeStaticMain函数：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">invokeStaticMain</span><span class="params">(String className, String[] argv, ClassLoader classLoader)</span></span></div><div class="line"><span class="function">        <span class="keyword">throws</span> ZygoteInit.MethodAndArgsCaller </span>&#123;</div><div class="line">    Class&lt;?&gt; cl;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        cl = Class.forName(className, <span class="keyword">true</span>, classLoader);</div><div class="line">    &#125; <span class="keyword">catch</span> (ClassNotFoundException ex) &#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Method m;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 获取它的静态成员函数main，并且保存在Method对象m中</span></div><div class="line">        m = cl.getMethod(<span class="string">"main"</span>, <span class="keyword">new</span> Class[] &#123; String[].class &#125;);</div><div class="line">    &#125; <span class="keyword">catch</span> (NoSuchMethodException ex) &#123;</div><div class="line">        ...</div><div class="line">    &#125; <span class="keyword">catch</span> (SecurityException ex) &#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line"><span class="comment">     * This throw gets caught in ZygoteInit.main(), which responds</span></div><div class="line"><span class="comment">     * by invoking the exception's run() method. This arrangement</span></div><div class="line"><span class="comment">     * clears up all the stack frames that were required in setting</span></div><div class="line"><span class="comment">     * up the process.</span></div><div class="line"><span class="comment">     * 将这个Method对象封装在一个MethodAndArgsCaller对象中，并且将这个MethodAndArgsCaller对象作为</span></div><div class="line"><span class="comment">     * 一个异常对象抛出来给当前应用程序处理</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> ZygoteInit.MethodAndArgsCaller(m, argv);</div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 引用自Android系统源代码情景分析中的Android进程启动分析一文</span></div><div class="line"><span class="comment">     * 新创建的应用程序进程复制了Zygote进程的地址空间，因此，当前新创建的应用程序进程的调用栈与Zygote</span></div><div class="line"><span class="comment">     * 进程的调用堆栈是一致的。Zygote进程最开始执行的是应用程序app_process的入口函数main，接着再调用</span></div><div class="line"><span class="comment">     * ZygoteInit类的静态成员函数main，最后进入到ZygoteInit类的静态成员函数runSelectLoopMode来循环</span></div><div class="line"><span class="comment">     * 等待Activity管理服务AMS发送过来的创建新的应用进程的请求。当Zygote进程收到AMS发送过来的创建新的</span></div><div class="line"><span class="comment">     * 应用程序进程的请求之后，它就会创建一个新的应用程序进程，并且让这个新创建的应用程序进程沿着</span></div><div class="line"><span class="comment">     * ZygoteInit类的静态函数runSelectLoopModel一直执行到RuntimeInit类的静态成员函数</span></div><div class="line"><span class="comment">     * invokeStaticMain。因此，当RuntimeInit类的静态成员函数invokeStaticMain抛出一个类型为</span></div><div class="line"><span class="comment">     * MethodAndArgsCaller的常时，系统就会沿着这个调用过程往后找到一个适合的代码块来捕获它。</span></div><div class="line"><span class="comment">     * 由于ZygoteInit函数main捕获了类型为MethodAndArgsCaller的异常，因此，接下来它就会被调用，以便</span></div><div class="line"><span class="comment">     * 可以处理这里抛出的一个MethodAndArgsCaller异常。因此，抛出这个异常后，会执行ZygoteInit中main</span></div><div class="line"><span class="comment">     * 函数中的catch来捕获异常。</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     */</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个就是通过类加载器加载ActivityThread，然后调用起main方法。然后抛出异常，通过ZygoteInit中main函数中的catch来捕获异常。</p>
+<h4 id="13-ZygoteInit-main函数："><a href="#13-ZygoteInit-main函数：" class="headerlink" title="13. ZygoteInit.main函数："></a>13. ZygoteInit.main函数：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String argv[])</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    &#125; <span class="keyword">catch</span> (MethodAndArgsCaller caller) &#123;</div><div class="line">        <span class="comment">// 捕获MethodAndArgsCaller异常以后会调用MethodAndArgsCaller的run函数</span></div><div class="line">        <span class="comment">// ActivityThread.main</span></div><div class="line">        caller.run();</div><div class="line">    &#125; <span class="keyword">catch</span> (Throwable ex) &#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过步骤12可知抛出的异常是MethodAndArgsCaller异常，因此会执行caller.run方法。</p>
+<h4 id="14-MethodAndArgsCaller-run"><a href="#14-MethodAndArgsCaller-run" class="headerlink" title="14. MethodAndArgsCaller.run:"></a>14. MethodAndArgsCaller.run:</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 注释来自Android系统源代码情景分析</span></div><div class="line"><span class="comment"> * 这里开始调用ActivityThread.main方法，为什么要绕这么远呢，前面提到，AMS请求Zygote进程创建的应用</span></div><div class="line"><span class="comment"> * 程序进程的入口函数为ActivityThread的main函数，但是由于新创建的应用程序进程一开始就需要再内部初始</span></div><div class="line"><span class="comment"> * 化运行时库，以及启动Binder线程池，因此，ActivityThread的main函数被调用时，新创建的应用程序进程</span></div><div class="line"><span class="comment"> * 实际上已经执行了相当多的代码，为了使得西创建的应用程序的进程觉得它的入口函数就是ActivityThread类</span></div><div class="line"><span class="comment"> * 的main函数，系统就不能直接调用，而是抛出异常回到ZygoteInit的main函数中，然后间接调用它，这样就</span></div><div class="line"><span class="comment"> * 可以巧妙的利用Java语言的异常处理来清理它前面调用的堆栈了</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 调用ActivityThread.main</span></div><div class="line">        mMethod.invoke(<span class="keyword">null</span>, <span class="keyword">new</span> Object[]&#123;mArgs&#125;);</div><div class="line">    &#125; <span class="keyword">catch</span> (IllegalAccessException ex) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(ex);</div><div class="line">    &#125; <span class="keyword">catch</span> (InvocationTargetException ex) &#123;</div><div class="line">        Throwable cause = ex.getCause();</div><div class="line">        <span class="keyword">if</span> (cause <span class="keyword">instanceof</span> RuntimeException) &#123;</div><div class="line">            <span class="keyword">throw</span> (RuntimeException) cause;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cause <span class="keyword">instanceof</span> Error) &#123;</div><div class="line">            <span class="keyword">throw</span> (Error) cause;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(ex);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过mMethod.invoke方法调用ActivityThread的main方法。</p>
+<h4 id="15-ActivityThread-mian方法："><a href="#15-ActivityThread-mian方法：" class="headerlink" title="15. ActivityThread.mian方法："></a>15. ActivityThread.mian方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 启动新的进程时调用Process的start方法会最终调用改函数</span></div><div class="line"><span class="comment"> * 启动新的进程主要做了两件事：</span></div><div class="line"><span class="comment"> * 1.在进程中创建了一个ActivityThread对象，并调用了它的成员函数attach向AMS发送一个启动完成的通知</span></div><div class="line"><span class="comment"> * 2.调用Looper类的静态成员函数prepareMainLooper创建一个消息循环，并且在向AMS发送启动完成通知后，</span></div><div class="line"><span class="comment"> *   使得当前进程进入到这个消息循环中</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> args</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">// 创建looper</span></div><div class="line">    Looper.prepareMainLooper();</div><div class="line"></div><div class="line">    ActivityThread thread = <span class="keyword">new</span> ActivityThread();</div><div class="line">    <span class="comment">// 传入false表示非系统进程启动</span></div><div class="line">    thread.attach(<span class="keyword">false</span>);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (sMainThreadHandler == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// 获取主线程的Handler</span></div><div class="line">        sMainThreadHandler = thread.getHandler();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">// 开始无限循环</span></div><div class="line">    Looper.loop();</div><div class="line"></div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Main thread loop unexpectedly exited"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里主要是创建该线程的looper，然后创建ActivityThread对象，然后进入消息循环。然后我们就可以启动Activity或者Service了。</p>
+<h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
+<p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
+<p>注：本文原创，转载请注明出处，多谢。</p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，多少你说算</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/09/13/Android系统源码分析-Process/">Android系统源码分析--Process</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
+        <p><span>发布时间:</span>2017年09月13日 - 20时45分</p>
+        <p><span>最后更新:</span>2017年09月14日 - 12时09分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/09/13/Android系统源码分析-Process/" title="Android系统源码分析--Process">http://www.codemx.cn/2017/09/13/Android系统源码分析-Process/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/09/13/Android系统源码分析-Process/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2017/07/13/AndroidOS004-HandleMessageLooper/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android系统源码分析--消息循环机制</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进程启动流程"><span class="toc-number">2.</span> <span class="toc-text">进程启动流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Process-start方法："><span class="toc-number">2.0.1.</span> <span class="toc-text">1. Process.start方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-startViaZygote方法："><span class="toc-number">2.0.2.</span> <span class="toc-text">2. startViaZygote方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-openZygoteSocketIfNeeded方法："><span class="toc-number">2.0.3.</span> <span class="toc-text">3. openZygoteSocketIfNeeded方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-ZygoteState-connect方法："><span class="toc-number">2.0.4.</span> <span class="toc-text">4. ZygoteState.connect方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-LocalSocket-connect方法："><span class="toc-number">2.0.5.</span> <span class="toc-text">5. LocalSocket.connect方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-回到第二步，调用完openZygoteSocketIfNeeded返回参数ZygoteState传入到zygoteSendArgsAndGetResult方法中："><span class="toc-number">2.0.6.</span> <span class="toc-text">6. 回到第二步，调用完openZygoteSocketIfNeeded返回参数ZygoteState传入到zygoteSendArgsAndGetResult方法中：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-ZygoteInit-runSelectLoop方法："><span class="toc-number">2.0.7.</span> <span class="toc-text">7. ZygoteInit.runSelectLoop方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-ZygoteConnection-runOnce方法："><span class="toc-number">2.0.8.</span> <span class="toc-text">8. ZygoteConnection.runOnce方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-handleChildProc方法："><span class="toc-number">2.0.9.</span> <span class="toc-text">9. handleChildProc方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-RuntimeInit-zygoteInit方法："><span class="toc-number">2.0.10.</span> <span class="toc-text">10. RuntimeInit.zygoteInit方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-applicationInit函数："><span class="toc-number">2.0.11.</span> <span class="toc-text">11. applicationInit函数：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12-invokeStaticMain函数："><span class="toc-number">2.0.12.</span> <span class="toc-text">12. invokeStaticMain函数：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13-ZygoteInit-main函数："><span class="toc-number">2.0.13.</span> <span class="toc-text">13. ZygoteInit.main函数：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14-MethodAndArgsCaller-run"><span class="toc-number">2.0.14.</span> <span class="toc-text">14. MethodAndArgsCaller.run:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#15-ActivityThread-mian方法："><span class="toc-number">2.0.15.</span> <span class="toc-text">15. ActivityThread.mian方法：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注"><span class="toc-number">3.</span> <span class="toc-text">注</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <section class="youyan" id="comments">
+  <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2108999"></script>
+<!-- UY END -->
+</section>
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/07/13/AndroidOS004-HandleMessageLooper/" title="下一篇: Android系统源码分析--消息循环机制">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/09/13/Android系统源码分析-Process/">Android系统源码分析--Process</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/13/AndroidOS004-HandleMessageLooper/">Android系统源码分析--消息循环机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/12/AndroidOS003-SystemServer/">Android系统源码分析--Zygote和SystemServer启动过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/AndroidOS001/">IntelliJ IDEA导入Android源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/19/Launcher08/">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/OpenArithmetic/">开源算法集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/UICollection01/">常用UI框架汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Launcher07/">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）- 拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）- Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）- 数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）- 概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android、iOS、Mac开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2017 墨香
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站访问量: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页访问量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?[object Object]";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
