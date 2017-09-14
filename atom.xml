@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2017-09-14T04:09:18.000Z</updated>
+  <updated>2017-09-14T04:16:12.000Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Android系统源码分析--Process</title>
+    <title>Android系统源码分析--Process启动过程</title>
     <link href="http://www.codemx.cn/2017/09/13/Android%E7%B3%BB%E7%BB%9F%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-Process/"/>
     <id>http://www.codemx.cn/2017/09/13/Android系统源码分析-Process/</id>
     <published>2017-09-13T12:45:07.000Z</published>
-    <updated>2017-09-14T04:09:18.000Z</updated>
+    <updated>2017-09-14T04:16:12.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。&lt;/p&gt;
