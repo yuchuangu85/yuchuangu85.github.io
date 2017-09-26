@@ -1196,7 +1196,7 @@
     <link href="http://www.codemx.cn/2017/01/10/FrameCollection/"/>
     <id>http://www.codemx.cn/2017/01/10/FrameCollection/</id>
     <published>2017-01-10T09:13:25.000Z</published>
-    <updated>2017-09-14T02:04:01.000Z</updated>
+    <updated>2017-09-24T07:21:50.000Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章主要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。&lt;/p&gt;
@@ -1353,6 +1353,25 @@
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/Syhids/android-architecture/tree/todo-mvp-fragmentless&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp-fragmentless&lt;/a&gt; - Based on todo-mvp, uses Android views instead of Fragments.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/grepx/android-architecture/tree/todo-mvp-conductor&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;todo-mvp-conductor&lt;/a&gt; - Based on todo-mvp, uses the Conductor framework to refactor to a single Activity architecture.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;Google官方设计模式的扩展&quot;&gt;&lt;a href=&quot;#Google官方设计模式的扩展&quot; class=&quot;headerlink&quot; title=&quot;Google官方设计模式的扩展&quot;&gt;&lt;/a&gt;Google官方设计模式的扩展&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/bufferapp/android-clean-architecture-boilerplate&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android-clean-architecture-boilerplate&lt;/a&gt; - An android boilerplate project using clean architecture&lt;/p&gt;
+&lt;p&gt;  Languages, libraries and tools used&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://kotlinlang.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Kotlin&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Android Support Libraries&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/ReactiveX/RxJava/wiki/What&amp;#39;s-different-in-2.0&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;RxJava2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/google/dagger&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Dagger 2 (2.11)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/bumptech/glide&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Glide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://square.github.io/retrofit/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Retrofit&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://square.github.io/okhttp/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OkHttp&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/google/gson&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Gson&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/JakeWharton/timber&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Timber&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://site.mockito.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Mockito&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://developer.android.com/training/testing/espresso/index.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Espresso&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://robolectric.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Robolectric&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;事件总线&quot;&gt;&lt;a href=&quot;#事件总线&quot; class=&quot;headerlink&quot; title=&quot;事件总线&quot;&gt;&lt;/a&gt;事件总线&lt;/h2&gt;&lt;ul&gt;
