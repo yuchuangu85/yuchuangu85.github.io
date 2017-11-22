@@ -994,7 +994,7 @@
     <link href="http://www.codemx.cn/2017/03/13/UICollection01/"/>
     <id>http://www.codemx.cn/2017/03/13/UICollection01/</id>
     <published>2017-03-13T14:38:41.000Z</published>
-    <updated>2017-08-16T07:54:27.000Z</updated>
+    <updated>2017-11-22T06:19:36.650Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。主要包括：ViewPager、RecyclerView、Toast、Notification、CoordinatorLayout、Animation、界面切换、日历、高斯模糊、菜单、图片选择器、切换主题等。&lt;/p&gt;
@@ -1016,6 +1016,22 @@
 &lt;li&gt;ViewPagerCards&lt;br&gt;&lt;a href=&quot;https://github.com/rubensousa/ViewPagerCards&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ViewPagerCards&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&quot;https://camo.githubusercontent.com/169da1a6017dc2c13ffd4594cb53536e1c581ce2/68747470733a2f2f727562656e736f7573612e6769746875622e696f2f696d672f64756f6c696e676f5f7669657770616765722e676966&quot; alt=&quot;ViewPagerCards-w240&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ViewpagerTransition&lt;br&gt;&lt;a href=&quot;https://github.com/xmuSistone/ViewpagerTransition&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ViewpagerTransition&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://github.com/xmuSistone/ViewpagerTransition/raw/master/gif1.gif&quot;&gt;   &lt;img width=&quot;240&quot; src=&quot;https://github.com/xmuSistone/ViewpagerTransition/raw/master/gif2.gif&quot;&gt;   &lt;img width=&quot;240&quot; src=&quot;https://github.com/xmuSistone/ViewpagerTransition/raw/master/gif3.gif&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;CardStackView&quot;&gt;&lt;a href=&quot;#CardStackView&quot; class=&quot;headerlink&quot; title=&quot;CardStackView&quot;&gt;&lt;/a&gt;CardStackView&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;CardStackView&lt;br&gt;&lt;a href=&quot;https://github.com/loopeer/CardStackView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CardStackView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://github.com/loopeer/CardStackView/raw/master/screenshot/screenshot1.gif&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/loopeer/CardStackView/raw/master/screenshot/screenshot2.gif&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/loopeer/CardStackView/raw/master/screenshot/screenshot3.gif&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;FlippableStackView&lt;br&gt;&lt;a href=&quot;https://github.com/blipinsk/FlippableStackView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;FlippableStackView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img width=&quot;240&quot; src=&quot;https://github.com/blipinsk/FlippableStackView/raw/master/FlippableStackView.png&quot;&gt;  &lt;img width=&quot;240&quot; src=&quot;https://github.com/blipinsk/FlippableStackView/raw/master/FlippableStackView.gif&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CardStackView&lt;br&gt;&lt;a href=&quot;https://github.com/yuyakaido/CardStackView&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CardStackView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://github.com/yuyakaido/CardStackView/raw/master/images/overview-github.gif&quot; alt=&quot;CardStackView&quot;&gt;&lt;/p&gt;
 &lt;h3 id=&quot;RecyclerView&quot;&gt;&lt;a href=&quot;#RecyclerView&quot; class=&quot;headerlink&quot; title=&quot;RecyclerView&quot;&gt;&lt;/a&gt;RecyclerView&lt;/h3&gt;&lt;p&gt;部分来源于：&lt;a href=&quot;http://blog.coderclock.com/2017/03/26/android/关于Android%20RecyclerView的那些开源LayoutManager/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;关于Android RecyclerView的那些开源LayoutManager&lt;/a&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;excelPanel&lt;br&gt;&lt;a href=&quot;https://github.com/zhouchaoyuan/excelPanel&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;excelPanel&lt;/a&gt;&lt;/li&gt;
