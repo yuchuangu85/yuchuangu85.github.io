@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2017-12-25T06:43:08.818Z</updated>
+  <updated>2017-12-25T07:12:47.853Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>AndroidOS006-Broadcast注册和注销源码分析</title>
+    <title>Android系统源码分析-Broadcast注册和注销</title>
     <link href="http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/"/>
     <id>http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/</id>
     <published>2017-12-21T03:56:35.000Z</published>
-    <updated>2017-12-25T06:43:08.818Z</updated>
+    <updated>2017-12-25T07:12:47.853Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;距离上一篇博客进程的加载过了很久的时间，这中间换了一份工作，加入了新的团队，也开始了新的项目，比较忙，所以最近才有时间将四大组件之一的广播原理看完，最近一段时间会相继把四大组件分析写完，让我们对四大组件有更深的了解。本来想一篇把广播的内容写完，但是发现要解释的代码比较多，所以还是分开来讲，那么这篇先分析广播的注册和注销，下一篇再分析广播的发送。&lt;/p&gt;
