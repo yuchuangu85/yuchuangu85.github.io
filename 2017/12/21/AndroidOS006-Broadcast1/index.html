@@ -3,18 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>墨香博客</title>
+  <title>AndroidOS006-Broadcast注册和注销源码分析 | 墨香博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="用代码实现自己的梦想。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="墨香博客">
-<meta property="og:url" content="http://www.codemx.cn/index.html">
+  <meta name="description" content="距离上一篇博客进程的加载过了很久的时间，这中间换了一份工作，加入了新的团队，也开始了新的项目，比较忙，所以最近才有时间将四大组件之一的广播原理看完，最近一段时间会相继把四大组件分析写完，让我们对四大组件有更深的了解。本来想一篇把广播的内容写完，但是发现要解释的代码比较多，所以还是分开来讲，那么这篇先分析广播的注册和注销，下一篇再分析广播的发送。 Broadcast的注册 Step-1:注册广播入口">
+<meta name="keywords" content="AndroidOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AndroidOS006-Broadcast注册和注销源码分析">
+<meta property="og:url" content="http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/index.html">
 <meta property="og:site_name" content="墨香博客">
-<meta property="og:description" content="用代码实现自己的梦想。">
+<meta property="og:description" content="距离上一篇博客进程的加载过了很久的时间，这中间换了一份工作，加入了新的团队，也开始了新的项目，比较忙，所以最近才有时间将四大组件之一的广播原理看完，最近一段时间会相继把四大组件分析写完，让我们对四大组件有更深的了解。本来想一篇把广播的内容写完，但是发现要解释的代码比较多，所以还是分开来讲，那么这篇先分析广播的注册和注销，下一篇再分析广播的发送。 Broadcast的注册 Step-1:注册广播入口">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/006Broadcast/registerReceiver.jpg">
+<meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/006Broadcast/unregisterReceiver.jpg">
+<meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
+<meta property="og:updated_time" content="2017-12-25T06:38:46.532Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="墨香博客">
-<meta name="twitter:description" content="用代码实现自己的梦想。">
+<meta name="twitter:title" content="AndroidOS006-Broadcast注册和注销源码分析">
+<meta name="twitter:description" content="距离上一篇博客进程的加载过了很久的时间，这中间换了一份工作，加入了新的团队，也开始了新的项目，比较忙，所以最近才有时间将四大组件之一的广播原理看完，最近一段时间会相继把四大组件分析写完，让我们对四大组件有更深的了解。本来想一篇把广播的内容写完，但是发现要解释的代码比较多，所以还是分开来讲，那么这篇先分析广播的注册和注销，下一篇再分析广播的发送。 Broadcast的注册 Step-1:注册广播入口">
+<meta name="twitter:image" content="http://www.codemx.cn/images/AndroidOS/006Broadcast/registerReceiver.jpg">
   
     <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
   
@@ -28,9 +34,6 @@
   <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   
-    
-    
-  
   
       <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
   
@@ -42,8 +45,8 @@
           rootUrl: '/',
           fancybox: true,
           animate: true,
-          isHome: true,
-          isPost: false,
+          isHome: false,
+          isPost: true,
           isArchive: false,
           isTag: false,
           isCategory: false,
@@ -239,9 +242,7 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-AndroidOS006-Broadcast1" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-AndroidOS006-Broadcast1" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2017/12/21/AndroidOS006-Broadcast1/" class="article-date">
@@ -257,12 +258,23 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/21/AndroidOS006-Broadcast1/">AndroidOS006-Broadcast注册和注销源码分析</a>
+    <h1 class="article-title" itemprop="name">
+      AndroidOS006-Broadcast注册和注销源码分析
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -314,624 +326,182 @@
 
       
       
-    </div>
-    
-    <div class="article-info article-info-index">
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()" title="关闭">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，多少你说算</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
       
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
     </div>
     
   </div>
   
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-AndroidOS005-Process" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/13/AndroidOS005-Process/" class="article-date">
-      <time datetime="2017-09-13T12:45:07.000Z" itemprop="datePublished">2017-09-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/13/AndroidOS005-Process/">Android系统源码分析--Process启动过程</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/09/13/AndroidOS005-Process/#more">详细内容 >></a>
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/12/21/AndroidOS006-Broadcast1/">AndroidOS006-Broadcast注册和注销源码分析</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
+        <p><span>发布时间:</span>2017年12月21日 - 11时56分</p>
+        <p><span>最后更新:</span>2017年12月25日 - 14时38分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/21/AndroidOS006-Broadcast1/" title="AndroidOS006-Broadcast注册和注销源码分析">http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-AndroidOS004-HandleMessageLooper" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/13/AndroidOS004-HandleMessageLooper/" class="article-date">
-      <time datetime="2017-07-12T16:12:33.000Z" itemprop="datePublished">2017-07-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/13/AndroidOS004-HandleMessageLooper/">Android系统源码分析--消息循环机制</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>上一章我们讲解SystemServer时涉及到了消息机制，因此这一章我们先介绍一下消息循环机制，帮助大家弄清楚消息循环的原理，有助于代码的编写和优化。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/07/13/AndroidOS004-HandleMessageLooper/#more">详细内容 >></a>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
         </p>
-      
-      <div class="clearfix"></div>
     </div>
-    
-  </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2017/09/13/AndroidOS005-Process/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android系统源码分析--Process启动过程</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Broadcast的注册"><span class="toc-number">1.</span> <span class="toc-text">Broadcast的注册</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-1-注册广播入口ContextImpl-registerReceiver："><span class="toc-number">1.0.1.</span> <span class="toc-text">Step-1:注册广播入口ContextImpl.registerReceiver：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-2-调用registerReceiverInternal方法："><span class="toc-number">1.0.2.</span> <span class="toc-text">Step-2:调用registerReceiverInternal方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-3-LoadedApk-getReceiverDispatcher方法："><span class="toc-number">1.0.3.</span> <span class="toc-text">Step-3:LoadedApk.getReceiverDispatcher方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-7-ActivityManagerProxy-registerReceiver"><span class="toc-number">1.0.4.</span> <span class="toc-text">Step-7:ActivityManagerProxy.registerReceiver</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-8-ActivityManagerService-registerReceiver"><span class="toc-number">1.0.5.</span> <span class="toc-text">Step-8:ActivityManagerService.registerReceiver</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-9-getRecordForAppLocked"><span class="toc-number">1.0.6.</span> <span class="toc-text">Step-9:getRecordForAppLocked</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-10-getLRURecordIndexForAppLocked"><span class="toc-number">1.0.7.</span> <span class="toc-text">Step-10:getLRURecordIndexForAppLocked</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-11-UserController-handleIncomingUser"><span class="toc-number">1.0.8.</span> <span class="toc-text">Step-11:UserController.handleIncomingUser</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-24-BroadcastQueue-scheduleBroadcastsLocked"><span class="toc-number">1.0.9.</span> <span class="toc-text">Step-24:BroadcastQueue.scheduleBroadcastsLocked</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Broadcast的注销"><span class="toc-number">2.</span> <span class="toc-text">Broadcast的注销</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-1-unregisterReceiver"><span class="toc-number">2.0.1.</span> <span class="toc-text">Step-1:unregisterReceiver</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-2-LoadedApk-forgetReceiverDispatcher"><span class="toc-number">2.0.2.</span> <span class="toc-text">Step-2:LoadedApk.forgetReceiverDispatcher</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-4-ActivityManagerProxy-unregisterReceiver"><span class="toc-number">2.0.3.</span> <span class="toc-text">Step-4:ActivityManagerProxy.unregisterReceiver</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-5-ActivityManagerService-unregisterReceiver"><span class="toc-number">2.0.4.</span> <span class="toc-text">Step-5:ActivityManagerService.unregisterReceiver</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-6-BroadcastQueue-getMatchingOrderedReceiver"><span class="toc-number">2.0.5.</span> <span class="toc-text">Step-6:BroadcastQueue.getMatchingOrderedReceiver</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-8-BroadcastQueue-finishReceiverLocked"><span class="toc-number">2.0.6.</span> <span class="toc-text">Step-8:BroadcastQueue.finishReceiverLocked</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-10-BroadcastQueue-processNextBroadcast"><span class="toc-number">2.0.7.</span> <span class="toc-text">Step-10:BroadcastQueue.processNextBroadcast</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Step-11-removeReceiverLocked"><span class="toc-number">2.0.8.</span> <span class="toc-text">Step-11:removeReceiverLocked</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注"><span class="toc-number">3.</span> <span class="toc-text">注</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
 
 
 
 
 
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 
 
 
-  
-    <article id="post-AndroidOS003-SystemServer" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/12/AndroidOS003-SystemServer/" class="article-date">
-      <time datetime="2017-07-12T02:05:21.000Z" itemprop="datePublished">2017-07-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
+
     
-      <input type="hidden" class="isFancy" />
+        <section class="youyan" id="comments">
+  <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2108999"></script>
+<!-- UY END -->
+</section>
+
     
-    
-      <header class="article-header">
+
+
+
+    <div class="scroll" id="post-nav-button">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/12/AndroidOS003-SystemServer/">Android系统源码分析--Zygote和SystemServer启动过程</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>按计划本来从这章开始写四大组件的启动过程的，但是看看源码结构发现为了说的更明白还是先写一点系统framework层启动的内容，帮助理解四大组件的启动以及管理过程。我们知道四大组件管理是通过一些服务以及线程实现的，所以先把一些基本概念弄清楚比较好，比如AMS（ActivityManagerService）、PMS（PackageManagerService）等系统服务的作用以及调用方式，了解这些之后再看四大组件相对容易些，因此我们本章先介绍系统启动、部分系统服务的作用。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/07/12/AndroidOS003-SystemServer/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-AndroidOS002-Context" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/05/AndroidOS002-Context/" class="article-date">
-      <time datetime="2017-06-05T10:00:19.000Z" itemprop="datePublished">2017-06-05</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。<br>声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1版本系统）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/06/05/AndroidOS002-Context/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-AndroidOS001" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/06/03/AndroidOS001/" class="article-date">
-      <time datetime="2017-06-03T05:38:34.000Z" itemprop="datePublished">2017-06-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/03/AndroidOS001/">IntelliJ IDEA导入Android源码</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>我们知道在Windows系统下阅读源码利器是Source Insight，但是没有Mac版本，阅读源码一直是个问题，之前我写过关于阅读源码神器的Understand，但是如果项目过大则很慢，所以也不能用来阅读Android系统源码，在网上也查过Sublime text配置ctag，但是相对来说也是不方便，后来使用Visual Studio Code和Sublime text相差不多，最后想到用IntelliJ IDEA来阅读源码，如果直接导入则会分为很多module。最近从网上看到可以导入IntelliJ IDEA软件，所以给大家分享一下。本教程基于Mac OS X 10.12。Android系统版本为：7.1.2_r11(7.1.2最终版)。先介绍方法，后面会给出各种问题解决方案。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/06/03/AndroidOS001/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Launcher08" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/05/19/Launcher08/" class="article-date">
-      <time datetime="2017-05-19T06:00:31.000Z" itemprop="datePublished">2017-05-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+            <a href="/2017/09/13/AndroidOS005-Process/" title="下一篇: Android系统源码分析--Process启动过程">
+                <i class="fa fa-angle-right"></i>
+            </a>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/19/Launcher08/">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>上一章<a href="http://www.codemx.cn/2016/12/18/Launcher07/">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</a>介绍了小部件的加载以及添加过程，基于我的计划对于Launcher的讲解基本要完成了，因此本篇是我对Launcher讲解的最后一部分，计划了很久，因为时间的问题一直没有写，今天趁着有空写完。写了八篇，不多，Launcher里面还有很多东西，有兴趣的可以自己继续研究，看完这些主要的其他都是问题了，有什么需要了解的可以留言。最新版的<a href="https://github.com/yuchuangu85/Launcher3_mx" target="_blank" rel="external">Launcher</a>代码我已经放到github上，想看的自己可以去下载。</p>
-</blockquote>
-          
-      
-      
     </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Launcher/">Launcher</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/05/19/Launcher08/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/21/AndroidOS006-Broadcast1/">AndroidOS006-Broadcast注册和注销源码分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/13/AndroidOS005-Process/">Android系统源码分析--Process启动过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/13/AndroidOS004-HandleMessageLooper/">Android系统源码分析--消息循环机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/12/AndroidOS003-SystemServer/">Android系统源码分析--Zygote和SystemServer启动过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/AndroidOS001/">IntelliJ IDEA导入Android源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/19/Launcher08/">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/OpenArithmetic/">开源算法集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/UICollection01/">常用UI框架汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Launcher07/">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）- 拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）- Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）- 数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）- 概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android、iOS、Mac开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
 
 
 
-
-
-
-
-
-
-  
-    <article id="post-OpenArithmetic" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/23/OpenArithmetic/" class="article-date">
-      <time datetime="2017-03-23T01:12:59.000Z" itemprop="datePublished">2017-03-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+    <script>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/23/OpenArithmetic/">开源算法集合</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>本文主要是收集一些大的公司开源的算法项目，以方便我们开发使用。包括：guetzli（图像算法）、brotli（压缩算法）、face_classification（人脸分类以及情感算法）。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Resource/">Resource</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/03/23/OpenArithmetic/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-UICollection01" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/13/UICollection01/" class="article-date">
-      <time datetime="2017-03-13T14:38:41.000Z" itemprop="datePublished">2017-03-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/13/UICollection01/">常用UI框架汇总</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>本章主要是对常用的UI框架进行整理，帮助大家更方便的查找资源。主要包括：ViewPager、RecyclerView、Toast、Notification、CoordinatorLayout、Animation、界面切换、日历、高斯模糊、菜单、图片选择器、切换主题等。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Resource/">Resource</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/03/13/UICollection01/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-FrameCollection" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/01/10/FrameCollection/" class="article-date">
-      <time datetime="2017-01-10T09:13:25.000Z" itemprop="datePublished">2017-01-10</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>本章主要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Resource/">Resource</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/01/10/FrameCollection/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
