@@ -103,7 +103,7 @@
     <link href="http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/"/>
     <id>http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/</id>
     <published>2017-12-21T03:56:35.000Z</published>
-    <updated>2017-12-25T09:07:05.833Z</updated>
+    <updated>2018-01-06T15:35:10.814Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;距离上一篇博客进程的加载过了很久的时间，这中间换了一份工作，加入了新的团队，也开始了新的项目，比较忙，所以最近才有时间将四大组件之一的广播原理看完，最近一段时间会相继把四大组件分析写完，让我们对四大组件有更深的了解。本来想一篇把广播的内容写完，但是发现要解释的代码比较多，所以还是分开来讲，那么这篇先分析广播的注册和注销，下一篇再分析广播的发送。&lt;/p&gt;
@@ -148,6 +148,9 @@
 &lt;h4 id=&quot;Step-11-removeReceiverLocked&quot;&gt;&lt;a href=&quot;#Step-11-removeReceiverLocked&quot; class=&quot;headerlink&quot; title=&quot;Step-11:removeReceiverLocked&quot;&gt;&lt;/a&gt;Step-11:removeReceiverLocked&lt;/h4&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;removeReceiverLocked&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ReceiverList rl)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    mRegisteredReceivers.remove(rl.receiver.asBinder());&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = rl.size() - &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;; i &amp;gt;= &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i--) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        mReceiverResolver.removeFilter(rl.get(i));&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;这个就是通过for循环删除对应的BroadcastFilter对象，这样就注销了广播。&lt;/p&gt;
 &lt;p&gt;主要的基本都分析了，还有以下其他不重要的大家想要了解自己看看代码。&lt;/p&gt;
+&lt;h2 id=&quot;广播注册结构&quot;&gt;&lt;a href=&quot;#广播注册结构&quot; class=&quot;headerlink&quot; title=&quot;广播注册结构&quot;&gt;&lt;/a&gt;广播注册结构&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/AndroidOS/006Broadcast/broadcastconstruct.jpg&quot; alt=&quot;注册广播结构图&quot;&gt;&lt;/p&gt;
+&lt;p&gt;最后这里我们再加一个广播注册结构的总结，上面是一个广播注册时的结构图，也就是广播以及对应的IntentFilter列表封装，整个过程是由下向上注册。首先是将BroadcastReceiver封装成Binder对象IIntentReceiver，将IntentFilter封装成BroadcastFilter对象，ReceiverList继承的是ArrayList&lt;broadcastfilter&gt;，因此它本身就是一个用来盛放BroadcastFilter对象列表的ArrayList对象，同时ReceiverList对象还放入了IntentFilter列表对应的BroadcastReceiver的封装对象IIntentReceiver，这样就将BroadcastReceiver和IntentFilter绑定到一起了，然后将ReceiverList放到mRegisteredReceivers中，保存在ActivityManagerService（AMS）中，同时将ReceiverList放置到该广播所在进程的receivers中，而该进程保存在AMS中的mLruProcesses中，同时将IntentFilter的封装对象BroadcastReceiver放置到AMS中的mReceiverResolver中，这样就注册完成了。&lt;/broadcastfilter&gt;&lt;/p&gt;
+&lt;p&gt;这样从整个机构来说就非常清楚了，其实里面还有一些相互引用的情况，我没有完全画出来，只画了主要的部分，相对清晰一些。&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
