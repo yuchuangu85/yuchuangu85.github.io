@@ -15,8 +15,9 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/006Broadcast/sendBroadcast.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/006Broadcast/sendBroadcast2.jpg">
+<meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/006Broadcast/flowsendbroadcast.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2017-12-26T02:38:12.921Z">
+<meta property="og:updated_time" content="2018-01-09T03:11:21.284Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析-Broadcast发送">
 <meta name="twitter:description" content="上一篇分析了Android系统中广播的注册和注销，这一篇我们继续分析发送广播的源码流程，广播的发送相对来说比较复杂，所以需要比较长的时间来看，如果你看懂了流程相对来说再研究流程中的细节就比较简单了。">
@@ -338,6 +339,8 @@
 <p>mBroadcastQueues是包含前台优先级和后台优先级的广播队列，这里分别调用前台和后台优先级广播的BroadcastQueue.sendPendingBroadcastsLocked方法。</p>
 <h4 id="6、BroadcastQueue-sendPendingBroadcastsLocked"><a href="#6、BroadcastQueue-sendPendingBroadcastsLocked" class="headerlink" title="6、BroadcastQueue.sendPendingBroadcastsLocked"></a>6、BroadcastQueue.sendPendingBroadcastsLocked</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 未启动进程的广播接收者需要先启动进程，最后到达这个函数</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">sendPendingBroadcastsLocked</span><span class="params">(ProcessRecord app)</span> </span>&#123;</div><div class="line">    <span class="keyword">boolean</span> didSomething = <span class="keyword">false</span>;</div><div class="line">    <span class="comment">// 前面分析mPendingBroadcast用于存储当前正在等待进程启动的BroadcastRecord</span></div><div class="line">    <span class="keyword">final</span> BroadcastRecord br = mPendingBroadcast;</div><div class="line">    <span class="keyword">if</span> (br != <span class="keyword">null</span> &amp;&amp; br.curApp.pid == app.pid) &#123;</div><div class="line">        ...</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">// 启动完成设置为null</span></div><div class="line">            mPendingBroadcast = <span class="keyword">null</span>;</div><div class="line">            processCurBroadcastLocked(br, app);</div><div class="line">            didSomething = <span class="keyword">true</span>;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            ...</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> didSomething;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这里是找到等待处理的广播并且判断是否为空，并且是否和当前进程的pid相同，也就是是不是找个进程的等待广播，如果是就调用processCurBroadcastLocked方法进行处理，这个方法在上面第21步中已经讲过，所以又回到了进程存在的情况下广播的处理。这样整个广播的处理就分析完了，代码量很大，但是逻辑很清楚，只需要对着注释多看看看就明白了。下一篇我们开始讲Activity启动的源码分析。</p>
+<p><img src="/images/AndroidOS/006Broadcast/flowsendbroadcast.jpg" alt="注册广播时序图"></p>
+<p>为了方便记忆，这里添加一个发送广播的流程图，这样对照着上面的代码流程再看就会好理解很多。</p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
 <p>注：本文原创，转载请注明出处，多谢。</p>
@@ -398,7 +401,7 @@
         <p><span>本文标题:</span><a href="/2017/12/25/AndroidOS007-Broadcast2/">Android系统源码分析-Broadcast发送</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2017年12月25日 - 17时08分</p>
-        <p><span>最后更新:</span>2017年12月26日 - 10时38分</p>
+        <p><span>最后更新:</span>2018年01月09日 - 11时11分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/12/25/AndroidOS007-Broadcast2/" title="Android系统源码分析-Broadcast发送">http://www.codemx.cn/2017/12/25/AndroidOS007-Broadcast2/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/12/25/AndroidOS007-Broadcast2/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
