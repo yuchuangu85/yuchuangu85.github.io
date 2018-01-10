@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/002Context/android.png">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/002Context/Context.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2017-12-18T09:32:58.775Z">
+<meta property="og:updated_time" content="2018-01-10T01:03:38.260Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--Context">
 <meta name="twitter:description" content="Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1版本系统）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。">
@@ -386,6 +386,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> Context <span class="title">createBaseContextForActivity</span><span class="params">(ActivityClientRecord r, <span class="keyword">final</span> Activity activity)</span> </span>&#123;</div><div class="line">        ...</div><div class="line"></div><div class="line">        ContextImpl appContext = ContextImpl.createActivityContext(</div><div class="line">                <span class="keyword">this</span>, r.packageInfo, r.token, displayId, r.overrideConfig);</div><div class="line">        appContext.setOuterContext(activity);</div><div class="line">        Context baseContext = appContext;</div><div class="line"></div><div class="line">        ...</div><div class="line">        <span class="keyword">return</span> baseContext;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>从上面代码我肯可以清楚的看到baseContext是appContext赋值的，而appContext就是ContextImpl，因此Activity中的Context也是ContextImpl。到现在我们已经搞清楚了ContextImpl、Context、ContextWrapper、ContextThemeWrapper以及Application、Service和Activity的关系，那么以后看源码我们就知道与Context相关的实现方法都在ContextImpl类中，如果需要看详细实现过程只需要去ContextImpl类中找到相应方法开始跟踪即可。</p>
 <p>从下一章我们开始讲解四大组件的启动过程。</p>
+<h2 id="代码地址："><a href="#代码地址：" class="headerlink" title="代码地址："></a>代码地址：</h2><p>直接拉取导入开发工具（Intellij idea或者Android studio）</p>
+<p><a href="https://git.coding.net/codemx/Android-25.git" target="_blank" rel="external">https://git.coding.net/codemx/Android-25.git</a></p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
 <p>注：本文原创，转载请注明出处，多谢。</p>
@@ -446,7 +448,7 @@
         <p><span>本文标题:</span><a href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2017年06月05日 - 18时00分</p>
-        <p><span>最后更新:</span>2017年12月18日 - 17时32分</p>
+        <p><span>最后更新:</span>2018年01月10日 - 09时03分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/06/05/AndroidOS002-Context/" title="Android系统源码分析--Context">http://www.codemx.cn/2017/06/05/AndroidOS002-Context/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/06/05/AndroidOS002-Context/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -484,7 +486,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述："><span class="toc-number">1.</span> <span class="toc-text">概述：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类图"><span class="toc-number">2.</span> <span class="toc-text">类图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#讲解："><span class="toc-number">2.0.1.</span> <span class="toc-text">讲解：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注"><span class="toc-number">3.</span> <span class="toc-text">注</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述："><span class="toc-number">1.</span> <span class="toc-text">概述：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类图"><span class="toc-number">2.</span> <span class="toc-text">类图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#讲解："><span class="toc-number">2.0.1.</span> <span class="toc-text">讲解：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码地址："><span class="toc-number">3.</span> <span class="toc-text">代码地址：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注"><span class="toc-number">4.</span> <span class="toc-text">注</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
