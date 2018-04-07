@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/007Activity/ActivityFinish.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/007Activity/ActivityFlow.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-04-07T12:39:11.132Z">
+<meta property="og:updated_time" content="2018-04-07T12:40:55.493Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--Activity的finish过程">
 <meta name="twitter:description" content="上一篇我们分析了Activity的启动流程，由于代码量很大，还是没有分析的很详细，但是基本流程都出来了，更详细的东西还是要去看源码，源码在我文章的最后有给出，里面有我添加的详细的注释。这一章来分析Activity的finish过程，这个问题在两年前我去面试金山的时候曾经被问到过，那时候对源码基本没什么了解，所以当时根本是不了解的，今天我们就来分析一下finish的过程到底做了哪些处理，最后对Ac">
@@ -283,6 +283,7 @@
         <blockquote>
 <p>上一篇我们分析了Activity的启动流程，由于代码量很大，还是没有分析的很详细，但是基本流程都出来了，更详细的东西还是要去看源码，源码在我文章的最后有给出，里面有我添加的详细的注释。这一章来分析Activity的finish过程，这个问题在两年前我去面试金山的时候曾经被问到过，那时候对源码基本没什么了解，所以当时根本是不了解的，今天我们就来分析一下finish的过程到底做了哪些处理，最后对Activity的整个启动过程以及finish过程绘制流程图，以方便我们记忆。</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="finish代码分析"><a href="#finish代码分析" class="headerlink" title="finish代码分析"></a>finish代码分析</h2><p>首先先贴一张时序图：</p>
 <p><img src="/images/AndroidOS/007Activity/ActivityFinish.jpg" alt="Activity启动时序图"></p>
 <p>Activity的finish方法就是调用的父类的finish方法：</p>
@@ -410,7 +411,7 @@
         <p><span>本文标题:</span><a href="/2018/03/12/AndroidOS009-Activity/">Android系统源码分析--Activity的finish过程</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2018年03月12日 - 14时55分</p>
-        <p><span>最后更新:</span>2018年04月07日 - 20时39分</p>
+        <p><span>最后更新:</span>2018年04月07日 - 20时40分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2018/03/12/AndroidOS009-Activity/" title="Android系统源码分析--Activity的finish过程">http://www.codemx.cn/2018/03/12/AndroidOS009-Activity/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2018/03/12/AndroidOS009-Activity/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

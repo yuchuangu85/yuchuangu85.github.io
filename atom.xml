@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2018-04-07T12:39:11.132Z</updated>
+  <updated>2018-04-07T12:40:55.493Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -20,11 +20,12 @@
     <link href="http://www.codemx.cn/2018/03/12/AndroidOS009-Activity/"/>
     <id>http://www.codemx.cn/2018/03/12/AndroidOS009-Activity/</id>
     <published>2018-03-12T06:55:07.000Z</published>
-    <updated>2018-04-07T12:39:11.132Z</updated>
+    <updated>2018-04-07T12:40:55.493Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一篇我们分析了Activity的启动流程，由于代码量很大，还是没有分析的很详细，但是基本流程都出来了，更详细的东西还是要去看源码，源码在我文章的最后有给出，里面有我添加的详细的注释。这一章来分析Activity的finish过程，这个问题在两年前我去面试金山的时候曾经被问到过，那时候对源码基本没什么了解，所以当时根本是不了解的，今天我们就来分析一下finish的过程到底做了哪些处理，最后对Activity的整个启动过程以及finish过程绘制流程图，以方便我们记忆。&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h2 id=&quot;finish代码分析&quot;&gt;&lt;a href=&quot;#finish代码分析&quot; class=&quot;headerlink&quot; title=&quot;finish代码分析&quot;&gt;&lt;/a&gt;finish代码分析&lt;/h2&gt;&lt;p&gt;首先先贴一张时序图：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/images/AndroidOS/007Activity/ActivityFinish.jpg&quot; alt=&quot;Activity启动时序图&quot;&gt;&lt;/p&gt;
 &lt;p&gt;Activity的finish方法就是调用的父类的finish方法：&lt;/p&gt;
@@ -100,7 +101,8 @@
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;上一篇我们分析了Activity的启动流程，由于代码量很大，还是没有分析的很详细，但是基本流程都出来了，更详细的东西还是要去看源码，源码在我文章的最后有给出，里面有我添加的详细的注释。这一章来分析Activity的finish过程，这个问题在两年前
+&lt;p&gt;上一篇我们分析了Activity的启动流程，由于代码量很大，还是没有分析的很详细，但是基本流程都出来了，更详细的东西还是要去看源码，源码在我文章的最后有给出，里面有我添加的详细的注释。这一章来分析Activity的finish过程，这个问题在两年前我去面试金山的时候曾经被问到过，那时候对源码基本没什么了解，所以当时根本是不了解的，今天我们就来分析一下finish的过程到底做了哪些处理，最后对Activity的整个启动过程以及finish过程绘制流程图，以方便我们记忆。&lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
