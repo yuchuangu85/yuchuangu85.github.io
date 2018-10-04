@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/007Activity/ActivityStart1.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/007Activity/ActivityStart2.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-03-12T06:38:52.218Z">
+<meta property="og:updated_time" content="2018-08-21T11:06:21.042Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--Activity启动过程">
 <meta name="twitter:description" content="关于Activity的源码分析拖延了太久的时间，由于最近工作繁忙，加上Activity启动源码非常复杂，涉及的内容很多，所以花费了很长是时间才来写这篇源码分析，希望这篇分析能让我们很容易的理解Activity的启动流程，能解决我们在使用Activity过程中遇到的问题，这样就达到了我们对于源码分析的目的了。下一篇我们介绍Activity的finish过程。">
@@ -289,9 +289,12 @@
 </li>
 <li><p><strong>singleTask</strong>：从名字看是单例模式，这个单例不是栈单例，而是系统单例，也就是如果系统中存在了该Activity，那么在调用startActivity时并不会重新创建一个Activity，而是将持有这个Activity的任务移动到顶部位置，并且调用onNewIntent方法，同时在这个栈中的该Activity上面的Activity都会被弹出栈并且被销毁，如果系统中不存在则会创建新的Activity，并且将这个Activity放置到一个新的任务栈中的底部（root）位置。</p>
 <p>  但是，同一个应用中，我们正常使用中同一个应用中的Activity启动却不是这样，启动的具有该属性的Activity会被放到栈的顶部，而不是放到root（底部）位置，如果需要像上面描述一样放到root位置，那么需要在AndroidManifest文件中配置Activity时添加<strong>taskAffinity</strong>属性，例如：</p>
-  <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">activity</span></span></div><div class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">".SingleTaskActivity"</span></span></div><div class="line"><span class="tag">    <span class="attr">android:label</span>=<span class="string">"singleTask launchMode"</span></span></div><div class="line"><span class="tag">    <span class="attr">android:launchMode</span>=<span class="string">"singleTask"</span></span></div><div class="line"><span class="tag">    <span class="attr">android:taskAffinity</span>=<span class="string">""</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>  在不同的应用启动Activity，如果两个应用启动具有该属性的Activity就会创建一个新的任务，并且将该Activity放置到该任务的底部位置。除非用该属性的Activity所在的应用已经存在了，新创建该属性Activity后会将其放置到顶部位置。如果在其他的任务中存在了该属性的Activity，整个任务都会被移到顶部位置，并且该Activity上面的所有Activity都会被销毁，用户需要按back键遍历栈中的Activity才能回到调用者。</p>
 </li>
+</ul>
+<pre><code><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">activity</span></span></div><div class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">".SingleTaskActivity"</span></span></div><div class="line"><span class="tag">    <span class="attr">android:label</span>=<span class="string">"singleTask launchMode"</span></span></div><div class="line"><span class="tag">    <span class="attr">android:launchMode</span>=<span class="string">"singleTask"</span></span></div><div class="line"><span class="tag">    <span class="attr">android:taskAffinity</span>=<span class="string">""</span>&gt;</span></div></pre></td></tr></table></figure>
+
+在不同的应用启动Activity，如果两个应用启动具有该属性的Activity就会创建一个新的任务，并且将该Activity放置到该任务的底部位置。除非用该属性的Activity所在的应用已经存在了，新创建该属性Activity后会将其放置到顶部位置。如果在其他的任务中存在了该属性的Activity，整个任务都会被移到顶部位置，并且该Activity上面的所有Activity都会被销毁，用户需要按back键遍历栈中的Activity才能回到调用者。
+</code></pre><ul>
 <li><p><strong>singleInstance</strong>：单例模式，这个模式和singleTask很相似，不同的是：持有这个Activity的任务只有一个Activity，即这个单例本身。如果这个Activity启动另一个Activity的时候会自动创建一个任务栈，并且将新启动的Activity放到该新创建的任务栈中。不过结果很怪异，当具有该模式的Activity启动另一个Activity或者另一个Activity启动具有该模式的Activity时本来需要创建一个新的任务，但是任务管理中只显示了一个（最后被移到顶部的那个），导致后台只显示一个，我们不能切换到之前的任务中。如果想切换唯一办法就是回到Launcher重新点击应用，但是显示另个一任务后，第一个任务就会被隐藏了。也就是切换后还是只能显示一个任务。如果想要解决仍然需要设置<strong>taskAffinity</strong>属性，例如：</p>
  <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">activity</span></span></div><div class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">".SingleTaskActivity"</span></span></div><div class="line"><span class="tag">    <span class="attr">android:label</span>=<span class="string">"singleTask launchMode"</span></span></div><div class="line"><span class="tag">    <span class="attr">android:launchMode</span>=<span class="string">"singleTask"</span></span></div><div class="line"><span class="tag">    <span class="attr">android:taskAffinity</span>=<span class="string">""</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>  这样就正常了，这种模式很少使用，除非想Launcher这种只有一个Activity，或者100%确定只有一个Activity。</p>
@@ -483,7 +486,7 @@
         <p><span>本文标题:</span><a href="/2018/01/26/AndroidOS008-Activity/">Android系统源码分析--Activity启动过程</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2018年01月26日 - 11时40分</p>
-        <p><span>最后更新:</span>2018年03月12日 - 14时38分</p>
+        <p><span>最后更新:</span>2018年08月21日 - 19时06分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2018/01/26/AndroidOS008-Activity/" title="Android系统源码分析--Activity启动过程">http://www.codemx.cn/2018/01/26/AndroidOS008-Activity/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2018/01/26/AndroidOS008-Activity/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -696,7 +699,7 @@ ga('send', 'pageview');
     })
 </script>
 
-<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
 
   <script language="javascript">

@@ -18,7 +18,7 @@
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/008Service/Service4.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/008Service/Service2.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-04-27T15:21:46.562Z">
+<meta property="og:updated_time" content="2018-04-29T01:23:06.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--Service启动流程">
 <meta name="twitter:description" content="在前面文章我们分析了四大组件中的两个：Broadcast和Activity，这章我们分析四大组件中的服务（Service）的启动过程。Service的启动方式有两种：一种是startService，一种是bindService；第一种通常是开启一个服务执行后台任务，不进行通信，第二章通过是启动服务进行通信。下面我们就根据这两种启动方式来讲Service的启动流程以及unbindService和s">
@@ -370,7 +370,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">(@Nullable Intent intent, <span class="keyword">int</span> startId)</span> </span>&#123;</div><div class="line">    Message msg = mServiceHandler.obtainMessage();</div><div class="line">    msg.arg1 = startId;</div><div class="line">    msg.obj = intent;</div><div class="line">    mServiceHandler.sendMessage(msg);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这里就是发送消息的时候，消息发出后会由上面的ServiceHandler来处理，我们看到构造函数里传入了一个Looper，这个是在onCreate方法中初始化的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// <span class="doctag">TODO:</span> It would be nice to have an option to hold a partial wakelock</span></div><div class="line">    <span class="comment">// during processing, and to have a static startService(Context, Intent)</span></div><div class="line">    <span class="comment">// method that would launch the service &amp; hand off a wakelock.</span></div><div class="line"></div><div class="line">    <span class="keyword">super</span>.onCreate();</div><div class="line">    HandlerThread thread = <span class="keyword">new</span> HandlerThread(<span class="string">"IntentService["</span> + mName + <span class="string">"]"</span>);</div><div class="line">    thread.start();</div><div class="line"></div><div class="line">    mServiceLooper = thread.getLooper();</div><div class="line">    mServiceHandler = <span class="keyword">new</span> ServiceHandler(mServiceLooper);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里创建了一个Handler线程，并且获取了它的Looper，用来循环处理消息，因此我们知道同时只能处理一个消息，等前一个消息处理完了才会处理第二个，以此类推，因此需要同时处理的不能用这个Service，另外在ServiceHandler中有个stopSelf用来在消息处理完成后停止自己，因此该服务可以说是用完自动停止，不会一直粗在，占用资源。</p>
+<p>这里创建了一个Handler线程，并且获取了它的Looper，用来循环处理消息，因此我们知道同时只能处理一个消息，等前一个消息处理完了才会处理第二个，以此类推，因此需要同时处理的不能用这个Service，另外在ServiceHandler中有个stopSelf用来在消息处理完成后停止自己，因此该服务可以说是用完自动停止，不会一直存在，占用资源。</p>
 <h2 id="代码地址："><a href="#代码地址：" class="headerlink" title="代码地址："></a>代码地址：</h2><p>直接拉取导入开发工具（Intellij idea或者Android studio）</p>
 <p><a href="https://git.coding.net/codemx/Android-25.git" target="_blank" rel="external">https://git.coding.net/codemx/Android-25.git</a></p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
@@ -433,7 +433,7 @@
         <p><span>本文标题:</span><a href="/2018/04/24/AndroidOS010-Service/">Android系统源码分析--Service启动流程</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2018年04月24日 - 20时32分</p>
-        <p><span>最后更新:</span>2018年04月27日 - 23时21分</p>
+        <p><span>最后更新:</span>2018年04月29日 - 09时23分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2018/04/24/AndroidOS010-Service/" title="Android系统源码分析--Service启动流程">http://www.codemx.cn/2018/04/24/AndroidOS010-Service/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2018/04/24/AndroidOS010-Service/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -635,7 +635,7 @@ ga('send', 'pageview');
     })
 </script>
 
-<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
 
   <script language="javascript">
