@@ -3,22 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>高效Mac（一） | 墨香博客</title>
+  <title>Android系统源码分析之-ContentProvider | 墨香博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="磨刀不误砍柴工，一个好的工具能让我们的工作事倍功半。作为一名开发者，一台好的电脑是必备的，本人推荐条件允许入手一台mac还是很有必要的。虽然我入手mac只有半年多点，但是各种好处还是比较了解的，为了让mac新手快速熟练使用mac开发程序，因此总结日常使用软件和技巧分享给大家。">
-<meta name="keywords" content="高效Mac">
+  <meta name="description" content="ContentProvider是一个抽象类，用来提供访问数据的统一格式的接口。ContentProvider的作用是多应用间共享数据，如果用户需要直接使用则可以直接在里面使用数据库来保存数据，也可以通用ContentResolver使用URI来存储数据，使用URI用户不需要知道内部怎么存储只需要知道如何使用该存储方式。">
+<meta name="keywords" content="AndroidOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="高效Mac（一）">
-<meta property="og:url" content="http://www.codemx.cn/2016/04/24/2016-04-24.mac01/index.html">
+<meta property="og:title" content="Android系统源码分析之-ContentProvider">
+<meta property="og:url" content="http://www.codemx.cn/2018/07/13/AndroidOS011-ContentProvider/index.html">
 <meta property="og:site_name" content="墨香博客">
-<meta property="og:description" content="磨刀不误砍柴工，一个好的工具能让我们的工作事倍功半。作为一名开发者，一台好的电脑是必备的，本人推荐条件允许入手一台mac还是很有必要的。虽然我入手mac只有半年多点，但是各种好处还是比较了解的，为了让mac新手快速熟练使用mac开发程序，因此总结日常使用软件和技巧分享给大家。">
+<meta property="og:description" content="ContentProvider是一个抽象类，用来提供访问数据的统一格式的接口。ContentProvider的作用是多应用间共享数据，如果用户需要直接使用则可以直接在里面使用数据库来保存数据，也可以通用ContentResolver使用URI来存储数据，使用URI用户不需要知道内部怎么存储只需要知道如何使用该存储方式。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://www.codemx.cn/images/mac/mac01/mac01.png">
-<meta property="og:updated_time" content="2017-04-26T01:45:21.000Z">
+<meta property="og:updated_time" content="2018-10-26T14:04:51.921Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="高效Mac（一）">
-<meta name="twitter:description" content="磨刀不误砍柴工，一个好的工具能让我们的工作事倍功半。作为一名开发者，一台好的电脑是必备的，本人推荐条件允许入手一台mac还是很有必要的。虽然我入手mac只有半年多点，但是各种好处还是比较了解的，为了让mac新手快速熟练使用mac开发程序，因此总结日常使用软件和技巧分享给大家。">
-<meta name="twitter:image" content="http://www.codemx.cn/images/mac/mac01/mac01.png">
+<meta name="twitter:title" content="Android系统源码分析之-ContentProvider">
+<meta name="twitter:description" content="ContentProvider是一个抽象类，用来提供访问数据的统一格式的接口。ContentProvider的作用是多应用间共享数据，如果用户需要直接使用则可以直接在里面使用数据库来保存数据，也可以通用ContentResolver使用URI来存储数据，使用URI用户不需要知道内部怎么存储只需要知道如何使用该存储方式。">
   
     <link rel="alternative" href="/atom.xml" title="墨香博客" type="application/atom+xml">
   
@@ -242,11 +240,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-2016-04-24.mac01" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-AndroidOS011-ContentProvider" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/04/24/2016-04-24.mac01/" class="article-date">
-      <time datetime="2016-04-24T07:12:20.000Z" itemprop="datePublished">2016-04-24</time>
+      <a href="/2018/07/13/AndroidOS011-ContentProvider/" class="article-date">
+      <time datetime="2018-07-13T07:14:15.000Z" itemprop="datePublished">2018-07-13</time>
 </a>
     </div>
   
@@ -259,7 +257,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      高效Mac（一）
+      Android系统源码分析之-ContentProvider
     </h1>
   
 
@@ -267,14 +265,10 @@
       
       <div class="article-info article-info-post">
         
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/高效Mac/">高效Mac</a>
-    </div>
-
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高效Mac/">高效Mac</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -284,75 +278,33 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>磨刀不误砍柴工，一个好的工具能让我们的工作事倍功半。作为一名开发者，一台好的电脑是必备的，本人推荐条件允许入手一台mac还是很有必要的。虽然我入手mac只有半年多点，但是各种好处还是比较了解的，为了让mac新手快速熟练使用mac开发程序，因此总结日常使用软件和技巧分享给大家。</p>
+        <blockquote>
+<p>ContentProvider是一个抽象类，用来提供访问数据的统一格式的接口。ContentProvider的作用是多应用间共享数据，如果用户需要直接使用则可以直接在里面使用数据库来保存数据，也可以通用ContentResolver使用URI来存储数据，使用URI用户不需要知道内部怎么存储只需要知道如何使用该存储方式。</p>
+</blockquote>
 <a id="more"></a>
-<p>1.mac电脑最好的shell命令工具：<a href="http://www.iterm2.com" target="_blank" rel="external">iTerm</a>命令工具，可以高亮显示，可以调节窗口大小，可以粘贴复制命令等等，详细信息可以查看官网。</p>
-<p>2.<a href="http://brew.sh" target="_blank" rel="external">HomeBrew</a>工具：Mac OS中的软件包工具，一个命令就可以安装卸载软件，安装方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</div></pre></td></tr></table></figure>
-<p>安装wget</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew install wget</div></pre></td></tr></table></figure>
-<!-- more -->
-<p>使用方法：<br>比如安装git，只需要执行如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew instll git</div></pre></td></tr></table></figure>
-<p>卸载git：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew uninstall git</div></pre></td></tr></table></figure>
-<p>使用非常方便，常见命令如下;</p>
-<p>列出已安装的软件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew list</div></pre></td></tr></table></figure>
-<p>找出过期的包： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew outdated</div></pre></td></tr></table></figure>
-<p>升级所有过期的软件包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew upgrade</div></pre></td></tr></table></figure>
-<p>升级指定的过期软件包:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew upgrade $FORMULA</div></pre></td></tr></table></figure>
-<p>升级过程中要暂停软件包的安装过程:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew pin $FORMULA</div></pre></td></tr></table></figure>
-<p>升级过程中要恢复软件包的安装过程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew unpin $FORMULA</div></pre></td></tr></table></figure>
-<p>清除指定软件包的所有老版本:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew cleanup $FORMULA</div></pre></td></tr></table></figure>
-<p>清除所有软件包的所有老版本:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew cleanup</div></pre></td></tr></table></figure>
-<p>查看哪些软件包要被清除:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew cleanup -n</div></pre></td></tr></table></figure>
-<p>彻底卸载某个软件包:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew uninstall formula_name --force</div></pre></td></tr></table></figure>
-<p>用浏览器打开brew的官方网站：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew home</div></pre></td></tr></table></figure>
-<p>显示软件信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew info</div></pre></td></tr></table></figure>
-<p>显示包依赖：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew deps</div></pre></td></tr></table></figure>
-<p>3.终极shell：<a href="http://ohmyz.sh" target="_blank" rel="external">oh-my-zsh</a></p>
-<p>安装命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</div></pre></td></tr></table></figure>
-<p>安装wget：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sh -c &quot;$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)&quot;</div></pre></td></tr></table></figure>
-<p>切换到zsh：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chsh -s /bin/zsh</div></pre></td></tr></table></figure>
-<p>切换到bash：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chsh -s /bin/bash</div></pre></td></tr></table></figure>
-<p>4.Git: 作为开发主流的版本控制工具，也是必须的，安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install git</div></pre></td></tr></table></figure>
-<p>安装完成后你就可以在iTerm命令软件中执行git命令了，当然还有个好处是，如果你是用idea或者Android studio软件开发，这些软件中也带shell命令工具，当你安装完上面工具后，就可以在这两个软件的Terminal中执行git命令了，如下图：</p>
-<p><img src="/images/mac/mac01/mac01.png" alt=""></p>
-<p>这样你就不需要离开开发软件进行代码更新提交了。既然介绍到Android studio的使用，那就在介绍一点，就是版本控制对比。</p>
-<p>5.利用Android studio的终端工具和版本控制来进行代码开发管理：</p>
-<p>（1）首先我们从服务器用git拉下代码，导入Android studio软件中，然后进行开发，正在开发的项目为多人开发，也就是随时用人在提交代码，此时你不知道是否有人提交了代码没有，你的操作是:</p>
-<p>先执行状态查看命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git status</div></pre></td></tr></table></figure>
-<p>如果有增加新的文件，执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git add 文件名或者文件夹名</div></pre></td></tr></table></figure>
-<p>添加完成或者没有新增文件执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -am &quot;注释内容&quot;</div></pre></td></tr></table></figure>
-<p>完成后按Enter键即可，此时你只将你修改的提交到了你本地仓库，而没有提交到服务器，此时你不要执行push命令，而是执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git pull</div></pre></td></tr></table></figure>
-<p>命令，此时你会将服务器别人修改的代码pull下来，如果有修改，软件会自动进行合并，如果有冲突，Android studio软件下面的Version Control控制面板中会有提示，控制面板中红色的为冲突的文件，你要双击打开手动进行解决冲突，然后保存，还有其他颜色你修改过或者其他人员修改过的，没有问题的不需要修改，此时你执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git status</div></pre></td></tr></table></figure>
-<p>命令查看状态，如果有变动，你再次执行提交命令commit命令提交代码，然后提交代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push</div></pre></td></tr></table></figure>
-<p>这样Android软件的开发只需要在Android studio软件中进行就可以了。</p>
-<h2 id="标注："><a href="#标注：" class="headerlink" title="标注："></a>标注：</h2><p>2017.4.26修改</p>
+<h2 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h2><h4 id="ContentProvider的描述及使用："><a href="#ContentProvider的描述及使用：" class="headerlink" title="ContentProvider的描述及使用："></a>ContentProvider的描述及使用：</h4><p>在之前我们分析过ContentProvider的启动比Application的启动早，所以使用时需要知道这种情况。在使用ContentResolver时是通过URI来访问的，URI的结构：content://cn.codemx.myprovider/item/123，我们划分一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[content://][cn.codemx.myprovider][/item][/123]</div></pre></td></tr></table></figure>
+<ul>
+<li>第一个组件：是一个协议名称，它的值固定为：“content://”，是Content Provider组件的专用访问协议</li>
+<li>第二个组件：是一个Content Provider组件的android:authority属性值。这个组件类似于URL中的域名，因此我们要保证它是全局唯一的，一般使用它所描述的ContentProvider组件的包名来命名。</li>
+<li>第三个组件：是一个资源相对路径，用来描述要访问的资源类型。如果一个ContentProvider只有一种资源，那么忽略这个组件，否则通过它来指定要访问的资源的类型。</li>
+<li>第四个组件：是一个资源ID，用来描述具体的资源。</li>
+</ul>
+<p>举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;provider</div><div class="line">    android:name=&quot;.LauncherProvider&quot;</div><div class="line">    android:authorities=&quot;cn.codemx.myprovider.settings&quot;</div><div class="line">    android:exported=&quot;true&quot;</div><div class="line">    android:readPermission=&quot;cn.codemx.myprovider.permission.READ_SETTINGS&quot;</div><div class="line">    android:writePermission=&quot;cn.codemx.myprovider.permission.WRITE_SETTINGS&quot;/&gt;</div></pre></td></tr></table></figure>
+<p>我有个LauncherProvider继承ContentProvider，在AndroidManifest.xml中要像上面一样声明，其中authorities是位置认证，在使用时是这样使用的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TABLE_NAME = <span class="string">"favorites"</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * The content:// style URL for this table</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Uri CONTENT_URI = Uri.parse(<span class="string">"content://"</span> +</div><div class="line">        ProviderConfig.AUTHORITY + <span class="string">"/"</span> + TABLE_NAME);</div></pre></td></tr></table></figure>
+<p>其中ProviderConfig.AUTHORITY为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProviderConfig</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String AUTHORITY = <span class="string">"cn.codemx.myprovider.settings"</span>.intern();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个就是上面AndroidManifest.xml中声明的那个authorities属性值。上面获取了Uri就可以通过Uri来获取或者保存数据了。</p>
+<h4 id="ContentProvider启动过程："><a href="#ContentProvider启动过程：" class="headerlink" title="ContentProvider启动过程："></a>ContentProvider启动过程：</h4><ul>
+<li>Activity通过MyContentProvider.CONTENT_URI来访问MyContentProvider组件，以便可以获得它的内容</li>
+<li>Activity组件所运行在的应用程序进程发现它里面不存在一个用来访问MyContentProvider组件的代理对象，于是通过MyContentProvider.CONTENT_URI来请求AMS返回一个用来访问MyContentProvider组件的代理对象</li>
+<li>AMS发现MyContentProvider还没有起来，于是先创建一个新的应用进程，然后在这个新创建的应用进程中启动MyContentProvider组件</li>
+<li>MyContentProvider组件启动之后，就会将自己发布到AMS中，以便AMS可以将它的一个代理对象返回Activity组件。</li>
+</ul>
+<h4 id="ContentProvider方法："><a href="#ContentProvider方法：" class="headerlink" title="ContentProvider方法："></a>ContentProvider方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">onCreate()                                      <span class="comment">// 执行初始化工作；</span></div><div class="line">insert(Uri, ContentValues)                      <span class="comment">// 插入新数据；</span></div><div class="line">delete(Uri, String, String[])                   <span class="comment">// 删除已有数据；</span></div><div class="line">update(Uri, ContentValues, String, String[])    <span class="comment">// 更新数据；</span></div><div class="line">query(Uri, String[], String, String[], String)  <span class="comment">// 查询数据；</span></div><div class="line">getType(Uri)                                    <span class="comment">// 获取数据MIME类型。</span></div></pre></td></tr></table></figure>
+<p>ContentProvider不像Activity一样有生命周期，只有一个onCreate方法用来创建。然后就是提供了增、删、改、查用来操作数据的接口，通过Uri来管理数据。</p>
 
       
       
@@ -407,13 +359,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></p>
+        <p><span>本文标题:</span><a href="/2018/07/13/AndroidOS011-ContentProvider/">Android系统源码分析之-ContentProvider</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
-        <p><span>发布时间:</span>2016年04月24日 - 15时12分</p>
-        <p><span>最后更新:</span>2017年04月26日 - 09时45分</p>
+        <p><span>发布时间:</span>2018年07月13日 - 15时14分</p>
+        <p><span>最后更新:</span>2018年10月26日 - 22时04分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/04/24/2016-04-24.mac01/" title="高效Mac（一）">http://www.codemx.cn/2016/04/24/2016-04-24.mac01/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2016/04/24/2016-04-24.mac01/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/07/13/AndroidOS011-ContentProvider/" title="Android系统源码分析之-ContentProvider">http://www.codemx.cn/2018/07/13/AndroidOS011-ContentProvider/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2018/07/13/AndroidOS011-ContentProvider/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -426,18 +378,9 @@
 
 <nav id="article-nav">
   
-    <a href="/2016/04/24/2016-04-26.mac02/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          高效Mac（二）
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/04/24/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello Hexo</div>
+    <a href="/2018/04/24/AndroidOS010-Service/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Android系统源码分析--Service启动流程</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -448,7 +391,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#标注："><span class="toc-number">1.</span> <span class="toc-text">标注：</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ContentProvider"><span class="toc-number">1.</span> <span class="toc-text">ContentProvider</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ContentProvider的描述及使用："><span class="toc-number">1.0.1.</span> <span class="toc-text">ContentProvider的描述及使用：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ContentProvider启动过程："><span class="toc-number">1.0.2.</span> <span class="toc-text">ContentProvider启动过程：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ContentProvider方法："><span class="toc-number">1.0.3.</span> <span class="toc-text">ContentProvider方法：</span></a></li></ol></li></ol></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
@@ -499,13 +442,11 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2016/04/24/2016-04-26.mac02/" title="上一篇: 高效Mac（二）">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2016/04/24/hello-world/" title="下一篇: Hello Hexo">
+            <a href="/2018/04/24/AndroidOS010-Service/" title="下一篇: Android系统源码分析--Service启动流程">
                 <i class="fa fa-angle-right"></i>
             </a>
         
