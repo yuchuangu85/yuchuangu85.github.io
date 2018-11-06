@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/004HandleMessageLooper/004.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/004HandleMessageLooper/003.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-02-06T01:25:38.629Z">
+<meta property="og:updated_time" content="2018-11-06T13:53:43.441Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--消息循环机制">
 <meta name="twitter:description" content="上一章我们讲解SystemServer时涉及到了消息机制，因此这一章我们先介绍一下消息循环机制，帮助大家弄清楚消息循环的原理，有助于代码的编写和优化。">
@@ -273,6 +273,10 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/AndroidOS/">AndroidOS</a>
+    </div>
+
 
         
     <div class="article-tag tagcloud">
@@ -375,7 +379,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandler</span> <span class="keyword">extends</span> <span class="title">MxHandler</span>&lt;<span class="title">HandlerDemo</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MyHandler</span><span class="params">(HandlerDemo handlerDemo)</span> </span>&#123;</div><div class="line">            <span class="keyword">super</span>(handlerDemo);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg, HandlerDemo h)</span> </span>&#123;</div><div class="line">            <span class="keyword">switch</span> (msg.what) &#123;</div><div class="line">                <span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">                    h.doSomething();</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                <span class="keyword">default</span>:</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>这样我们在Activity中使用是不会出现内存泄漏之类的错误。</p>
 <h2 id="代码地址："><a href="#代码地址：" class="headerlink" title="代码地址："></a>代码地址：</h2><p>直接拉取导入开发工具（Intellij idea或者Android studio）</p>
-<p><a href="https://git.coding.net/codemx/Android-25.git" target="_blank" rel="external">https://git.coding.net/codemx/Android-25.git</a></p>
+<p><a href="https://gitlab.com/yuchuangu85/android-25" target="_blank" rel="external">https://gitlab.com/yuchuangu85/android-25</a></p>
 <h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a href="http://www.cnblogs.com/codingmyworld/archive/2011/09/12/2174255.html" target="_blank" rel="external">android的消息处理机制（图+源码分析）——Looper,Handler,Message</a><br><a href="http://blog.csdn.net/bboyfeiyu/article/details/38555547" target="_blank" rel="external">Android中Thread、Handler、Looper、MessageQueue的原理分析</a><br><a href="http://blog.csdn.net/lmj623565791/article/details/38377229/" target="_blank" rel="external">Android 异步消息处理机制 让你深入理解 Looper、Handler、Message三者关系</a><br><a href="http://blog.csdn.net/luoshengyang/article/details/6817933" target="_blank" rel="external">Android应用程序消息处理机制（Looper、Handler）分析</a></p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
@@ -437,7 +441,7 @@
         <p><span>本文标题:</span><a href="/2017/07/13/AndroidOS004-HandleMessageLooper/">Android系统源码分析--消息循环机制</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2017年07月13日 - 00时12分</p>
-        <p><span>最后更新:</span>2018年02月06日 - 09时25分</p>
+        <p><span>最后更新:</span>2018年11月06日 - 21时53分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/13/AndroidOS004-HandleMessageLooper/" title="Android系统源码分析--消息循环机制">http://www.codemx.cn/2017/07/13/AndroidOS004-HandleMessageLooper/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/07/13/AndroidOS004-HandleMessageLooper/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

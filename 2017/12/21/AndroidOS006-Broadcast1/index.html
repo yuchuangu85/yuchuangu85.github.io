@@ -17,7 +17,7 @@
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/006Broadcast/unregisterReceiver.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/006Broadcast/broadcastconstruct.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-01-29T03:03:38.508Z">
+<meta property="og:updated_time" content="2018-11-06T13:53:44.630Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--Broadcast注册和注销">
 <meta name="twitter:description" content="距离上一篇博客进程的加载过了很久的时间，这中间换了一份工作，加入了新的团队，也开始了新的项目，比较忙，所以最近才有时间将四大组件之一的广播原理看完，最近一段时间会相继把四大组件分析写完，让我们对四大组件有更深的了解。本来想一篇把广播的内容写完，但是发现要解释的代码比较多，所以还是分开来讲，那么这篇先分析广播的注册和注销，下一篇再分析广播的发送。">
@@ -270,6 +270,10 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/AndroidOS/">AndroidOS</a>
+    </div>
+
 
         
     <div class="article-tag tagcloud">
@@ -330,7 +334,7 @@
 <p>最后这里我们再加一个广播注册结构的总结，上面是一个广播注册时的结构图，也就是广播以及对应的IntentFilter列表封装，整个过程是由下向上注册。首先是将BroadcastReceiver封装成Binder对象IIntentReceiver，将IntentFilter封装成BroadcastFilter对象，ReceiverList继承的是ArrayList&lt;BroadcastFilter&gt;，因此它本身就是一个用来盛放BroadcastFilter对象列表的ArrayList对象，同时ReceiverList对象还放入了IntentFilter列表对应的BroadcastReceiver的封装对象IIntentReceiver，这样就将BroadcastReceiver和IntentFilter绑定到一起了，然后将ReceiverList放到mRegisteredReceivers中，保存在ActivityManagerService（AMS）中，同时将ReceiverList放置到该广播所在进程的receivers中，而该进程保存在AMS中的mLruProcesses中，同时将IntentFilter的封装对象BroadcastReceiver放置到AMS中的mReceiverResolver中，这样就注册完成了。</p>
 <p>这样从整个机构来说就非常清楚了，其实里面还有一些相互引用的情况，我没有完全画出来，只画了主要的部分，相对清晰一些。</p>
 <h2 id="代码地址："><a href="#代码地址：" class="headerlink" title="代码地址："></a>代码地址：</h2><p>直接拉取导入开发工具（Intellij idea或者Android studio）</p>
-<p><a href="https://git.coding.net/codemx/Android-25.git" target="_blank" rel="external">https://git.coding.net/codemx/Android-25.git</a></p>
+<p><a href="https://gitlab.com/yuchuangu85/android-25" target="_blank" rel="external">https://gitlab.com/yuchuangu85/android-25</a></p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
 <p>注：本文原创，转载请注明出处，多谢。</p>
@@ -391,7 +395,7 @@
         <p><span>本文标题:</span><a href="/2017/12/21/AndroidOS006-Broadcast1/">Android系统源码分析--Broadcast注册和注销</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2017年12月21日 - 11时56分</p>
-        <p><span>最后更新:</span>2018年01月29日 - 11时03分</p>
+        <p><span>最后更新:</span>2018年11月06日 - 21时53分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/12/21/AndroidOS006-Broadcast1/" title="Android系统源码分析--Broadcast注册和注销">http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/007Activity/ActivityStart1.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/007Activity/ActivityStart2.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-08-21T11:06:21.042Z">
+<meta property="og:updated_time" content="2018-11-06T13:53:46.862Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--Activity启动过程">
 <meta name="twitter:description" content="关于Activity的源码分析拖延了太久的时间，由于最近工作繁忙，加上Activity启动源码非常复杂，涉及的内容很多，所以花费了很长是时间才来写这篇源码分析，希望这篇分析能让我们很容易的理解Activity的启动流程，能解决我们在使用Activity过程中遇到的问题，这样就达到了我们对于源码分析的目的了。下一篇我们介绍Activity的finish过程。">
@@ -269,6 +269,10 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/AndroidOS/">AndroidOS</a>
+    </div>
+
 
         
     <div class="article-tag tagcloud">
@@ -431,7 +435,7 @@
 <p>最后68-70步其实还是会执行到handleLaunchActivity方法上来，所以这里就不再分析。</p>
 <p>从整篇文章看，Activity的启动流程是非常复杂，可以说在四大组件中是最复杂的，但是里面很多过程是相同的，比如生命周期的每个方法的调用过程基本是一样的，因此看书谷歌工程师设计的巧妙，这样也有助于我们对于源码的学习，减少了我们对于源码的分析过程，博客写了很多，但是对于整个过程来说还是很多地方没有分析，想了解完整的过程的可以下载我的代码，里面有很全面的注释，然后自己对着上面的时序图来进行分析，过几遍也就熟悉了，我写这片博客也用了很长的时间，主要是中间总是有事，写写停停，时序图更改了好几次。中间也有一些问题，不过跟着源码走还是都能找到的。</p>
 <h2 id="代码地址："><a href="#代码地址：" class="headerlink" title="代码地址："></a>代码地址：</h2><p>直接拉取导入开发工具（Intellij idea或者Android studio）</p>
-<p><a href="https://git.coding.net/codemx/Android-25.git" target="_blank" rel="external">https://git.coding.net/codemx/Android-25.git</a></p>
+<p><a href="https://gitlab.com/yuchuangu85/android-25" target="_blank" rel="external">https://gitlab.com/yuchuangu85/android-25</a></p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
 <p>注：本文原创，转载请注明出处，多谢。</p>
@@ -492,7 +496,7 @@
         <p><span>本文标题:</span><a href="/2018/01/26/AndroidOS008-Activity/">Android系统源码分析--Activity启动过程</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2018年01月26日 - 11时40分</p>
-        <p><span>最后更新:</span>2018年08月21日 - 19时06分</p>
+        <p><span>最后更新:</span>2018年11月06日 - 21时53分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2018/01/26/AndroidOS008-Activity/" title="Android系统源码分析--Activity启动过程">http://www.codemx.cn/2018/01/26/AndroidOS008-Activity/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2018/01/26/AndroidOS008-Activity/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/002Context/android.png">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/002Context/Context.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-01-10T01:03:38.260Z">
+<meta property="og:updated_time" content="2018-11-06T13:53:24.899Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--Context">
 <meta name="twitter:description" content="Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1版本系统）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。">
@@ -269,6 +269,10 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/AndroidOS/">AndroidOS</a>
+    </div>
+
 
         
     <div class="article-tag tagcloud">
@@ -389,7 +393,7 @@
 <p>从上面代码我肯可以清楚的看到baseContext是appContext赋值的，而appContext就是ContextImpl，因此Activity中的Context也是ContextImpl。到现在我们已经搞清楚了ContextImpl、Context、ContextWrapper、ContextThemeWrapper以及Application、Service和Activity的关系，那么以后看源码我们就知道与Context相关的实现方法都在ContextImpl类中，如果需要看详细实现过程只需要去ContextImpl类中找到相应方法开始跟踪即可。</p>
 <p>从下一章我们开始讲解四大组件的启动过程。</p>
 <h2 id="代码地址："><a href="#代码地址：" class="headerlink" title="代码地址："></a>代码地址：</h2><p>直接拉取导入开发工具（Intellij idea或者Android studio）</p>
-<p><a href="https://git.coding.net/codemx/Android-25.git" target="_blank" rel="external">https://git.coding.net/codemx/Android-25.git</a></p>
+<p><a href="https://gitlab.com/yuchuangu85/android-25" target="_blank" rel="external">https://gitlab.com/yuchuangu85/android-25</a></p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
 <p>注：本文原创，转载请注明出处，多谢。</p>
@@ -450,7 +454,7 @@
         <p><span>本文标题:</span><a href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2017年06月05日 - 18时00分</p>
-        <p><span>最后更新:</span>2018年01月10日 - 09时03分</p>
+        <p><span>最后更新:</span>2018年11月06日 - 21时53分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/06/05/AndroidOS002-Context/" title="Android系统源码分析--Context">http://www.codemx.cn/2017/06/05/AndroidOS002-Context/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/06/05/AndroidOS002-Context/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

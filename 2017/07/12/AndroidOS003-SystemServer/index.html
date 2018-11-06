@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/003SystemServer/Zygote.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/003SystemServer/SystemServer.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-01-10T01:03:40.996Z">
+<meta property="og:updated_time" content="2018-11-06T13:53:42.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--Zygote和SystemServer启动过程">
 <meta name="twitter:description" content="按计划本来从这章开始写四大组件的启动过程的，但是看看源码结构发现为了说的更明白还是先写一点系统framework层启动的内容，帮助理解四大组件的启动以及管理过程。我们知道四大组件管理是通过一些服务以及线程实现的，所以先把一些基本概念弄清楚比较好，比如AMS（ActivityManagerService）、PMS（PackageManagerService）等系统服务的作用以及调用方式，了解这些之">
@@ -269,6 +269,10 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/AndroidOS/">AndroidOS</a>
+    </div>
+
 
         
     <div class="article-tag tagcloud">
@@ -659,7 +663,7 @@
 </tbody>
 </table>
 <h2 id="代码地址："><a href="#代码地址：" class="headerlink" title="代码地址："></a>代码地址：</h2><p>直接拉取导入开发工具（Intellij idea或者Android studio）</p>
-<p><a href="https://git.coding.net/codemx/Android-25.git" target="_blank" rel="external">https://git.coding.net/codemx/Android-25.git</a></p>
+<p><a href="https://gitlab.com/yuchuangu85/android-25" target="_blank" rel="external">https://gitlab.com/yuchuangu85/android-25</a></p>
 <h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a href="http://gityuan.com/2016/02/20/android-system-server-2/" target="_blank" rel="external">Android系统启动-SystemServer下篇</a><br><a href="http://blog.csdn.net/luoshengyang/article/details/6768304" target="_blank" rel="external">Android系统进程Zygote启动过程的源代码分析</a></p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
@@ -721,7 +725,7 @@
         <p><span>本文标题:</span><a href="/2017/07/12/AndroidOS003-SystemServer/">Android系统源码分析--Zygote和SystemServer启动过程</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2017年07月12日 - 10时05分</p>
-        <p><span>最后更新:</span>2018年01月10日 - 09时03分</p>
+        <p><span>最后更新:</span>2018年11月06日 - 21时53分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/12/AndroidOS003-SystemServer/" title="Android系统源码分析--Zygote和SystemServer启动过程">http://www.codemx.cn/2017/07/12/AndroidOS003-SystemServer/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/07/12/AndroidOS003-SystemServer/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
