@@ -125,7 +125,7 @@
                         
                             <li><a href="/read">静心阅读</a></li>
                         
-                            <li><a href="/about">雁过留声</a></li>
+                            <li><a href="/about">博主历程</a></li>
                         
                         </ul>
                     </nav>
@@ -147,7 +147,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/Android/" style="font-size: 12.5px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 20px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 17.5px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 15px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 12.5px;">高效Mac</a>
+                        <a href="/tags/Android/" style="font-size: 12.5px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 20px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 17.5px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 15px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/View绘制/" style="font-size: 10px;">View绘制</a> <a href="/tags/高效Mac/" style="font-size: 12.5px;">高效Mac</a>
                     </div>
                 </section>
                 
@@ -220,7 +220,7 @@
                 
                     <li><a href="/read">静心阅读</a></li>
                 
-                    <li><a href="/about">雁过留声</a></li>
+                    <li><a href="/about">博主历程</a></li>
                 
                 <div class="clearfix"></div>
                 </ul>
@@ -242,6 +242,75 @@
     </div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-AndroidOS002-Context" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/06/05/AndroidOS002-Context/" class="article-date">
+      <time datetime="2017-06-05T10:00:19.000Z" itemprop="datePublished">2017-06-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <blockquote>
+<p>Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。<br>声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1版本系统）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。</p>
+</blockquote>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/AndroidOS/">AndroidOS</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/06/05/AndroidOS002-Context/#more">详细内容 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-AndroidOS001" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -826,73 +895,6 @@
       
         <p class="article-more-link">
           <a  href="/2016/09/29/DefineView1/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Launcher04" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/21/Launcher04/" class="article-date">
-      <time datetime="2016-08-21T05:13:15.000Z" itemprop="datePublished">2016-08-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>上一章<a href="http://www.codemx.cn/2016/08/14/墨香带你学Launcher之-绑定/">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</a>讲了桌面CellLayout、图标、文件夹以及Widget的绑定流程，这个主要是第一次加载时的绑定流程，那么当用户安装新的应用，或者更新应用，或者卸载应用时桌面是如何处理的，今天我们来学习一下这个流程。</p>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/Launcher/">Launcher</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Launcher/">Launcher</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2016/08/21/Launcher04/#more">详细内容 >></a>
         </p>
       
       <div class="clearfix"></div>

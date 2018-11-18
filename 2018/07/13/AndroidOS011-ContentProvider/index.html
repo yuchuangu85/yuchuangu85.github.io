@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Android系统源码分析之-ContentProvider | 墨香博客</title>
+  <title>Android系统源码分析--ContentProvider | 墨香博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="距离上一次写博客已经半年多了，这半年发生了很多事情，也有了很多感触，最主要是改变了忙碌了工作，更加重视身体的健康，为此也把工作地点从深圳这个一线城市换到了珠海，工作相对没有那么累，身体感觉也好了很多。所以在工作完成之余，也有了更多的时间来自我学习和提高，后续会用更多时间来写更多实用的东西，帮助我们理解安卓系统的原理，帮助我们快速、稳定的开发。这一篇我们接着之前的计划，完成四大组件的最后一个Con">
 <meta name="keywords" content="AndroidOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android系统源码分析之-ContentProvider">
+<meta property="og:title" content="Android系统源码分析--ContentProvider">
 <meta property="og:url" content="http://www.codemx.cn/2018/07/13/AndroidOS011-ContentProvider/index.html">
 <meta property="og:site_name" content="墨香博客">
 <meta property="og:description" content="距离上一次写博客已经半年多了，这半年发生了很多事情，也有了很多感触，最主要是改变了忙碌了工作，更加重视身体的健康，为此也把工作地点从深圳这个一线城市换到了珠海，工作相对没有那么累，身体感觉也好了很多。所以在工作完成之余，也有了更多的时间来自我学习和提高，后续会用更多时间来写更多实用的东西，帮助我们理解安卓系统的原理，帮助我们快速、稳定的开发。这一篇我们接着之前的计划，完成四大组件的最后一个Con">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/009ContentProvider/ContentProvider.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-11-06T15:48:47.598Z">
+<meta property="og:updated_time" content="2018-11-12T15:23:15.287Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android系统源码分析之-ContentProvider">
+<meta name="twitter:title" content="Android系统源码分析--ContentProvider">
 <meta name="twitter:description" content="距离上一次写博客已经半年多了，这半年发生了很多事情，也有了很多感触，最主要是改变了忙碌了工作，更加重视身体的健康，为此也把工作地点从深圳这个一线城市换到了珠海，工作相对没有那么累，身体感觉也好了很多。所以在工作完成之余，也有了更多的时间来自我学习和提高，后续会用更多时间来写更多实用的东西，帮助我们理解安卓系统的原理，帮助我们快速、稳定的开发。这一篇我们接着之前的计划，完成四大组件的最后一个Con">
 <meta name="twitter:image" content="http://www.codemx.cn/images/AndroidOS/009ContentProvider/ContentProvider.jpg">
   
@@ -127,7 +127,7 @@
                         
                             <li><a href="/read">静心阅读</a></li>
                         
-                            <li><a href="/about">雁过留声</a></li>
+                            <li><a href="/about">博主历程</a></li>
                         
                         </ul>
                     </nav>
@@ -149,7 +149,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/Android/" style="font-size: 12.5px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 20px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 17.5px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 15px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/高效Mac/" style="font-size: 12.5px;">高效Mac</a>
+                        <a href="/tags/Android/" style="font-size: 12.5px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 20px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 17.5px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 15px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/View绘制/" style="font-size: 10px;">View绘制</a> <a href="/tags/高效Mac/" style="font-size: 12.5px;">高效Mac</a>
                     </div>
                 </section>
                 
@@ -222,7 +222,7 @@
                 
                     <li><a href="/read">静心阅读</a></li>
                 
-                    <li><a href="/about">雁过留声</a></li>
+                    <li><a href="/about">博主历程</a></li>
                 
                 <div class="clearfix"></div>
                 </ul>
@@ -260,7 +260,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Android系统源码分析之-ContentProvider
+      Android系统源码分析--ContentProvider
     </h1>
   
 
@@ -418,12 +418,12 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2018/07/13/AndroidOS011-ContentProvider/">Android系统源码分析之-ContentProvider</a></p>
+        <p><span>本文标题:</span><a href="/2018/07/13/AndroidOS011-ContentProvider/">Android系统源码分析--ContentProvider</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2018年07月13日 - 15时14分</p>
-        <p><span>最后更新:</span>2018年11月06日 - 23时48分</p>
+        <p><span>最后更新:</span>2018年11月12日 - 23时23分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2018/07/13/AndroidOS011-ContentProvider/" title="Android系统源码分析之-ContentProvider">http://www.codemx.cn/2018/07/13/AndroidOS011-ContentProvider/</a>
+            <span>原始链接:</span><a class="post-url" href="/2018/07/13/AndroidOS011-ContentProvider/" title="Android系统源码分析--ContentProvider">http://www.codemx.cn/2018/07/13/AndroidOS011-ContentProvider/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2018/07/13/AndroidOS011-ContentProvider/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
@@ -436,6 +436,15 @@
 
 
 <nav id="article-nav">
+  
+    <a href="/2018/11/12/AndroidOS012-View-setContentView/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Android系统源码分析--View绘制流程之-setContentView
+        
+      </div>
+    </a>
   
   
     <a href="/2018/04/24/AndroidOS010-Service/" id="article-nav-older" class="article-nav-link-wrap">
@@ -501,7 +510,9 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2018/11/12/AndroidOS012-View-setContentView/" title="上一篇: Android系统源码分析--View绘制流程之-setContentView">
+                <i class="fa fa-angle-left"></i>
+            </a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
@@ -510,7 +521,7 @@
             </a>
         
     </div>
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/07/13/AndroidOS011-ContentProvider/">Android系统源码分析之-ContentProvider</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/AndroidOS010-Service/">Android系统源码分析--Service启动流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/12/AndroidOS009-Activity/">Android系统源码分析--Activity的finish过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/26/AndroidOS008-Activity/">Android系统源码分析--Activity启动过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/25/AndroidOS007-Broadcast2/">Android系统源码分析--Broadcast发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/21/AndroidOS006-Broadcast1/">Android系统源码分析--Broadcast注册和注销</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/13/AndroidOS005-Process/">Android系统源码分析--Process启动过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/13/AndroidOS004-HandleMessageLooper/">Android系统源码分析--消息循环机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/12/AndroidOS003-SystemServer/">Android系统源码分析--Zygote和SystemServer启动过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/AndroidOS001/">IntelliJ IDEA导入Android源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/19/Launcher08/">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/OpenArithmetic/">开源算法集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/UICollection01/">常用UI框架汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Launcher07/">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）- 拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）- Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）- 数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）- 概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android、iOS、Mac开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/12/AndroidOS012-View-setContentView/">Android系统源码分析--View绘制流程之-setContentView</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/13/AndroidOS011-ContentProvider/">Android系统源码分析--ContentProvider</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/24/AndroidOS010-Service/">Android系统源码分析--Service启动流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/12/AndroidOS009-Activity/">Android系统源码分析--Activity的finish过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/26/AndroidOS008-Activity/">Android系统源码分析--Activity启动过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/25/AndroidOS007-Broadcast2/">Android系统源码分析--Broadcast发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/21/AndroidOS006-Broadcast1/">Android系统源码分析--Broadcast注册和注销</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/13/AndroidOS005-Process/">Android系统源码分析--Process启动过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/13/AndroidOS004-HandleMessageLooper/">Android系统源码分析--消息循环机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/12/AndroidOS003-SystemServer/">Android系统源码分析--Zygote和SystemServer启动过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/05/AndroidOS002-Context/">Android系统源码分析--Context</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/03/AndroidOS001/">IntelliJ IDEA导入Android源码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/19/Launcher08/">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/OpenArithmetic/">开源算法集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/13/UICollection01/">常用UI框架汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/10/FrameCollection/">Android 常用框架集合</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/18/Launcher07/">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/21/Launcher06/">墨香带你学Launcher之（六）- 拖拽</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/Launcher05/">墨香带你学Launcher之（五）- Workspace滑动</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/29/DefineView1/">自定义View之—渐变进度条</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/Launcher04/">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/14/Launcher03/">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/05/Launcher02/">墨香带你学Launcher之（二）- 数据加载流程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/30/Launcher01/">墨香带你学Launcher之（一）- 概述</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/Android-open-project/">Android、iOS、Mac开源项目推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/15/Android适配浅析/">Android适配浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/23/Gradle/">Gradle下导入framework.jar</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/2016-05-15-mac03/">高效Mac（三）面向程序员的交互设计神器：Framer Studio</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/2016-05-04-Android-Tree/">Android 知识梳理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/Understand01/">Understand:高效代码静态分析神器详解（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/25/code-commend/">Android代码推荐（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-26.mac02/">高效Mac（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/2016-04-24.mac01/">高效Mac（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/24/hello-world/">Hello Hexo</a></li></ul>
     <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
     <script>
         $(".post-list").addClass("toc-article");
