@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2018-11-25T10:21:44.764Z</updated>
+  <updated>2018-11-25T10:58:49.804Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -20,12 +20,22 @@
     <link href="http://www.codemx.cn/2018/11/20/AndroidOS013-View-inflate/"/>
     <id>http://www.codemx.cn/2018/11/20/AndroidOS013-View-inflate/</id>
     <published>2018-11-20T13:47:03.000Z</published>
-    <updated>2018-11-25T10:21:44.764Z</updated>
+    <updated>2018-11-25T10:58:49.804Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章我们分析了Activity启动的时候调用setContentView加载布局的过程，但是分析过程中我们留了两个悬念，一个是将资源文件中的layout中xml布局文件通过inflate加载到Activity中的过程，另一个是开始测量、布局和绘制的过程，第二个我们放到measure过程中分析，这一篇先分析第一个inflate过程。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;Android系统源码分析–View绘制流程之-setContentView&lt;/li&gt;
+&lt;li&gt;Android系统源码分析–View绘制流程之-inflate&lt;/li&gt;
+&lt;li&gt;Android系统源码分析–View绘制流程之-onMeasure&lt;/li&gt;
+&lt;li&gt;Android系统源码分析–View绘制流程之-onLayout&lt;/li&gt;
+&lt;li&gt;Android系统源码分析–View绘制流程之-onDraw&lt;/li&gt;
+&lt;li&gt;Android系统源码分析–View绘制流程之-硬件加速&lt;/li&gt;
+&lt;li&gt;Android系统源码分析–View绘制流程之-addView&lt;/li&gt;
+&lt;li&gt;Android系统源码分析–View绘制流程之-弹性效果&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;LayoutInflater.inflate方法基本上每个开发者都用过，也有很多开发者了解过它的两个方法的区别，也有一些开发者去研究过源码，我这里再重复分析这个方法的源码其实一是做个记录，二是指出我认为的几个重点，帮助我们没有看过源码的人去了解将xml布局加载到代码中的过程。这里我们需要重点关注三个问题，然后根据对源码的分析来解决这三个问题，帮助我们详细了解inflate的过程及影响，那么这篇文章的目的就达到了。&lt;/p&gt;
 &lt;h4 id=&quot;问题：&quot;&gt;&lt;a href=&quot;#问题：&quot; class=&quot;headerlink&quot; title=&quot;问题：&quot;&gt;&lt;/a&gt;问题：&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;LayoutInflater.inflate两个个方法是什么？&lt;/li&gt;
@@ -86,7 +96,6 @@
 &lt;li&gt;include必须有有效的layout id&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;由于coding与腾讯云合作，改变很多，所以后续代码切换到Gitlab。&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;

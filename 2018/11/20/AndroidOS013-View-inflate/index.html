@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/010View/inflate.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-11-25T10:21:44.764Z">
+<meta property="og:updated_time" content="2018-11-25T10:58:49.804Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--View绘制流程之-inflate">
 <meta name="twitter:description" content="上一章我们分析了Activity启动的时候调用setContentView加载布局的过程，但是分析过程中我们留了两个悬念，一个是将资源文件中的layout中xml布局文件通过inflate加载到Activity中的过程，另一个是开始测量、布局和绘制的过程，第二个我们放到measure过程中分析，这一篇先分析第一个inflate过程。">
@@ -289,6 +289,16 @@
 <p>上一章我们分析了Activity启动的时候调用setContentView加载布局的过程，但是分析过程中我们留了两个悬念，一个是将资源文件中的layout中xml布局文件通过inflate加载到Activity中的过程，另一个是开始测量、布局和绘制的过程，第二个我们放到measure过程中分析，这一篇先分析第一个inflate过程。</p>
 </blockquote>
 <a id="more"></a>
+<ul>
+<li>Android系统源码分析–View绘制流程之-setContentView</li>
+<li>Android系统源码分析–View绘制流程之-inflate</li>
+<li>Android系统源码分析–View绘制流程之-onMeasure</li>
+<li>Android系统源码分析–View绘制流程之-onLayout</li>
+<li>Android系统源码分析–View绘制流程之-onDraw</li>
+<li>Android系统源码分析–View绘制流程之-硬件加速</li>
+<li>Android系统源码分析–View绘制流程之-addView</li>
+<li>Android系统源码分析–View绘制流程之-弹性效果</li>
+</ul>
 <p>LayoutInflater.inflate方法基本上每个开发者都用过，也有很多开发者了解过它的两个方法的区别，也有一些开发者去研究过源码，我这里再重复分析这个方法的源码其实一是做个记录，二是指出我认为的几个重点，帮助我们没有看过源码的人去了解将xml布局加载到代码中的过程。这里我们需要重点关注三个问题，然后根据对源码的分析来解决这三个问题，帮助我们详细了解inflate的过程及影响，那么这篇文章的目的就达到了。</p>
 <h4 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h4><ul>
 <li>LayoutInflater.inflate两个个方法是什么？</li>
@@ -349,7 +359,6 @@
 <li>include必须有有效的layout id</li>
 </ul>
 <h2 id="代码地址："><a href="#代码地址：" class="headerlink" title="代码地址："></a>代码地址：</h2><p>直接拉取导入开发工具（Intellij idea或者Android studio）</p>
-<p>由于coding与腾讯云合作，改变很多，所以后续代码切换到Gitlab。</p>
 <p><a href="https://gitlab.com/yuchuangu85/android-25" target="_blank" rel="external">https://gitlab.com/yuchuangu85/android-25</a></p>
 <h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
 <p>微信公众账号：Code-MX<br><img width="240" src="/images/codemx/qr_code_mx.jpg"></p>
@@ -411,7 +420,7 @@
         <p><span>本文标题:</span><a href="/2018/11/20/AndroidOS013-View-inflate/">Android系统源码分析--View绘制流程之-inflate</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2018年11月20日 - 21时47分</p>
-        <p><span>最后更新:</span>2018年11月25日 - 18时21分</p>
+        <p><span>最后更新:</span>2018年11月25日 - 18时58分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2018/11/20/AndroidOS013-View-inflate/" title="Android系统源码分析--View绘制流程之-inflate">http://www.codemx.cn/2018/11/20/AndroidOS013-View-inflate/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2018/11/20/AndroidOS013-View-inflate/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -561,88 +570,39 @@
 </footer>
 
     </div>
-    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
-<script src="/js/main.js"></script>
+    <%- js('https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min') %>
+<%- js('js/main') %>
+<%- partial('background') %>
+<%- partial('analytics/google-analytics') %>
+<%- partial('analytics/baidu-analytics') %>
+<% if (theme.mathjax){ %>
+<%- partial('mathjax') %>
+<% } %>
+<%- partial('scrolling-button') %>
+<%- partial('hide-labels') %>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<% if (theme.TipTitle){ %>
+  <%- partial('post/TipTitle') %>
+<% } %>
+<% if (theme.search_box){ %>
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
 
-    <script>
-        $(document).ready(function() {
-            var backgroundnum = 24;
-            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
-            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
-            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
-        })
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
     </script>
-
-
-<!-- Google Analytics -->
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', '[object Object]', 'auto');
-ga('send', 'pageview');
-
-</script>
-<!-- End Google Analytics -->
-
-
-
-	<script>
-	var _hmt = _hmt || [];
-	(function() {
-	  var hm = document.createElement("script");
-	  hm.src = "//hm.baidu.com/hm.js?[object Object]";
-	  var s = document.getElementsByTagName("script")[0]; 
-	  s.parentNode.insertBefore(hm, s);
-	})();
-	</script>
-
-
-<div class="scroll" id="scroll">
-    <a href="#"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
-</div>
-<script>
-    $(document).ready(function() {
-        if ($("#comments").length < 1) {
-            $("#scroll > a:nth-child(2)").hide();
-        };
-    })
-</script>
-
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
-
-  <script language="javascript">
-    $(function() {
-        $("a[title]").each(function() {
-            var a = $(this);
-            var title = a.attr('title');
-            if (title == undefined || title == "") return;
-            a.data('title', title).removeAttr('title').hover(
-
-            function() {
-                var offset = a.offset();
-                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
-                    top: offset.top - a.outerHeight() - 15,
-                    left: offset.left + a.outerWidth()/2 + 1
-                }).fadeIn(function() {
-                    var pop = $(this);
-                    setTimeout(function() {
-                        pop.remove();
-                    }, pop.text().length * 800);
-                });
-            }, function() {
-                $("#anchortitlecontainer").remove();
-            });
-        });
-    });
-</script>
-
-
+<%}%>
   </div>
 </body>
 </html>
