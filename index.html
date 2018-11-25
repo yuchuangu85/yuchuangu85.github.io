@@ -147,7 +147,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/Android/" style="font-size: 12.5px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 20px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Launcher/" style="font-size: 17.5px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 15px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/View绘制/" style="font-size: 10px;">View绘制</a> <a href="/tags/高效Mac/" style="font-size: 12.5px;">高效Mac</a>
+                        <a href="/tags/Android/" style="font-size: 14px;">Android</a> <a href="/tags/AndroidOS/" style="font-size: 20px;">AndroidOS</a> <a href="/tags/Gradle/" style="font-size: 10px;">Gradle</a> <a href="/tags/Launcher/" style="font-size: 18px;">Launcher</a> <a href="/tags/Resource/" style="font-size: 16px;">Resource</a> <a href="/tags/Understand/" style="font-size: 10px;">Understand</a> <a href="/tags/View/" style="font-size: 10px;">View</a> <a href="/tags/View绘制/" style="font-size: 12px;">View绘制</a> <a href="/tags/高效Mac/" style="font-size: 14px;">高效Mac</a>
                     </div>
                 </section>
                 
@@ -242,6 +242,75 @@
     </div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-AndroidOS013-View-inflate" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/11/20/AndroidOS013-View-inflate/" class="article-date">
+      <time datetime="2018-11-20T13:47:03.000Z" itemprop="datePublished">2018-11-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/20/AndroidOS013-View-inflate/">Android系统源码分析--View绘制流程之-inflate</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <blockquote>
+<p>上一章我们分析了Activity启动的时候调用setContentView加载布局的过程，但是分析过程中我们留了两个悬念，一个是将资源文件中的layout中xml布局文件通过inflate加载到Activity中的过程，另一个是开始测量、布局和绘制的过程，第二个我们放到measure过程中分析，这一篇先分析第一个inflate过程。</p>
+</blockquote>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/AndroidOS/">AndroidOS</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/View绘制/">View绘制</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a  href="/2018/11/20/AndroidOS013-View-inflate/#more">详细内容 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-AndroidOS012-View-setContentView" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -340,7 +409,7 @@
       
           
               <blockquote>
-<p>距离上一次写博客已经半年多了，这半年发生了很多事情，也有了很多感触，最主要是改变了忙碌了工作，更加重视身体的健康，为此也把工作地点从深圳这个一线城市换到了珠海，工作相对没有那么累，身体感觉也好了很多。所以在工作完成之余，也有了更多的时间来自我学习和提高，后续会用更多时间来写更多实用的东西，帮助我们理解安卓系统的原理，帮助我们快速、稳定的开发。<br>这一篇我们接着之前的计划，完成四大组件的最后一个ContentProvider的分析。ContentProvider是一个抽象类，用来提供访问数据的统一格式的接口。ContentProvider的作用是多应用间共享数据，如果用户需要直接使用则可以直接在里面使用数据库来保存数据，也可以通用ContentResolver使用URI来存储数据，使用URI用户不需要知道内部怎么存储只需要知道如何使用该存储方式。</p>
+<p>距离上一次写博客已经半年多了，这半年发生了很多事情，也有了很多感触，最主要是改变了忙碌的工作，更加重视身体的健康，为此也把工作地点从深圳这个一线城市换到了珠海，工作相对没有那么累，身体感觉也好了很多。所以在工作完成之余，也有了更多的时间来自我学习和提高，后续会用更多时间来写更多实用的东西，帮助我们理解安卓系统的原理，帮助我们快速、稳定的开发。<br>这一篇我们接着之前的计划，完成四大组件的最后一个ContentProvider的分析。ContentProvider是一个抽象类，用来提供访问数据的统一格式的接口。ContentProvider的作用是多应用间共享数据，如果用户需要直接使用则可以直接在里面使用数据库来保存数据，也可以通用ContentResolver使用URI来存储数据，使用URI用户不需要知道内部怎么存储只需要知道如何使用该存储方式。</p>
 </blockquote>
           
       
@@ -846,75 +915,6 @@
       
         <p class="article-more-link">
           <a  href="/2017/07/13/AndroidOS004-HandleMessageLooper/#more">详细内容 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-AndroidOS003-SystemServer" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/12/AndroidOS003-SystemServer/" class="article-date">
-      <time datetime="2017-07-12T02:05:21.000Z" itemprop="datePublished">2017-07-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/12/AndroidOS003-SystemServer/">Android系统源码分析--Zygote和SystemServer启动过程</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <blockquote>
-<p>按计划本来从这章开始写四大组件的启动过程的，但是看看源码结构发现为了说的更明白还是先写一点系统framework层启动的内容，帮助理解四大组件的启动以及管理过程。我们知道四大组件管理是通过一些服务以及线程实现的，所以先把一些基本概念弄清楚比较好，比如AMS（ActivityManagerService）、PMS（PackageManagerService）等系统服务的作用以及调用方式，了解这些之后再看四大组件相对容易些，因此我们本章先介绍系统启动、部分系统服务的作用。</p>
-</blockquote>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/AndroidOS/">AndroidOS</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AndroidOS/">AndroidOS</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/07/12/AndroidOS003-SystemServer/#more">详细内容 >></a>
         </p>
       
       <div class="clearfix"></div>
