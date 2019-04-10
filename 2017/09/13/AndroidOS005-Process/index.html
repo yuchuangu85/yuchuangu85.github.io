@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.codemx.cn/images/AndroidOS/005Process/Process.jpg">
 <meta property="og:image" content="http://www.codemx.cn/images/codemx/qr_code_mx.jpg">
-<meta property="og:updated_time" content="2018-11-06T13:53:44.073Z">
+<meta property="og:updated_time" content="2018-12-11T15:36:58.082Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统源码分析--Process启动过程">
 <meta name="twitter:description" content="由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。">
@@ -326,7 +326,7 @@
 <p>这个就是通过类加载器加载ActivityThread，然后调用起main方法。然后抛出异常，通过ZygoteInit中main函数中的catch来捕获异常。</p>
 <h4 id="13-ZygoteInit-main函数："><a href="#13-ZygoteInit-main函数：" class="headerlink" title="13. ZygoteInit.main函数："></a>13. ZygoteInit.main函数：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String argv[])</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    &#125; <span class="keyword">catch</span> (MethodAndArgsCaller caller) &#123;</div><div class="line">        <span class="comment">// 捕获MethodAndArgsCaller异常以后会调用MethodAndArgsCaller的run函数</span></div><div class="line">        <span class="comment">// ActivityThread.main</span></div><div class="line">        caller.run();</div><div class="line">    &#125; <span class="keyword">catch</span> (Throwable ex) &#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>通过步骤12可知抛出的异常是MethodAndArgsCaller异常，因此会执行caller.run方法。</p>
-<h4 id="14-MethodAndArgsCaller-run"><a href="#14-MethodAndArgsCaller-run" class="headerlink" title="14. MethodAndArgsCaller.run:"></a>14. MethodAndArgsCaller.run:</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 注释来自Android系统源代码情景分析</span></div><div class="line"><span class="comment"> * 这里开始调用ActivityThread.main方法，为什么要绕这么远呢，前面提到，AMS请求Zygote进程创建的应用</span></div><div class="line"><span class="comment"> * 程序进程的入口函数为ActivityThread的main函数，但是由于新创建的应用程序进程一开始就需要再内部初始</span></div><div class="line"><span class="comment"> * 化运行时库，以及启动Binder线程池，因此，ActivityThread的main函数被调用时，新创建的应用程序进程</span></div><div class="line"><span class="comment"> * 实际上已经执行了相当多的代码，为了使得西创建的应用程序的进程觉得它的入口函数就是ActivityThread类</span></div><div class="line"><span class="comment"> * 的main函数，系统就不能直接调用，而是抛出异常回到ZygoteInit的main函数中，然后间接调用它，这样就</span></div><div class="line"><span class="comment"> * 可以巧妙的利用Java语言的异常处理来清理它前面调用的堆栈了</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 调用ActivityThread.main</span></div><div class="line">        mMethod.invoke(<span class="keyword">null</span>, <span class="keyword">new</span> Object[]&#123;mArgs&#125;);</div><div class="line">    &#125; <span class="keyword">catch</span> (IllegalAccessException ex) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(ex);</div><div class="line">    &#125; <span class="keyword">catch</span> (InvocationTargetException ex) &#123;</div><div class="line">        Throwable cause = ex.getCause();</div><div class="line">        <span class="keyword">if</span> (cause <span class="keyword">instanceof</span> RuntimeException) &#123;</div><div class="line">            <span class="keyword">throw</span> (RuntimeException) cause;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cause <span class="keyword">instanceof</span> Error) &#123;</div><div class="line">            <span class="keyword">throw</span> (Error) cause;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(ex);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="14-MethodAndArgsCaller-run"><a href="#14-MethodAndArgsCaller-run" class="headerlink" title="14. MethodAndArgsCaller.run:"></a>14. MethodAndArgsCaller.run:</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 注释来自Android系统源代码情景分析</span></div><div class="line"><span class="comment"> * 这里开始调用ActivityThread.main方法，为什么要绕这么远呢，前面提到，AMS请求Zygote进程创建的应用</span></div><div class="line"><span class="comment"> * 程序进程的入口函数为ActivityThread的main函数，但是由于新创建的应用程序进程一开始就需要再内部初始</span></div><div class="line"><span class="comment"> * 化运行时库，以及启动Binder线程池，因此，ActivityThread的main函数被调用时，新创建的应用程序进程</span></div><div class="line"><span class="comment"> * 实际上已经执行了相当多的代码，为了使得新创建的应用程序的进程觉得它的入口函数就是ActivityThread类</span></div><div class="line"><span class="comment"> * 的main函数，系统就不能直接调用，而是抛出异常回到ZygoteInit的main函数中，然后间接调用它，这样就</span></div><div class="line"><span class="comment"> * 可以巧妙的利用Java语言的异常处理来清理它前面调用的堆栈了</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 调用ActivityThread.main</span></div><div class="line">        mMethod.invoke(<span class="keyword">null</span>, <span class="keyword">new</span> Object[]&#123;mArgs&#125;);</div><div class="line">    &#125; <span class="keyword">catch</span> (IllegalAccessException ex) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(ex);</div><div class="line">    &#125; <span class="keyword">catch</span> (InvocationTargetException ex) &#123;</div><div class="line">        Throwable cause = ex.getCause();</div><div class="line">        <span class="keyword">if</span> (cause <span class="keyword">instanceof</span> RuntimeException) &#123;</div><div class="line">            <span class="keyword">throw</span> (RuntimeException) cause;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cause <span class="keyword">instanceof</span> Error) &#123;</div><div class="line">            <span class="keyword">throw</span> (Error) cause;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(ex);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>通过mMethod.invoke方法调用ActivityThread的main方法。</p>
 <h4 id="15-ActivityThread-mian方法："><a href="#15-ActivityThread-mian方法：" class="headerlink" title="15. ActivityThread.mian方法："></a>15. ActivityThread.mian方法：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 启动新的进程时调用Process的start方法会最终调用该函数</span></div><div class="line"><span class="comment"> * 启动新的进程主要做了两件事：</span></div><div class="line"><span class="comment"> * 1.在进程中创建了一个ActivityThread对象，并调用了它的成员函数attach向AMS发送一个启动完成的通知</span></div><div class="line"><span class="comment"> * 2.调用Looper类的静态成员函数prepareMainLooper创建一个消息循环，并且在向AMS发送启动完成通知后，</span></div><div class="line"><span class="comment"> *   使得当前进程进入到这个消息循环中</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> args</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">// 创建主线程的Looper，因此主线程使用handler时，不需要再创建Looper</span></div><div class="line">    Looper.prepareMainLooper();</div><div class="line"></div><div class="line">    ActivityThread thread = <span class="keyword">new</span> ActivityThread();</div><div class="line">    <span class="comment">// 传入false表示非系统进程启动</span></div><div class="line">    thread.attach(<span class="keyword">false</span>);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (sMainThreadHandler == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// 获取主线程的Handler</span></div><div class="line">        sMainThreadHandler = thread.getHandler();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">// 开始无限循环</span></div><div class="line">    Looper.loop();</div><div class="line"></div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Main thread loop unexpectedly exited"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这里主要是创建该线程的looper，然后创建ActivityThread对象，然后进入消息循环。然后我们就可以启动Activity或者Service了。</p>
@@ -392,7 +392,7 @@
         <p><span>本文标题:</span><a href="/2017/09/13/AndroidOS005-Process/">Android系统源码分析--Process启动过程</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 墨香 的个人博客">墨香</a></p>
         <p><span>发布时间:</span>2017年09月13日 - 20时45分</p>
-        <p><span>最后更新:</span>2018年11月06日 - 21时53分</p>
+        <p><span>最后更新:</span>2018年12月11日 - 23时36分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/09/13/AndroidOS005-Process/" title="Android系统源码分析--Process启动过程">http://www.codemx.cn/2017/09/13/AndroidOS005-Process/</a>
             <span class="copy-path" data-clipboard-text="原文: http://www.codemx.cn/2017/09/13/AndroidOS005-Process/　　作者: 墨香" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -522,7 +522,7 @@
     <div class="outer">
         <div id="footer-info">
             <div class="footer-left">
-                &copy; 2018 墨香
+                &copy; 2019 墨香
             </div>
             <div class="footer-right">
                 <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
@@ -553,88 +553,39 @@
 </footer>
 
     </div>
-    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
-<script src="/js/main.js"></script>
+    <%- js('https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min') %>
+<%- js('js/main') %>
+<%- partial('background') %>
+<%- partial('analytics/google-analytics') %>
+<%- partial('analytics/baidu-analytics') %>
+<% if (theme.mathjax){ %>
+<%- partial('mathjax') %>
+<% } %>
+<%- partial('scrolling-button') %>
+<%- partial('hide-labels') %>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<% if (theme.TipTitle){ %>
+  <%- partial('post/TipTitle') %>
+<% } %>
+<% if (theme.search_box){ %>
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
 
-    <script>
-        $(document).ready(function() {
-            var backgroundnum = 24;
-            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
-            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
-            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
-        })
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
     </script>
-
-
-<!-- Google Analytics -->
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', '[object Object]', 'auto');
-ga('send', 'pageview');
-
-</script>
-<!-- End Google Analytics -->
-
-
-
-	<script>
-	var _hmt = _hmt || [];
-	(function() {
-	  var hm = document.createElement("script");
-	  hm.src = "//hm.baidu.com/hm.js?[object Object]";
-	  var s = document.getElementsByTagName("script")[0]; 
-	  s.parentNode.insertBefore(hm, s);
-	})();
-	</script>
-
-
-<div class="scroll" id="scroll">
-    <a href="#"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
-</div>
-<script>
-    $(document).ready(function() {
-        if ($("#comments").length < 1) {
-            $("#scroll > a:nth-child(2)").hide();
-        };
-    })
-</script>
-
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
-
-  <script language="javascript">
-    $(function() {
-        $("a[title]").each(function() {
-            var a = $(this);
-            var title = a.attr('title');
-            if (title == undefined || title == "") return;
-            a.data('title', title).removeAttr('title').hover(
-
-            function() {
-                var offset = a.offset();
-                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
-                    top: offset.top - a.outerHeight() - 15,
-                    left: offset.left + a.outerWidth()/2 + 1
-                }).fadeIn(function() {
-                    var pop = $(this);
-                    setTimeout(function() {
-                        pop.remove();
-                    }, pop.text().length * 800);
-                });
-            }, function() {
-                $("#anchortitlecontainer").remove();
-            });
-        });
-    });
-</script>
-
-
+<%}%>
   </div>
 </body>
 </html>
