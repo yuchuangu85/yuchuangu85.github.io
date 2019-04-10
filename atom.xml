@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.codemx.cn/"/>
-  <updated>2018-11-27T15:03:40.358Z</updated>
+  <updated>2019-04-10T14:44:52.934Z</updated>
   <id>http://www.codemx.cn/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://www.codemx.cn/2018/11/20/AndroidOS013-View-inflate/"/>
     <id>http://www.codemx.cn/2018/11/20/AndroidOS013-View-inflate/</id>
     <published>2018-11-20T13:47:03.000Z</published>
-    <updated>2018-11-27T15:03:40.358Z</updated>
+    <updated>2019-04-10T14:44:52.934Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章我们分析了Activity启动的时候调用setContentView加载布局的过程，但是分析过程中我们留了两个悬念，一个是将资源文件中的layout中xml布局文件通过inflate加载到Activity中的过程，另一个是开始测量、布局和绘制的过程，第二个我们放到measure过程中分析，这一篇先分析第一个inflate过程。&lt;/p&gt;
@@ -96,7 +96,7 @@
 &lt;li&gt;include必须有有效的layout id&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -122,7 +122,7 @@
     <link href="http://www.codemx.cn/2018/11/12/AndroidOS012-View-setContentView/"/>
     <id>http://www.codemx.cn/2018/11/12/AndroidOS012-View-setContentView/</id>
     <published>2018-11-12T15:21:02.000Z</published>
-    <updated>2018-11-18T14:36:10.627Z</updated>
+    <updated>2019-04-10T14:44:50.642Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一篇分析了四大组件之ContentProvider，这也是四大组件最后一个。因此，从这篇开始我们分析新的篇章–View绘制流程，View绘制流程在Android开发中占有非常重要的位置，只要有视图的显示，都离不开View的绘制，所以了解View绘制原理对于应用开发以及系统的学习至关重要。由于View绘制流程比较复杂，并且涉及的知识非常多，所以后面我会按照下面几方面来介绍View的绘制流程。每篇不是很长，但是尽量的详细，让每个人都看懂。&lt;/p&gt;
@@ -197,8 +197,7 @@
 &lt;li&gt;&lt;a href=&quot;https://www.jianshu.com/p/3872219cc07a&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.jianshu.com/p/3872219cc07a&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;由于coding与腾讯云合作，改变很多，所以后续代码切换到Gitlab。&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -224,7 +223,7 @@
     <link href="http://www.codemx.cn/2018/07/13/AndroidOS011-ContentProvider/"/>
     <id>http://www.codemx.cn/2018/07/13/AndroidOS011-ContentProvider/</id>
     <published>2018-07-13T07:14:15.000Z</published>
-    <updated>2018-11-18T14:29:45.039Z</updated>
+    <updated>2019-04-10T14:44:49.219Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;距离上一次写博客已经半年多了，这半年发生了很多事情，也有了很多感触，最主要是改变了忙碌的工作，更加重视身体的健康，为此也把工作地点从深圳这个一线城市换到了珠海，工作相对没有那么累，身体感觉也好了很多。所以在工作完成之余，也有了更多的时间来自我学习和提高，后续会用更多时间来写更多实用的东西，帮助我们理解安卓系统的原理，帮助我们快速、稳定的开发。&lt;br&gt;这一篇我们接着之前的计划，完成四大组件的最后一个ContentProvider的分析。ContentProvider是一个抽象类，用来提供访问数据的统一格式的接口。ContentProvider的作用是多应用间共享数据，如果用户需要直接使用则可以直接在里面使用数据库来保存数据，也可以通用ContentResolver使用URI来存储数据，使用URI用户不需要知道内部怎么存储只需要知道如何使用该存储方式。&lt;/p&gt;
@@ -300,8 +299,7 @@
 &lt;p&gt;到此Android系统四大组件都分析完了，可能感觉还是不够详细，其实还是要自己多看，多看几遍源码就熟悉了。后面开始分析View的绘制流程，因为这个相对来说非常复杂，如果一篇写完会写很长，看的话也很累，所以后面改用分章节去写，没章尽量分离开，尽量简短清晰，一看就能明白。&lt;/p&gt;
 &lt;h2 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://navyblue.top/2017/11/15/从源码角度看ContentProvider/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;从源码角度看ContentProvider&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://gityuan.com/2016/07/30/content-provider/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;理解ContentProvider原理&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;由于coding与腾讯云合作，改变很多，所以后续代码切换到Gitlab。&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -327,7 +325,7 @@
     <link href="http://www.codemx.cn/2018/04/24/AndroidOS010-Service/"/>
     <id>http://www.codemx.cn/2018/04/24/AndroidOS010-Service/</id>
     <published>2018-04-24T12:32:23.000Z</published>
-    <updated>2018-11-06T13:52:13.688Z</updated>
+    <updated>2019-04-10T14:44:52.920Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;在前面文章我们分析了四大组件中的两个：Broadcast和Activity，这章我们分析四大组件中的服务（Service）的启动过程。Service的启动方式有两种：一种是startService，一种是bindService；第一种通常是开启一个服务执行后台任务，不进行通信，第二章通过是启动服务进行通信。下面我们就根据这两种启动方式来讲Service的启动流程以及unbindService和stopService流程。&lt;/p&gt;
@@ -423,7 +421,7 @@
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// &lt;span class=&quot;doctag&quot;&gt;TODO:&lt;/span&gt; It would be nice to have an option to hold a partial wakelock&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// during processing, and to have a static startService(Context, Intent)&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// method that would launch the service &amp;amp; hand off a wakelock.&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    HandlerThread thread = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HandlerThread(&lt;span class=&quot;string&quot;&gt;&quot;IntentService[&quot;&lt;/span&gt; + mName + &lt;span class=&quot;string&quot;&gt;&quot;]&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    thread.start();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    mServiceLooper = thread.getLooper();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    mServiceHandler = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ServiceHandler(mServiceLooper);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;这里创建了一个Handler线程，并且获取了它的Looper，用来循环处理消息，因此我们知道同时只能处理一个消息，等前一个消息处理完了才会处理第二个，以此类推，因此需要同时处理的不能用这个Service，另外在ServiceHandler中有个stopSelf用来在消息处理完成后停止自己，因此该服务可以说是用完自动停止，不会一直存在，占用资源。&lt;/p&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -449,7 +447,7 @@
     <link href="http://www.codemx.cn/2018/03/12/AndroidOS009-Activity/"/>
     <id>http://www.codemx.cn/2018/03/12/AndroidOS009-Activity/</id>
     <published>2018-03-12T06:55:07.000Z</published>
-    <updated>2018-11-06T13:52:08.895Z</updated>
+    <updated>2019-04-10T14:44:48.035Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一篇我们分析了Activity的启动流程，由于代码量很大，还是没有分析的很详细，但是基本流程都出来了，更详细的东西还是要去看源码，源码在我文章的最后有给出，里面有我添加的详细的注释。这一章来分析Activity的finish过程，这个问题在两年前我去面试金山的时候曾经被问到过，那时候对源码基本没什么了解，所以当时根本是不了解的，今天我们就来分析一下finish的过程到底做了哪些处理，最后对Activity的整个启动过程以及finish过程绘制流程图，以方便我们记忆。&lt;/p&gt;
@@ -521,7 +519,7 @@
 &lt;p&gt;这里我们在上一章Activity的启动时已经分析过了。这里不再分析。到这里Activity的finish就分析完了，从这里我们主要学到的是finish的过程，以及finish过程中系统做了哪些处理，我们在写代码过程中应该做那些处理。&lt;/p&gt;
 &lt;h2 id=&quot;流程图：&quot;&gt;&lt;a href=&quot;#流程图：&quot; class=&quot;headerlink&quot; title=&quot;流程图：&quot;&gt;&lt;/a&gt;流程图：&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/AndroidOS/007Activity/ActivityFlow.jpg&quot; alt=&quot;Activity启动时序图&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -547,7 +545,7 @@
     <link href="http://www.codemx.cn/2018/01/26/AndroidOS008-Activity/"/>
     <id>http://www.codemx.cn/2018/01/26/AndroidOS008-Activity/</id>
     <published>2018-01-26T03:40:33.000Z</published>
-    <updated>2018-12-11T15:41:36.534Z</updated>
+    <updated>2019-04-10T14:44:53.088Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;关于Activity的源码分析拖延了太久的时间，由于最近工作繁忙，加上Activity启动源码非常复杂，涉及的内容很多，所以花费了很长是时间才来写这篇源码分析，希望这篇分析能让我们很容易的理解Activity的启动流程，能解决我们在使用Activity过程中遇到的问题，这样就达到了我们对于源码分析的目的了。下一篇我们介绍Activity的finish过程。&lt;/p&gt;
@@ -698,7 +696,7 @@
 &lt;p&gt;最后68-70步其实还是会执行到handleLaunchActivity方法上来，所以这里就不再分析。&lt;/p&gt;
 &lt;p&gt;从整篇文章看，Activity的启动流程是非常复杂，可以说在四大组件中是最复杂的，但是里面很多过程是相同的，比如生命周期的每个方法的调用过程基本是一样的，因此看书谷歌工程师设计的巧妙，这样也有助于我们对于源码的学习，减少了我们对于源码的分析过程，博客写了很多，但是对于整个过程来说还是很多地方没有分析，想了解完整的过程的可以下载我的代码，里面有很全面的注释，然后自己对着上面的时序图来进行分析，过几遍也就熟悉了，我写这片博客也用了很长的时间，主要是中间总是有事，写写停停，时序图更改了好几次。中间也有一些问题，不过跟着源码走还是都能找到的。&lt;/p&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -724,7 +722,7 @@
     <link href="http://www.codemx.cn/2017/12/25/AndroidOS007-Broadcast2/"/>
     <id>http://www.codemx.cn/2017/12/25/AndroidOS007-Broadcast2/</id>
     <published>2017-12-25T09:08:52.000Z</published>
-    <updated>2018-11-06T13:52:35.850Z</updated>
+    <updated>2019-04-10T14:44:53.108Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一篇分析了Android系统中广播的注册和注销，这一篇我们继续分析发送广播的源码流程，广播的发送相对来说比较复杂，所以需要比较长的时间来看，如果你看懂了流程相对来说再研究流程中的细节就比较简单了。&lt;/p&gt;
@@ -787,7 +785,7 @@
 &lt;p&gt;&lt;img src=&quot;/images/AndroidOS/006Broadcast/flowsendbroadcast.jpg&quot; alt=&quot;发送广播流程图&quot;&gt;&lt;/p&gt;
 &lt;p&gt;为了方便记忆，这里添加一个发送广播的流程图，这样对照着上面的代码流程再看就会好理解很多。&lt;/p&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -813,7 +811,7 @@
     <link href="http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/"/>
     <id>http://www.codemx.cn/2017/12/21/AndroidOS006-Broadcast1/</id>
     <published>2017-12-21T03:56:35.000Z</published>
-    <updated>2018-11-06T13:53:44.630Z</updated>
+    <updated>2019-04-10T14:44:53.005Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;距离上一篇博客进程的加载过了很久的时间，这中间换了一份工作，加入了新的团队，也开始了新的项目，比较忙，所以最近才有时间将四大组件之一的广播原理看完，最近一段时间会相继把四大组件分析写完，让我们对四大组件有更深的了解。本来想一篇把广播的内容写完，但是发现要解释的代码比较多，所以还是分开来讲，那么这篇先分析广播的注册和注销，下一篇再分析广播的发送。&lt;/p&gt;
@@ -862,7 +860,7 @@
 &lt;p&gt;最后这里我们再加一个广播注册结构的总结，上面是一个广播注册时的结构图，也就是广播以及对应的IntentFilter列表封装，整个过程是由下向上注册。首先是将BroadcastReceiver封装成Binder对象IIntentReceiver，将IntentFilter封装成BroadcastFilter对象，ReceiverList继承的是ArrayList&amp;lt;BroadcastFilter&amp;gt;，因此它本身就是一个用来盛放BroadcastFilter对象列表的ArrayList对象，同时ReceiverList对象还放入了IntentFilter列表对应的BroadcastReceiver的封装对象IIntentReceiver，这样就将BroadcastReceiver和IntentFilter绑定到一起了，然后将ReceiverList放到mRegisteredReceivers中，保存在ActivityManagerService（AMS）中，同时将ReceiverList放置到该广播所在进程的receivers中，而该进程保存在AMS中的mLruProcesses中，同时将IntentFilter的封装对象BroadcastReceiver放置到AMS中的mReceiverResolver中，这样就注册完成了。&lt;/p&gt;
 &lt;p&gt;这样从整个机构来说就非常清楚了，其实里面还有一些相互引用的情况，我没有完全画出来，只画了主要的部分，相对清晰一些。&lt;/p&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -888,7 +886,7 @@
     <link href="http://www.codemx.cn/2017/09/13/AndroidOS005-Process/"/>
     <id>http://www.codemx.cn/2017/09/13/AndroidOS005-Process/</id>
     <published>2017-09-13T12:45:07.000Z</published>
-    <updated>2018-12-11T15:36:58.082Z</updated>
+    <updated>2019-04-10T14:44:52.981Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。&lt;/p&gt;
@@ -936,7 +934,7 @@
 &lt;h4 id=&quot;15-ActivityThread-mian方法：&quot;&gt;&lt;a href=&quot;#15-ActivityThread-mian方法：&quot; class=&quot;headerlink&quot; title=&quot;15. ActivityThread.mian方法：&quot;&gt;&lt;/a&gt;15. ActivityThread.mian方法：&lt;/h4&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;29&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;30&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;31&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; * 启动新的进程时调用Process的start方法会最终调用该函数&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; * 启动新的进程主要做了两件事：&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; * 1.在进程中创建了一个ActivityThread对象，并调用了它的成员函数attach向AMS发送一个启动完成的通知&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; * 2.调用Looper类的静态成员函数prepareMainLooper创建一个消息循环，并且在向AMS发送启动完成通知后，&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; *   使得当前进程进入到这个消息循环中&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; *&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@param&lt;/span&gt; args&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] args)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 创建主线程的Looper，因此主线程使用handler时，不需要再创建Looper&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    Looper.prepareMainLooper();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ActivityThread thread = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ActivityThread();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 传入false表示非系统进程启动&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    thread.attach(&lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (sMainThreadHandler == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// 获取主线程的Handler&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        sMainThreadHandler = thread.getHandler();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    ...&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 开始无限循环&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    Looper.loop();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; RuntimeException(&lt;span class=&quot;string&quot;&gt;&quot;Main thread loop unexpectedly exited&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;这里主要是创建该线程的looper，然后创建ActivityThread对象，然后进入消息循环。然后我们就可以启动Activity或者Service了。&lt;/p&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
@@ -962,7 +960,7 @@
     <link href="http://www.codemx.cn/2017/07/13/AndroidOS004-HandleMessageLooper/"/>
     <id>http://www.codemx.cn/2017/07/13/AndroidOS004-HandleMessageLooper/</id>
     <published>2017-07-12T16:12:33.000Z</published>
-    <updated>2018-11-06T13:53:43.441Z</updated>
+    <updated>2019-04-10T14:44:53.057Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;上一章我们讲解SystemServer时涉及到了消息机制，因此这一章我们先介绍一下消息循环机制，帮助大家弄清楚消息循环的原理，有助于代码的编写和优化。&lt;/p&gt;
@@ -1053,7 +1051,7 @@
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyHandler&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MxHandler&lt;/span&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;HandlerDemo&lt;/span&gt;&amp;gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyHandler&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(HandlerDemo handlerDemo)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(handlerDemo);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &lt;span class=&quot;meta&quot;&gt;@Override&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;handleMessage&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Message msg, HandlerDemo h)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (msg.what) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                    h.doSomething();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                    &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;                    &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;            &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;这样我们在Activity中使用是不会出现内存泄漏之类的错误。&lt;/p&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;参考：&quot;&gt;&lt;a href=&quot;#参考：&quot; class=&quot;headerlink&quot; title=&quot;参考：&quot;&gt;&lt;/a&gt;参考：&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/codingmyworld/archive/2011/09/12/2174255.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;android的消息处理机制（图+源码分析）——Looper,Handler,Message&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/bboyfeiyu/article/details/38555547&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android中Thread、Handler、Looper、MessageQueue的原理分析&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/lmj623565791/article/details/38377229/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android 异步消息处理机制 让你深入理解 Looper、Handler、Message三者关系&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/luoshengyang/article/details/6817933&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android应用程序消息处理机制（Looper、Handler）分析&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
@@ -1080,7 +1078,7 @@
     <link href="http://www.codemx.cn/2017/07/12/AndroidOS003-SystemServer/"/>
     <id>http://www.codemx.cn/2017/07/12/AndroidOS003-SystemServer/</id>
     <published>2017-07-12T02:05:21.000Z</published>
-    <updated>2018-11-06T13:53:42.819Z</updated>
+    <updated>2019-04-10T14:44:53.034Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;按计划本来从这章开始写四大组件的启动过程的，但是看看源码结构发现为了说的更明白还是先写一点系统framework层启动的内容，帮助理解四大组件的启动以及管理过程。我们知道四大组件管理是通过一些服务以及线程实现的，所以先把一些基本概念弄清楚比较好，比如AMS（ActivityManagerService）、PMS（PackageManagerService）等系统服务的作用以及调用方式，了解这些之后再看四大组件相对容易些，因此我们本章先介绍系统启动、部分系统服务的作用。&lt;/p&gt;
@@ -1459,7 +1457,7 @@
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;参考：&quot;&gt;&lt;a href=&quot;#参考：&quot; class=&quot;headerlink&quot; title=&quot;参考：&quot;&gt;&lt;/a&gt;参考：&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://gityuan.com/2016/02/20/android-system-server-2/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android系统启动-SystemServer下篇&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/luoshengyang/article/details/6768304&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android系统进程Zygote启动过程的源代码分析&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
@@ -1486,7 +1484,7 @@
     <link href="http://www.codemx.cn/2017/06/05/AndroidOS002-Context/"/>
     <id>http://www.codemx.cn/2017/06/05/AndroidOS002-Context/</id>
     <published>2017-06-05T10:00:19.000Z</published>
-    <updated>2018-11-06T13:53:24.899Z</updated>
+    <updated>2019-04-10T14:44:52.950Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;p&gt;Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。&lt;br&gt;声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1版本系统）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。&lt;/p&gt;
@@ -1595,7 +1593,7 @@
 &lt;p&gt;从上面代码我肯可以清楚的看到baseContext是appContext赋值的，而appContext就是ContextImpl，因此Activity中的Context也是ContextImpl。到现在我们已经搞清楚了ContextImpl、Context、ContextWrapper、ContextThemeWrapper以及Application、Service和Activity的关系，那么以后看源码我们就知道与Context相关的实现方法都在ContextImpl类中，如果需要看详细实现过程只需要去ContextImpl类中找到相应方法开始跟踪即可。&lt;/p&gt;
 &lt;p&gt;从下一章我们开始讲解四大组件的启动过程。&lt;/p&gt;
 &lt;h2 id=&quot;代码地址：&quot;&gt;&lt;a href=&quot;#代码地址：&quot; class=&quot;headerlink&quot; title=&quot;代码地址：&quot;&gt;&lt;/a&gt;代码地址：&lt;/h2&gt;&lt;p&gt;直接拉取导入开发工具（Intellij idea或者Android studio）&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://gitlab.com/yuchuangu85/android-25&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://gitlab.com/yuchuangu85/android-25&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yuchuangu85/Android_Framework_Source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Android_Framework_Source&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;注&quot;&gt;&lt;a href=&quot;#注&quot; class=&quot;headerlink&quot; title=&quot;注&quot;&gt;&lt;/a&gt;注&lt;/h2&gt;&lt;p&gt;Android开发群：192508518&lt;/p&gt;
 &lt;p&gt;微信公众账号：Code-MX&lt;br&gt;&lt;img width=&quot;240&quot; src=&quot;/images/codemx/qr_code_mx.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;注：本文原创，转载请注明出处，多谢。&lt;/p&gt;
