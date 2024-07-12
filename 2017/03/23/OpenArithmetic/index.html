@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>开源算法集合 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本文主要是收集一些大的公司开源的算法项目，以方便我们开发使用。包括：guetzli（图像算法）、brotli（压缩算法）、face_classification（人脸分类以及情感算法）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开源算法集合">
+<meta property="og:url" content="http://www.codemx.cn/2017/03/23/OpenArithmetic/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="本文主要是收集一些大的公司开源的算法项目，以方便我们开发使用。包括：guetzli（图像算法）、brotli（压缩算法）、face_classification（人脸分类以及情感算法）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2017-03-23T01:12:59.000Z">
+<meta property="article:modified_time" content="2024-07-12T16:41:32.278Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="Resource">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2017/03/23/OpenArithmetic/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '开源算法集合',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-13 00:41:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">开源算法集合</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-23T01:12:59.000Z" title="发表于 2017-03-23 09:12:59">2017-03-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-12T16:41:32.278Z" title="更新于 2024-07-13 00:41:32">2024-07-13</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="开源算法集合"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>本文主要是收集一些大的公司开源的算法项目，以方便我们开发使用。包括：guetzli（图像算法）、brotli（压缩算法）、face_classification（人脸分类以及情感算法）。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="Google"><a href="#Google" class="headerlink" title="Google"></a>Google</h2><h3 id="【guetzli】"><a href="#【guetzli】" class="headerlink" title="【guetzli】"></a>【guetzli】</h3><ul>
+<li><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/google/guetzli/">guetzli</a></p>
+</li>
+<li><p>简介：Google 又开源了，这次开源了一款图像算法工具 Guetzli。Guetzli，在瑞士德语中是“cookie（曲奇）”的意思，是一个针对数码图像和网页图像的 JPEG 编码器，能够通过产生更小的 JPEG 文件来达到更快的在线体验，并且同时保持与当前浏览器，图像处理应用和 JPEG 标准的兼容性。Google 称 Guetzli 创建高质量的 JPEG 图像文件的大小比当前的压缩方法要再小 35％。</p>
+</li>
+<li><p>简介来源：<a target="_blank" rel="noopener" href="https://www.oschina.net/news/82988/google-opensource-guetzli">开源中国：Google 开源图像算法工具 Guetzli，高质量压缩图片</a></p>
+</li>
+</ul>
+<h3 id="【brotli】"><a href="#【brotli】" class="headerlink" title="【brotli】"></a>【brotli】</h3><ul>
+<li><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/google/brotli">brotli</a></p>
+</li>
+<li><p>简介：Zotfli压缩算法在默认设置下的输出比zlib的最大压缩比输出还要小3-8%。PNG优化器、Web内容预处理等许多压缩方案中都集成了该算法。基于该算法的应用情况，结合其它现代压缩需求，谷歌开发并开源了一个新的算法——Brotli压缩算法。该算法由谷歌压缩团队的Jyrki Alakuijala和Zoltan Szabadka开发，其中Jyrki亦是Zotfli压缩算法的创建者。</p>
+</li>
+<li><p>简介来源：<a target="_blank" rel="noopener" href="http://www.infoq.com/cn/news/2015/10/Google-Brotli-Zotfli">Google开源Brotli压缩算法</a></p>
+</li>
+</ul>
+<h3 id="【face-classification】"><a href="#【face-classification】" class="headerlink" title="【face_classification】"></a>【face_classification】</h3><ul>
+<li><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/oarriaga/face_classification">face_classification</a></p>
+</li>
+<li><p>简介：人脸分类和情感识别算法</p>
+</li>
+</ul>
+<h2 id="图片压缩算法"><a href="#图片压缩算法" class="headerlink" title="图片压缩算法"></a>图片压缩算法</h2><h3 id="【Luban】"><a href="#【Luban】" class="headerlink" title="【Luban】"></a>【Luban】</h3><ul>
+<li><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/Curzibn/Luban">Luban</a></p>
+</li>
+<li><p>简介：Luban，也称鲁班。该库作者一针见血的提出当前图片压缩处理的一些问题：单纯对图片进行裁切，压缩已经有很多文章介绍。但是裁切成多少，压缩成多少却很难控制好，裁切过头图片太小，质量压缩过头则显示效果太差。所以，他通过微信朋友圈发送近100张不同分辨率图片，对比原图与微信压缩后的图片逆向推算出来的压缩算法，具体的算法实现在项目中有详细说明介绍。使用上，支持普通调用方式外，也支持RxJava！</p>
+</li>
+</ul>
+<p><img src="/images/arithmetic/luban1.png" alt="00"><br><img src="/images/arithmetic/luban2.png" alt="00"></p>
+<h3 id="【Compressor】"><a href="#【Compressor】" class="headerlink" title="【Compressor】"></a>【Compressor】</h3><ul>
+<li><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/zetbaitsu/Compressor">Compressor</a></p>
+</li>
+<li><p>简介：它可以满足动则几MB的图片高保真的压缩到几十KB的效果。</p>
+</li>
+</ul>
+<p><img src="/images/arithmetic/compressor1.png" alt="00"></p>
+<p>API调用上和Luban一样，支持普通方式也支持RxJava。</p>
+<p><img src="/images/arithmetic/compressor2.png" alt="00"></p>
+<h3 id="【digital-video-introduction】"><a href="#【digital-video-introduction】" class="headerlink" title="【digital_video_introduction】"></a>【digital_video_introduction】</h3><ul>
+<li><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/leandromoreira/digital_video_introduction">digital_video_introduction</a></p>
+</li>
+<li><p>简介：非常好的关于视频的算法教程。</p>
+</li>
+</ul>
+<p><img src="https://github.com/leandromoreira/digital_video_introduction/raw/master/i/image_3d_matrix_rgb.png"></p>
+<h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
+<p>微信公众账号：Code-MX<br><img src="/images/codemx/qr_code_mx.jpg" alt="qr_code_mx-w240"></p>
+<p>注：本文原创，转载请注明出处，多谢。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2017/03/23/OpenArithmetic/">http://www.codemx.cn/2017/03/23/OpenArithmetic/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Resource/">Resource</a></div><div class="post_share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/05/19/Launcher08/" title="墨香带你学Launcher之（八）- 加载Icon、设置壁纸"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</div></div></a></div><div class="next-post pull-right"><a href="/2017/03/13/UICollection01/" title="常用UI框架汇总"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">常用UI框架汇总</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2016/07/25/Android-open-project/" title="Android、iOS、Mac开源项目推荐"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-07-25</div><div class="title">Android、iOS、Mac开源项目推荐</div></div></a></div><div><a href="/2017/01/10/FrameCollection/" title="Android 常用框架集合"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-01-10</div><div class="title">Android 常用框架集合</div></div></a></div><div><a href="/2017/03/13/UICollection01/" title="常用UI框架汇总"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-03-13</div><div class="title">常用UI框架汇总</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">墨香</div><div class="author-info__description">因为兴趣所以选择，因为选择所以坚持。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Google"><span class="toc-number">1.</span> <span class="toc-text">Google</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90guetzli%E3%80%91"><span class="toc-number">1.1.</span> <span class="toc-text">【guetzli】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90brotli%E3%80%91"><span class="toc-number">1.2.</span> <span class="toc-text">【brotli】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90face-classification%E3%80%91"><span class="toc-number">1.3.</span> <span class="toc-text">【face_classification】</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">图片压缩算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90Luban%E3%80%91"><span class="toc-number">2.1.</span> <span class="toc-text">【Luban】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90Compressor%E3%80%91"><span class="toc-number">2.2.</span> <span class="toc-text">【Compressor】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90digital-video-introduction%E3%80%91"><span class="toc-number">2.3.</span> <span class="toc-text">【digital_video_introduction】</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8"><span class="toc-number">3.</span> <span class="toc-text">注</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">墨香博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget">
+<meta property="og:url" content="http://www.codemx.cn/2016/08/14/Launcher03/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2016-08-14T01:45:40.000Z">
+<meta property="article:modified_time" content="2024-07-12T16:41:32.277Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="Launcher">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2016/08/14/Launcher03/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-13 00:41:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2016-08-14T01:45:40.000Z" title="发表于 2016-08-14 09:45:40">2016-08-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-12T16:41:32.277Z" title="更新于 2024-07-13 00:41:32">2024-07-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Launcher/">Launcher</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="墨香带你学Launcher之（三）- 绑定屏幕、图标、文件夹和Widget"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>上一章我们讲了Launcher的数据加载，包括：默认配置应用、文件夹以及widget的加载，所有应用的加载以及所有Widget的加载，数据加载完成后开始分批进行绘制到桌面上，包含默认配置bind，所有应用bind，所有小部件bind。下面我就从这几个方面进行分析，看看他们的加载过程。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="1-默认配置图标、Widget、文件夹的绑定（bind）"><a href="#1-默认配置图标、Widget、文件夹的绑定（bind）" class="headerlink" title="1.默认配置图标、Widget、文件夹的绑定（bind）"></a>1.默认配置图标、Widget、文件夹的绑定（bind）</h2><hr>
+<p>上一章讲到默认配置加载的位置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">loadAndBindWorkspace</span><span class="params">()</span> &#123;</span><br><span class="line">           </span><br><span class="line">           ...</span><br><span class="line">           </span><br><span class="line">           <span class="keyword">if</span> (!mWorkspaceLoaded) &#123;</span><br><span class="line">               loadWorkspace();</span><br><span class="line">               ...</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="comment">// Bind the workspace</span></span><br><span class="line">           bindWorkspace(-<span class="number">1</span>);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>这里主要是加载默认配置，然后调用bindWorkspace进行绑定，我们先看一下流程图：</p>
+<p><img src="/images/launcher/image03/launcher01.png" alt="01"></p>
+<p>整个流程看似东西很多，其实就是准备数据，然后开始绑定，下面我们看bindWorkspace的主要代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">bindWorkspace</span><span class="params">(<span class="type">int</span> synchronizeBindPage)</span> &#123;</span><br><span class="line">			  <span class="comment">//准备参数</span></span><br><span class="line">            ...</span><br><span class="line"></span><br><span class="line">            <span class="comment">//开始绑定</span></span><br><span class="line">            ...</span><br><span class="line"></span><br><span class="line">            bindWorkspaceScreens(oldCallbacks, orderedScreenIds);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Load items on the current page</span></span><br><span class="line">            bindWorkspaceItems(oldCallbacks, currentWorkspaceItems, currentAppWidgets,</span><br><span class="line">                    currentFolders, <span class="literal">null</span>);</span><br><span class="line">            ...</span><br><span class="line">            </span><br><span class="line">            bindWorkspaceItems(oldCallbacks, otherWorkspaceItems, otherAppWidgets, otherFolders,</span><br><span class="line">                    (isLoadingSynchronously ? mDeferredBindRunnables : <span class="literal">null</span>));</span><br><span class="line"></span><br><span class="line">			  <span class="comment">//结束绑定</span></span><br><span class="line">            ...</span><br><span class="line">          </span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>我们先分析第一个方法：bindWorkspaceScreens，我们知道桌面上的图标、文件夹等是放置到CellLayout（实际内部还有一个容器）中的，因此我们要首先添加CellLayout整个容器，<br>也就是这个方法，代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">bindWorkspaceScreens</span><span class="params">(<span class="keyword">final</span> Callbacks oldCallbacks,</span></span><br><span class="line"><span class="params">                                          <span class="keyword">final</span> ArrayList&lt;Long&gt; orderedScreens)</span> &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="type">Runnable</span> <span class="variable">r</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                    <span class="type">Callbacks</span> <span class="variable">callbacks</span> <span class="operator">=</span> tryGetCallbacks(oldCallbacks);</span><br><span class="line">                    <span class="keyword">if</span> (callbacks != <span class="literal">null</span>) &#123;</span><br><span class="line">                        callbacks.bindScreens(orderedScreens);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            runOnMainThread(r);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>代码很简单，就是调用回调函数callbacks.bindScreens，这个回调函数是在Launcher中实现的，因此我们看流程图：</p>
+<p><img src="/images/launcher/image03/launcher02.png" alt="02"></p>
+<p>代码实现就是在bindAddScreens方法中通过for循环添加CellLayout，比较简单不再贴代码。</p>
+<p>我们接着看第二第三个函数，这两个函数是一样的，但是参数不一样，从参数名字可以看到第一个bind当前页面的图标、文件夹、widget的，第二个是bind其他屏幕图标、文件夹、widget的，因此我们只讲一个流程，剩下的是一样的。</p>
+<p>我们先看流程图：</p>
+<p><img src="/images/launcher/image03/launcher03.png" alt="03"></p>
+<p>从流程图看其实就是三个for循环，分别绑定图标、文件夹、小部件，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">bindItems</span><span class="params">(<span class="keyword">final</span> ArrayList&lt;ItemInfo&gt; shortcuts, <span class="keyword">final</span> <span class="type">int</span> start, <span class="keyword">final</span> <span class="type">int</span> end,</span></span><br><span class="line"><span class="params">                          <span class="keyword">final</span> <span class="type">boolean</span> forceAnimateIcons)</span> &#123;</span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> start; i &lt; end; i++) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="type">ItemInfo</span> <span class="variable">item</span> <span class="operator">=</span> shortcuts.get(i);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果是在Hotseat中并且没有Hotseat则跳过继续</span></span><br><span class="line">            <span class="keyword">if</span> (item.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT &amp;&amp;</span><br><span class="line">                    mHotseat == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">final</span> View view;</span><br><span class="line">            <span class="keyword">switch</span> (item.itemType) &#123;</span><br><span class="line">                <span class="keyword">case</span> LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:</span><br><span class="line">                <span class="keyword">case</span> LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:</span><br><span class="line">                    <span class="type">ShortcutInfo</span> <span class="variable">info</span> <span class="operator">=</span> (ShortcutInfo) item;</span><br><span class="line">                    view = createShortcut(info);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> LauncherSettings.Favorites.ITEM_TYPE_FOLDER:</span><br><span class="line">                    view = FolderIcon.fromXml(R.layout.folder_icon, <span class="built_in">this</span>,</span><br><span class="line">                            (ViewGroup) workspace.getChildAt(workspace.getCurrentPage()),</span><br><span class="line">                            (FolderInfo) item, mIconCache);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">default</span>:</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Invalid Item Type&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            workspace.addInScreenFromBind(view, item.container, item.screenId, item.cellX,</span><br><span class="line">                    item.cellY, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的switch语句中判断Item的类型，根据不同类型来生成不同的View,最后通过workspace.addInScreenFromBind方法将view绑定到桌面上，我们接着看一下addInScreenFromBind这个方法，这个方法最后调用到Workspace中的addInScreen方法，在这个方法中有两个参数spanX、spanY没有讲过，我来解释一下，我们第一章讲了图标排列到桌面上是按照4x4后者4x5等形式，那么每个单元是一个图标位置，但是，小部件的占用不只是一个图标，有可能几个图标的位置，而spanX就是横向占用的单元格个数，相应的spanY就是Y方向的占用个数。根据控件的起始位置，以及占用单元格个数就可以确定他在桌面上的位置。addInScreen代码我就不贴了，我只是在这说一下过程，进入这个方法，首先判断container的类型，也就是父容器的类型：CellLayout还是Hotseat，然后判断是文件夹还是图标，最后通过调用layout.addViewToCellLayout方法根据相应的参数来添加到相应的容器里面。</p>
+<p>其他两个的绑定也是差不多的，只是widget的相对复杂一点，这里不再讲解，后面我会单独写一章来讲解widget的加载添加。</p>
+<h2 id="2-所有应用绑定（bind）"><a href="#2-所有应用绑定（bind）" class="headerlink" title="2.所有应用绑定（bind）"></a>2.所有应用绑定（bind）</h2><hr>
+<p>绑定所有应用其实是绑定二级界面的所有应用图标，代码开始位置是：LauncherModel中的loadAllApps方法，首先加载手机里的所有应用信息，然后生成对应的对象，最后通过调用callbacks.bindAllApplications方法将所有应用绑定到二级界面，回调函数依然是在Launcher中实现，二级界面是AllAppsContainerView，根据代码流程调用onAppsUpdated方法，在这个方法中排序最后调用updateAdapterItems方法，这个界面是一个RecyclerView，准备好数据库，刷新适配器即可。</p>
+<h2 id="3-所有Widget的绑定（bind）"><a href="#3-所有Widget的绑定（bind）" class="headerlink" title="3.所有Widget的绑定（bind）"></a>3.所有Widget的绑定（bind）</h2><hr>
+<p>绑定Widget也是从loadAllApps这个方法开始的，在这个方法的最后面有个loadAndBindWidgetsAndShortcuts，通过这个方法绑定快捷方式和widget到小部件界面，看代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">loadAndBindWidgetsAndShortcuts</span><span class="params">(<span class="keyword">final</span> Callbacks callbacks, <span class="keyword">final</span> <span class="type">boolean</span> refresh)</span> &#123;</span><br><span class="line"></span><br><span class="line">        runOnWorkerThread(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                updateWidgetsModel(refresh);</span><br><span class="line">                <span class="keyword">final</span> <span class="type">WidgetsModel</span> <span class="variable">model</span> <span class="operator">=</span> mBgWidgetsModel.clone();</span><br><span class="line"></span><br><span class="line">                mHandler.post(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                        <span class="type">Callbacks</span> <span class="variable">cb</span> <span class="operator">=</span> getCallback();</span><br><span class="line">                        <span class="keyword">if</span> (callbacks == cb &amp;&amp; cb != <span class="literal">null</span>) &#123;</span><br><span class="line">                            callbacks.bindAllPackages(model);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                <span class="comment">// update the Widget entries inside DB on the worker thread.</span></span><br><span class="line">                LauncherAppState.getInstance().getWidgetCache().removeObsoletePreviews(</span><br><span class="line">                        model.getRawList());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>首先调用updateWidgetsModel方法，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">updateWidgetsModel</span><span class="params">(<span class="type">boolean</span> refresh)</span> &#123;</span><br><span class="line">        <span class="type">PackageManager</span> <span class="variable">packageManager</span> <span class="operator">=</span> mApp.getContext().getPackageManager();</span><br><span class="line">        <span class="keyword">final</span> ArrayList&lt;Object&gt; widgetsAndShortcuts = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Object&gt;();</span><br><span class="line">        widgetsAndShortcuts.addAll(getWidgetProviders(mApp.getContext(), refresh));</span><br><span class="line">        <span class="type">Intent</span> <span class="variable">shortcutsIntent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>(Intent.ACTION_CREATE_SHORTCUT);</span><br><span class="line">        widgetsAndShortcuts.addAll(packageManager.queryIntentActivities(shortcutsIntent, <span class="number">0</span>));</span><br><span class="line">        mBgWidgetsModel.setWidgetsAndShortcuts(widgetsAndShortcuts);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在这个方法中首先调用getWidgetProviders方法来加载所有的小部件信息，然后通过packageManager.queryIntentActivities方法加载所有的快捷方式信息，最后将所有的信息放置到WidgetsModel中，完成后通过调用callbacks.bindAllPackages回调函数开始绑定所有的小部件和快捷方式，回调函数在Launcher中实现，然后调用WidgetsContainerView中的addWidgets方法传入WidgetsModel对象，然后通过调用刷新适配器来刷新小部件界面。</p>
+<p>最后：这一章相对简单，主要是UI的绘制，有一些流程我没有讲，主要是UI绘制其实和自定义view相关，很多人一看就会了，所以不再讲解，不会的可以去看看源码。</p>
+<p>Github地址：<a target="_blank" rel="noopener" href="https://github.com/yuchuangu85/Launcher3_mx/tree/launcher3_6.0">https://github.com/yuchuangu85/Launcher3_mx&#x2F;tree&#x2F;launcher3_6.0</a></p>
+<p>Android开发群：192508518</p>
+<p>微信公众账号：Code-MX<br><img src="/images/codemx/qr_code_mx.jpg" alt="qr_code_mx"></p>
+<p>注：本文原创，转载请注明出处，多谢。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2016/08/14/Launcher03/">http://www.codemx.cn/2016/08/14/Launcher03/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Launcher/">Launcher</a></div><div class="post_share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2016/08/19/Android-animation-tree/" title="Android动画收集"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Android动画收集</div></div></a></div><div class="next-post pull-right"><a href="/2016/08/05/Launcher02/" title="墨香带你学Launcher之（二）- 数据加载流程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">墨香带你学Launcher之（二）- 数据加载流程</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2016/08/05/Launcher02/" title="墨香带你学Launcher之（二）- 数据加载流程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-08-05</div><div class="title">墨香带你学Launcher之（二）- 数据加载流程</div></div></a></div><div><a href="/2016/07/30/Launcher01/" title="墨香带你学Launcher之（一）- 概述"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-07-30</div><div class="title">墨香带你学Launcher之（一）- 概述</div></div></a></div><div><a href="/2016/08/21/Launcher04/" title="墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-08-21</div><div class="title">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</div></div></a></div><div><a href="/2016/10/16/Launcher05/" title="墨香带你学Launcher之（五）- Workspace滑动"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-10-16</div><div class="title">墨香带你学Launcher之（五）- Workspace滑动</div></div></a></div><div><a href="/2017/05/19/Launcher08/" title="墨香带你学Launcher之（八）- 加载Icon、设置壁纸"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-05-19</div><div class="title">墨香带你学Launcher之（八）- 加载Icon、设置壁纸</div></div></a></div><div><a href="/2016/12/18/Launcher07/" title="墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-12-18</div><div class="title">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">墨香</div><div class="author-info__description">因为兴趣所以选择，因为选择所以坚持。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E5%9B%BE%E6%A0%87%E3%80%81Widget%E3%80%81%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E7%BB%91%E5%AE%9A%EF%BC%88bind%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">1.默认配置图标、Widget、文件夹的绑定（bind）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%89%80%E6%9C%89%E5%BA%94%E7%94%A8%E7%BB%91%E5%AE%9A%EF%BC%88bind%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">2.所有应用绑定（bind）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%89%80%E6%9C%89Widget%E7%9A%84%E7%BB%91%E5%AE%9A%EF%BC%88bind%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3.所有Widget的绑定（bind）</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">墨香博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>自定义View之—渐变进度条 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="最近项目中用到渐变圆环进度条，自己也写了一下，用到一些知识，以前没有用过，使用过程中有一些问题，在此做一下笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义View之—渐变进度条">
+<meta property="og:url" content="http://www.codemx.cn/2016/09/29/DefineView1/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="最近项目中用到渐变圆环进度条，自己也写了一下，用到一些知识，以前没有用过，使用过程中有一些问题，在此做一下笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2016-09-29T01:31:26.000Z">
+<meta property="article:modified_time" content="2024-07-12T16:41:32.276Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="View">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2016/09/29/DefineView1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '自定义View之—渐变进度条',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-07-13 00:41:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">自定义View之—渐变进度条</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2016-09-29T01:31:26.000Z" title="发表于 2016-09-29 09:31:26">2016-09-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-12T16:41:32.276Z" title="更新于 2024-07-13 00:41:32">2024-07-13</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="自定义View之—渐变进度条"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>最近项目中用到渐变圆环进度条，自己也写了一下，用到一些知识，以前没有用过，使用过程中有一些问题，在此做一下笔记。</p>
+</blockquote>
+<span id="more"></span>
+
+<p>渐变颜色其实用到的是颜色数组，然后根据数组计算来的，当然计算是Android系统进行的，不需要我们手动计算，我们只需要设置颜色数组和颜色值对应位置即可。画圆形渐变用到一个属性：SweepGradient，他的父类是一个Shader，</p>
+<p>由官方文档看到他有两个构造函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SweepGradient(<span class="type">float</span> cx, <span class="type">float</span> cy, <span class="type">int</span> color0, <span class="type">int</span> color1)</span><br><span class="line">SweepGradient(<span class="type">float</span> cx, <span class="type">float</span> cy, <span class="type">int</span> colors[], <span class="type">float</span> positions[])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>cx:要画的圆环的中心点x坐标；</li>
+<li>cy:要画的圆环的中心点y坐标；</li>
+<li>color0:起始颜色值；</li>
+<li>color1:结束颜色值；</li>
+<li>colors[]:颜色数组；</li>
+<li>positions[]:对应颜色值的位置，与颜色值数组个数相等，里面的值均为（0–1）的数字。</li>
+</ul>
+<p>先看一张效果图（图一）：</p>
+<p><img src="/images/view/defineview/circlegradientprogressbar/color.png" alt="00"></p>
+<p>这就是一张渐变圆环图，上面的箭头和数字后面解释。</p>
+<p>我们主要研究第二个构造函数，颜色数组和颜色位置的使用方法。</p>
+<p>首先看一个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 圆形渐变进度条</span></span><br><span class="line"><span class="comment"> * 相关知识:</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * Created by yuchuan on 16/9/29.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CircleGradientProgressbar</span> <span class="keyword">extends</span> <span class="title class_">View</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">DURATION</span> <span class="operator">=</span> <span class="number">3000</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mWidth;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mHeight;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mDiam;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mColorGreen;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mColorYellow;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> mColorRed;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">float</span> <span class="variable">mMaxProgress</span> <span class="operator">=</span> <span class="number">100f</span>;</span><br><span class="line">    <span class="comment">//默认进度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">mProgress</span> <span class="operator">=</span> <span class="number">80</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">mCurrentProgress</span> <span class="operator">=</span> <span class="number">100</span>;</span><br><span class="line">    <span class="comment">//进图条圆环宽度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">mProgressStrokeWidth</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    <span class="comment">//进度条背景画笔</span></span><br><span class="line">    <span class="keyword">private</span> Paint mCirclePaint;</span><br><span class="line">    <span class="comment">//进度条画笔</span></span><br><span class="line">    <span class="keyword">private</span> Paint mProgressPaint;</span><br><span class="line">    <span class="keyword">private</span> Shader mProgressShader;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//画圆所在的距形区域</span></span><br><span class="line">    <span class="keyword">private</span> RectF mProgressOval;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ValueAnimator mAnimator;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">CircleGradientProgressbar</span><span class="params">(Context context)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>(context, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">CircleGradientProgressbar</span><span class="params">(Context context, AttributeSet attrs)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(context, attrs);</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        mColorGreen = getResources().getColor(R.color.mx_circle_progressbar_green);</span><br><span class="line">        mColorYellow = getResources().getColor(R.color.mx_circle_progressbar_orange);</span><br><span class="line">        mColorRed = getResources().getColor(R.color.mx_circle_progressbar_red);</span><br><span class="line"></span><br><span class="line">        mProgressOval = <span class="keyword">new</span> <span class="title class_">RectF</span>();</span><br><span class="line"></span><br><span class="line">        mCirclePaint = <span class="keyword">new</span> <span class="title class_">Paint</span>();</span><br><span class="line">        mCirclePaint.setAntiAlias(<span class="literal">true</span>);</span><br><span class="line">        mCirclePaint.setColor(Color.GRAY);</span><br><span class="line"></span><br><span class="line">        mProgressPaint = <span class="keyword">new</span> <span class="title class_">Paint</span>();</span><br><span class="line">        <span class="comment">//设置抗锯齿</span></span><br><span class="line">        mProgressPaint.setAntiAlias(<span class="literal">true</span>);</span><br><span class="line">        <span class="comment">//设置笔为圆角</span></span><br><span class="line"><span class="comment">//        mProgressPaint.setStrokeCap(Paint.Cap.ROUND);</span></span><br><span class="line">        mProgressPaint.setStyle(Paint.Style.STROKE);</span><br><span class="line"></span><br><span class="line">        mAnimator = ValueAnimator.ofFloat(<span class="number">0</span>, <span class="number">1f</span>);</span><br><span class="line"></span><br><span class="line">        mAnimator.addUpdateListener(<span class="keyword">new</span> <span class="title class_">ValueAnimator</span>.AnimatorUpdateListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onAnimationUpdate</span><span class="params">(ValueAnimator animation)</span> &#123;</span><br><span class="line">                <span class="type">float</span> <span class="variable">percent</span> <span class="operator">=</span> (<span class="type">float</span>) animation.getAnimatedValue();</span><br><span class="line">                <span class="keyword">if</span> (percent &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    mCurrentProgress = (<span class="type">int</span>) (mProgress * percent);</span><br><span class="line">                    postInvalidate();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">onDraw</span><span class="params">(Canvas canvas)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.onDraw(canvas);</span><br><span class="line">        mWidth = getWidth();</span><br><span class="line">        mHeight = getHeight();</span><br><span class="line">        mDiam = Math.min(mWidth, mHeight);</span><br><span class="line">        mProgressStrokeWidth = mDiam / <span class="number">6</span>;</span><br><span class="line">        drawCircle(canvas);</span><br><span class="line">        drawSweepProgressBar(canvas, mWidth / <span class="number">2</span>, mHeight / <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">drawCircle</span><span class="params">(Canvas canvas)</span> &#123;</span><br><span class="line">        canvas.drawArc(mProgressOval, <span class="number">0</span>, <span class="number">360</span>, <span class="literal">false</span>, mCirclePaint);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 画渐变圆环:</span></span><br><span class="line"><span class="comment">     * colorSweep[]: 渐变颜色数组</span></span><br><span class="line"><span class="comment">     * position[]:   每个颜色值的相对位置,个数与颜色数组个数相等</span></span><br><span class="line"><span class="comment">     * 注:位置与渐变颜色值的设置教程见博客:</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> canvas 画布</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> cx     圆环中心X坐标</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> cy     圆环中心Y坐标</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">drawSweepProgressBar</span><span class="params">(Canvas canvas, <span class="type">int</span> cx, <span class="type">float</span> cy)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置圆环的大小</span></span><br><span class="line">        mProgressOval.top = cy - mDiam / <span class="number">4</span>;</span><br><span class="line">        mProgressOval.left = cx - mDiam / <span class="number">4</span>;</span><br><span class="line">        mProgressOval.bottom = cy + mDiam / <span class="number">4</span>;</span><br><span class="line">        mProgressOval.right = cx + mDiam / <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//画渐变颜色</span></span><br><span class="line">        <span class="type">int</span> colorSweep[] = &#123;mColorGreen, mColorYellow, mColorRed&#125;;</span><br><span class="line">        <span class="type">float</span> position[] = &#123;<span class="number">0f</span>,<span class="number">0.5f</span>,<span class="number">0.7f</span>&#125;;</span><br><span class="line">        </span><br><span class="line">        mProgressShader = <span class="keyword">new</span> <span class="title class_">SweepGradient</span>(cx, cy, colorSweep, position);</span><br><span class="line">        mProgressPaint.setShader(mProgressShader);</span><br><span class="line">        mProgressPaint.setStrokeWidth(mProgressStrokeWidth);</span><br><span class="line">        canvas.drawArc(mProgressOval, <span class="number">0</span>, ((<span class="type">float</span>) mCurrentProgress / mMaxProgress) * <span class="number">360</span>, <span class="literal">false</span>, mProgressPaint); <span class="comment">// 绘制进度圆弧，这里是蓝色</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setProgress</span><span class="params">(<span class="type">int</span> progress)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.mProgress = progress;</span><br><span class="line">        <span class="keyword">if</span> (mAnimator != <span class="literal">null</span> &amp;&amp; progress &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (mAnimator.isRunning()) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            mAnimator.setDuration((<span class="type">long</span>) (DURATION / mMaxProgress * progress));</span><br><span class="line">            mAnimator.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下：</p>
+<p><img src="/images/view/defineview/circlegradientprogressbar/sweepprogressbar1.png" alt="01"></p>
+<p>此时的颜色数组和位置参数为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> colorSweep[] = &#123;mColorGreen, mColorYellow, mColorRed&#125;;</span><br><span class="line"><span class="type">float</span> position[] = &#123;<span class="number">0f</span>,<span class="number">0.5f</span>,<span class="number">0.7f</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>下面我们更改一下颜色值的位置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> colorSweep[] = &#123;mColorGreen, mColorYellow, mColorRed&#125;;</span><br><span class="line"><span class="type">float</span> position[] = &#123;<span class="number">0.25f</span>,<span class="number">0.5f</span>,<span class="number">0.75f</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下：</p>
+<p><img src="/images/view/defineview/circlegradientprogressbar/sweepprogressbar2.png" alt="02"></p>
+<p>对比上面两个图片我们看到随着第一个位置的值的增大，第一个颜色值的渐变色开始位置也在向后移动。此时我们画圆环是从0度开始的，也就是3点钟的位置开始，顺时针开始画圆环。第一个颜色绿色也是从这个位置开始的。那么我们看看如果我改变开始画的位置，有什么变化吗？</p>
+<p>我用上面第二组的数据，然后只改变画圆环的初始位置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> colorSweep[] = &#123;mColorGreen, mColorYellow, mColorRed&#125;;</span><br><span class="line"><span class="type">float</span> position[] = &#123;<span class="number">0.25f</span>,<span class="number">0.5f</span>,<span class="number">0.75f</span>&#125;;</span><br><span class="line">canvas.drawArc(mProgressOval, <span class="number">0</span>, ((<span class="type">float</span>) mCurrentProgress / mMaxProgress) * <span class="number">360</span>, <span class="literal">false</span>, mProgressPaint);</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下：</p>
+<p><img src="/images/view/defineview/circlegradientprogressbar/sweepprogressbar2.png" alt="02"></p>
+<p>显示效果和上面一个是一样的，只是运行时你会发现，圆环是从（图一）0.75那个位置开始顺时针画的，并且开始画的颜色是红色的，由此判断，第一个颜色值是用（图一）0的那个位置顺时针开始计算的，那么如果我想从0.75那个位置开始画并且颜色从绿的开始怎么画，那你需要将开始画的角度改为：-90，然后更改颜色数组和颜色位置数组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> colorSweep[] = &#123;mColorGreen, mColorGreen, mColorYellow, mColorRed, mColorGreen, mColorGreen&#125;;</span><br><span class="line"><span class="type">float</span> position[] = &#123;<span class="number">0.1f</span>, <span class="number">0.25f</span>, <span class="number">0.5f</span>, <span class="number">0.751f</span>, <span class="number">0.75f</span>, <span class="number">1f</span>&#125;;</span><br><span class="line">canvas.drawArc(mProgressOval, -<span class="number">90</span>, ((<span class="type">float</span>) mCurrentProgress / mMaxProgress) * <span class="number">360</span>, <span class="literal">false</span>, mProgressPaint);</span><br></pre></td></tr></table></figure>
+
+<p>效果图如下：</p>
+<p><img src="/images/view/defineview/circlegradientprogressbar/sweepprogressbar3.png" alt="03"></p>
+<p>此时我们看到，绿色是从（图一）0.75位置开始的，并且圆环也是从这个位置开始画的，但是此时我的颜色值和位置增加了，主要是后面部分，倒数第二个颜色值是绿色，对应位置是0.75，也是就分段设置颜色值，0.75的位置为绿色，最后一个也是绿色，则说明从0.75之后到1的位置都是绿色，然后0后面的颜色根据位置数组第一个参数开始计算，如果角度不是0就要按照这个计算进行调整。</p>
+<p>另外，最后一个例子中相同颜色设置了多个，这个是调节渐变和纯色位置的，也就是相同颜色位置间的颜色是纯色的，不同颜色值中间的颜色是过度的，自己可以调节一下掌握以下技巧。</p>
+<p>Github地址：<a target="_blank" rel="noopener" href="https://github.com/yuchuangu85/OpenSource_MX">https://github.com/yuchuangu85/OpenSource_MX</a></p>
+<p>Android开发群：192508518</p>
+<p>微信公众账号：Code-MX<br><img src="/images/codemx/qr_code_mx.jpg" alt="qr_code_mx"></p>
+<p>注：本文原创，转载请注明出处，多谢。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2016/09/29/DefineView1/">http://www.codemx.cn/2016/09/29/DefineView1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/View/">View</a></div><div class="post_share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2016/10/16/Launcher05/" title="墨香带你学Launcher之（五）- Workspace滑动"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">墨香带你学Launcher之（五）- Workspace滑动</div></div></a></div><div class="next-post pull-right"><a href="/2016/08/21/Launcher04/" title="墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">墨香带你学Launcher之（四）- 应用安装、更新、卸载时的数据加载</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">墨香</div><div class="author-info__description">因为兴趣所以选择，因为选择所以坚持。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">墨香博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Google官方Android开发资料整理之-App architecture(架构) | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本章主要整理Goole官方提供的App architecture相关资源">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google官方Android开发资料整理之-App architecture(架构)">
+<meta property="og:url" content="http://www.codemx.cn/2024/07/01/Google-App-architecture/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="本章主要整理Goole官方提供的App architecture相关资源">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2024-07-01T15:51:46.000Z">
+<meta property="article:modified_time" content="2024-07-12T16:41:32.276Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="App architecture">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2024/07/01/Google-App-architecture/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Google官方Android开发资料整理之-App architecture(架构)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-13 00:41:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Google官方Android开发资料整理之-App architecture(架构)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-12T16:41:32.276Z" title="更新于 2024-07-13 00:41:32">2024-07-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android-Official-Source/">Android Official Source</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Google官方Android开发资料整理之-App architecture(架构)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>本章主要整理Goole官方提供的App architecture相关资源</p>
+</blockquote>
+<span id="more"></span>
+
+
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture/intro">App architecture  | Android Developers (google.cn)</a></li>
+</ul>
+<h2 id="Guide-to-app-architecture"><a href="#Guide-to-app-architecture" class="headerlink" title="Guide to app architecture"></a>Guide to app architecture</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture">Guide to app architecture  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="UI-layer"><a href="#UI-layer" class="headerlink" title="UI layer"></a>UI layer</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture/ui-layer">Guide to app architecture  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture/ui-layer/events">UI events  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture/ui-layer/stateholders">State holders and UI State  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture/ui-layer/state-production">UI State production  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Domain-layer"><a href="#Domain-layer" class="headerlink" title="Domain layer"></a>Domain layer</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture/domain-layer">Domain layer  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Data-layer"><a href="#Data-layer" class="headerlink" title="Data layer"></a>Data layer</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture/data-layer">Data layer  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture/data-layer/offline-first">Build an offline-first app  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Architecture-recommendations"><a href="#Architecture-recommendations" class="headerlink" title="Architecture recommendations"></a>Architecture recommendations</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/architecture/recommendations">Recommendations for Android architecture  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Learning-pathway"><a href="#Learning-pathway" class="headerlink" title="Learning pathway"></a>Learning pathway</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/courses/pathways/android-architecture">Modern Android App Architecture  | Android Developers (google.cn)</a></li>
+</ul>
+<h2 id="Modularization"><a href="#Modularization" class="headerlink" title="Modularization"></a>Modularization</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/modularization">Guide to Android app modularization  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/modularization/patterns">Common modularization patterns  | Android Developers (google.cn)</a></li>
+</ul>
+<h2 id="Architecture-components"><a href="#Architecture-components" class="headerlink" title="Architecture components"></a>Architecture components</h2><h3 id="UI-layer-libraries"><a href="#UI-layer-libraries" class="headerlink" title="UI layer libraries"></a>UI layer libraries</h3><h4 id="View-binding"><a href="#View-binding" class="headerlink" title="View binding"></a>View binding</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/view-binding">View binding  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/view-binding/migration">Migrate from Kotlin synthetics to Jetpack view binding  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="Data-binding-library"><a href="#Data-binding-library" class="headerlink" title="Data binding library"></a>Data binding library</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/data-binding">Data Binding Library  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/data-binding/start">App Architecture: UI Layer - Get Started - Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/data-binding/expressions">Layouts and binding expressions  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/data-binding/observability">Work with observable data objects  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/data-binding/generated-binding">Generated binding classes  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/data-binding/binding-adapters">Binding adapters  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/data-binding/architecture">Bind layout views to Architecture Components  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/data-binding/two-way">Two-way data binding  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="Lifecycyle-aware-components"><a href="#Lifecycyle-aware-components" class="headerlink" title="Lifecycyle-aware components"></a>Lifecycyle-aware components</h4><h5 id="Lifecycles"><a href="#Lifecycles" class="headerlink" title="Lifecycles"></a>Lifecycles</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/lifecycle">Handling Lifecycles with Lifecycle-Aware Components  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/compose">Integrate Lifecycle with Compose  | Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a>ViewModel</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/viewmodel">ViewModel overview  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/viewmodel/viewmodel-factories">Create ViewModels with dependencies  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/viewmodel/viewmodel-apis">ViewModel Scoping APIs  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/viewmodel/viewmodel-savedstate">Saved State module for ViewModel  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/viewmodel/viewmodel-cheatsheet">ViewModel APIs cheat sheet  | Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="LiveData"><a href="#LiveData" class="headerlink" title="LiveData"></a>LiveData</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/livedata">LiveData overview  | Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="Save-UI-states"><a href="#Save-UI-states" class="headerlink" title="Save UI states"></a>Save UI states</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/saving-states">Save UI states  | Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="Use-Kotlin-coroutines-with-lifecycle-aware-components"><a href="#Use-Kotlin-coroutines-with-lifecycle-aware-components" class="headerlink" title="Use Kotlin coroutines with lifecycle-aware components"></a>Use Kotlin coroutines with lifecycle-aware components</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/coroutines">Use Kotlin coroutines with lifecycle-aware components  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="Paging-Library"><a href="#Paging-Library" class="headerlink" title="Paging Library"></a>Paging Library</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging/v3-overview">Paging library overview  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging/v3-paged-data">Load and display paged data  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging/v3-network-db">Page from network and database  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging/v3-transform">Transform data streams  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging/load-state">Manage and present loading states  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging/test">Test your Paging implementation  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging/v3-migration">Migrate to Paging 3  | Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="Paging-2"><a href="#Paging-2" class="headerlink" title="Paging 2"></a>Paging 2</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging">Paging 2 library overview  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging/ui">Display paged lists  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/paging/data">Gather paged data  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Data-layer-libraries"><a href="#Data-layer-libraries" class="headerlink" title="Data layer libraries"></a>Data layer libraries</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/datastore">App Architecture: Data Layer - DataStore - Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="WorkManager"><a href="#WorkManager" class="headerlink" title="WorkManager"></a>WorkManager</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/workmanager">App Architecture: Data Layer - Schedule Task with WorkManager - Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/workmanager/basics">App Architecture: Data Layer - Schedule Task with WorkManager - Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="Getting-started"><a href="#Getting-started" class="headerlink" title="Getting started"></a>Getting started</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/getting-started">Getting started with WorkManager  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/getting-started/define-work">Define work requests  | Background work  | Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="How-to"><a href="#How-to" class="headerlink" title="How to"></a>How to</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/how-to/states">Work states  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/how-to/manage-work">Managing work  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/how-to/chain-work">Chaining work  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/how-to/long-running">Support for long-running workers  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/how-to/observe">Observe intermediate worker progress  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/how-to/update-work">Update work that is already enqueued  | Background work  | Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="Threading"><a href="#Threading" class="headerlink" title="Threading"></a>Threading</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/threading">Threading in WorkManager  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/threading/worker">Threading in Worker  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/threading/coroutineworker">Threading in CoroutineWorker  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/threading/rxworker">Threading in RxWorker  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/threading/listenableworker">Threading in ListenableWorker  | Background work  | Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/configuration/custom-configuration">Custom WorkManager Configuration and Initialization  | Background work  | Android Developers (google.cn)</a></li>
+</ul>
+<h5 id="Migrate-from-legacy-solutions"><a href="#Migrate-from-legacy-solutions" class="headerlink" title="Migrate from legacy solutions"></a>Migrate from legacy solutions</h5><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/migrate-from-legacy/firebase">Migrating from Firebase JobDispatcher to WorkManager  | Background work  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/background-work/background-tasks/persistent/migrate-from-legacy/gcm">Migrating from GCMNetworkManager to WorkManager  | Background work  | Android Developers (google.cn)</a></li>
+</ul>
+<h2 id="App-entry-points"><a href="#App-entry-points" class="headerlink" title="App entry points"></a>App entry points</h2><h3 id="Activities"><a href="#Activities" class="headerlink" title="Activities"></a>Activities</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/intro-activities">Introduction to activities  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/activity-lifecycle">The activity lifecycle  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/state-changes">Activity state changes  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/testing">Test your app’s activities  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/tasks-and-back-stack">Tasks and the back stack  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/process-lifecycle">Processes and app lifecycle  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/parcelables-and-bundles">Parcelables and bundles  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/loaders">Loaders  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/recents">Recents screen  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/background-starts">Restrictions on starting activities from the background  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="App-shortcuts"><a href="#App-shortcuts" class="headerlink" title="App shortcuts"></a>App shortcuts</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/ui/views/launch/shortcuts">App shortcuts overview  | Views  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/ui/views/launch/shortcuts/creating-shortcuts">Create shortcuts  | Views  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/ui/views/launch/shortcuts/adding-capabilities">Add capabilities to shortcuts  | Views  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/ui/views/launch/shortcuts/managing-shortcuts">Manage shortcuts  | Views  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/develop/ui/views/launch/shortcuts/best-practices">Best practices for shortcuts  | Views  | Android Developers (google.cn)</a></li>
+</ul>
+<h2 id="App-navigation"><a href="#App-navigation" class="headerlink" title="App navigation"></a>App navigation</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/principles">Principles of navigation  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Navigation-component"><a href="#Navigation-component" class="headerlink" title="Navigation component"></a>Navigation component</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation">Navigation  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/navcontroller">Create a navigation controller  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="Design-your-navigation-graph"><a href="#Design-your-navigation-graph" class="headerlink" title="Design your navigation graph"></a>Design your navigation graph</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design">Design your navigation graph  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/dialog-destinations">Dialog destinations  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/activity-destinations">Activity destinations  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/nested-graphs">Nested graphs  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/deep-link">Create a deep link for a destination  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/add-new">Add support for new destination types  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/type-safety">Type safety in Kotlin DSL and Navigation Compose  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/encapsulate">Encapsulate your navigation code  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/actions">Use Navigation actions and Fragments  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/kotlin-dsl">Build a graph programmatically using the Kotlin DSL  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/design/editor">Navigation Editor  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="Use-your-navigation-graph"><a href="#Use-your-navigation-graph" class="headerlink" title="Use your navigation graph"></a>Use your navigation graph</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/use-graph/navigate">Navigate to a destination  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/use-graph/navoptions">Navigate with options  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/use-graph/safe-args">Safe Args  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/use-graph/pass-data">Pass data between destinations  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/use-graph/animate-transitions">Animate transitions between destinations  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/use-graph/conditional">Conditional navigation  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/use-graph/programmatic">Interact programmatically with the Navigation component  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="The-back-stack"><a href="#The-back-stack" class="headerlink" title="The back stack"></a>The back stack</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/backstack/dialog">Dialog destinations  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/backstack/circular">Circular navigation  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/backstack/multi-back-stacks">Support multiple back stacks  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="Integrations"><a href="#Integrations" class="headerlink" title="Integrations"></a>Integrations</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/integrations/feature-modules">Navigate with feature modules  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/integrations/multi-module">Navigation best practices for multi-module projects  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/integrations/ui">Connect UI components to NavController using NavigationUI  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="Migrate-to-the-Navigation-component"><a href="#Migrate-to-the-Navigation-component" class="headerlink" title="Migrate to the Navigation component"></a>Migrate to the Navigation component</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/migrate">Migrate to the Navigation component  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="Test-navigation"><a href="#Test-navigation" class="headerlink" title="Test navigation"></a>Test navigation</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/testing">Test navigation  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Custom-back-navigation"><a href="#Custom-back-navigation" class="headerlink" title="Custom back navigation"></a>Custom back navigation</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/custom-back">Provide custom back navigation  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/custom-back/predictive-back-gesture">Add support for the predictive back gesture  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/custom-back/support-animations">Add support for predictive back animations  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Responsive-design"><a href="#Responsive-design" class="headerlink" title="Responsive design"></a>Responsive design</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/responsive/config-changes">Handling configuration changes  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/responsive/form-factors">Design for different form factors  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Swipe-between-views"><a href="#Swipe-between-views" class="headerlink" title="Swipe between views"></a>Swipe between views</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/advanced/swipe-view-2">Create swipe views with tabs using ViewPager2  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/navigation/advanced/swipe-view">Create swipe views with tabs using ViewPager  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Fragments"><a href="#Fragments" class="headerlink" title="Fragments"></a>Fragments</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments">Fragments  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/create">Create a fragment  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/fragmentmanager">Fragment manager  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/transactions">Fragment transactions  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/animate">Navigate between fragments using animations  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/lifecycle">Navigate between fragments using animations  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/saving-state">Saving state with fragments  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/communicate">Communicate with fragments  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/appbar">Working with the AppBar  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/dialogs">Display dialogs with DialogFragment  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/debugging">Debug your fragments  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments/test">Test your fragments  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="App-links"><a href="#App-links" class="headerlink" title="App links"></a>App links</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/app-links">Handling Android App Links  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/app-links/deep-linking">Create Deep Links to App Content  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/app-links/verify-android-applinks">Verify Android App Links  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/app-links/instant-app-links">Create App Links for Instant Apps  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Interact-with-other-apps"><a href="#Interact-with-other-apps" class="headerlink" title="Interact with other apps"></a>Interact with other apps</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/basics/intents">Interact with other apps  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/intents-filters">Intents and intent filters  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/intents-common">Common intents  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/basics/intents/sending">Sending the user to another app  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/basics/intents/result">Get a result from an activity  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/basics/intents/filters">Let other apps start your activity  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/basics/intents/limit-play-loading">Limit loading in on-device Android containers  | Android Developers (google.cn)</a></li>
+</ul>
+<h4 id="Package-visibility"><a href="#Package-visibility" class="headerlink" title="Package visibility"></a>Package visibility</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/package-visibility">Limit loading in on-device Android containers  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/package-visibility/automatic">Know which packages are visible automatically  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/package-visibility/declaring">Declare package visibility needs  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/package-visibility/use-cases">Fulfill common use cases while having limited package visibility  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/package-visibility/testing">Test package visibility behavior  | Android Developers (google.cn)</a></li>
+</ul>
+<h2 id="Dependency-injection"><a href="#Dependency-injection" class="headerlink" title="Dependency injection"></a>Dependency injection</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection">Dependency injection in Android  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection/manual">Manual dependency injection  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection/hilt-android">Dependency injection with Hilt  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection/hilt-multi-module">Hilt in multi-module apps  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection/hilt-jetpack">Use Hilt with other Jetpack libraries  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection/hilt-testing">Hilt testing guide  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection/hilt-cheatsheet">Hilt and Dagger annotations cheat sheet  | Android Developers (google.cn)</a></li>
+</ul>
+<h3 id="Dagger"><a href="#Dagger" class="headerlink" title="Dagger"></a>Dagger</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection/dagger-basics">Dagger basics  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection/dagger-android">Using Dagger in Android apps  | Android Developers (google.cn)</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/dependency-injection/dagger-multi-module">Using Dagger in multi-module apps  | Android Developers (google.cn)</a></li>
+</ul>
+<h2 id="App-Startup"><a href="#App-Startup" class="headerlink" title="App Startup"></a>App Startup</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/app-startup">App Startup  | Android Developers (google.cn)</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2024/07/01/Google-App-architecture/">http://www.codemx.cn/2024/07/01/Google-App-architecture/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/App-architecture/">App architecture</a></div><div class="post_share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Kotlin-Coroutines</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">墨香</div><div class="author-info__description">因为兴趣所以选择，因为选择所以坚持。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Guide-to-app-architecture"><span class="toc-number">1.</span> <span class="toc-text">Guide to app architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UI-layer"><span class="toc-number">1.1.</span> <span class="toc-text">UI layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Domain-layer"><span class="toc-number">1.2.</span> <span class="toc-text">Domain layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-layer"><span class="toc-number">1.3.</span> <span class="toc-text">Data layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Architecture-recommendations"><span class="toc-number">1.4.</span> <span class="toc-text">Architecture recommendations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Learning-pathway"><span class="toc-number">1.5.</span> <span class="toc-text">Learning pathway</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Modularization"><span class="toc-number">2.</span> <span class="toc-text">Modularization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Architecture-components"><span class="toc-number">3.</span> <span class="toc-text">Architecture components</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UI-layer-libraries"><span class="toc-number">3.1.</span> <span class="toc-text">UI layer libraries</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#View-binding"><span class="toc-number">3.1.1.</span> <span class="toc-text">View binding</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Data-binding-library"><span class="toc-number">3.1.2.</span> <span class="toc-text">Data binding library</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Lifecycyle-aware-components"><span class="toc-number">3.1.3.</span> <span class="toc-text">Lifecycyle-aware components</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Lifecycles"><span class="toc-number">3.1.3.1.</span> <span class="toc-text">Lifecycles</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ViewModel"><span class="toc-number">3.1.3.2.</span> <span class="toc-text">ViewModel</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#LiveData"><span class="toc-number">3.1.3.3.</span> <span class="toc-text">LiveData</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Save-UI-states"><span class="toc-number">3.1.3.4.</span> <span class="toc-text">Save UI states</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Use-Kotlin-coroutines-with-lifecycle-aware-components"><span class="toc-number">3.1.3.5.</span> <span class="toc-text">Use Kotlin coroutines with lifecycle-aware components</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Paging-Library"><span class="toc-number">3.1.4.</span> <span class="toc-text">Paging Library</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Paging-2"><span class="toc-number">3.1.4.1.</span> <span class="toc-text">Paging 2</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-layer-libraries"><span class="toc-number">3.2.</span> <span class="toc-text">Data layer libraries</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#WorkManager"><span class="toc-number">3.2.1.</span> <span class="toc-text">WorkManager</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Getting-started"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">Getting started</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#How-to"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">How to</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Threading"><span class="toc-number">3.2.1.3.</span> <span class="toc-text">Threading</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Configuration"><span class="toc-number">3.2.1.4.</span> <span class="toc-text">Configuration</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Migrate-from-legacy-solutions"><span class="toc-number">3.2.1.5.</span> <span class="toc-text">Migrate from legacy solutions</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#App-entry-points"><span class="toc-number">4.</span> <span class="toc-text">App entry points</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Activities"><span class="toc-number">4.1.</span> <span class="toc-text">Activities</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#App-shortcuts"><span class="toc-number">4.2.</span> <span class="toc-text">App shortcuts</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#App-navigation"><span class="toc-number">5.</span> <span class="toc-text">App navigation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Navigation-component"><span class="toc-number">5.1.</span> <span class="toc-text">Navigation component</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Design-your-navigation-graph"><span class="toc-number">5.1.1.</span> <span class="toc-text">Design your navigation graph</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Use-your-navigation-graph"><span class="toc-number">5.1.2.</span> <span class="toc-text">Use your navigation graph</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#The-back-stack"><span class="toc-number">5.1.3.</span> <span class="toc-text">The back stack</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Integrations"><span class="toc-number">5.1.4.</span> <span class="toc-text">Integrations</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Migrate-to-the-Navigation-component"><span class="toc-number">5.1.5.</span> <span class="toc-text">Migrate to the Navigation component</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Test-navigation"><span class="toc-number">5.1.6.</span> <span class="toc-text">Test navigation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Custom-back-navigation"><span class="toc-number">5.2.</span> <span class="toc-text">Custom back navigation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Responsive-design"><span class="toc-number">5.3.</span> <span class="toc-text">Responsive design</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Swipe-between-views"><span class="toc-number">5.4.</span> <span class="toc-text">Swipe between views</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fragments"><span class="toc-number">5.5.</span> <span class="toc-text">Fragments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#App-links"><span class="toc-number">5.6.</span> <span class="toc-text">App links</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Interact-with-other-apps"><span class="toc-number">5.7.</span> <span class="toc-text">Interact with other apps</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Package-visibility"><span class="toc-number">5.7.1.</span> <span class="toc-text">Package visibility</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dependency-injection"><span class="toc-number">6.</span> <span class="toc-text">Dependency injection</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dagger"><span class="toc-number">6.1.</span> <span class="toc-text">Dagger</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#App-Startup"><span class="toc-number">7.</span> <span class="toc-text">App Startup</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">墨香博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

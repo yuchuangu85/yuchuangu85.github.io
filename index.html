@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="因为兴趣所以选择，因为选择所以坚持。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="墨香博客">
+<meta property="og:url" content="http://www.codemx.cn/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="因为兴趣所以选择，因为选择所以坚持。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:author" content="墨香">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '墨香博客',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-07-13 00:49:07'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/bg1.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">墨香博客</h1></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Android-Official-Source/">Android Official Source</a></span></div><div class="content">
+本章主要整理Goole官方提供的App architecture相关资源
+
+
+
+
+
+
+App architecture  | Android Developers (google.cn)
+
+Guide to app architecture
+Guide to app architecture  | Android Developers (google.cn)
+
+UI layer
+Guide to app architecture  | Android Developers (google.cn)
+UI events  | Android Developers (google.cn)
+State holders and UI State  | Android Developers (google.cn)
+UI State production  | Android Developers (google.cn)
+
+Domain layer
+Domain layer  | Android Developers (google.cn)
+
+Data layer
+Data layer  | An ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Kotlin/">Kotlin</a></span></div><div class="content">
+本章整理Kotlin Coroutines(协程)的源码，API文档，以及Jetbrain官方文档，Google官方的Coroutine for Android文档资源。
+
+
+
+源码
+kotlinx.coroutines: Library support for Kotlin coroutines–源码
+All modules (kotlinlang.org)–协程API
+
+Jetbrain 官方
+Coroutines guide | Kotlin Documentation (kotlinlang.org)
+Coroutines basics | Kotlin Documentation (kotlinlang.org)
+Coroutines and channels − tutorial | Kotlin Documentation (kotlinlang.org)
+Cancellation and timeouts | Kotlin Documentation (kotlinlang.org)
+Composing suspending functions | Kotlin Do ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Android-Official-Source/">Android Official Source</a></span></div><div class="content">Jetpack Compose is the modern toolkit for building native Android UI. Here’s where you’ll find the latest information about using Compose.
+
+Overview: See all the resources available to Compose developers.
+Tutorial: Get started with Compose, by using it to build a simple UI.
+
+
+
+Foundation
+Thinking in Compose: Learn how Compose’s declarative approach is different from the view-based approach you may have used in the past, and how to build a mental model of working with Compose.
+Managing state: Lea ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Android-Official-Source/">Android Official Source</a></span></div><div class="content">
+本篇为谷歌官方Android资料总汇篇。
+
+
+
+
+Android Mobile App Developer Tools – Android Developers：Android开发主页
+Developer guides  | Android Developers：Android开发指引
+Documentation  | Android Developers：Android开发相关文档主页
+Meet Android Studio  | Android Developers：Android studio相关的文档集合
+Android Jetpack Dev Resources - Android Developers：Jetpack相关文档
+Kotlin and Android  | Android Developers：Google官方Kotlin开发文档主页
+Android Platform  | Android Developers：Android各平台开发文档主页
+Training Courses  | Android Developers：Training文档主页
+Distri ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Android-Official-Source/">Android Official Source</a></span></div><div class="content">
+本篇整理谷歌官方关于Android测试的资料
+
+
+
+
+Write automated tests with UI Automator  | Android Developers
+Fundamentals
+Fundamentals of testing Android apps  | Android Developers
+What to test in Android  | Android Developers
+Use test doubles in Android  | Android Developers
+
+
+Local tests
+Build local unit tests  | Android Developers
+
+
+Instrumented tests
+Build instrumented tests  | Android Developers
+Automate UI tests  | Android Developers
+
+
+AndroidX Test
+Set up project for AndroidX Test  | Android Developers
+JUni ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/06/22/Google-Safe/" title="Google官方Android开发资料整理之-安全">Google官方Android开发资料整理之-安全</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-06-21T16:14:12.000Z" title="发表于 2023-06-22 00:14:12">2023-06-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Android-Official-Source/">Android Official Source</a></span></div><div class="content">
+本篇主要整理谷歌官方关于Android的安全资料
+
+
+
+
+App security best practices  | Android Developers
+
+Security tips  | Android Developers
+
+Mitigate security risks in your app
+
+Mitigate security risks in your app  | Android Developers
+Content resolvers  | Android Developers
+Intent redirection  | Android Developers
+Hardcoded Cryptographic Secrets  | Android Developers
+Log info disclosure  | Android Developers
+Path traversal  | Android Developers
+Pending intents  | Android Developers
+Sticky Broadcasts  | Android Develo ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/06/19/Google-Performance/" title="Google官方Android开发资料整理之-性能优化详解">Google官方Android开发资料整理之-性能优化详解</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-06-19T14:49:05.000Z" title="发表于 2023-06-19 22:49:05">2023-06-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Android-Official-Source/">Android Official Source</a></span></div><div class="content">
+本篇整理谷歌官方关于Android开发性能的资料。
+
+
+
+
+Guide to app performance  | Android Developers
+Inspecting performance
+Inspecting performance  | Android Developers
+The Android Profiler  | Android Developers
+Profiling and tracing
+System tracing
+Overview of system tracing  | Android Developers
+Capture trace
+The Android Profiler  | Android Developers
+Capture a system trace on a device  | Android Developers
+Capture a system trace on the command line  | Android Developers
+
+
+Navigate a Systrace report  | Android Develo ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/06/19/Google-Performance-Tool/" title="Google官方Android开发资料整理之-性能优化工具使用">Google官方Android开发资料整理之-性能优化工具使用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-06-19T14:25:31.000Z" title="发表于 2023-06-19 22:25:31">2023-06-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Android-Official-Source/">Android Official Source</a></span></div><div class="content">
+对于Android开发，谷歌的开发者网站非常友好，里面有非常全面的开发资料，其实很多博客的资料都是来源于官方，但是相对没有官方全面，因此为了系统的学习官方的资料，本篇开始整理官方的一些Android开发资料。
+
+
+
+Google官方资料
+Profile your app performance  | Android Studio  | Android Developers
+Inspect CPU Activity
+Inspect CPU activity with CPU Profiler  | Android Studio  | Android Developers
+Record traces  | Android Studio  | Android Developers
+Export traces  | Android Studio  | Android Developers
+Import traces  | Android Studio  | Android Developers
+Inspect traces  | Android Studio  | Android Devel ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/11/20/AndroidOS013-View-inflate/" title="Android系统源码分析--View绘制流程之-inflate">Android系统源码分析--View绘制流程之-inflate</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-11-20T13:47:03.000Z" title="发表于 2018-11-20 21:47:03">2018-11-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
+上一章我们分析了Activity启动的时候调用setContentView加载布局的过程，但是分析过程中我们留了两个悬念，一个是将资源文件中的layout中xml布局文件通过inflate加载到Activity中的过程，另一个是开始测量、布局和绘制的过程，第二个我们放到measure过程中分析，这一篇先分析第一个inflate过程。
+
+
+
+
+Android系统源码分析–View绘制流程之-setContentView
+Android系统源码分析–View绘制流程之-inflate
+Android系统源码分析–View绘制流程之-onMeasure
+Android系统源码分析–View绘制流程之-onLayout
+Android系统源码分析–View绘制流程之-onDraw
+Android系统源码分析–View绘制流程之-硬件加速
+Android系统源码分析–View绘制流程之-addView
+Android系统源码分析–View绘制流程之-弹性效果
+
+LayoutInflater.inflate方法基本上每个开发者都用过，也有很多开发者了解过它的两个方法的区别，也有一些开发者去研究过 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/11/12/AndroidOS012-View-setContentView/" title="Android系统源码分析--View绘制流程之-setContentView">Android系统源码分析--View绘制流程之-setContentView</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-11-12T15:21:02.000Z" title="发表于 2018-11-12 23:21:02">2018-11-12</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
+上一篇分析了四大组件之ContentProvider，这也是四大组件最后一个。因此，从这篇开始我们分析新的篇章–View绘制流程，View绘制流程在Android开发中占有非常重要的位置，只要有视图的显示，都离不开View的绘制，所以了解View绘制原理对于应用开发以及系统的学习至关重要。由于View绘制流程比较复杂，并且涉及的知识非常多，所以后面我会按照下面几方面来介绍View的绘制流程。每篇不是很长，但是尽量的详细，让每个人都看懂。
+
+
+
+
+Android系统源码分析–View绘制流程之-setContentView
+Android系统源码分析–View绘制流程之-inflate
+Android系统源码分析–View绘制流程之-onMeasure
+Android系统源码分析–View绘制流程之-onLayout
+Android系统源码分析–View绘制流程之-onDraw
+Android系统源码分析–View绘制流程之-硬件加速
+Android系统源码分析–View绘制流程之-addView
+Android系统源码分析–View绘制流程之-弹性效果
+
+所以这篇我们先分析View绘 ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#content-inner">5</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">墨香</div><div class="author-info__description">因为兴趣所以选择，因为选择所以坚持。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Android-Official-Source/"><span class="card-category-list-name">Android Official Source</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AndroidOS/"><span class="card-category-list-name">AndroidOS</span><span class="card-category-list-count">13</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Android%E4%BB%A3%E7%A0%81%E6%8E%A8%E8%8D%90/"><span class="card-category-list-name">Android代码推荐</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Kotlin/"><span class="card-category-list-name">Kotlin</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Launcher/"><span class="card-category-list-name">Launcher</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E9%AB%98%E6%95%88Mac/"><span class="card-category-list-name">高效Mac</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Jetpack-Compose/" style="font-size: 1.1em; color: #999">Jetpack Compose</a> <a href="/tags/View/" style="font-size: 1.1em; color: #999">View</a> <a href="/tags/Test/" style="font-size: 1.1em; color: #999">Test</a> <a href="/tags/Safe/" style="font-size: 1.1em; color: #999">Safe</a> <a href="/tags/Gradle/" style="font-size: 1.1em; color: #999">Gradle</a> <a href="/tags/AndroidOS/" style="font-size: 1.5em; color: #99a9bf">AndroidOS</a> <a href="/tags/Performance/" style="font-size: 1.18em; color: #999ca1">Performance</a> <a href="/tags/Understand/" style="font-size: 1.1em; color: #999">Understand</a> <a href="/tags/View%E7%BB%98%E5%88%B6/" style="font-size: 1.18em; color: #999ca1">View绘制</a> <a href="/tags/Android-Guide/" style="font-size: 1.1em; color: #999">Android Guide</a> <a href="/tags/%E9%AB%98%E6%95%88Mac/" style="font-size: 1.26em; color: #999fa8">高效Mac</a> <a href="/tags/Coroutines/" style="font-size: 1.1em; color: #999">Coroutines</a> <a href="/tags/App-architecture/" style="font-size: 1.1em; color: #999">App architecture</a> <a href="/tags/Android/" style="font-size: 1.26em; color: #999fa8">Android</a> <a href="/tags/Resource/" style="font-size: 1.34em; color: #99a3b0">Resource</a> <a href="/tags/Launcher/" style="font-size: 1.42em; color: #99a6b7">Launcher</a> <a href="/tags/Animation/" style="font-size: 1.1em; color: #999">Animation</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/07/"><span class="card-archive-list-date">七月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">六月 2023</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/11/"><span class="card-archive-list-date">十一月 2018</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/07/"><span class="card-archive-list-date">七月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/04/"><span class="card-archive-list-date">四月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/03/"><span class="card-archive-list-date">三月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/01/"><span class="card-archive-list-date">一月 2018</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">43</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-07-12T16:49:06.433Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">墨香博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

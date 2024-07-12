@@ -1,0 +1,506 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Android 知识梳理 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="说明：本篇博客只是一个知识整理，因为网上对于Android的知识介绍足够多，因此我不再写相关文章（主要是因为我写的不如人家好），所以所有文章均来自网络，不贴原文章，只提供连接，因此本文旨在减少你对相关知识的搜索过程，方便查找相关知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 知识梳理">
+<meta property="og:url" content="http://www.codemx.cn/2016/05/04/2016-05-04-Android-Tree/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="说明：本篇博客只是一个知识整理，因为网上对于Android的知识介绍足够多，因此我不再写相关文章（主要是因为我写的不如人家好），所以所有文章均来自网络，不贴原文章，只提供连接，因此本文旨在减少你对相关知识的搜索过程，方便查找相关知识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2016-05-04T01:43:20.000Z">
+<meta property="article:modified_time" content="2024-07-12T16:41:32.273Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2016/05/04/2016-05-04-Android-Tree/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android 知识梳理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-13 00:41:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Android 知识梳理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2016-05-04T01:43:20.000Z" title="发表于 2016-05-04 09:43:20">2016-05-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-12T16:41:32.273Z" title="更新于 2024-07-13 00:41:32">2024-07-13</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android 知识梳理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>说明：本篇博客只是一个知识整理，因为网上对于Android的知识介绍足够多，因此我不再写相关文章（主要是因为我写的不如人家好），所以所有文章均来自网络，不贴原文章，只提供连接，因此本文旨在减少你对相关知识的搜索过程，方便查找相关知识。</p>
+<span id="more"></span>
+
+<h2 id="1-Activity"><a href="#1-Activity" class="headerlink" title="1.Activity"></a>1.Activity</h2><ul>
+<li><p>Activity的生命周期，正常结束和非正常销毁的生命周期和调用函数及其使用方法；</p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-training-managing-the-activity-lifecycle-lesson-1/">Android Training - 详解Activity生命周期(Lesson 1 - 启动与销毁Activity)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-training-managing-the-activity-lifecycle-lesson-2/">Android Training - 详解Activity生命周期(Lesson 2 - 暂停与恢复activity)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-training-managing-the-activity-lifecycle-lesson-3/">Android Training - 详解Activity生命周期(Lesson 3 - 停止与重启activity)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-training-managing-the-activity-lifecycle-lesson-4/">Android Training - 详解Activity生命周期(Lesson 4 - 重新创建销毁的activity)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.cnblogs.com/hanyonglu/archive/2012/03/28/2420515.html">Android开发之InstanceState详解</a></p>
+</li>
+<li><p>Activity启动模式</p>
+<p>  <a target="_blank" rel="noopener" href="http://jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0520/2897.html">Activity启动模式图文详解：standard, singleTop, singleTask 以及 singleInstance</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/zhangjg_blog/article/details/10923643">Android中Activity四种启动模式和taskAffinity属性详解</a></p>
+</li>
+<li><p>Activity的启动过程</p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6689748">Android应用程序启动过程源代码分析</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6703247">Android应用程序内部启动Activity过程（startActivity）的源代码分析</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6720261">Android应用程序在新的进程中启动新的Activity的方法和过程分析</a></p>
+</li>
+<li><p>Activity的回收过程及原理；</p>
+</li>
+</ul>
+<h2 id="2-View"><a href="#2-View" class="headerlink" title="2.View"></a>2.View</h2><ul>
+<li><p>View的绘制流程；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/wangjinyu501/article/details/9008271">Android View绘制流程</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://a.codekk.com/detail/Android/lightSky/%E5%85%AC%E5%85%B1%E6%8A%80%E6%9C%AF%E7%82%B9%E4%B9%8B%20View%20%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B">公共技术点之 View 绘制流程</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/qinjuning/article/details/8051811">Android中measure过程、WRAP_CONTENT详解以及xml布局文件解析流程浅析(上)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/qinjuning/article/details/8074262">Android中measure过程、WRAP_CONTENT详解以及xml布局文件解析流程浅析(下)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/qinjuning/article/details/7474827">Android中View(视图)绘制不同状态背景图片原理深入分析以及StateListDrawable使用详解</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/qinjuning/article/details/7226787">Android中将布局文件&#x2F;View添加至窗口过程分析 —- 从setContentView()谈起</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.cnblogs.com/nanxiaojue/p/3536381.html?utm_source=tuicool&utm_medium=referral">MeasureSpec介绍及使用</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.cnblogs.com/sueZheng/p/4046869.html">MeasureSpec 解析</a></p>
+</li>
+<li><p>View的事件分发原理；</p>
+<p>  <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e99b5e8bd67b#">图解 Android 事件分发机制</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/wangjinyu501/article/details/22584465">Android 中Touch（触屏）事件传递机制</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.cnblogs.com/sunzn/archive/2013/05/10/3064129.html">Android 编程下 Touch 事件的分发和消费机制</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/lvxiangan/article/details/9309927">Android-onInterceptTouchEvent()和onTouchEvent()总结</a></p>
+<p>  注：上面这篇文章没找到原创，连接是转载的，如果谁找到原创可以提供给我。</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/49203945">Android中View的量算、布局及绘图机制</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/49403315">源码解析Android中View的measure量算过程</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/50366021">源码解析Android中View的layout布局过程</a></p>
+</li>
+<li><p>自定义View；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/aigestudio/article/details/41212583">自定义控件其实很简单(系列教程)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.gcssloop.com/customview/CustomViewIndex">安卓自定义View教程目录</a></p>
+</li>
+<li><p>自定义ViewGroup；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/lmj623565791/article/details/38339817">Android 手把手教您自定义ViewGroup</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/lmj623565791/article/details/38352503">Android 自定义ViewGroup 实战篇 -&gt; 实现FlowLayout</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/51314039">Android中自定义View、ViewGroup理论基础详解</a></p>
+</li>
+<li><p>ListView：</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/guolin_blog/article/details/44996879">Android ListView工作原理完全解析，带你从源码的角度彻底理解</a></p>
+</li>
+</ul>
+<h2 id="3-Broadcast"><a href="#3-Broadcast" class="headerlink" title="3.Broadcast"></a>3.Broadcast</h2><ul>
+<li><p>广播的分类及区别,注册方法；</p>
+<p>  <a target="_blank" rel="noopener" href="http://www.cnblogs.com/net168/p/3980068.html">解析BroadcastReceiver之你需要了解的一些东东</a></p>
+</li>
+<li><p>广播实现跨进程通信的原理；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6737352">Android应用程序注册广播接收器（registerReceiver）的过程分析</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6744448">Android应用程序发送广播（sendBroadcast）的过程分析</a></p>
+</li>
+</ul>
+<h2 id="4-Service"><a href="#4-Service" class="headerlink" title="4.Service"></a>4.Service</h2><ul>
+<li><p>Service的生命周期；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/48169339">Android中bindService的使用及Service生命周期</a></p>
+</li>
+<li><p>绑定和非绑定Service的使用方法；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/48169339">Android中bindService的使用及Service生命周期</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/48015475">Android通过startService实现批量下载示例</a></p>
+</li>
+<li><p>Service的原理；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6745181">Android应用程序绑定服务（bindService）的过程源代码分析</a></p>
+</li>
+<li><p>IntentService:</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/48046861">Android中IntentService的使用及其源码解析</a></p>
+</li>
+<li><p>Accessibility Services:</p>
+<p>  <a target="_blank" rel="noopener" href="http://www.android-doc.com/guide/topics/ui/accessibility/services.html">Building Accessibility Services(建立可访问性服务)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/androidsecurity/article/details/41890369?utm_source=tuicool">Android Accessibility(辅助功能) –实现Android应用自动安装、卸载</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/android-accessibility-installing?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=global">使用Android Accessibility实现免Root自动批量安装功能</a></p>
+</li>
+</ul>
+<h2 id="5-ContentProvider"><a href="#5-ContentProvider" class="headerlink" title="5.ContentProvider"></a>5.ContentProvider</h2><ul>
+<li><p>ContentProvider的原理及使用方法；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_9f233c070101euqx.html">Android ContentProvider和Uri详解 (绝对全面)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6950440">Android应用程序组件Content Provider应用实例</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6963418">Android应用程序组件Content Provider的启动过程源代码分析</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6967204">Android应用程序组件Content Provider在应用程序之间共享数据的原理分析</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/luoshengyang/article/details/6985171">Android应用程序组件Content Provider的共享数据更新通知机制分析</a></p>
+</li>
+<li><p>启动过程，与Applocation和Activity比较启动顺序是怎样的；</p>
+<p>  Contentprovider的onCreate方法在Application的onCreate方法前面，资料如下：</p>
+<p>  <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/a1f40b39b3de">android 应用的启动过程分析</a></p>
+</li>
+</ul>
+<h2 id="6-Handler"><a href="#6-Handler" class="headerlink" title="6.Handler"></a>6.Handler</h2><ul>
+<li><p>Handle的原理及机制；</p>
+<p>  <a target="_blank" rel="noopener" href="http://www.cnblogs.com/codingmyworld/archive/2011/09/12/2174255.html">android的消息处理机制（图+源码分析）——Looper,Handler,Message</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/lmj623565791/article/details/38377229">Android 异步消息处理机制 让你深入理解 Looper、Handler、Message三者关系</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/47180325">深入源码解析Android中的Handler,Message,MessageQueue,Looper</a></p>
+</li>
+<li><p>Handler的发送处理消息的方法总会及各自的优缺点；</p>
+</li>
+<li><p>Handler的正确使用方法；</p>
+<p> <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11407943/this-handler-class-should-be-static-or-leaks-might-occur-incominghandler?noredirect=1&lq=1">This Handler class should be static or leaks might occur: IncomingHandler</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/11278875/handlers-and-memory-leaks-in-android">Handlers and memory leaks in Android</a></p>
+</li>
+</ul>
+<h2 id="7-Intent"><a href="#7-Intent" class="headerlink" title="7.Intent"></a>7.Intent</h2><ul>
+<li><p>Intent的原理及使用方法；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/48417779">Android中Intent概述及使用</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/48481793">Android中Intent对象与Intent Filter过滤匹配过程详解</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/iispring/article/details/48578295">Android中常见Intent习惯用法-上篇(附源码下载) </a></p>
+</li>
+<li><p>Intent属性；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/github_25928675/article/details/46460417">Android权限和动作大全</a></p>
+</li>
+</ul>
+<h2 id="8-Android系统原理"><a href="#8-Android系统原理" class="headerlink" title="8.Android系统原理"></a>8.Android系统原理</h2><ul>
+<li><p>Binder原理：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/carson_ho/article/details/73560642">Android：图文详解 Binder跨进程通信 原理</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/universus/article/details/6211589">Android Bander设计与实现 - 设计篇</a></p>
+</li>
+</ul>
+<h2 id="9-网络"><a href="#9-网络" class="headerlink" title="9.网络"></a>9.网络</h2><ul>
+<li><p>Socket的原理及使用；</p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/jiajia4336/article/details/8798421">Socket通信原理和实践</a></p>
+</li>
+<li><p>TCP、UDP的原理；</p>
+<p><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/uid-26833883-id-3627644.html"> TCP、UDP、IP 协议分析 </a></p>
+</li>
+<li><p>Http通信原理；</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/GeniusVJR/LearningNotes/blob/master/Part4/Network/Http%E5%8D%8F%E8%AE%AE.md">Http协议</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/rocomp/p/4803864.html">HTTP协议报文、工作原理及Java中的HTTP通信技术详解</a></p>
+</li>
+</ul>
+<h2 id="10-Bluetooth"><a href="#10-Bluetooth" class="headerlink" title="10.Bluetooth"></a>10.Bluetooth</h2><h3 id="1-蓝牙2-0"><a href="#1-蓝牙2-0" class="headerlink" title="1.蓝牙2.0"></a>1.蓝牙2.0</h3><ul>
+<li>Bluetooth介绍及原理</li>
+<li>Bluetooth通信方式</li>
+<li>Bluetooth使用方法</li>
+</ul>
+<h3 id="2-蓝牙4-0"><a href="#2-蓝牙4-0" class="headerlink" title="2.蓝牙4.0"></a>2.蓝牙4.0</h3><ul>
+<li><p>BLE介绍及原理</p>
+</li>
+<li><p>BLE通信方式</p>
+</li>
+<li><p>BLE的使用方法</p>
+<p>  <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/ffce0bbba84d">低功耗蓝牙BLE外围模式(peripheral)-使用BLE作为服务端</a></p>
+</li>
+</ul>
+<h2 id="11-内存优化"><a href="#11-内存优化" class="headerlink" title="11.内存优化"></a>11.内存优化</h2><ul>
+<li><p>系统GC回收过程及原理；</p>
+<p>  <a target="_blank" rel="noopener" href="http://www.importnew.com/13504.html">Java GC系列（1）：Java垃圾回收简介</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.importnew.com/13493.html">Java GC系列（2）：Java垃圾回收是如何工作的？</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.importnew.com/13827.html">Java GC系列（3）：垃圾回收器种类</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.importnew.com/13838.html">Java GC系列（4）：垃圾回收监视和分析</a></p>
+</li>
+<li><p>系统GC回收的触发条件；</p>
+<p>  <a target="_blank" rel="noopener" href="http://www.cnblogs.com/killmyday/archive/2013/06/12/3132518.html">Android内存管理原理</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/opensource/os-cn-android-mmry-rcycl/">Android 操作系统的内存回收机制</a></p>
+</li>
+<li><p>内存优化;</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/a396901990/article/details/37914465">ANDROID内存优化(大汇总——上)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/a396901990/article/details/38707007">ANDROID内存优化(大汇总——中)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/a396901990/article/details/38904543">ANDROID内存优化(大汇总——全)</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-performance-memory/">Android性能优化之内存篇</a></p>
+</li>
+<li><p>UI优化；</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.nimbledroid.com/2016/03/21/ways-to-hang-main-thread-zh.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io">5个导致主线程卡顿较鲜为人知的元凶</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/xyz_lmn/article/details/14524567">Android抽象布局——include、merge 、ViewStub</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.venmo.com/hf2t3h4x98p5e13z82pl8j66ngcmry/performance-tuning-on-android">Performance Tuning On Android</a></p>
+</li>
+<li><p>性能优化；</p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-performance-patterns/">Android性能优化典范（一）</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-performance-patterns-season-2/">Android性能优化典范（二）</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-performance-patterns-season-3/">Android性能优化典范（三）</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-performance-patterns-season-4/">Android性能优化典范（四）</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-performance-patterns-season-5/">Android性能优化典范（五）</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAxMzYyNDkyNA==&mid=403778409&idx=1&sn=2955f5209f2cb46c327167e9f558013c&scene=0&key=710a5d99946419d93bd87693b2fb201a979a3f06f49072f49e0e5dd05b91de2dbe204e56cbcd8c71cac94e931791f5f3&ascene=0&uin=ODU2NjQ0ODgx&devicetype=iMac+MacBookPro12,1+OSX+OSX+10.11.4+build(15E65)">Android应用性能优化个人总结–图形优化</a></p>
+</li>
+<li><p>内存泄露详解及总结；</p>
+<p>  <a target="_blank" rel="noopener" href="http://rayleeya.iteye.com/blog/1956059">Android 系统稳定性 - OOM（一）</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://rayleeya.iteye.com/blog/1956638">Android 系统稳定性 - OOM（二）</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://rayleeya.iteye.com/blog/1955652">Android 系统稳定性 - ANR（一）</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://rayleeya.iteye.com/blog/1955657">Android 系统稳定性 - ANR（二）</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://rayleeya.iteye.com/blog/1956056">Android 系统稳定性 - ANR（三）</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://hukai.me/android-performance-oom/">Android内存优化之OOM</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://yq.aliyun.com/articles/3009">Android 内存泄漏总结</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.360doc.com/content/14/0526/11/9462341_381066152.shtml">ANDROID 探究oom内幕</a></p>
+</li>
+<li><p>内存检测工具及使用方法；</p>
+<p>  BlockCanary</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.zhaiyifan.cn/2016/01/16/BlockCanaryTransparentPerformanceMonitor/">BlockCanary — 轻松找出Android App界面卡顿元凶</a></p>
+<p>  LeakCanary</p>
+<p>  <a target="_blank" rel="noopener" href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0509/2854.html">LeakCanary:检测所有的内存泄漏</a></p>
+<p>  AndroidGodEye</p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/Kyson/AndroidGodEye">AndroidGodEye</a></p>
+</li>
+</ul>
+<h2 id="12-传感器"><a href="#12-传感器" class="headerlink" title="12.传感器"></a>12.传感器</h2><ul>
+<li>加速度</li>
+<li>磁力</li>
+<li>方向</li>
+<li>陀螺</li>
+<li>光线感应</li>
+<li>压力</li>
+<li>温度</li>
+<li>接近</li>
+<li>重力</li>
+<li>线性加速度</li>
+<li>旋转矢量</li>
+</ul>
+<h2 id="13-开发框架"><a href="#13-开发框架" class="headerlink" title="13.开发框架"></a>13.开发框架</h2><ul>
+<li><p>网络框架</p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/square/okhttp">OkHttp</a></p>
+<p>  Volley</p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/wyouflf/xUtils3">xUtils3</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/square/retrofit">Retrofit</a></p>
+</li>
+<li><p>图片加载框架</p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/facebook/fresco">Fresco</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://fresco-cn.org/docs/index.html">Fresco文档</a>	</p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/nostra13/Android-Universal-Image-Loader">Android-Universal-Image-Loader</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/bumptech/glide">Glide</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/square/picasso">picasso</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.trinea.cn/android/android-image-cache-compare/">Android 三大图片缓存原理、特性对比</a></p>
+</li>
+<li><p>绘图框架</p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/ddanny/achartengine">AChartEngine</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/PhilJay/MPAndroidChart">MPAndroidChart</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/xcltapestry/XCL-Charts">XCL-Charts</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/blackfizz/EazeGraph">EazeGraph</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/diogobernardino/WilliamChart">WilliamChart</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/lecho/hellocharts-android">HelloCharts for Android</a></p>
+</li>
+<li><p>数据库框架</p>
+<p>  Provider，ORMLite，GreenDao</p>
+<p>  <a target="_blank" rel="noopener" href="http://blog.csdn.net/u012565107/article/details/21546829">Provider，ORMLite，GreenDao的实现，并且简单性能对比</a></p>
+</li>
+<li><p>注解</p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/JakeWharton/butterknife">Butter Knife</a></p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/google/dagger">Dragger2</a></p>
+</li>
+</ul>
+<h2 id="14-网络期刊"><a href="#14-网络期刊" class="headerlink" title="14.网络期刊"></a>14.网络期刊</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="http://www.codekk.com/open-source-project-analysis">codeKK</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://gank.io/">干货集中营</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.androidweekly.cn/">Android技术周报</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.devtf.cn/?tag=%E5%91%A8%E6%8A%A5">开发技术前线</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://gold.xitu.io/#/">掘金</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://toutiao.io/">开发者头条</a></p>
+</li>
+</ul>
+<h2 id="15-技术社区"><a href="#15-技术社区" class="headerlink" title="15.技术社区"></a>15.技术社区</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/">IBM developerWorks</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://tech.meituan.com/">美团点评技术团队</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://club.alibabatech.org/">阿里技术沙龙</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://mogu.io/">蘑菇街技术博客</a> </p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://taobaofed.org/">淘宝前段团队</a> </p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://bugly.qq.com/bbs/portal.php">Bugly社区</a> </p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.alloyteam.com/">腾讯AllyTeam Blog</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.importnew.com/">ImportNew</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://android.jobbole.com/">伯乐在线</a></p>
+</li>
+</ul>
+<h2 id="16-资源网站"><a href="#16-资源网站" class="headerlink" title="16.资源网站"></a>16.资源网站</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://android-arsenal.com/">Android Arsenal</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://itlanbao.com/">IT蓝豹</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://a.code4app.com/">Code4App</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.23code.com/">23Code</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.see-source.com/index.html">开源社区</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.coolgithubprojects.com/#">CoolGithubProjects</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.ctolib.com/android/">CTOLib</a></p>
+</li>
+</ul>
+<h2 id="17-博客"><a href="#17-博客" class="headerlink" title="17.博客"></a>17.博客</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="http://androidperformance.com/">Gracker</a></p>
+<p>  专注写Android优化的博客。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://hukai.me/">胡凯</a></p>
+<p>  Android性能优化典范作者，高品质文章。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://blog.csdn.net/Luoshengyang?viewmode=contents">老罗的Android之旅</a></p>
+<p>  Android源码分析精品系列。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://blog.csdn.net/harvic880925">启舰</a></p>
+<p>  集合了动画、自定义控件以及Android各种知识的详解。</p>
+</li>
+</ul>
+<h2 id="注："><a href="#注：" class="headerlink" title="注："></a>注：</h2><p>  Android开发群：192508518</p>
+<p>  微信公众号：Code-MX<br><img src="/images/codemx/qr_code_mx.jpg" alt="qr_code_mx"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2016/05/04/2016-05-04-Android-Tree/">http://www.codemx.cn/2016/05/04/2016-05-04-Android-Tree/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Android/">Android</a></div><div class="post_share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2016/05/15/2016-05-15-mac03/" title="高效Mac（三）面向程序员的交互设计神器：Framer Studio"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">高效Mac（三）面向程序员的交互设计神器：Framer Studio</div></div></a></div><div class="next-post pull-right"><a href="/2016/04/30/Understand01/" title="Understand:高效代码静态分析神器详解（一）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Understand:高效代码静态分析神器详解（一）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2016/07/15/Android%E9%80%82%E9%85%8D%E6%B5%85%E6%9E%90/" title="Android适配浅析"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-07-15</div><div class="title">Android适配浅析</div></div></a></div><div><a href="/2016/04/25/code-commend/" title="Android代码推荐（一）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-04-25</div><div class="title">Android代码推荐（一）</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">墨香</div><div class="author-info__description">因为兴趣所以选择，因为选择所以坚持。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Activity"><span class="toc-number">1.</span> <span class="toc-text">1.Activity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-View"><span class="toc-number">2.</span> <span class="toc-text">2.View</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Broadcast"><span class="toc-number">3.</span> <span class="toc-text">3.Broadcast</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Service"><span class="toc-number">4.</span> <span class="toc-text">4.Service</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-ContentProvider"><span class="toc-number">5.</span> <span class="toc-text">5.ContentProvider</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Handler"><span class="toc-number">6.</span> <span class="toc-text">6.Handler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Intent"><span class="toc-number">7.</span> <span class="toc-text">7.Intent</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-Android%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86"><span class="toc-number">8.</span> <span class="toc-text">8.Android系统原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E7%BD%91%E7%BB%9C"><span class="toc-number">9.</span> <span class="toc-text">9.网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Bluetooth"><span class="toc-number">10.</span> <span class="toc-text">10.Bluetooth</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%93%9D%E7%89%992-0"><span class="toc-number">10.1.</span> <span class="toc-text">1.蓝牙2.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%93%9D%E7%89%994-0"><span class="toc-number">10.2.</span> <span class="toc-text">2.蓝牙4.0</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96"><span class="toc-number">11.</span> <span class="toc-text">11.内存优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="toc-number">12.</span> <span class="toc-text">12.传感器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6"><span class="toc-number">13.</span> <span class="toc-text">13.开发框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-%E7%BD%91%E7%BB%9C%E6%9C%9F%E5%88%8A"><span class="toc-number">14.</span> <span class="toc-text">14.网络期刊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA"><span class="toc-number">15.</span> <span class="toc-text">15.技术社区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-%E8%B5%84%E6%BA%90%E7%BD%91%E7%AB%99"><span class="toc-number">16.</span> <span class="toc-text">16.资源网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-%E5%8D%9A%E5%AE%A2"><span class="toc-number">17.</span> <span class="toc-text">17.博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%EF%BC%9A"><span class="toc-number">18.</span> <span class="toc-text">注：</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">墨香博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

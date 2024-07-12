@@ -1,0 +1,457 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Android 常用框架集合 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本章主要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 常用框架集合">
+<meta property="og:url" content="http://www.codemx.cn/2017/01/10/FrameCollection/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="本章主要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2017-01-10T09:13:25.000Z">
+<meta property="article:modified_time" content="2024-07-12T16:41:32.276Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="Resource">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2017/01/10/FrameCollection/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android 常用框架集合',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-13 00:41:32'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg2.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Android 常用框架集合</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-01-10T09:13:25.000Z" title="发表于 2017-01-10 17:13:25">2017-01-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-12T16:41:32.276Z" title="更新于 2024-07-13 00:41:32">2024-07-13</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android 常用框架集合"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>本章主要是对一下常用的框架进行整理，包括框架的源码地址以及一些比较详细的博客讲解，帮助大家更方便的查找资源。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h4 id="1-android-async-http"><a href="#1-android-async-http" class="headerlink" title="1.android-async-http:"></a>1.android-async-http:</h4><p>一个比较老的网络框架项目，虽然已经很少使用了，但是可以学习一下里面的写作方法。</p>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/loopj/android-async-http">android-async-http</a></p>
+<p>详解：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://loopj.com/android-async-http/">官方网址</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/angeldevil/p/3729808.html">快速Android开发系列网络篇之Android-Async-Http</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/yanbober/article/details/45307549">android-async-http框架库使用基础</a></li>
+</ol>
+<h4 id="2-retrofit"><a href="#2-retrofit" class="headerlink" title="2.retrofit:"></a>2.retrofit:</h4><p>retrofit是由square开源组织开源的一款非常流行的网络请求框架，现在使用已经非常广泛。</p>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/square/retrofit">retrofit</a></p>
+<p>详解：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://square.github.io/retrofit/">官方详解</a></li>
+<li><a target="_blank" rel="noopener" href="http://duanyytop.github.io/2016/08/06/Retrofit%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/">Retrofit用法详解</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/45cb536be2f4">Retrofit分析-漂亮的解耦套路</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0915/3460.html">Retrofit 2.0：有史以来最大的改进</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/73216939806a">Android 手把手教你使用Retrofit2</a></li>
+</ol>
+<h4 id="3-okhttp"><a href="#3-okhttp" class="headerlink" title="3.okhttp:"></a>3.okhttp:</h4><p>okhttp也是由square开源组织开源的一款网络底层封装库，上面介绍的Retrofit也是基于此库进行的二次封装。</p>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/square/okhttp">okhttp</a></p>
+<p>详解：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://square.github.io/okhttp/">官方详解</a></li>
+<li><a target="_blank" rel="noopener" href="http://brucezz.itscoder.com/effective-okhttp">如何更高效地使用 OkHttp</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/java/j-lo-okhttp/">OkHttp：Java 平台上的新一代 HTTP 客户端</a></li>
+<li><a target="_blank" rel="noopener" href="http://frodoking.github.io/2015/03/12/android-okhttp/">OKHttp源码解析</a></li>
+<li><a target="_blank" rel="noopener" href="http://frodoking.github.io/2015/06/29/android-okhttp-connectionpool-http1-x-http2-x/">OKHttp源码解析-ConnectionPool对Connection重用机制&amp;Http&#x2F;Https&#x2F;SPDY协议选择</a></li>
+</ol>
+<h4 id="4-Volley"><a href="#4-Volley" class="headerlink" title="4.Volley"></a>4.Volley</h4><p>Volley是由谷歌开源的一款网络请求框架。</p>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/volley">Volley</a></p>
+<p>详解：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/t12x3456/article/details/9221611">Android 网络通信框架Volley简介(Google IO 2013)</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/guolin_blog/article/details/17482095">Android Volley完全解析(系列)</a></li>
+</ol>
+<h2 id="ReactiveX"><a href="#ReactiveX" class="headerlink" title="ReactiveX"></a>ReactiveX</h2><p>知名的响应式开发Rx系列，根据语言包含：</p>
+<ul>
+<li>Java: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxJava">RxJava</a></li>
+<li>JavaScript: <a target="_blank" rel="noopener" href="https://github.com/Reactive-Extensions/RxJS">RxJS</a></li>
+<li>C#: <a target="_blank" rel="noopener" href="https://github.com/Reactive-Extensions/Rx.NET">Rx.NET</a></li>
+<li>C#(Unity): <a target="_blank" rel="noopener" href="https://github.com/neuecc/UniRx">UniRx</a></li>
+<li>Scala: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxScala">RxScala</a></li>
+<li>Clojure: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxClojure">RxClojure</a></li>
+<li>C++: <a target="_blank" rel="noopener" href="https://github.com/Reactive-Extensions/RxCpp">RxCpp</a></li>
+<li>Lua: <a target="_blank" rel="noopener" href="https://github.com/bjornbytes/RxLua">RxLua</a></li>
+<li>Ruby: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxRuby">Rx.rb</a></li>
+<li>Python: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxPY">RxPY</a></li>
+<li>Groovy: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxGroovy">RxGroovy</a></li>
+<li>JRuby: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxJRuby">RxJRuby</a></li>
+<li>Kotlin: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxKotlin">RxKotlin</a></li>
+<li>Swift: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxSwift">RxSwift</a></li>
+<li>PHP: <a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxPHP">RxPHP</a></li>
+</ul>
+<p>根据平台包含：<br>RxNetty：<a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxNetty">RxNetty</a><br>RxAndroid：<a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxAndroid">RxAndroid</a><br>RxCocoa：<a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxSwift">RxCocoa</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="http://reactivex.io/">官方网址</a><br><a target="_blank" rel="noopener" href="http://gank.io/post/560e15be2dca930e00da1083">给 Android 开发者的 RxJava 详解</a><br><a target="_blank" rel="noopener" href="http://gank.io/post/56e80c2c677659311bed9841">RxJava 与 Retrofit 结合的最佳实践</a></p>
+<h2 id="图片加载及显示"><a href="#图片加载及显示" class="headerlink" title="图片加载及显示"></a>图片加载及显示</h2><h4 id="1-Android-Universal-Image-Loader"><a href="#1-Android-Universal-Image-Loader" class="headerlink" title="1.Android-Universal-Image-Loader:"></a>1.Android-Universal-Image-Loader:</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/nostra13/Android-Universal-Image-Loader">Android-Universal-Image-Loader</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/xiaanming/article/details/26810303">Android 开源框架Universal-Image-Loader完全解析（一）— 基本介绍及使用</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/xiaanming/article/details/27525741">Android 开源框架Universal-Image-Loader完全解析（二）— 图片缓存策略详解</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/xiaanming/article/details/39057201">Android 开源框架Universal-Image-Loader完全解析（三）—源代码解读</a></p>
+<h4 id="2-fresco："><a href="#2-fresco：" class="headerlink" title="2.fresco："></a>2.fresco：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/facebook/fresco">fresco</a></p>
+<p>详解：<a target="_blank" rel="noopener" href="https://www.fresco-cn.org/docs/index.html">官方文档</a></p>
+<h4 id="3-glide"><a href="#3-glide" class="headerlink" title="3.glide:"></a>3.glide:</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/bumptech/glide">glide</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/4a3177b57949">Glide 一个专注于平滑滚动的图片加载和缓存库</a></p>
+<p><a target="_blank" rel="noopener" href="http://jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0327/2650.html">Google推荐的图片加载库Glide介绍</a></p>
+<h4 id="4-picasso"><a href="#4-picasso" class="headerlink" title="4.picasso:"></a>4.picasso:</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/square/picasso">picasso</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="http://square.github.io/picasso/">官方文档</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/0731/1639.html">picasso-强大的Android图片下载缓存库</a></p>
+<h4 id="5-PhotoView"><a href="#5-PhotoView" class="headerlink" title="5.PhotoView"></a>5.PhotoView</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/chrisbanes/PhotoView">PhotoView</a></p>
+<p>详解：<a target="_blank" rel="noopener" href="http://a.codekk.com/detail/Android/dkmeteor/PhotoView%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90">PhotoView 源码解析</a></p>
+<h4 id="6-SmartCropper"><a href="#6-SmartCropper" class="headerlink" title="6.SmartCropper"></a>6.SmartCropper</h4><p> A library for cropping image in a smart way that can identify the border and correct the cropped image. 智能图片裁剪框架。自动识别边框，手动调节选区，使用透视变换裁剪并矫正选区；适用于身份证，名片，文档等照片的裁剪。</p>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/pqpo/SmartCropper">https://github.com/pqpo/SmartCropper</a></p>
+<p>详解：[Android 端基于 OpenCV 的边框识别功能](Android 端基于 OpenCV 的边框识别功能)</p>
+<h4 id="7-glide-transformations"><a href="#7-glide-transformations" class="headerlink" title="7.glide-transformations"></a>7.glide-transformations</h4><p>An Android transformation library providing a variety of image transformations for Glide.</p>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/wasabeef/glide-transformations">https://github.com/wasabeef/glide-transformations</a></p>
+<h2 id="热更新"><a href="#热更新" class="headerlink" title="热更新"></a>热更新</h2><h4 id="1-Robust-–美团"><a href="#1-Robust-–美团" class="headerlink" title="1.Robust:–美团"></a>1.Robust:–美团</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/Meituan-Dianping/Robust">Robust</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="http://tech.meituan.com/android_robust.html">Android热更新方案Robust</a><br><a target="_blank" rel="noopener" href="http://tech.meituan.com/android_autopatch.html">Android热更新方案Robust开源，新增自动化补丁工具</a></p>
+<h4 id="2-Tinker"><a href="#2-Tinker" class="headerlink" title="2.Tinker"></a>2.Tinker</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/Tencent/tinker">tinker</a></p>
+<p>Tinker补丁后台管理：<a target="_blank" rel="noopener" href="https://github.com/baidao/tinker-manager">tinker-manager</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="https://github.com/Tencent/tinker/wiki">官方文档</a></p>
+<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&mid=2649286341&idx=1&sn=054d595af6e824cbe4edd79427fc2706&scene=0#wechat_redirect">Android N混合编译与对热补丁影响解析</a></p>
+<p><a target="_blank" rel="noopener" href="https://halfstackdeveloper.github.io/2016/10/19/tinker%E6%BA%90%E7%A0%81%E7%A0%94%E8%AF%BB%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E8%A1%A5%E4%B8%81%E7%94%9F%E6%88%90%E4%B9%8BDexDiff%E5%8E%9F%E7%90%86%E7%AE%80%E6%9E%90/">tinker源码研读（一）：补丁生成之DexDiff原理简析</a></p>
+<h4 id="3-AndFix-–Alibaba"><a href="#3-AndFix-–Alibaba" class="headerlink" title="3.AndFix:–Alibaba"></a>3.AndFix:–Alibaba</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/alibaba/AndFix">AndFix</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/qxs965266509/article/details/49816007">Alibaba-AndFix Bug热修复框架原理及源码解析</a><br><a target="_blank" rel="noopener" href="http://w4lle.github.io/2016/03/03/Android%E7%83%AD%E8%A1%A5%E4%B8%81%E4%B9%8BAndFix%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/">Android热补丁之AndFix原理解析</a></p>
+<h4 id="4-AndroidInstantRun-–google"><a href="#4-AndroidInstantRun-–google" class="headerlink" title="4.AndroidInstantRun:–google"></a>4.AndroidInstantRun:–google</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/tools/base/+/gradle_2.0.0/instant-run/">instant-run</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/780eb85260b3">深度理解Android InstantRun原理以及源码分析</a><br><a target="_blank" rel="noopener" href="https://medium.com/google-developers/instant-run-how-does-it-work-294a1633367f#.5n510pbv2">Instant Run: How Does it Work?!</a></p>
+<h4 id="5-DroidFix"><a href="#5-DroidFix" class="headerlink" title="5.DroidFix:"></a>5.DroidFix:</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/bunnyblue/DroidFix">DroidFix</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI1MTA1MzM2Nw==&mid=400118620&idx=1&sn=b4fdd5055731290eef12ad0d17f39d4a&scene=1&srcid=1106Imu9ZgwybID13e7y2nEi#wechat_redirect">安卓App热补丁动态修复技术介绍</a></p>
+<h4 id="6-HotFix"><a href="#6-HotFix" class="headerlink" title="6.HotFix:"></a>6.HotFix:</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/dodola/HotFix">HotFix</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/72c17fb76f21">基于Nuwa实现Android自动化HotFix</a></p>
+<h4 id="7-Nuwa"><a href="#7-Nuwa" class="headerlink" title="7.Nuwa"></a>7.Nuwa</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/jasonross/Nuwa">Nuwa</a></p>
+<p>详解：<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/sbsujjbcy/article/details/50812674">Android 热修复Nuwa的原理及Gradle插件源码解析</a><br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/fanfu1/p/5506149.html">安卓热更新之Nuwa实现步骤</a></p>
+<h4 id="8-RocooFix"><a href="#8-RocooFix" class="headerlink" title="8.RocooFix:"></a>8.RocooFix:</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/dodola/RocooFix">RocooFix</a></p>
+<h4 id="9-AnoleFix"><a href="#9-AnoleFix" class="headerlink" title="9.AnoleFix:"></a>9.AnoleFix:</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/dodola/AnoleFix">AnoleFix</a></p>
+<h2 id="插件化"><a href="#插件化" class="headerlink" title="插件化"></a>插件化</h2><h4 id="1-VirtualAPK–滴滴"><a href="#1-VirtualAPK–滴滴" class="headerlink" title="1.VirtualAPK–滴滴"></a>1.VirtualAPK–滴滴</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/didi/VirtualAPK">VirtualAPK</a></p>
+<h4 id="2-ZeusPlugin–iReader"><a href="#2-ZeusPlugin–iReader" class="headerlink" title="2.ZeusPlugin–iReader"></a>2.ZeusPlugin–iReader</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/iReaderAndroid/ZeusPlugin">ZeusPlugin</a></p>
+<h4 id="3-dynamic-load-apk（DL）"><a href="#3-dynamic-load-apk（DL）" class="headerlink" title="3.dynamic-load-apk（DL）"></a>3.dynamic-load-apk（DL）</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/singwhatiwanna/dynamic-load-apk">dynamic-load-apk</a></p>
+<h4 id="4-RePlugin–360"><a href="#4-RePlugin–360" class="headerlink" title="4.RePlugin–360"></a>4.RePlugin–360</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/Qihoo360/RePlugin">RePlugin</a></p>
+<h4 id="5-android-pluginmgr"><a href="#5-android-pluginmgr" class="headerlink" title="5.android-pluginmgr"></a>5.android-pluginmgr</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/mmin18/AndroidDynamicLoader">android-pluginmgr</a></p>
+<h4 id="6-AndroidDynamicLoader"><a href="#6-AndroidDynamicLoader" class="headerlink" title="6.AndroidDynamicLoader"></a>6.AndroidDynamicLoader</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/mmin18/AndroidDynamicLoader">AndroidDynamicLoader</a></p>
+<h4 id="7-VirtualApp"><a href="#7-VirtualApp" class="headerlink" title="7.VirtualApp"></a>7.VirtualApp</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/asLody/VirtualApp">VirtualApp</a></p>
+<h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><h4 id="1-dagger"><a href="#1-dagger" class="headerlink" title="1.dagger:"></a>1.dagger:</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/square/dagger">dagger</a></p>
+<p>详解：<a target="_blank" rel="noopener" href="http://square.github.io/dagger/">官方文档</a></p>
+<h4 id="2-butterknife"><a href="#2-butterknife" class="headerlink" title="2.butterknife"></a>2.butterknife</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/JakeWharton/butterknife">butterknife</a></p>
+<p>详解：<a target="_blank" rel="noopener" href="http://jakewharton.github.io/butterknife/">官方文档</a></p>
+<h4 id="3-androidannotations："><a href="#3-androidannotations：" class="headerlink" title="3.androidannotations："></a>3.androidannotations：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/androidannotations/androidannotations">androidannotations</a></p>
+<p>详解：<a target="_blank" rel="noopener" href="https://github.com/androidannotations/androidannotations/wiki">官方文档</a></p>
+<h4 id="4-Dagger2"><a href="#4-Dagger2" class="headerlink" title="4.Dagger2"></a>4.Dagger2</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/google/dagger">Dagger2</a></p>
+<h4 id="5-roboguice"><a href="#5-roboguice" class="headerlink" title="5.roboguice"></a>5.roboguice</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/roboguice/roboguice">roboguice</a></p>
+<h2 id="图表"><a href="#图表" class="headerlink" title="图表"></a>图表</h2><h4 id="1-WilliamChart："><a href="#1-WilliamChart：" class="headerlink" title="1.WilliamChart："></a>1.WilliamChart：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/diogobernardino/WilliamChart">WilliamChart</a></p>
+<p>功能：绘制图表的库，支持 LineChartView、BarChartView 和 StackBarChartView 三中图表类型，并且支持 Android 2.2 及以上的系统。</p>
+<h4 id="2-XCL-Charts："><a href="#2-XCL-Charts：" class="headerlink" title="2.XCL-Charts："></a>2.XCL-Charts：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/xcltapestry/XCL-Charts">XCL-Charts</a></p>
+<p>功能：XCL-Charts 基于原生的 Canvas 来绘制各种图表,在设计时，尽量在保证开发效率的同时，给使用者提供足够多的定制化能力。因此使用简便,同时具有相当灵活的定制能力。目前支持 3D&#x2F;非 3D 柱形图(Bar Chart)、3D&#x2F;非 3D 饼图(Pie Chart)、堆积图(Stacked Bar Chart)、面积图(Area Chart)、 折线图(Line Chart)、曲线图(Spline Chart)、环形图(Dount Chart)、南丁格尔玫瑰图(Rose Chart)、仪表盘(Dial Chart)、刻度盘(Gauge Chart)、雷达图(Radar Chart)、圆形图(Circle Chart)等图表。其它特性还包括支持图表缩放、手势移动、动画显示效果、高密度柱形显示、图表分界定制线、多图表的混合显示及同数据源不同类型图表切换等。</p>
+<h4 id="3-HelloCharts-for-Android："><a href="#3-HelloCharts-for-Android：" class="headerlink" title="3.HelloCharts for Android："></a>3.HelloCharts for Android：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/lecho/hellocharts-android">HelloCharts for Android</a></p>
+<p>功能：支持折线图、柱状图、饼图、气泡图、组合图；支持预览、放大缩小，滚动，部分图表支持动画；支持 Android 2.2 以上</p>
+<h4 id="4-MPAndroidChart："><a href="#4-MPAndroidChart：" class="headerlink" title="4.MPAndroidChart："></a>4.MPAndroidChart：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/PhilJay/MPAndroidChart">MPAndroidChart</a></p>
+<p>功能：强大的图表绘制工具，支持折线图、面积图、散点图、时间图、柱状图、条图、饼图、气泡图、圆环图、范围（高至低）条形图、网状图等；支持图的拖拽缩放；支持 Android 2.2 以上，支持横纵轴缩放，多指缩放，展现动画、高亮、保存到 sdcard、从文件读取图表</p>
+<h4 id="5-achartengine："><a href="#5-achartengine：" class="headerlink" title="5.achartengine："></a>5.achartengine：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://code.google.com/p/achartengine/">achartengine</a></p>
+<p>功能：强大的图表绘制工具，支持折线图、面积图、散点图、时间图、柱状图、条图、饼图、气泡图、圆环图、范围（高至低）条形图、拨号图&#x2F;表、立方线图及各种图的结合</p>
+<h4 id="6-GraphView："><a href="#6-GraphView：" class="headerlink" title="6.GraphView："></a>6.GraphView：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/jjoe64/GraphView">GraphView</a></p>
+<p>功能：绘制图表和曲线图的 View，可用于 Android 上的曲形图、柱状图、波浪图展示</p>
+<h4 id="7-HoloGraphLibrary："><a href="#7-HoloGraphLibrary：" class="headerlink" title="7.HoloGraphLibrary："></a>7.HoloGraphLibrary：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://bitbucket.org/danielnadeau/holographlibrary/src">HoloGraphLibrary</a></p>
+<p>功能：绘制现状图、柱状图、饼状图</p>
+<h4 id="8-EazeGraph："><a href="#8-EazeGraph：" class="headerlink" title="8.EazeGraph："></a>8.EazeGraph：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/blackfizz/EazeGraph">EazeGraph</a></p>
+<p>功能：Android 图表库，支持柱状图、分层柱状图、饼状图、线性图</p>
+<h4 id="9-PieChartView："><a href="#9-PieChartView：" class="headerlink" title="9.PieChartView："></a>9.PieChartView：</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/wuseal/PieChartView">PieChartView</a></p>
+<p>功能：比较简单直接的饼状统计报表图，使用方便，设置相应的属性参数即可</p>
+<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><p>此处说的设计模式是谷歌官方公开的对MVP模式的代码示例，大家可以做为参考学习一下：</p>
+<h4 id="Stable-samples"><a href="#Stable-samples" class="headerlink" title="Stable samples"></a>Stable samples</h4><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture/tree/todo-mvp/">todo-mvp</a> - Basic Model-View-Presenter architecture.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-loaders/">todo-mvp-loaders</a> - Based on todo-mvp, fetches data using Loaders.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture/tree/todo-databinding/">todo-databinding</a> - Based on todo-mvp, uses the Data Binding Library.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean/">todo-mvp-clean</a> - Based on todo-mvp, uses concepts from Clean Architecture.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-dagger/">todo-mvp-dagger</a> - Based on todo-mvp, uses Dagger2 for Dependency Injection</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-contentproviders/">todo-mvp-contentproviders</a> - Based on todo-mvp-loaders, fetches data using Loaders and uses Content Providers</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-rxjava/">todo-mvp-rxjava</a> - Based on todo-mvp, uses RxJava for concurrency and data layer abstraction.</p>
+</li>
+</ul>
+<h4 id="Samples-in-progress"><a href="#Samples-in-progress" class="headerlink" title="Samples in progress"></a>Samples in progress</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture/tree/dev-todo-mvp-tablet/">dev-todo-mvp-tablet</a> - Based on todo-mvp, adds a master&#x2F;detail view for tablets.</li>
+</ul>
+<h4 id="External-samples"><a href="#External-samples" class="headerlink" title="External samples"></a>External samples</h4><p>External samples are variants that may not be in sync with the rest of the branches.</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/Syhids/android-architecture/tree/todo-mvp-fragmentless">todo-mvp-fragmentless</a> - Based on todo-mvp, uses Android views instead of Fragments.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/grepx/android-architecture/tree/todo-mvp-conductor">todo-mvp-conductor</a> - Based on todo-mvp, uses the Conductor framework to refactor to a single Activity architecture.</p>
+</li>
+</ul>
+<h4 id="Google官方设计模式的扩展"><a href="#Google官方设计模式的扩展" class="headerlink" title="Google官方设计模式的扩展"></a>Google官方设计模式的扩展</h4><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/bufferapp/android-clean-architecture-boilerplate">android-clean-architecture-boilerplate</a> - An android boilerplate project using clean architecture</p>
+<p>  Languages, libraries and tools used</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://kotlinlang.org/">Kotlin</a></li>
+<li>Android Support Libraries</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0">RxJava2</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/google/dagger">Dagger 2 (2.11)</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bumptech/glide">Glide</a></li>
+<li><a target="_blank" rel="noopener" href="http://square.github.io/retrofit/">Retrofit</a></li>
+<li><a target="_blank" rel="noopener" href="http://square.github.io/okhttp/">OkHttp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/google/gson">Gson</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/JakeWharton/timber">Timber</a></li>
+<li><a target="_blank" rel="noopener" href="http://site.mockito.org/">Mockito</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/training/testing/espresso/index.html">Espresso</a></li>
+<li><a target="_blank" rel="noopener" href="http://robolectric.org/">Robolectric</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="事件总线"><a href="#事件总线" class="headerlink" title="事件总线"></a>事件总线</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/greenrobot/EventBus">EventBus</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/square/otto">otto</a></p>
+</li>
+</ul>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="http://ormlite.com/">ORMLite</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/greenrobot/greenDAO">greendao</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/roscopeco/ormdroid">ormndroid</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/androrm/androrm">androrm</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/pardom/ActiveAndroid">ActiveAndroid</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/realm/realm-java">Realm</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/satyan/sugar">Sugar</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/square/sqlbrite">sqlbrite</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/LitePalFramework/LitePal">LitePal</a></p>
+</li>
+</ul>
+<h2 id="网络解析"><a href="#网络解析" class="headerlink" title="网络解析"></a>网络解析</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/google/gson">gson</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/alibaba/fastjson">fastjson</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/FasterXML/jackson-databind">jackson-databind</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/fb55/htmlparser2/">HtmlPaser2</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/jhy/jsoup">jsoup</a></p>
+</li>
+</ul>
+<h2 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-android">lottie-android</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-ios">lottie-ios</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-react-native">lottie-react-native</a></p>
+</li>
+</ul>
+<h2 id="跨平台移动开发工具"><a href="#跨平台移动开发工具" class="headerlink" title="跨平台移动开发工具"></a>跨平台移动开发工具</h2><h4 id="1-Weex"><a href="#1-Weex" class="headerlink" title="1.Weex"></a>1.Weex</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/alibaba/weex/">weex</a></p>
+<p>官方文档：</p>
+<h4 id="2-React-Native"><a href="#2-React-Native" class="headerlink" title="2.React Native"></a>2.React Native</h4><p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/facebook/react-native">React Native</a></p>
+<p>官方文档：<br><a target="_blank" rel="noopener" href="http://reactnative.cn/">React Native中文</a><br><a target="_blank" rel="noopener" href="http://facebook.github.io/react-native/docs/getting-started.html">React Native英文</a></p>
+<h2 id="Log框架"><a href="#Log框架" class="headerlink" title="Log框架"></a>Log框架</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/orhanobut/logger">Logger</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/JakeWharton/hugo">hugo</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/JakeWharton/timber">timber</a></p>
+</li>
+</ul>
+<h2 id="测试框架-单元测试"><a href="#测试框架-单元测试" class="headerlink" title="测试框架(单元测试)"></a>测试框架(单元测试)</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/mockito/mockito">Mockito</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/RobotiumTech/robotium">Robotium</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/robolectric/robolectric">robolectric</a></p>
+</li>
+</ul>
+<h2 id="视频"><a href="#视频" class="headerlink" title="视频"></a>视频</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/Bilibili/ijkplayer">Bilibili&#x2F;ijkplayer</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/videolan/vlc">vlc</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/mrmaffen/vlc-android-sdk">vlc-android-sdk</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/FFmpeg/FFmpeg">FFmpeg</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/guardianproject/android-ffmpeg-java">android-ffmpeg-java</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/WritingMinds/ffmpeg-android">ffmpeg-android</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/CarGuo/GSYVideoPlayer">GSYVideoPlayer</a></p>
+</li>
+</ul>
+<h2 id="多主题"><a href="#多主题" class="headerlink" title="多主题"></a>多主题</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Bilibili/MagicaSakura">Bilibili&#x2F;MagicaSakura</a></li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>谷歌开源手机号验证库：<br><a target="_blank" rel="noopener" href="https://github.com/googlei18n/libphonenumber">libphonenumber</a></p>
+<h2 id="注"><a href="#注" class="headerlink" title="注"></a>注</h2><p>Android开发群：192508518</p>
+<p>2017年3月18日更新。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2017/01/10/FrameCollection/">http://www.codemx.cn/2017/01/10/FrameCollection/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Resource/">Resource</a></div><div class="post_share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/03/13/UICollection01/" title="常用UI框架汇总"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">常用UI框架汇总</div></div></a></div><div class="next-post pull-right"><a href="/2016/12/18/Launcher07/" title="墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">墨香带你学Launcher之（七）- 小部件的加载、添加以及大小调节</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2016/07/25/Android-open-project/" title="Android、iOS、Mac开源项目推荐"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-07-25</div><div class="title">Android、iOS、Mac开源项目推荐</div></div></a></div><div><a href="/2017/03/23/OpenArithmetic/" title="开源算法集合"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-03-23</div><div class="title">开源算法集合</div></div></a></div><div><a href="/2017/03/13/UICollection01/" title="常用UI框架汇总"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-03-13</div><div class="title">常用UI框架汇总</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">墨香</div><div class="author-info__description">因为兴趣所以选择，因为选择所以坚持。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">网络</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-android-async-http"><span class="toc-number">1.0.1.</span> <span class="toc-text">1.android-async-http:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-retrofit"><span class="toc-number">1.0.2.</span> <span class="toc-text">2.retrofit:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-okhttp"><span class="toc-number">1.0.3.</span> <span class="toc-text">3.okhttp:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Volley"><span class="toc-number">1.0.4.</span> <span class="toc-text">4.Volley</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReactiveX"><span class="toc-number">2.</span> <span class="toc-text">ReactiveX</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E5%8F%8A%E6%98%BE%E7%A4%BA"><span class="toc-number">3.</span> <span class="toc-text">图片加载及显示</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Android-Universal-Image-Loader"><span class="toc-number">3.0.1.</span> <span class="toc-text">1.Android-Universal-Image-Loader:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-fresco%EF%BC%9A"><span class="toc-number">3.0.2.</span> <span class="toc-text">2.fresco：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-glide"><span class="toc-number">3.0.3.</span> <span class="toc-text">3.glide:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-picasso"><span class="toc-number">3.0.4.</span> <span class="toc-text">4.picasso:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-PhotoView"><span class="toc-number">3.0.5.</span> <span class="toc-text">5.PhotoView</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-SmartCropper"><span class="toc-number">3.0.6.</span> <span class="toc-text">6.SmartCropper</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-glide-transformations"><span class="toc-number">3.0.7.</span> <span class="toc-text">7.glide-transformations</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-number">4.</span> <span class="toc-text">热更新</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Robust-%E2%80%93%E7%BE%8E%E5%9B%A2"><span class="toc-number">4.0.1.</span> <span class="toc-text">1.Robust:–美团</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Tinker"><span class="toc-number">4.0.2.</span> <span class="toc-text">2.Tinker</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-AndFix-%E2%80%93Alibaba"><span class="toc-number">4.0.3.</span> <span class="toc-text">3.AndFix:–Alibaba</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-AndroidInstantRun-%E2%80%93google"><span class="toc-number">4.0.4.</span> <span class="toc-text">4.AndroidInstantRun:–google</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-DroidFix"><span class="toc-number">4.0.5.</span> <span class="toc-text">5.DroidFix:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-HotFix"><span class="toc-number">4.0.6.</span> <span class="toc-text">6.HotFix:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-Nuwa"><span class="toc-number">4.0.7.</span> <span class="toc-text">7.Nuwa</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-RocooFix"><span class="toc-number">4.0.8.</span> <span class="toc-text">8.RocooFix:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-AnoleFix"><span class="toc-number">4.0.9.</span> <span class="toc-text">9.AnoleFix:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">插件化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-VirtualAPK%E2%80%93%E6%BB%B4%E6%BB%B4"><span class="toc-number">5.0.1.</span> <span class="toc-text">1.VirtualAPK–滴滴</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ZeusPlugin%E2%80%93iReader"><span class="toc-number">5.0.2.</span> <span class="toc-text">2.ZeusPlugin–iReader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-dynamic-load-apk%EF%BC%88DL%EF%BC%89"><span class="toc-number">5.0.3.</span> <span class="toc-text">3.dynamic-load-apk（DL）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-RePlugin%E2%80%93360"><span class="toc-number">5.0.4.</span> <span class="toc-text">4.RePlugin–360</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-android-pluginmgr"><span class="toc-number">5.0.5.</span> <span class="toc-text">5.android-pluginmgr</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-AndroidDynamicLoader"><span class="toc-number">5.0.6.</span> <span class="toc-text">6.AndroidDynamicLoader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-VirtualApp"><span class="toc-number">5.0.7.</span> <span class="toc-text">7.VirtualApp</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3"><span class="toc-number">6.</span> <span class="toc-text">注解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-dagger"><span class="toc-number">6.0.1.</span> <span class="toc-text">1.dagger:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-butterknife"><span class="toc-number">6.0.2.</span> <span class="toc-text">2.butterknife</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-androidannotations%EF%BC%9A"><span class="toc-number">6.0.3.</span> <span class="toc-text">3.androidannotations：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Dagger2"><span class="toc-number">6.0.4.</span> <span class="toc-text">4.Dagger2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-roboguice"><span class="toc-number">6.0.5.</span> <span class="toc-text">5.roboguice</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E8%A1%A8"><span class="toc-number">7.</span> <span class="toc-text">图表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-WilliamChart%EF%BC%9A"><span class="toc-number">7.0.1.</span> <span class="toc-text">1.WilliamChart：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-XCL-Charts%EF%BC%9A"><span class="toc-number">7.0.2.</span> <span class="toc-text">2.XCL-Charts：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-HelloCharts-for-Android%EF%BC%9A"><span class="toc-number">7.0.3.</span> <span class="toc-text">3.HelloCharts for Android：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-MPAndroidChart%EF%BC%9A"><span class="toc-number">7.0.4.</span> <span class="toc-text">4.MPAndroidChart：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-achartengine%EF%BC%9A"><span class="toc-number">7.0.5.</span> <span class="toc-text">5.achartengine：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-GraphView%EF%BC%9A"><span class="toc-number">7.0.6.</span> <span class="toc-text">6.GraphView：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-HoloGraphLibrary%EF%BC%9A"><span class="toc-number">7.0.7.</span> <span class="toc-text">7.HoloGraphLibrary：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-EazeGraph%EF%BC%9A"><span class="toc-number">7.0.8.</span> <span class="toc-text">8.EazeGraph：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-PieChartView%EF%BC%9A"><span class="toc-number">7.0.9.</span> <span class="toc-text">9.PieChartView：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">8.</span> <span class="toc-text">设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Stable-samples"><span class="toc-number">8.0.1.</span> <span class="toc-text">Stable samples</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Samples-in-progress"><span class="toc-number">8.0.2.</span> <span class="toc-text">Samples in progress</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#External-samples"><span class="toc-number">8.0.3.</span> <span class="toc-text">External samples</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Google%E5%AE%98%E6%96%B9%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%89%A9%E5%B1%95"><span class="toc-number">8.0.4.</span> <span class="toc-text">Google官方设计模式的扩展</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF"><span class="toc-number">9.</span> <span class="toc-text">事件总线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">10.</span> <span class="toc-text">数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E8%A7%A3%E6%9E%90"><span class="toc-number">11.</span> <span class="toc-text">网络解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Animation"><span class="toc-number">12.</span> <span class="toc-text">Animation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="toc-number">13.</span> <span class="toc-text">跨平台移动开发工具</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Weex"><span class="toc-number">13.0.1.</span> <span class="toc-text">1.Weex</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-React-Native"><span class="toc-number">13.0.2.</span> <span class="toc-text">2.React Native</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Log%E6%A1%86%E6%9E%B6"><span class="toc-number">14.</span> <span class="toc-text">Log框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-number">15.</span> <span class="toc-text">测试框架(单元测试)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91"><span class="toc-number">16.</span> <span class="toc-text">视频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E4%B8%BB%E9%A2%98"><span class="toc-number">17.</span> <span class="toc-text">多主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">18.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8"><span class="toc-number">19.</span> <span class="toc-text">注</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">墨香博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
