@@ -8,54 +8,8 @@
 <meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
 <meta property="article:author" content="墨香">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/page/2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  dateSuffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  infinitegrid: {
-    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
-    buttonText: '加载更多'
-  },
-  isPhotoFigcaption: false,
-  islazyload: false,
-  isAnchor: false,
-  percent: {
-    toc: true,
-    rightside: false,
-  },
-  autoDarkmode: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '墨香博客',
-  isPost: false,
-  isHome: true,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2024-07-13 00:49:07'
-}</script><script>(win=>{
-      win.saveToLocal = {
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/page/2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
         set: (key, value, ttl) => {
           if (ttl === 0) return
           const now = Date.now()
@@ -83,53 +37,75 @@
           return item.value
         }
       }
-    
-      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = url
-        script.async = true
-        script.onerror = reject
-        script.onload = script.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          script.onload = script.onreadystatechange = null
-          resolve()
-        }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
 
-        Object.keys(attr).forEach(key => {
-          script.setAttribute(key, attr[key])
-        })
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
 
-        document.head.appendChild(script)
-      })
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
     
-      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
-        const link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = url
-        if (id) link.id = id
-        link.onerror = reject
-        link.onload = link.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          link.onload = link.onreadystatechange = null
-          resolve()
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
         }
-        document.head.appendChild(link)
-      })
+      }
     
-      win.activateDarkMode = () => {
+      const activateDarkMode = () => {
         document.documentElement.setAttribute('data-theme', 'dark')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
         }
       }
-      win.activateLightMode = () => {
+      const activateLightMode = () => {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
         }
       }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
       const t = saveToLocal.get('theme')
     
         if (t === 'dark') activateDarkMode()
@@ -150,152 +126,58 @@
         }
       }
       detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/bg1.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">墨香博客</h1></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/07/13/AndroidOS011-ContentProvider/" title="Android系统源码分析--ContentProvider">Android系统源码分析--ContentProvider</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-07-13T07:14:15.000Z" title="发表于 2018-07-13 15:14:15">2018-07-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-距离上一次写博客已经半年多了，这半年发生了很多事情，也有了很多感触，最主要是改变了忙碌的工作，更加重视身体的健康，为此也把工作地点从深圳这个一线城市换到了珠海，工作相对没有那么累，身体感觉也好了很多。所以在工作完成之余，也有了更多的时间来自我学习和提高，后续会用更多时间来写更多实用的东西，帮助我们理解安卓系统的原理，帮助我们快速、稳定的开发。这一篇我们接着之前的计划，完成四大组件的最后一个ContentProvider的分析。ContentProvider是一个抽象类，用来提供访问数据的统一格式的接口。ContentProvider的作用是多应用间共享数据，如果用户需要直接使用则可以直接在里面使用数据库来保存数据，也可以通用ContentResolver使用URI来存储数据，使用URI用户不需要知道内部怎么存储只需要知道如何使用该存储方式。
-
-
-
-ContentProviderContentProvider的描述及使用：在之前我们分析过ContentProvider的启动比Application的启动早，所以使用时需要知道这种情况。在使用ContentResolver时是通过URI来 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/04/24/AndroidOS010-Service/" title="Android系统源码分析--Service启动流程">Android系统源码分析--Service启动流程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-24T12:32:23.000Z" title="发表于 2018-04-24 20:32:23">2018-04-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-在前面文章我们分析了四大组件中的两个：Broadcast和Activity，这章我们分析四大组件中的服务（Service）的启动过程。Service的启动方式有两种：一种是startService，一种是bindService；第一种通常是开启一个服务执行后台任务，不进行通信，第二章通过是启动服务进行通信。下面我们就根据这两种启动方式来讲Service的启动流程以及unbindService和stopService流程。
-
-
-
-Service启动流程-startService首先来看启动流程时序图：
-
-Step0.ContextImpl.startService12345@Overridepublic ComponentName startService(Intent service) &#123;    warnIfCallingFromSystemProcess();    return startServiceCommon(service, mUser);&#125;
-
-调用当前类中的startServiceCommon方法。
-Step1.ContextImpl.startSe ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/03/12/AndroidOS009-Activity/" title="Android系统源码分析--Activity的finish过程">Android系统源码分析--Activity的finish过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-03-12T06:55:07.000Z" title="发表于 2018-03-12 14:55:07">2018-03-12</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-上一篇我们分析了Activity的启动流程，由于代码量很大，还是没有分析的很详细，但是基本流程都出来了，更详细的东西还是要去看源码，源码在我文章的最后有给出，里面有我添加的详细的注释。这一章来分析Activity的finish过程，这个问题在两年前我去面试金山的时候曾经被问到过，那时候对源码基本没什么了解，所以当时根本是不了解的，今天我们就来分析一下finish的过程到底做了哪些处理，最后对Activity的整个启动过程以及finish过程绘制流程图，以方便我们记忆。
-
-
-
-finish代码分析首先先贴一张时序图：
-
-Activity的finish方法就是调用的父类的finish方法：
-Step1.Activity.finish123public void finish() &#123;    finish(DONT_FINISH_TASK_WITH_ACTIVITY);&#125;
-
-这里调用finish方法，传入参数DONT_FINISH_TASK_WITH_ACTIVITY，这个参数是在finish掉Activity的时候不finish掉Task。
-Step2.Activity ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/01/26/AndroidOS008-Activity/" title="Android系统源码分析--Activity启动过程">Android系统源码分析--Activity启动过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-01-26T03:40:33.000Z" title="发表于 2018-01-26 11:40:33">2018-01-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-关于Activity的源码分析拖延了太久的时间，由于最近工作繁忙，加上Activity启动源码非常复杂，涉及的内容很多，所以花费了很长是时间才来写这篇源码分析，希望这篇分析能让我们很容易的理解Activity的启动流程，能解决我们在使用Activity过程中遇到的问题，这样就达到了我们对于源码分析的目的了。下一篇我们介绍Activity的finish过程。
-
-
-
-Activity启动模式简介：我们知道Activity启动模式有四种，每一种都有不同的操作，直接影响我们App的设计，为了帮助我们理解源码，我们先分析一下这四种模式。这四种模式包括：standard, singleTop, singleTask 和 singleInstance。
-（下面内容来自：Activity启动模式图文详解：standard, singleTop, singleTask 以及 singleInstance）
-
-standard：标准模式，也是默认模式。这种模式是每次你调用startActivity时都会创建一个Activity实例，不管你之前有没有创建过。
-
-singleTop：从名字可以分析出是顶部单 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/12/25/AndroidOS007-Broadcast2/" title="Android系统源码分析--Broadcast发送">Android系统源码分析--Broadcast发送</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-12-25T09:08:52.000Z" title="发表于 2017-12-25 17:08:52">2017-12-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-上一篇分析了Android系统中广播的注册和注销，这一篇我们继续分析发送广播的源码流程，广播的发送相对来说比较复杂，所以需要比较长的时间来看，如果你看懂了流程相对来说再研究流程中的细节就比较简单了。
-
-
-
-先看一张时序图，因为里面涉及到循环过程，代码中会提到，但是时序图没有绘制，所以需要注意一下。
-
-0、ContextImpl.sendBroadcast123456789101112131415161718192021222324252627282930313233343536373839/**    * 发送广播    * 步骤：    * 1.广播发送者，即一个Activity组件或者一个Service组件，将一个特定类型的广播发送给AMS    * &lt;p&gt;    * 2.AMS接收到一个广播后，首先找到与这个广播对应的广播接收者，然后将它们添加到一个广播调度队列中，    * 最后向AMS所运行在的先从的消息队列发送一个类型为BROADCAST_INTENT_MSG的消息，这时候对广播发送    * 者来说，一个广播就发送完了。    * &lt;p&gt;     ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/12/21/AndroidOS006-Broadcast1/" title="Android系统源码分析--Broadcast注册和注销">Android系统源码分析--Broadcast注册和注销</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-12-21T03:56:35.000Z" title="发表于 2017-12-21 11:56:35">2017-12-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-距离上一篇博客进程的加载过了很久的时间，这中间换了一份工作，加入了新的团队，也开始了新的项目，比较忙，所以最近才有时间将四大组件之一的广播原理看完，最近一段时间会相继把四大组件分析写完，让我们对四大组件有更深的了解。本来想一篇把广播的内容写完，但是发现要解释的代码比较多，所以还是分开来讲，那么这篇先分析广播的注册和注销，下一篇再分析广播的发送。
-
-
-
-Broadcast的注册
-Step-1:注册广播入口ContextImpl.registerReceiver：1234@Overridepublic Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) &#123;    return registerReceiver(receiver, filter, null, null);&#125;
-
-然后调用registerReceiver复写方法:
-123456@Override    public Intent registerReceiver(BroadcastReceiver receiver ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/13/AndroidOS005-Process/" title="Android系统源码分析--Process启动过程">Android系统源码分析--Process启动过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-13T12:45:07.000Z" title="发表于 2017-09-13 20:45:07">2017-09-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。
-
-
-
-基础知识Android应用程序框架层创建的应用程序进程具有两个特点，一是进程的入口函数是ActivityThread.main，二是进程天然支持Binder进程间通信机制；这两个特点都是在进程的初始化过程中实现的。（引用自老罗安卓之旅-Android应用程序进程启动过程的源代码分析）
-进程按照重要性可以分为下面五类：
-
-前台进程(Foreground process)
-可见进程(Visible process)
-服务进程(Service process)
-后台进程(Background process)
-空进程(Empty process)
-
-进程启动流程AMS(ActivityMagagerService)启动进程是从其成员函数startProcessLocked开始调用Process.start方法开始的。我们先看一下进程启动的时序图：
-
-1. Process.start方法：12345678910111213141516171819202122public static  ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/07/13/AndroidOS004-HandleMessageLooper/" title="Android系统源码分析--消息循环机制">Android系统源码分析--消息循环机制</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-07-12T16:12:33.000Z" title="发表于 2017-07-13 00:12:33">2017-07-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-上一章我们讲解SystemServer时涉及到了消息机制，因此这一章我们先介绍一下消息循环机制，帮助大家弄清楚消息循环的原理，有助于代码的编写和优化。
-
-
-
-Looper-Message-MessageQueue-Handler消息处理机制在Android系统有两个通信机制，一个是Binder，一个是消息机制，前者是跨进程通信，后者是进程内部通信。消息通信主要包括几个部分：
-
-消息发送者和处理者：Handler
-消息循环器：Looper
-消息队列：MessageQueue
-消息：Message
-
-我们先看一个时序图：
-
-图中，1-11步是Looper的准备过程，12-17步是获取消息，处理消息，回收消息的循环过程。
-下面是一张消息循环过程图，图片来自网络博客（blog.mindorks.com），Looper会通过loop方法不断从消息队列去取消息，然后交给handler处理，处理完成就回收消息，要注意的是只有一个looper，但是可能有多个handler：
-
-1、LooperLooper是一个循环器，通过里面的loop方法不断去取消息，发送给Handler进行处理。根据上面时序图以 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/07/12/AndroidOS003-SystemServer/" title="Android系统源码分析--Zygote和SystemServer启动过程">Android系统源码分析--Zygote和SystemServer启动过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-07-12T02:05:21.000Z" title="发表于 2017-07-12 10:05:21">2017-07-12</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-按计划本来从这章开始写四大组件的启动过程的，但是看看源码结构发现为了说的更明白还是先写一点系统framework层启动的内容，帮助理解四大组件的启动以及管理过程。我们知道四大组件管理是通过一些服务以及线程实现的，所以先把一些基本概念弄清楚比较好，比如AMS（ActivityManagerService）、PMS（PackageManagerService）等系统服务的作用以及调用方式，了解这些之后再看四大组件相对容易些，因此我们本章先介绍系统启动、部分系统服务的作用。
-
-
-
-Zygote启动过程Zygote是一个孕育器，Android系统所有的应用进程以及系统服务SystemServer都是有Zygote进程孕育（fork）而生的，因此Zygote在Android启动过程中起着决定作用。Zygote的启动是从它的main函数开始的，因此我们从这个函数开始分析。整个过程看下面的时序图。
-
-下面我们开始根据时序图进行分析。
-Step 0.ZygoteInit.main
-123456789101112131415161718192021222324252627282930public st ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/06/05/AndroidOS002-Context/" title="Android系统源码分析--Context">Android系统源码分析--Context</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-06-05T10:00:19.000Z" title="发表于 2017-06-05 18:00:19">2017-06-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">
-Android是一个开源系统，至少说是大部分开源的，源代码的学习对于我们学习Android帮助非常大，可能很多人看看源码时感觉代码太多了，不知道从何开始，今天我就从基本的部分开始跟大家一起学习Android源码。声明：本篇以及以后Android源码分析是基于Android-7.1.2_r11（7.1版本系统）源码进行分析。如果之后切换会进行声明。希望对照源码学习的要找对应版本进行查看。
-
-
-
-在开始介绍Context前我们先看一张Android系统框架层的图：
-
-从上面图可以看到Android系统主要分为五层：应用层，应用框架层，Native库和运行环境，硬件抽象层和Linux内核层。本章不重点讲Android系统框架，只是开始给大家展示一下，有个了解，我们先从Framework层开始学习，首先学习Context，下面进入正题。
-概述：做Android开发的朋友在开发过程中时刻用到Context，那么Context到底是什么，到底是做什么的我们详细分析一下。源码中解释Context是一个面向应用全局信息的接口，那么我看看哪些信息与Context有关：
-
-获取AssetManager： ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#content-inner">5</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">墨香</div><div class="author-info__description">因为兴趣所以选择，因为选择所以坚持。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '墨香博客',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-08-10 08:57:13'
+}</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/07/13/AndroidOS011-ContentProvider/" title="Android系统源码分析--ContentProvider">Android系统源码分析--ContentProvider</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-07-13T07:14:15.000Z" title="发表于 2018-07-13 15:14:15">2018-07-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/04/24/AndroidOS010-Service/" title="Android系统源码分析--Service启动流程">Android系统源码分析--Service启动流程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-24T12:32:23.000Z" title="发表于 2018-04-24 20:32:23">2018-04-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content"> 在前面文章我们分析了四大组件中的两个：Broadcast和Activity，这章我们分析四大组件中的服务（Service）的启动过程。Service的启动方式有两种：一种是startService，一种是bindService；第一种通常是开启一个服务执行后台任务，不进行通信，第二章通过是启动服务进行通信。下面我们就根据这两种启动方式来讲Service的启动流程以及unbindService和stopService流程。    Service启动流程-startService首先来看启动流程时序图：  Step0.ContextImpl.startService12345@Overridepublic ComponentName startService(Intent service) &#123;    warnIfCallingFromSystemProcess();    return startServiceCommon(service,...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/03/12/AndroidOS009-Activity/" title="Android系统源码分析--Activity的finish过程">Android系统源码分析--Activity的finish过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-03-12T06:55:07.000Z" title="发表于 2018-03-12 14:55:07">2018-03-12</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content"> 上一篇我们分析了Activity的启动流程，由于代码量很大，还是没有分析的很详细，但是基本流程都出来了，更详细的东西还是要去看源码，源码在我文章的最后有给出，里面有我添加的详细的注释。这一章来分析Activity的finish过程，这个问题在两年前我去面试金山的时候曾经被问到过，那时候对源码基本没什么了解，所以当时根本是不了解的，今天我们就来分析一下finish的过程到底做了哪些处理，最后对Activity的整个启动过程以及finish过程绘制流程图，以方便我们记忆。    finish代码分析首先先贴一张时序图：  Activity的finish方法就是调用的父类的finish方法： Step1.Activity.finish123public void finish() &#123;   ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/01/26/AndroidOS008-Activity/" title="Android系统源码分析--Activity启动过程">Android系统源码分析--Activity启动过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-01-26T03:40:33.000Z" title="发表于 2018-01-26 11:40:33">2018-01-26</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content"> 关于Activity的源码分析拖延了太久的时间，由于最近工作繁忙，加上Activity启动源码非常复杂，涉及的内容很多，所以花费了很长是时间才来写这篇源码分析，希望这篇分析能让我们很容易的理解Activity的启动流程，能解决我们在使用Activity过程中遇到的问题，这样就达到了我们对于源码分析的目的了。下一篇我们介绍Activity的finish过程。    Activity启动模式简介：我们知道Activity启动模式有四种，每一种都有不同的操作，直接影响我们App的设计，为了帮助我们理解源码，我们先分析一下这四种模式。这四种模式包括：standard, singleTop, singleTask 和 singleInstance。 （下面内容来自：Activity启动模式图文详解：standard, singleTop, singleTask 以及...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/12/25/AndroidOS007-Broadcast2/" title="Android系统源码分析--Broadcast发送">Android系统源码分析--Broadcast发送</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-12-25T09:08:52.000Z" title="发表于 2017-12-25 17:08:52">2017-12-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content"> 上一篇分析了Android系统中广播的注册和注销，这一篇我们继续分析发送广播的源码流程，广播的发送相对来说比较复杂，所以需要比较长的时间来看，如果你看懂了流程相对来说再研究流程中的细节就比较简单了。    先看一张时序图，因为里面涉及到循环过程，代码中会提到，但是时序图没有绘制，所以需要注意一下。  0、ContextImpl.sendBroadcast123456789101112131415161718192021222324252627282930313233343536373839/**    * 发送广播    * 步骤：    * 1.广播发送者，即一个Activity组件或者一个Service组件，将一个特定类型的广播发送给AMS    * &lt;p&gt;    * 2.AMS接收到一个广播后，首先找到与这个广播对应的广播接收者，然后将它们添加到一个广播调度队列中，    * 最后向AMS所运行在的先从的消息队列发送一个类型为BROADCAST_INTENT_MSG的消息，这时候对广播发送    * 者来说，一个广播就发送完了。    * &lt;p&gt;...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/12/21/AndroidOS006-Broadcast1/" title="Android系统源码分析--Broadcast注册和注销">Android系统源码分析--Broadcast注册和注销</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-12-21T03:56:35.000Z" title="发表于 2017-12-21 11:56:35">2017-12-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content"> 距离上一篇博客进程的加载过了很久的时间，这中间换了一份工作，加入了新的团队，也开始了新的项目，比较忙，所以最近才有时间将四大组件之一的广播原理看完，最近一段时间会相继把四大组件分析写完，让我们对四大组件有更深的了解。本来想一篇把广播的内容写完，但是发现要解释的代码比较多，所以还是分开来讲，那么这篇先分析广播的注册和注销，下一篇再分析广播的发送。    Broadcast的注册 Step-1:注册广播入口ContextImpl.registerReceiver：1234@Overridepublic Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) &#123;    return registerReceiver(receiver, filter, null, null);&#125;  然后调用registerReceiver复写方法: 123456@Override    public Intent registerReceiver(BroadcastReceiver...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/13/AndroidOS005-Process/" title="Android系统源码分析--Process启动过程">Android系统源码分析--Process启动过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-13T12:45:07.000Z" title="发表于 2017-09-13 20:45:07">2017-09-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content"> 由于四大组件的启动都涉及到进程的启动，因此我们这章先讲一下进程启动流程，然后再讲四大组件的启动流程。    基础知识Android应用程序框架层创建的应用程序进程具有两个特点，一是进程的入口函数是ActivityThread.main，二是进程天然支持Binder进程间通信机制；这两个特点都是在进程的初始化过程中实现的。（引用自老罗安卓之旅-Android应用程序进程启动过程的源代码分析） 进程按照重要性可以分为下面五类：  前台进程(Foreground process) 可见进程(Visible process) 服务进程(Service process) 后台进程(Background process) 空进程(Empty process)  进程启动流程AMS(ActivityMagagerService)启动进程是从其成员函数startProcessLocked开始调用Process.start方法开始的。我们先看一下进程启动的时序图：  1. Process.start方法：12345678910111213141516171819202122public...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/07/13/AndroidOS004-HandleMessageLooper/" title="Android系统源码分析--消息循环机制">Android系统源码分析--消息循环机制</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-07-12T16:12:33.000Z" title="发表于 2017-07-13 00:12:33">2017-07-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/07/12/AndroidOS003-SystemServer/" title="Android系统源码分析--Zygote和SystemServer启动过程">Android系统源码分析--Zygote和SystemServer启动过程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-07-12T02:05:21.000Z" title="发表于 2017-07-12 10:05:21">2017-07-12</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content"> 按计划本来从这章开始写四大组件的启动过程的，但是看看源码结构发现为了说的更明白还是先写一点系统framework层启动的内容，帮助理解四大组件的启动以及管理过程。我们知道四大组件管理是通过一些服务以及线程实现的，所以先把一些基本概念弄清楚比较好，比如AMS（ActivityManagerService）、PMS（PackageManagerService）等系统服务的作用以及调用方式，了解这些之后再看四大组件相对容易些，因此我们本章先介绍系统启动、部分系统服务的作用。    Zygote启动过程Zygote是一个孕育器，Android系统所有的应用进程以及系统服务SystemServer都是有Zygote进程孕育（fork）而生的，因此Zygote在Android启动过程中起着决定作用。Zygote的启动是从它的main函数开始的，因此我们从这个函数开始分析。整个过程看下面的时序图。  下面我们开始根据时序图进行分析。 Step...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/06/05/AndroidOS002-Context/" title="Android系统源码分析--Context">Android系统源码分析--Context</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-06-05T10:00:19.000Z" title="发表于 2017-06-05 18:00:19">2017-06-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/AndroidOS/">AndroidOS</a></span></div><div class="content">...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#content-inner">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#content-inner">5</a><a class="extend next" rel="next" href="/page/3/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">墨香</div><div class="author-info-description">因为兴趣所以选择，因为选择所以坚持。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/yuchuangu85" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yuchuangu85@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Google-App-architecture/" title="Google官方Android开发资料整理之-App architecture(架构)">Google官方Android开发资料整理之-App architecture(架构)</a><time datetime="2024-07-01T15:51:46.000Z" title="发表于 2024-07-01 23:51:46">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/01/Kotlin-Coroutines/" title="Kotlin-Coroutines">Kotlin-Coroutines</a><time datetime="2024-07-01T15:41:34.000Z" title="发表于 2024-07-01 23:41:34">2024-07-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/03/Google-Jetpack-Compose/" title="Google官方Android开发资料整理之-Jetpack Compose">Google官方Android开发资料整理之-Jetpack Compose</a><time datetime="2023-07-03T14:29:43.000Z" title="发表于 2023-07-03 22:29:43">2023-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Dev/" title="Google官方Android开发资料整理之-总汇">Google官方Android开发资料整理之-总汇</a><time datetime="2023-06-21T16:22:23.000Z" title="发表于 2023-06-22 00:22:23">2023-06-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/22/Google-Test/" title="Google官方Android开发资料整理之-测试">Google官方Android开发资料整理之-测试</a><time datetime="2023-06-21T16:16:14.000Z" title="发表于 2023-06-22 00:16:14">2023-06-22</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
             <i class="fas fa-folder-open"></i>
             <span>分类</span>
             
             </div>
             <ul class="card-category-list" id="aside-cat-list">
             <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Android-Official-Source/"><span class="card-category-list-name">Android Official Source</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AndroidOS/"><span class="card-category-list-name">AndroidOS</span><span class="card-category-list-count">13</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Android%E4%BB%A3%E7%A0%81%E6%8E%A8%E8%8D%90/"><span class="card-category-list-name">Android代码推荐</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Kotlin/"><span class="card-category-list-name">Kotlin</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Launcher/"><span class="card-category-list-name">Launcher</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E9%AB%98%E6%95%88Mac/"><span class="card-category-list-name">高效Mac</span><span class="card-category-list-count">3</span></a></li>
-            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Jetpack-Compose/" style="font-size: 1.1em; color: #999">Jetpack Compose</a> <a href="/tags/View/" style="font-size: 1.1em; color: #999">View</a> <a href="/tags/Test/" style="font-size: 1.1em; color: #999">Test</a> <a href="/tags/Safe/" style="font-size: 1.1em; color: #999">Safe</a> <a href="/tags/Gradle/" style="font-size: 1.1em; color: #999">Gradle</a> <a href="/tags/AndroidOS/" style="font-size: 1.5em; color: #99a9bf">AndroidOS</a> <a href="/tags/Performance/" style="font-size: 1.18em; color: #999ca1">Performance</a> <a href="/tags/Understand/" style="font-size: 1.1em; color: #999">Understand</a> <a href="/tags/View%E7%BB%98%E5%88%B6/" style="font-size: 1.18em; color: #999ca1">View绘制</a> <a href="/tags/Android-Guide/" style="font-size: 1.1em; color: #999">Android Guide</a> <a href="/tags/%E9%AB%98%E6%95%88Mac/" style="font-size: 1.26em; color: #999fa8">高效Mac</a> <a href="/tags/Coroutines/" style="font-size: 1.1em; color: #999">Coroutines</a> <a href="/tags/App-architecture/" style="font-size: 1.1em; color: #999">App architecture</a> <a href="/tags/Android/" style="font-size: 1.26em; color: #999fa8">Android</a> <a href="/tags/Resource/" style="font-size: 1.34em; color: #99a3b0">Resource</a> <a href="/tags/Launcher/" style="font-size: 1.42em; color: #99a6b7">Launcher</a> <a href="/tags/Animation/" style="font-size: 1.1em; color: #999">Animation</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
-    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/07/"><span class="card-archive-list-date">七月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">六月 2023</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/11/"><span class="card-archive-list-date">十一月 2018</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/07/"><span class="card-archive-list-date">七月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/04/"><span class="card-archive-list-date">四月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/03/"><span class="card-archive-list-date">三月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/01/"><span class="card-archive-list-date">一月 2018</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">43</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-07-12T16:49:06.433Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">墨香博客</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
-  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
-  if ($mermaid.length === 0) return
-  const runMermaid = () => {
-    window.loadMermaid = true
-    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
-
-    Array.from($mermaid).forEach((item, index) => {
-      const mermaidSrc = item.firstElementChild
-      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
-      const mermaidID = 'mermaid-' + index
-      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
-
-      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
-
-      const renderV10 = () => {
-        renderFn.then(({svg}) => {
-          mermaidSrc.insertAdjacentHTML('afterend', svg)
-        })
-      }
-
-      const renderV9 = svg => {
-        mermaidSrc.insertAdjacentHTML('afterend', svg)
-      }
-
-      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
-    })
-  }
-
-  const loadMermaid = () => {
-    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
-  }
-
-  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
-
-  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
-})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Jetpack-Compose/" style="font-size: 1.1em; color: #999">Jetpack Compose</a> <a href="/tags/Coroutines/" style="font-size: 1.1em; color: #999">Coroutines</a> <a href="/tags/AndroidOS/" style="font-size: 1.5em; color: #99a9bf">AndroidOS</a> <a href="/tags/Animation/" style="font-size: 1.1em; color: #999">Animation</a> <a href="/tags/View%E7%BB%98%E5%88%B6/" style="font-size: 1.18em; color: #999ca1">View绘制</a> <a href="/tags/Understand/" style="font-size: 1.1em; color: #999">Understand</a> <a href="/tags/Android/" style="font-size: 1.26em; color: #999fa8">Android</a> <a href="/tags/App-architecture/" style="font-size: 1.1em; color: #999">App architecture</a> <a href="/tags/Performance/" style="font-size: 1.18em; color: #999ca1">Performance</a> <a href="/tags/View/" style="font-size: 1.1em; color: #999">View</a> <a href="/tags/Resource/" style="font-size: 1.34em; color: #99a3b0">Resource</a> <a href="/tags/Gradle/" style="font-size: 1.1em; color: #999">Gradle</a> <a href="/tags/%E9%AB%98%E6%95%88Mac/" style="font-size: 1.26em; color: #999fa8">高效Mac</a> <a href="/tags/Android-Guide/" style="font-size: 1.1em; color: #999">Android Guide</a> <a href="/tags/Launcher/" style="font-size: 1.42em; color: #99a6b7">Launcher</a> <a href="/tags/Test/" style="font-size: 1.1em; color: #999">Test</a> <a href="/tags/Safe/" style="font-size: 1.1em; color: #999">Safe</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/07/"><span class="card-archive-list-date">七月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">六月 2023</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/11/"><span class="card-archive-list-date">十一月 2018</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/07/"><span class="card-archive-list-date">七月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/04/"><span class="card-archive-list-date">四月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/03/"><span class="card-archive-list-date">三月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/01/"><span class="card-archive-list-date">一月 2018</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">43</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-08-10T00:57:13.491Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
