@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ANR-实例分析-启动应用失败 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前面四章介绍了ANR分类，分析流程，trace信息分析，Event log分析，Logcat分析，这些都是ANR分析的基础知识，以及分析问题的关键信息，熟练掌握以上信息才能让ANR分析尽可能又快又准确。 这章开始分析一些我在开发中遇到的一些ANR实例，通过总结这些实例的分析流程以及一些关键信息，帮助我们对ANR有更多的了解。 这里我们再重复贴一次分析流程：  首先看trace信息： 1234567">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ANR-实例分析-启动应用失败">
+<meta property="og:url" content="http://www.codemx.cn/2024/10/28/ANR05/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="前面四章介绍了ANR分类，分析流程，trace信息分析，Event log分析，Logcat分析，这些都是ANR分析的基础知识，以及分析问题的关键信息，熟练掌握以上信息才能让ANR分析尽可能又快又准确。 这章开始分析一些我在开发中遇到的一些ANR实例，通过总结这些实例的分析流程以及一些关键信息，帮助我们对ANR有更多的了解。 这里我们再重复贴一次分析流程：  首先看trace信息： 1234567">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2024-10-28T14:04:48.000Z">
+<meta property="article:modified_time" content="2024-10-28T14:50:54.890Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="ANR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2024/10/28/ANR05/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ANR-实例分析-启动应用失败',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-10-28 22:50:54'
+}</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">49</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">ANR-实例分析-启动应用失败</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-28T14:04:48.000Z" title="发表于 2024-10-28 22:04:48">2024-10-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-28T14:50:54.890Z" title="更新于 2024-10-28 22:50:54">2024-10-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ANR/">ANR</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ANR-实例分析-启动应用失败"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p>前面四章介绍了ANR分类，分析流程，trace信息分析，Event log分析，Logcat分析，这些都是ANR分析的基础知识，以及分析问题的关键信息，熟练掌握以上信息才能让ANR分析尽可能又快又准确。</p>
+<p>这章开始分析一些我在开发中遇到的一些ANR实例，通过总结这些实例的分析流程以及一些关键信息，帮助我们对ANR有更多的了解。</p>
+<p>这里我们再重复贴一次分析流程：</p>
+<p><img src="/images/ANR/01/ANRCheckType.png" alt="ANR分类"></p>
+<p>首先看trace信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">----- pid 2758 at 2024-05-30 12:15:49.504759099+0800 -----</span><br><span class="line">Cmd line: com.android.launcher</span><br><span class="line">Build fingerprint: &#x27;xxxxxxxx:user/release-keys&#x27;</span><br><span class="line">ABI: &#x27;arm64&#x27;</span><br><span class="line">Build type: optimized</span><br><span class="line">suspend all histogram:    Sum: 1.340s 99% C.I. 2.663us-6123.885us Avg: 170.696us Max: 23128us</span><br><span class="line">DALVIK THREADS (49):</span><br><span class="line">&quot;main&quot; prio=5 tid=1 Native</span><br><span class="line">| group=&quot;main&quot; sCount=1 ucsCount=0 flags=1 obj=0x72f1b068 self=0xb400007397c3bc00</span><br><span class="line">| sysTid=2758 nice=0 cgrp=foreground sched=1073741824/0 handle=0x743b0d74f8</span><br><span class="line">| state=S schedstat=( 6996957292061 2882192477787 10876260 ) utm=558104 stm=141590 core=2 HZ=100</span><br><span class="line">| stack=0x7fd636b000-0x7fd636d000 stackSize=8188KB</span><br><span class="line">| held mutexes=</span><br><span class="line">native: #00 pc 000eed68  /apex/com.android.runtime/lib64/bionic/libc.so (__epoll_pwait+8) (BuildId: a424ed74a6d8a9ba99f74b96671f25ec)</span><br><span class="line">native: #01 pc 00018b5c  /system/lib64/libutils.so (android::Looper::pollInner+188) (BuildId: 53f21814a364f4abc16a65a88e752c9b)</span><br><span class="line">native: #02 pc 00018a3c  /system/lib64/libutils.so (android::Looper::pollOnce+124) (BuildId: 53f21814a364f4abc16a65a88e752c9b)</span><br><span class="line">native: #03 pc 001869cc  /system/lib64/libandroid_runtime.so (android::android_os_MessageQueue_nativePollOnce+44) (BuildId: 97903b567fd59762f825ddea6b65b6ab)</span><br><span class="line">at android.os.MessageQueue.nativePollOnce(Native method)</span><br><span class="line">at android.os.MessageQueue.next(MessageQueue.java:335)</span><br><span class="line">at android.os.Looper.loopOnce(Looper.java:168)</span><br><span class="line">at android.os.Looper.loop(Looper.java:346)</span><br><span class="line">at android.app.ActivityThread.main(ActivityThread.java:8344)</span><br><span class="line">at java.lang.reflect.Method.invoke(Native method)</span><br><span class="line">at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:594)</span><br><span class="line">at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1067)</span><br></pre></td></tr></table></figure>
+
+<p>第1行是ANR发生的进程、时间，</p>
+<p>第2行是发生ANR的应用包名，</p>
+<p>第8行状态是Native，</p>
+<p>第18行在调用MessageQueue.nativePollOnce方法时发生了ANR，从这个堆栈信息看主线程阻塞，处于等待消息的状态，</p>
+<p>根据这些信息还不能查找到ANR的原因，我们需要更多的信息，</p>
+<p>然后我们看event log，关键字am_anr，这个在event log中有介绍，这个是anr的类型，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">05-30 12:15:49.544  1000  1946  8368 I am_anr  : [0,2758,com.android.launcher,751550021,Input dispatching timed out (Application does not have a focused window)]</span><br></pre></td></tr></table></figure>
+
+<p>从这里看到属于Input dispatch ANR类型，从括号看到是该类型下的no focus window类型。</p>
+<p>根据流程图，我们需要判断应用（launcher）是否走完onResume，如果没有则是应用问题，如果已经加载完成那么还要判断应用是否绘制完成，</p>
+<p>onResume的判断关键字是：wm_on_resume_called（R版本之前为 am_on_resume_called）– event log中查找</p>
+<p>是否绘制完成判断关键字：VRI[xxx]: reportDrawFinished –  logcat，例如：VRI[QuickstepLauncher]: reportDrawFinished，Launcher绘制完成，</p>
+<p>回到实例，从logcat查找到在ANR之前已经绘制完成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">05-30 12:15:16.210 10100  2758  2758 D VRI[QuickstepLauncher]: reportDrawFinished</span><br></pre></td></tr></table></figure>
+
+<p>从时间看这个在ANR发生之前，但是如何判定这个之后是否有刷新操作，需要根据log在ANR发生之前已经reportDrawFinished之后是否有Relayout Window的log，如果没有说明执行完了绘制流程，</p>
+<p>那么分析到此说明非Launcher问题，我们还有继续找原因，</p>
+<p>logcat信息，也就是AnrManager信息，查看ANR发生前的负载情况：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">行 2345605: 05-30 12:15:49.548  1000  1946  8368 I AnrManager: startAnrDump</span><br><span class="line">行 2345606: 05-30 12:15:49.550  1000  1946  8368 I AnrManager: isANRFlowSkipped() AnrFlow = 0</span><br><span class="line">行 2345607: 05-30 12:15:49.550  1000  1946  8368 I AnrManager: enableTraceLog: false</span><br><span class="line">行 2345619: 05-30 12:15:49.571  1000  1946  8368 I AnrManager: dumpAnrDebugInfo begin: AnrDumpRecord&#123; Input dispatching timed out (Application does not have a focused window) ProcessRecord&#123;d6f31e8 2758:com.android.launcher/u0a100&#125; IsCompleted:false IsCancelled:false &#125;, onlyDumpSelf = false, isSilentANR = true</span><br><span class="line">行 2345620: 05-30 12:15:49.571  1000  1946  8368 I AnrManager: dumpAnrDebugInfoLocked: AnrDumpRecord&#123; Input dispatching timed out (Application does not have a focused window) ProcessRecord&#123;d6f31e8 2758:com.android.launcher/u0a100&#125; IsCompleted:false IsCancelled:false &#125;, onlyDumpSelf = false, isSilentANR = true</span><br><span class="line">行 2345621: 05-30 12:15:49.573  1000  1946  8370 I AnrManager: /dev/binderfs/binder_logs/timeout_log isn&#x27;t exist</span><br><span class="line">行 2345622: 05-30 12:15:49.585  1000  1946  8368 I AnrManager: dumpStackTraces begin!</span><br><span class="line">行 2345642: 05-30 12:15:49.861  1000  1946  8368 I AnrManager: dumpStackTraces end!</span><br><span class="line">行 2345643: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: ANR in com.android.launcher (com.android.launcher/.uioverrides.QuickstepLauncher), time=501120607</span><br><span class="line">行 2345644: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: Reason: Input dispatching timed out (Application does not have a focused window)</span><br><span class="line">行 2345645: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: Load: 0.0 / 0.0 / 0.0</span><br><span class="line">行 2345646: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: ----- Output from /proc/pressure/memory -----</span><br><span class="line">行 2345647: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: some avg10=0.00 avg60=0.17 avg300=0.30 total=8843096625</span><br><span class="line">行 2345648: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: full avg10=0.00 avg60=0.06 avg300=0.08 total=3657944521</span><br><span class="line">行 2345649: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: ----- End output from /proc/pressure/memory -----</span><br><span class="line">行 2345650: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: ----- Output from /proc/pressure/cpu -----</span><br><span class="line">行 2345651: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: some avg10=1.29 avg60=11.97 avg300=15.55 total=65843288544</span><br><span class="line">行 2345652: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: ----- End output from /proc/pressure/cpu -----</span><br><span class="line">行 2345653: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: ----- Output from /proc/pressure/io -----</span><br><span class="line">行 2345654: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: some avg10=0.00 avg60=0.11 avg300=0.26 total=10711845649</span><br><span class="line">行 2345655: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: full avg10=0.00 avg60=0.00 avg300=0.10 total=4573022827</span><br><span class="line">行 2345656: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: ----- End output from /proc/pressure/io -----</span><br><span class="line">行 2345657: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: </span><br><span class="line">行 2345658: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: Android time :[2024-05-30 12:15:49.86] [501120.938]</span><br><span class="line">行 2345659: 05-30 12:15:49.866  1000  1946  8368 I AnrManager: CPU usage from 46930ms to -1ms ago (2024-05-30 12:15:02.611 to 2024-05-30 12:15:49.542):</span><br><span class="line">行 2345660: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   16% 1946/system_server: 11% user + 5.1% kernel / faults: 29595 minor 243 major</span><br><span class="line">行 2345661: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   13% 1305/surfaceflinger: 8% user + 5.1% kernel / faults: 3356 minor 24 major</span><br><span class="line">行 2345662: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   5.3% 1383/adbd: 1.4% user + 3.9% kernel / faults: 258 minor</span><br><span class="line">行 2345663: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   4.6% 447/logd: 0.7% user + 3.8% kernel / faults: 1050 minor 9 major</span><br><span class="line">行 2345664: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   4.1% 11427/com.github.uiautomator: 3.4% user + 0.7% kernel / faults: 9598 minor 264 major</span><br><span class="line">行 2345665: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   4% 1265/android.hardware.audio.service.mediatek: 2.8% user + 1.1% kernel / faults: 2378 minor 5 major</span><br><span class="line">行 2345666: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   3.5% 2384/com.android.systemui: 2.5% user + 1% kernel / faults: 3583 minor 101 major</span><br><span class="line">行 2345667: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   3.1% 1272/android.hardware.graphics.composer@2.1-service: 1.3% user + 1.7% kernel / faults: 744 minor</span><br><span class="line">行 2345668: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   2.7% 2758/com.android.launcher: 1.8% user + 0.8% kernel / faults: 1542 minor 194 major</span><br><span class="line">行 2345669: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   2.4% 31765/com.google.android.gms.persistent: 1.5% user + 0.9% kernel / faults: 1790 minor 255 major</span><br><span class="line">行 2345670: 05-30 12:15:49.866  1000  1946  8368 I AnrManager:   2.3% 25811/android.process.acore: 1.1% user + 1.1% kernel / faults: 959 minor 547 major</span><br><span class="line">...</span><br><span class="line">行 2345797: 05-30 12:15:49.867  1000  1946  8368 I AnrManager: 15% TOTAL: 8.5% user + 5.6% kernel + 0% iowait + 0.6% irq + 0.1% softirq</span><br><span class="line">行 2345798: 05-30 12:15:49.867  1000  1946  8368 I AnrManager: CPU usage from 501120607ms to 501120607ms ago (1970-01-01 08:00:00.000 to 1970-01-01 08:00:00.000) with 0% awake:</span><br><span class="line">行 2345799: 05-30 12:15:49.867  1000  1946  8368 I AnrManager: 0% TOTAL: 0% user + 0% kernel</span><br><span class="line">行 2345800: 05-30 12:15:49.867  1000  1946  8368 I AnrManager: dumpAnrDebugInfo end: AnrDumpRecord&#123; Input dispatching timed out (Application does not have a focused window) ProcessRecord&#123;d6f31e8 2758:com.android.launcher/u0a100&#125; IsCompleted:true IsCancelled:false &#125;, onlyDumpSelf = false , isSilentANR = true</span><br><span class="line">行 2345801: 05-30 12:15:49.868  1000  1946  8368 I AnrManager: addErrorToDropBox app = ProcessRecord&#123;d6f31e8 2758:com.android.launcher/u0a100&#125; processName = com.android.launcher activityShortComponentName = com.android.launcher/.uioverrides.QuickstepLauncher parentShortComponentName = com.android.launcher/.uioverrides.QuickstepLauncher parentProcess = ProcessRecord&#123;d6f31e8 2758:com.android.launcher/u0a100&#125; annotation = Input dispatching timed out (Application does not have a focused window) mTracesFile = /data/anr/anr_2024-05-30-12-15-49-586</span><br><span class="line">行 2345802: 05-30 12:15:49.869  1000  1946  8368 I AnrManager:  controller = null</span><br></pre></td></tr></table></figure>
+
+<p>由于该log是我从logcat中过滤出来的，因此会带有行字。</p>
+<p>我们看到AnrManager信息中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">行 2345797: 05-30 12:15:49.867  1000  1946  8368 I AnrManager: 15% TOTAL: 8.5% user + 5.6% kernel + 0% iowait + 0.6% irq + 0.1% softirq</span><br></pre></td></tr></table></figure>
+
+<p>整体负载是正常的，因此负载没有问题，</p>
+<p>我们只能再次回到event log，分析应用焦点切换过程中有什么问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">05-30 12:15:25.131  1000  1946  1995 I am_proc_start: [0,8341,10150,com.google.android.dialer,next-top-activity,&#123;com.google.android.dialer/com.google.android.dialer.extensions.GoogleDialtactsActivity&#125;]</span><br><span class="line">05-30 12:15:25.138  1000  1946  2126 I input_focus: [Focus leaving 21d0029 com.android.launcher/com.android.launcher.uioverrides.QuickstepLauncher (server),reason=NO_WINDOW]</span><br><span class="line">05-30 12:15:35.143  1000  1946  1994 I am_process_start_timeout: [0,8341,10150,com.google.android.dialer]</span><br><span class="line">05-30 12:15:35.153  1000  1946  1994 I am_kill : [0,8341,com.google.android.dialer,-10000,start timeout]</span><br><span class="line">05-30 12:15:49.544  1000  1946  8368 I am_anr  : [0,2758,com.android.launcher,751550021,Input dispatching timed out (Application does not have a focused window)]</span><br></pre></td></tr></table></figure>
+
+<p>第1行：启动dialer应用</p>
+<p>第2行：开始切换焦点，离开Launcher窗口，正常来说应该是切换到启动的dialer应用窗口上面，</p>
+<p>第3行：从log中发现，dialer启动超时了，这个时间是12:15:35，比12:15:25晚了10s，也就是10s中dialer也没有起来，我们知道Input Dispatch发生ANR的时间为5s，这个远超过了5s，因此导致焦点本应该切换到dialer应用窗口，导致切换失败，</p>
+<p>第4行，dialer应用被杀，原因是启动超时，</p>
+<p>第5行：出现ANR的log，类型Input dispatching time out，原因是没有一个有焦点的窗口。</p>
+<p>要解决该问题，就要分析dialer的启动过程以及在启动过程中系统的流程，找到启动超时的原因，这里不在分析。</p>
+<p>通过该实例我们结合分析流程以及log信息对一个为Input dispatching time out(Application does not have a focused window)类型的ANR进行了分析，以帮助我们对上面的分析流程进行消化，以及对log信息进行熟悉，只有熟悉这些流程才能比较快的分析出ANR原因。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2024/10/28/ANR05/">http://www.codemx.cn/2024/10/28/ANR05/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ANR/">ANR</a></div><div class="post-share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2024/10/21/ANR04/" title="ANR-分析之基础知识介绍：logcat"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">ANR-分析之基础知识介绍：logcat</div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a href="/2024/08/19/ANR02/" title="ANR-分析之基础知识介绍：trace信息"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-19</div><div class="title">ANR-分析之基础知识介绍：trace信息</div></div></a><a href="/2024/08/24/ANR03/" title="ANR-分析之基础知识介绍：event log"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-24</div><div class="title">ANR-分析之基础知识介绍：event log</div></div></a><a href="/2024/10/21/ANR04/" title="ANR-分析之基础知识介绍：logcat"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-21</div><div class="title">ANR-分析之基础知识介绍：logcat</div></div></a><a href="/2024/08/17/ANR01/" title="ANR-分类以及分析流程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-17</div><div class="title">ANR-分类以及分析流程</div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">墨香</div><div class="author-info-description">因为兴趣所以选择，因为选择所以坚持。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">49</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/yuchuangu85" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yuchuangu85@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/28/ANR05/" title="ANR-实例分析-启动应用失败">ANR-实例分析-启动应用失败</a><time datetime="2024-10-28T14:04:48.000Z" title="发表于 2024-10-28 22:04:48">2024-10-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/21/ANR04/" title="ANR-分析之基础知识介绍：logcat">ANR-分析之基础知识介绍：logcat</a><time datetime="2024-10-21T14:19:03.000Z" title="发表于 2024-10-21 22:19:03">2024-10-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/25/Google-Jetpack-Compose-Animation/" title="Google-Jetpack-Compose-Animation">Google-Jetpack-Compose-Animation</a><time datetime="2024-08-24T16:54:13.000Z" title="发表于 2024-08-25 00:54:13">2024-08-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/24/ANR03/" title="ANR-分析之基础知识介绍：event log">ANR-分析之基础知识介绍：event log</a><time datetime="2024-08-24T15:41:04.000Z" title="发表于 2024-08-24 23:41:04">2024-08-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/19/ANR02/" title="ANR-分析之基础知识介绍：trace信息">ANR-分析之基础知识介绍：trace信息</a><time datetime="2024-08-19T14:58:58.000Z" title="发表于 2024-08-19 22:58:58">2024-08-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
