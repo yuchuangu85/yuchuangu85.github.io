@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ANR-实例分析-Input dispatching timed out | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="上一篇中也介绍了Input dispatching timed out的ANR，不过和这篇不同，这篇介绍另外一种情况。 其实Input dispatching timed out有两种类型，  Input dispatching timed out (Application does not have a focused window) Input dispatching timed out（(s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ANR-实例分析-Input dispatching timed out">
+<meta property="og:url" content="http://www.codemx.cn/2024/11/04/ANR06/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="上一篇中也介绍了Input dispatching timed out的ANR，不过和这篇不同，这篇介绍另外一种情况。 其实Input dispatching timed out有两种类型，  Input dispatching timed out (Application does not have a focused window) Input dispatching timed out（(s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2024-11-04T14:17:38.000Z">
+<meta property="article:modified_time" content="2024-11-04T14:36:20.484Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="ANR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2024/11/04/ANR06/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ANR-实例分析-Input dispatching timed out',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-11-04 22:36:20'
+}</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">ANR-实例分析-Input dispatching timed out</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-11-04T14:17:38.000Z" title="发表于 2024-11-04 22:17:38">2024-11-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-04T14:36:20.484Z" title="更新于 2024-11-04 22:36:20">2024-11-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ANR/">ANR</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ANR-实例分析-Input dispatching timed out"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p>上一篇中也介绍了Input dispatching timed out的ANR，不过和这篇不同，这篇介绍另外一种情况。</p>
+<p>其实Input dispatching timed out有两种类型，</p>
+<ul>
+<li>Input dispatching timed out (Application does not have a focused window)</li>
+<li>Input dispatching timed out（(server) is not responding. Waited 5002ms for FocusEvent(hasFocus&#x3D;false)）</li>
+</ul>
+<p>一个是没有焦点窗口类型的ANR，一个是server没有相应的ANR，这两个类型是不一样的。</p>
+<p>第一步：看trace</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">----- pid 3450 at 2024-07-20 15:00:45.488171976+0800 -----</span><br><span class="line">Cmd line: com.android.launcher</span><br><span class="line">Build fingerprint: ...</span><br><span class="line">ABI: &#x27;arm64&#x27;</span><br><span class="line">Build type: optimized</span><br><span class="line">suspend all histogram:    Sum: 115.145ms 99% C.I. 4us-2627.839us Avg: 104.867us Max: 16982us</span><br><span class="line">DALVIK THREADS (54):</span><br><span class="line">&quot;main&quot; prio=5 tid=1 Native</span><br><span class="line">  | group=&quot;main&quot; sCount=1 ucsCount=0 flags=1 obj=0x7350ccc8 self=0xb40000769ac3bc00</span><br><span class="line">  | sysTid=3450 nice=0 cgrp=foreground sched=1073741824/0 handle=0x774754bd20</span><br><span class="line">  | state=S schedstat=( 101214367947 65037795077 427377 ) utm=5880 stm=4241 core=7 HZ=100</span><br><span class="line">  | stack=0x7fdd469000-0x7fdd46b000 stackSize=8188KB</span><br><span class="line">  | held mutexes=</span><br><span class="line">  native: #00 pc 00103948  /apex/com.android.runtime/lib64/bionic/libc.so (__epoll_pwait+8) (BuildId: cfb29c0416191d0feb982f339b1db790)</span><br><span class="line">  native: #01 pc 00013b64  /system/lib64/libutils.so (android::Looper::pollOnce+212) (BuildId: 3aebfffd3ac50a5226f05c433859cfec)</span><br><span class="line">  native: #02 pc 0018a9fc  /system/lib64/libandroid_runtime.so (android::android_os_MessageQueue_nativePollOnce+44) (BuildId: 654cc93af0922f402e82c0c71ac0c77d)</span><br><span class="line">  at android.os.MessageQueue.nativePollOnce(Native method)</span><br><span class="line">  at android.os.MessageQueue.next(MessageQueue.java:346)</span><br><span class="line">  at android.os.Looper.loopOnce(Looper.java:189)</span><br><span class="line">  at android.os.Looper.loop(Looper.java:317)</span><br><span class="line">  at android.app.ActivityThread.main(ActivityThread.java:8825)</span><br><span class="line">  at java.lang.reflect.Method.invoke(Native method)</span><br><span class="line">  at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:617)</span><br><span class="line">  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1002)</span><br></pre></td></tr></table></figure>
+
+<p>根据上篇的分析，该线程状态为Native，另外通过堆栈信息可知，主线程阻塞，处于等待消息状态</p>
+<p>第二步：anr类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// input dispatching timed out 类型ANR</span><br><span class="line">07-20 15:01:37.293  1385 20230 I am_anr  : [0,3450,com.android.launcher,751550021,Input dispatching timed out ([Gesture Monitor] swipe-up (server) is not responding. Waited 5001ms for MotionEvent).]</span><br></pre></td></tr></table></figure>
+
+<p>根据Event Log中的am_anr信息可知，该ANR类型为Input dispatching timed out中的(server) is not responding</p>
+<p>第三步：AnrManager看负载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">// 负载正常</span><br><span class="line">07-20 15:01:37.295  1385 20230 I AnrManager: startAnrDump</span><br><span class="line">07-20 15:01:37.295  1385 20230 I AnrManager: isANRFlowSkipped() AnrFlow = 0</span><br><span class="line">07-20 15:01:37.295  1385 20230 I AnrManager: enableTraceLog: false</span><br><span class="line">07-20 15:01:37.313  1385 20230 I AnrManager: dumpAnrDebugInfo begin: AnrDumpRecord&#123; Input dispatching timed out ([Gesture Monitor] swipe-up (server) is not responding. Waited 5001ms for MotionEvent). ProcessRecord&#123;de1551 3450:com.android.launcher/u0a71&#125; IsCompleted:false IsCancelled:false &#125;, onlyDumpSelf = false, isSilentANR = true</span><br><span class="line">07-20 15:01:37.313  1385 20230 I AnrManager: dumpAnrDebugInfoLocked: AnrDumpRecord&#123; Input dispatching timed out ([Gesture Monitor] swipe-up (server) is not responding. Waited 5001ms for MotionEvent). ProcessRecord&#123;de1551 3450:com.android.launcher/u0a71&#125; IsCompleted:false IsCancelled:false &#125;, onlyDumpSelf = false, isSilentANR = true</span><br><span class="line">07-20 15:01:37.318  1385 20230 I AnrManager: dumpStackTraces begin!</span><br><span class="line">07-20 15:01:37.339  1385 20230 I AnrManager: dumpStackTraces end!</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: ANR in com.android.launcher, time=35798802</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: Reason: Input dispatching timed out ([Gesture Monitor] swipe-up (server) is not responding. Waited 5001ms for MotionEvent).</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: Load: 0.0 / 0.0 / 0.0</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: ----- Output from /proc/pressure/memory -----</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: some avg10=5.78 avg60=7.18 avg300=5.23 total=1849848689</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: full avg10=3.34 avg60=4.27 avg300=3.61 total=1414753582</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: ----- End output from /proc/pressure/memory -----</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: ----- Output from /proc/pressure/cpu -----</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: some avg10=17.69 avg60=17.16 avg300=10.98 total=3819815231</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: full avg10=0.00 avg60=0.00 avg300=0.00 total=0</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: ----- End output from /proc/pressure/cpu -----</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: ----- Output from /proc/pressure/io -----</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: some avg10=6.50 avg60=8.17 avg300=5.41 total=1788313432</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: full avg10=1.22 avg60=1.82 avg300=1.98 total=924602791</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: ----- End output from /proc/pressure/io -----</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: </span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: Android time :[2024-07-20 15:01:37.33] [35798.848]</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: CPU usage from 9610ms to 59ms ago (2024-07-20 15:01:27.683 to 2024-07-20 15:01:37.233):</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   215% 1385/system_server: 172% user + 43% kernel / faults: 18676 minor 1206 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   54% 20857/com.taobao.taobao: 31% user + 22% kernel / faults: 7243 minor 733 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   25% 21570/com.taobao.taobao:channel: 15% user + 9.6% kernel / faults: 2519 minor 2043 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   14% 835/surfaceflinger: 8.8% user + 5.4% kernel / faults: 1678 minor 230 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   13% 92/kswapd0: 0% user + 13% kernel</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   8.3% 24987/com.android.systemui: 4.2% user + 4% kernel / faults: 1097 minor 2425 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   6.3% 3712/com.android.providers.media.module: 2.9% user + 3.4% kernel / faults: 13 minor 25 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   5.6% 935/adbd: 1.3% user + 4.2% kernel / faults: 106 minor 47 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   4.6% 14487/com.google.android.gms: 2.1% user + 2.4% kernel / faults: 5179 minor 3976 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   3.9% 785/android.hardware.graphics.composer@3.1-service: 1.6% user + 2.3% kernel / faults: 42 minor 16 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   3.5% 404/logd: 1.2% user + 2.3% kernel / faults: 1031 minor 138 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   3.5% 19470/com.google.android.apps.nbu.files: 2.1% user + 1.3% kernel / faults: 3576 minor 3443 major</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager:   3.2% 591/kssbd: 0% user + 3.2% kernel</span><br><span class="line">...</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: 64% TOTAL: 36% user + 22% kernel + 1.5% iowait + 2.8% irq + 0.7% softirq</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: CPU usage from 35798802ms to 35798802ms ago (1970-01-01 08:00:00.000 to 1970-01-01 08:00:00.000) with 0% awake:</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: 0% TOTAL: 0% user + 0% kernel</span><br><span class="line">07-20 15:01:37.340  1385 20230 I AnrManager: dumpAnrDebugInfo end: AnrDumpRecord&#123; Input dispatching timed out ([Gesture Monitor] swipe-up (server) is not responding. Waited 5001ms for MotionEvent). ProcessRecord&#123;de1551 3450:com.android.launcher/u0a71&#125; IsCompleted:true IsCancelled:false &#125;, onlyDumpSelf = false , isSilentANR = true</span><br><span class="line">07-20 15:01:37.341  1385 20230 I AnrManager: addErrorToDropBox app = ProcessRecord&#123;de1551 3450:com.android.launcher/u0a71&#125; processName = com.android.launcher activityShortComponentName = null parentShortComponentName = null parentProcess = null annotation = Input dispatching timed out ([Gesture Monitor] swipe-up (server) is not responding. Waited 5001ms for MotionEvent). mTracesFile = /data/anr/anr_2024-07-20-15-01-37-318</span><br><span class="line">07-20 15:01:37.341  1385 20230 I AnrManager:  controller = android.app.IActivityController$Stub$Proxy@54e68af</span><br></pre></td></tr></table></figure>
+
+<p>通过负载来看，负载并不高，因此还需要查看其他原因。</p>
+<p>这样的话我们按照上篇还要再分析Event log 和logcat信息，</p>
+<p>从Logcat中我们得到如下信息，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 主线程耗时太久导致</span><br><span class="line">07-20 15:00:45.316  1385  1385 W Looper  : Slow dispatch took 10578ms main h=com.android.server.power.Notifier$NotifierHandler c=null m=1</span><br></pre></td></tr></table></figure>
+
+<p><strong>com.android.server.power.Notifier$NotifierHandler</strong>这个里面主线程耗时太久，用了10578ms，从时间看正好在ANR发生（trace:2024-07-20 15:00:45.488）之前，那么可以断定，是由于该耗时操作导致<code>Input</code>事件未及时处理出现了分发超时，导致了ANR发生。</p>
+<p>关键信息：</p>
+<p><code>WindowManager</code>，<code>InputDispatcher</code>，<code>timeout</code>, <code>Looper</code></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2024/11/04/ANR06/">http://www.codemx.cn/2024/11/04/ANR06/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ANR/">ANR</a></div><div class="post-share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2024/10/28/ANR05/" title="ANR-实例分析-启动应用失败"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">ANR-实例分析-启动应用失败</div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a href="/2024/08/19/ANR02/" title="ANR-分析之基础知识介绍：trace信息"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-19</div><div class="title">ANR-分析之基础知识介绍：trace信息</div></div></a><a href="/2024/08/24/ANR03/" title="ANR-分析之基础知识介绍：event log"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-24</div><div class="title">ANR-分析之基础知识介绍：event log</div></div></a><a href="/2024/10/21/ANR04/" title="ANR-分析之基础知识介绍：logcat"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-21</div><div class="title">ANR-分析之基础知识介绍：logcat</div></div></a><a href="/2024/10/28/ANR05/" title="ANR-实例分析-启动应用失败"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-28</div><div class="title">ANR-实例分析-启动应用失败</div></div></a><a href="/2024/08/17/ANR01/" title="ANR-分类以及分析流程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-17</div><div class="title">ANR-分类以及分析流程</div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">墨香</div><div class="author-info-description">因为兴趣所以选择，因为选择所以坚持。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">18</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/yuchuangu85" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yuchuangu85@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/04/ANR06/" title="ANR-实例分析-Input dispatching timed out">ANR-实例分析-Input dispatching timed out</a><time datetime="2024-11-04T14:17:38.000Z" title="发表于 2024-11-04 22:17:38">2024-11-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/28/ANR05/" title="ANR-实例分析-启动应用失败">ANR-实例分析-启动应用失败</a><time datetime="2024-10-28T14:04:48.000Z" title="发表于 2024-10-28 22:04:48">2024-10-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/21/ANR04/" title="ANR-分析之基础知识介绍：logcat">ANR-分析之基础知识介绍：logcat</a><time datetime="2024-10-21T14:19:03.000Z" title="发表于 2024-10-21 22:19:03">2024-10-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/25/Google-Jetpack-Compose-Animation/" title="Google-Jetpack-Compose-Animation">Google-Jetpack-Compose-Animation</a><time datetime="2024-08-24T16:54:13.000Z" title="发表于 2024-08-25 00:54:13">2024-08-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/24/ANR03/" title="ANR-分析之基础知识介绍：event log">ANR-分析之基础知识介绍：event log</a><time datetime="2024-08-24T15:41:04.000Z" title="发表于 2024-08-24 23:41:04">2024-08-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
