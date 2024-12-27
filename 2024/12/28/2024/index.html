@@ -1,0 +1,257 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>2024年终总结--开发十年，人生四十 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="因为兴趣所以选择，因为选择所以坚持！ 时间过得真快，2024年马上就要结束了，回想自己从事软件开发行业已经有十年时间了。这十年时间对于一个人的人生不算短，这飞逝十年使我的事业发生了很大转变。借着这入行开发十年的日子，以及明年将进入40岁的年纪，我觉得应该总结一下这十年自己的经历、收获，以及未来的规划和感触。 十一年前，我28岁，放弃大学所学，跟随兴趣，开始转向学习一个全新的方向 – Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2024年终总结--开发十年，人生四十">
+<meta property="og:url" content="http://www.codemx.cn/2024/12/28/2024/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="因为兴趣所以选择，因为选择所以坚持！ 时间过得真快，2024年马上就要结束了，回想自己从事软件开发行业已经有十年时间了。这十年时间对于一个人的人生不算短，这飞逝十年使我的事业发生了很大转变。借着这入行开发十年的日子，以及明年将进入40岁的年纪，我觉得应该总结一下这十年自己的经历、收获，以及未来的规划和感触。 十一年前，我28岁，放弃大学所学，跟随兴趣，开始转向学习一个全新的方向 – Android">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2024-12-27T16:20:45.000Z">
+<meta property="article:modified_time" content="2024-12-27T16:57:18.265Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="Summary">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2024/12/28/2024/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '2024年终总结--开发十年，人生四十',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-12-28 00:57:18'
+}</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">2024年终总结--开发十年，人生四十</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-27T16:20:45.000Z" title="发表于 2024-12-28 00:20:45">2024-12-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-12-27T16:57:18.265Z" title="更新于 2024-12-28 00:57:18">2024-12-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Summary/">Summary</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="2024年终总结--开发十年，人生四十"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p><strong>因为兴趣所以选择，因为选择所以坚持！</strong></p>
+<p>时间过得真快，2024年马上就要结束了，回想自己从事软件开发行业已经有十年时间了。这十年时间对于一个人的人生不算短，这飞逝十年使我的事业发生了很大转变。借着这入行开发十年的日子，以及明年将进入40岁的年纪，我觉得应该总结一下这十年自己的经历、收获，以及未来的规划和感触。</p>
+<p>十一年前，我28岁，放弃大学所学，跟随兴趣，开始转向学习一个全新的方向 – Android开发。</p>
+<p>十年前我正式转入了这个完全陌生、前途未知的行业。</p>
+<span id="more"></span>
+
+
+
+<h2 id="关于博客"><a href="#关于博客" class="headerlink" title="关于博客"></a>关于博客</h2><p>八年前我开通了自己的博客[<strong><a target="_blank" rel="noopener" href="https://codemx.cn/">墨香博客</a></strong>]，并写了转行以来第一个简单的总结（<a target="_blank" rel="noopener" href="https://codemx.cn/about/%EF%BC%89%EF%BC%8C%E8%99%BD%E7%84%B6%E8%BF%99%E7%AF%87%E6%80%BB%E7%BB%93%E5%BE%88%E7%9F%AD%EF%BC%8C%E4%BD%86%E4%B9%9F%E6%9B%BE%E9%BC%93%E5%8A%B1%E8%BF%87%E4%B8%80%E4%BA%9B%E6%83%B3%E5%AD%A6%E5%BC%80%E5%8F%91%E5%8F%88%E8%A7%89%E5%BE%97%E5%B9%B4%E9%BE%84%E5%A4%A7%E7%9A%84%E7%BD%91%E5%8F%8B%E3%80%82">https://codemx.cn/about/），虽然这篇总结很短，但也曾鼓励过一些想学开发又觉得年龄大的网友。</a></p>
+<p>关于我的博客，主要内容如下：</p>
+<img src="/images/summary/2024/blog.png" style="zoom:50%;" />
+
+
+
+<p>文章写的不多，至少我个人感觉是这样，而且因为一些原因一度停止更新，但也有一些文章帮助了一些同行和朋友：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://codemx.cn/categories/Launcher/">墨香带你学Launcher系列</a>，</li>
+<li><a target="_blank" rel="noopener" href="https://codemx.cn/categories/AndroidOS/">Android Framework源码分析系列</a></li>
+<li><a target="_blank" rel="noopener" href="https://codemx.cn/categories/ANR/">ANR分析系列</a></li>
+</ul>
+<p>其中学Launcher系列文章被浏览的比较多，ANR分析是最近才开始的，由于能力和经验有限，写的不是很详细。</p>
+<p>因为这些博客，结识了很多朋友和大神，也让我收获很多。后续我的博客会持续更新，虽然没办法高产，但是尽可能是我积累知识的分享，能够与更多朋友交流学习。</p>
+<h2 id="关于Github"><a href="#关于Github" class="headerlink" title="关于Github"></a>关于Github</h2><p>Github账号(<a target="_blank" rel="noopener" href="https://github.com/yuchuangu85)%E6%98%AF%E6%88%912014%E5%B9%B4%E4%B9%9F%E5%B0%B1%E6%98%AF%E6%88%91%E8%BD%AC%E8%A1%8C%E9%82%A3%E5%B9%B4%E5%BC%80%E9%80%9A%E7%9A%84%EF%BC%8C%E4%BD%86%E6%98%AF%E5%89%8D%E6%9C%9F%E7%94%B1%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%BE%88%E5%B7%AE%EF%BC%8C%E7%9F%A5%E8%AF%86%E5%8C%AE%E4%B9%8F%EF%BC%8C%E5%9F%BA%E6%9C%AC%E6%B2%A1%E6%9C%89%E6%9B%B4%E6%96%B0%E3%80%82">https://github.com/yuchuangu85)是我2014年也就是我转行那年开通的，但是前期由于技术很差，知识匮乏，基本没有更新。</a></p>
+<img src="/images/summary/2024/github2014.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2015.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2016.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2017.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2018.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2019.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2020.png" style="zoom: 67%;" />
+
+<img src="/images/summary/2024/github2021.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2021.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2022.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2023.png" style="zoom:50%;" />
+
+<img src="/images/summary/2024/github2024.png" style="zoom:50%;" />
+
+
+
+<p>后面由于自己学的东西越来越多，知识积累越来越多，更新频率也增加了很多，其中包括：Launcher源码的更新，Android知识积累，其他项目的开发，整理并收集了很多的资料。有些也分享了出来，比如：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/yuchuangu85/Develop-Source">Develop-Source</a> – 知识整理</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yuchuangu85/Android_Framework_Source">Android_Framework_Source</a> – 博客中Framework源码分析的详细描述</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Launcher3-dev/Launcher3">Launcher3</a> – Android Launcher项目，通过该项目，帮助过一些做相关项目的朋友，有些是国外的开发者，他们通过邮件跟我交流Launcher的一些技术问题，我都给了回复。</li>
+</ul>
+<p>由于这些项目的分享，也得到不少人的follow。</p>
+<p>当然，还有些库没有分享出来，是由于我还没有整理好，或者没有开发完整，后续完善了也会分享出来，我希望能够帮助更多的人。</p>
+<h2 id="关于职业发展"><a href="#关于职业发展" class="headerlink" title="关于职业发展"></a>关于职业发展</h2><p>关于职业发展，我只能通过我的经历，以及我的想法和规划分享一下我的个人观点。因为对于马上步入40的我，职业发展过程中会出现越来越多的挑战。</p>
+<p>今年有几次和朋友聊天，聊到我快40岁了还在一线从事开发工作，他们投来佩服的目光，觉得技术应该很厉害，能干到这么大年龄，还没有被淘汰。其实我想说，有时候能做多久不一定是技术厉害，有句话：能力决定下限，运气决定上限。你的能力决定你能混的最差的程度，而你的运气决定你能混的最好的程度。运气很多时候取决于你的选择，这个选择不是盲目的选择，而是有积累，有准备的选择。比如行业的选择，公司的选择，项目的选择，学习方向的选择等。在我们做出选择的时候必须要经过自己认真的思考，比如行业的发展前景，公司的发展状况，项目的未来趋势，以及你要去的公司的管理，项目规划等，都可能会影响你的未来职业发展。如果一份工作不符合你的预期，或者公司发展不是很好，我觉得要考虑清楚，因为如果盲目选择，可能去了没多久也会面临再次找工作，得不偿失。</p>
+<p>职业的选择最好是自己喜欢的行业，如果做不到，最低要求是至少不是自己讨厌的行业，否则肯定做不长久。选择了行业就要定一个长期计划，虽然这个计划不一定会一直正确，但是这样可以保证自己有个明确的目标，我们可以在发展过程中去不断调整，不至于我们的人生处处迷茫。 </p>
+<p>关于程序员35岁或者40岁失业，我觉得既然我们改变不了现实，那么就去改变我们自己，想办法降低失业后无法找到工作的风险。</p>
+<p>关于这个话题，分享几篇文章，我个人觉得对于职业发展是有帮助的，我希望对其他人也有一些帮助。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/mlXyJ7YAOZnrZUSVLTW34w">程序员焦虑症之「没用过」和「不知道」，码农的「拧螺丝」之道</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Kri5m7mSP7l5WEXQHzqfDA">鹅厂四味”秘方”</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/G0VWvOyRXAYpBddNvzyLww">鹅厂写代码经验</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/oMHkP2-G_QYd3AHw0xQxXg">鹅厂成人话题</a></li>
+</ul>
+<p>35岁以后程序员的出路少很多，但是还是有机会的，希望上面几篇文章能够启发我们，能够给我们一些鼓励。</p>
+<p>对于后面的发展，我的规划是：学习方向从应用层转向系统层（Framework层，Native层），了解的范围大一些，但是会选择一两个方向做深入研究，因为方向多了是没有精力做到都深入的，因此必须做出取舍。对于新技术保持学习，但是会转化为了解原理为主，使用为辅的方式，因为原理才是关键。</p>
+<h2 id="个人的一些想法"><a href="#个人的一些想法" class="headerlink" title="个人的一些想法"></a>个人的一些想法</h2><h3 id="持续学习"><a href="#持续学习" class="headerlink" title="持续学习"></a>持续学习</h3><p>通过最近的面试和与朋友的聊天发现，很多人的技术并没有跟随你经验的增多而增长，还是一直停留在表面的水平，或者只是会用的水平，这肯定是不行的，在这个工作机会少，人多的时代，必须保持持续学习。</p>
+<p>个人建议：每天都要留出一部分时间学习，哪怕30分钟也行，不要找借口说工作忙没有时间而放弃每日学习，只有坚持学习，你的知识积累才会不断增加，你解决问题速度才会越来越快，工作效率越来越高，这样你就能有更多的时间学习，形成良性循环，否则就是恶性循环，差距越来越大，工作越来越忙。</p>
+<h3 id="形成自己的知识体系"><a href="#形成自己的知识体系" class="headerlink" title="形成自己的知识体系"></a>形成自己的知识体系</h3><p>学习不能盲目的学习，东一头，西一头，这样学到的知识很散，对于我们的发展是很不利的。</p>
+<p>我们要学会形成自己的知识体系，把我们会的和我们想学的知识大纲通过思维导图的方式列出来，然后查找漏掉的知识进行补充，通过长期的学习积累，我们就会得到一个完整的知识图谱，对于我们个人的技能提升是有很大帮助的。</p>
+<h3 id="在某些方面不断深入"><a href="#在某些方面不断深入" class="headerlink" title="在某些方面不断深入"></a>在某些方面不断深入</h3><p>在我们形成自己的知识体系的同时，我们要选择一两个方向进行深入学习，这样在广度优势增加之后增加深度技术优势，减小与大神的技术差距，增强自己的竞争力，这样能提升我们抗击被裁员风险的能力。即便被裁员，也有机会找到一份新的工作。</p>
+<h3 id="走自己的路，不要事事攀比"><a href="#走自己的路，不要事事攀比" class="headerlink" title="走自己的路，不要事事攀比"></a>走自己的路，不要事事攀比</h3><p>在我们的人生历程中要有自己的想法，有自己的发展道路，不能事事模仿或者追随别人。别人卷我们不一定也要那么卷，而是通过自己的方式，提升自己的工作效率和技术水平。</p>
+<p>不要事事攀比，比车子，比房子，比工资，这些只会增加你的负担和压力，人生的追求不止这些，最重要的也不是这些，放弃攀比，我们会过的轻松很多。</p>
+<h3 id="珍惜自己的时间"><a href="#珍惜自己的时间" class="headerlink" title="珍惜自己的时间"></a>珍惜自己的时间</h3><p>到了自己这个年龄，上有老，下有小，自己的时间会被工作、家庭占据很多，自己可支配时间会很少，因此自由时间就是一个奢侈品，因此要时刻珍惜时间，要学会减少不必要的争执，减少浪费自己的时间，把时间用在一些对自己和家人有益的事情上。</p>
+<p>最后，分享一句话，共勉：<strong>路虽远，行则将至；事虽难，做则可成。</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2024/12/28/2024/">http://www.codemx.cn/2024/12/28/2024/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Summary/">Summary</a></div><div class="post-share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2024/12/24/ANR11/" title="ANR-实例分析-Waiting for Available buffer"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">ANR-实例分析-Waiting for Available buffer</div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">墨香</div><div class="author-info-description">因为兴趣所以选择，因为选择所以坚持。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">56</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/yuchuangu85" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yuchuangu85@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8D%9A%E5%AE%A2"><span class="toc-number">1.</span> <span class="toc-text">关于博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EGithub"><span class="toc-number">2.</span> <span class="toc-text">关于Github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95"><span class="toc-number">3.</span> <span class="toc-text">关于职业发展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">个人的一些想法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%81%E7%BB%AD%E5%AD%A6%E4%B9%A0"><span class="toc-number">4.1.</span> <span class="toc-text">持续学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%A2%E6%88%90%E8%87%AA%E5%B7%B1%E7%9A%84%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB"><span class="toc-number">4.2.</span> <span class="toc-text">形成自己的知识体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%9F%90%E4%BA%9B%E6%96%B9%E9%9D%A2%E4%B8%8D%E6%96%AD%E6%B7%B1%E5%85%A5"><span class="toc-number">4.3.</span> <span class="toc-text">在某些方面不断深入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%B0%E8%87%AA%E5%B7%B1%E7%9A%84%E8%B7%AF%EF%BC%8C%E4%B8%8D%E8%A6%81%E4%BA%8B%E4%BA%8B%E6%94%80%E6%AF%94"><span class="toc-number">4.4.</span> <span class="toc-text">走自己的路，不要事事攀比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8F%8D%E6%83%9C%E8%87%AA%E5%B7%B1%E7%9A%84%E6%97%B6%E9%97%B4"><span class="toc-number">4.5.</span> <span class="toc-text">珍惜自己的时间</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/28/2024/" title="2024年终总结--开发十年，人生四十">2024年终总结--开发十年，人生四十</a><time datetime="2024-12-27T16:20:45.000Z" title="发表于 2024-12-28 00:20:45">2024-12-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/24/ANR11/" title="ANR-实例分析-Waiting for Available buffer">ANR-实例分析-Waiting for Available buffer</a><time datetime="2024-12-24T14:44:31.000Z" title="发表于 2024-12-24 22:44:31">2024-12-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/16/ANR10/" title="ANR-实例分析-负载过高">ANR-实例分析-负载过高</a><time datetime="2024-12-16T15:04:52.000Z" title="发表于 2024-12-16 23:04:52">2024-12-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/25/ANR09/" title="ANR-实例分析-死锁">ANR-实例分析-死锁</a><time datetime="2024-11-25T14:18:05.000Z" title="发表于 2024-11-25 22:18:05">2024-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/18/ANR08/" title="ANR-实例分析-Binder">ANR-实例分析-Binder</a><time datetime="2024-11-18T14:53:02.000Z" title="发表于 2024-11-18 22:53:02">2024-11-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2024 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
