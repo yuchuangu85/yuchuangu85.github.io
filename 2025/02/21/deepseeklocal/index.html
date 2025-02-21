@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>本地部署Deepseek并关联到开发工具 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DeepSeek也已经火了一段时间了，不管做技术的或者不是做技术的，都在讨论或者使用DeepSeek。 对于我们来说，DeepSeek确实给我带来很大程度的提效，对于我们的帮助是很大的。基于对AI模型的了解，我也在过年放假的时候也学习搭建了本地模型环境，这里做个整理，记录一下。 本期分两个部分，第一部分是配置本地模型，第二个是关联我们的开发工具Idea或者Android Studio。  本地模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本地部署Deepseek并关联到开发工具">
+<meta property="og:url" content="http://www.codemx.cn/2025/02/21/deepseeklocal/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="DeepSeek也已经火了一段时间了，不管做技术的或者不是做技术的，都在讨论或者使用DeepSeek。 对于我们来说，DeepSeek确实给我带来很大程度的提效，对于我们的帮助是很大的。基于对AI模型的了解，我也在过年放假的时候也学习搭建了本地模型环境，这里做个整理，记录一下。 本期分两个部分，第一部分是配置本地模型，第二个是关联我们的开发工具Idea或者Android Studio。  本地模">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2025-02-21T14:53:26.000Z">
+<meta property="article:modified_time" content="2025-02-21T15:28:30.963Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2025/02/21/deepseeklocal/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '本地部署Deepseek并关联到开发工具',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-21 23:28:30'
+}</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">本地部署Deepseek并关联到开发工具</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-21T14:53:26.000Z" title="发表于 2025-02-21 22:53:26">2025-02-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-21T15:28:30.963Z" title="更新于 2025-02-21 23:28:30">2025-02-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI/">AI</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="本地部署Deepseek并关联到开发工具"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><blockquote>
+<p>DeepSeek也已经火了一段时间了，不管做技术的或者不是做技术的，都在讨论或者使用DeepSeek。</p>
+<p>对于我们来说，DeepSeek确实给我带来很大程度的提效，对于我们的帮助是很大的。基于对AI模型的了解，我也在过年放假的时候也学习搭建了本地模型环境，这里做个整理，记录一下。</p>
+<p>本期分两个部分，第一部分是配置本地模型，第二个是关联我们的开发工具Idea或者Android Studio。</p>
+</blockquote>
+<h2 id="本地模型配置"><a href="#本地模型配置" class="headerlink" title="本地模型配置"></a>本地模型配置</h2><h3 id="1-下载ollama"><a href="#1-下载ollama" class="headerlink" title="1. 下载ollama"></a>1. 下载ollama</h3><p>地址：<a target="_blank" rel="noopener" href="https://ollama.com/download">Download Ollama on macOS</a></p>
+<p>根据自己的pc系统版本进行下载，下在完成后安装并启动。</p>
+<h3 id="2-选择模型"><a href="#2-选择模型" class="headerlink" title="2. 选择模型"></a>2. 选择模型</h3><p>地址：<a target="_blank" rel="noopener" href="https://ollama.com/search">Ollama</a></p>
+<p>这个地址有很多模型，比如：deepseek-r1，llama3.3， phi4等。</p>
+<p>我选择了deepseek-r1，点击进入详细界面，</p>
+<p><img src="/images/AI/DeepSeek/DeepSeeklocal1.png"></p>
+<p>你可以根据自己电脑配置选择对应的模型，我的是Macbook M1，选择的是7B的模型，因为根据网上提示14B也能跑，但是很慢，因此选择了7B，</p>
+<p>选择以后，后面会有对应的命令行，赋值命令行，打开命令工具粘贴，回车即可下载模型，等待下载完成功后会进入如下界面状态：</p>
+<p><img src="/images/AI/DeepSeek/DeepSeeklocal2.png"></p>
+<p>输入你要问的问题即可本地聊天了。</p>
+<p>这样聊天肯定是不方便的，因此我们还需要其他的辅助工具。</p>
+<h3 id="3-模型聊天助手"><a href="#3-模型聊天助手" class="headerlink" title="3. 模型聊天助手"></a>3. 模型聊天助手</h3><p>下载浏览器插件：<a target="_blank" rel="noopener" href="https://pageassist.xyz/">Page Assist - A Sidebar &amp; Web UI for your Local AI</a></p>
+<p>安装完成插件后，在浏览器打开：</p>
+<p><img src="/images/AI/DeepSeek/DeepSeeklocal3.png"></p>
+<p>框1是聊天的记录列表，框2是创建新的聊天，框3是选择模型，因为你可能配置了多个本地模型，框4是信息输入框。</p>
+<p>到这本地模型就配置完成了，非常简单。</p>
+<p><strong>注意：每次开始聊天都要开启allama</strong></p>
+<h2 id="链接开发工具"><a href="#链接开发工具" class="headerlink" title="链接开发工具"></a>链接开发工具</h2><p>打开Idea或者Android Studio开发工具，进入设置，找到插件，在输入框搜索ProxyAI（原名：CodeGPT），然后点击安装。</p>
+<p><img src="/images/AI/DeepSeek/DeepSeeklocal4.png"></p>
+<p>安装完成后，在设置界面找到：Tools-&gt;CodeGPT-&gt;Ollama(Local)，如下</p>
+<p><img src="/images/AI/DeepSeek/DeepSeeklocal5.png"></p>
+<p>在右侧Model那里选择模型即可（我本地安装了两个模型，一个大语言模型，一个Code模型，这个在上面选择模型界面都有），上面Base host是默认的配置。</p>
+<p>退出设置，进入主界面，在边部菜单找到如下图形并打开：</p>
+<p><img src="/images/AI/DeepSeek/DeepSeeklocal6.png"></p>
+<p>这样就与开发工具关联成功，在没有网络的环境下也能进行聊天开发了。</p>
+<p>整体来说配置非常简单，但是本地模型有局限性，就是我们只能配置小版本的，对于保密或者五网络下是友好的，如果没有这些限制肯定在线版是更好的选择。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2025/02/21/deepseeklocal/">http://www.codemx.cn/2025/02/21/deepseeklocal/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a></div><div class="post-share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2024/12/28/2024/" title="2024年终总结--开发十年，人生四十"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2024年终总结--开发十年，人生四十</div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">墨香</div><div class="author-info-description">因为兴趣所以选择，因为选择所以坚持。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/yuchuangu85" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yuchuangu85@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%A8%A1%E5%9E%8B%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">本地模型配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%8B%E8%BD%BDollama"><span class="toc-number">1.1.</span> <span class="toc-text">1. 下载ollama</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%80%89%E6%8B%A9%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">2. 选择模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%A8%A1%E5%9E%8B%E8%81%8A%E5%A4%A9%E5%8A%A9%E6%89%8B"><span class="toc-number">1.3.</span> <span class="toc-text">3. 模型聊天助手</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">链接开发工具</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/21/deepseeklocal/" title="本地部署Deepseek并关联到开发工具">本地部署Deepseek并关联到开发工具</a><time datetime="2025-02-21T14:53:26.000Z" title="发表于 2025-02-21 22:53:26">2025-02-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/28/2024/" title="2024年终总结--开发十年，人生四十">2024年终总结--开发十年，人生四十</a><time datetime="2024-12-27T16:20:45.000Z" title="发表于 2024-12-28 00:20:45">2024-12-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/24/ANR11/" title="ANR-实例分析-Waiting for Available buffer">ANR-实例分析-Waiting for Available buffer</a><time datetime="2024-12-24T14:44:31.000Z" title="发表于 2024-12-24 22:44:31">2024-12-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/16/ANR10/" title="ANR-实例分析-负载过高">ANR-实例分析-负载过高</a><time datetime="2024-12-16T15:04:52.000Z" title="发表于 2024-12-16 23:04:52">2024-12-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/25/ANR09/" title="ANR-实例分析-死锁">ANR-实例分析-死锁</a><time datetime="2024-11-25T14:18:05.000Z" title="发表于 2024-11-25 22:18:05">2024-11-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2025 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
