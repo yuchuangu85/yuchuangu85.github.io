@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>关于程序员年龄的一些体会 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="首先本文只是最近与朋友聊天的一些体会，没有做调研，没有更多数据支撑，不具有代表性，仅仅是个人的一些体会。  今年由于工作非常忙，所以分享更新的很少。看了一下，距离上次更新已经过了快5个月了。 最近由于压力大和朋友以及前同事聊天，减缓下压力，在聊天过程中涉及到了程序员年龄的问题，做个分享。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于程序员年龄的一些体会">
+<meta property="og:url" content="http://www.codemx.cn/2025/09/20/2025-09-20/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="首先本文只是最近与朋友聊天的一些体会，没有做调研，没有更多数据支撑，不具有代表性，仅仅是个人的一些体会。  今年由于工作非常忙，所以分享更新的很少。看了一下，距离上次更新已经过了快5个月了。 最近由于压力大和朋友以及前同事聊天，减缓下压力，在聊天过程中涉及到了程序员年龄的问题，做个分享。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2025-09-19T16:11:29.000Z">
+<meta property="article:modified_time" content="2025-09-19T16:13:15.144Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="Mind">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2025/09/20/2025-09-20/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '关于程序员年龄的一些体会',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2025-09-20 00:13:15'
+}</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">关于程序员年龄的一些体会</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-19T16:11:29.000Z" title="发表于 2025-09-20 00:11:29">2025-09-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-19T16:13:15.144Z" title="更新于 2025-09-20 00:13:15">2025-09-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Mind/">Mind</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="关于程序员年龄的一些体会"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><blockquote>
+<p>首先本文只是最近与朋友聊天的一些体会，没有做调研，没有更多数据支撑，不具有代表性，仅仅是个人的一些体会。</p>
+</blockquote>
+<p>今年由于工作非常忙，所以分享更新的很少。看了一下，距离上次更新已经过了快5个月了。</p>
+<p>最近由于压力大和朋友以及前同事聊天，减缓下压力，在聊天过程中涉及到了程序员年龄的问题，做个分享。</p>
+<span id="more"></span>
+
+<p>第一个案例：和一个猎头朋友聊天，他在给大厂招人，问有没有推荐，我随即问到了有没有年龄限制，给我的回复是高阶的是Open年龄的。</p>
+<p>第二个案例：一个大厂前同事，我问他他们部门年龄大的多不，他回复说他们项目组30岁以下只有一个，从公司来说深圳这边年龄大的，其他地方年龄大的相对少。</p>
+<p>在技术行业，关于程序员年龄的讨论从未停止。常见的观点是，这是一个属于年轻人的领域，超过35岁的开发者面临着职场危机。然而，现实情况可能比这种刻板印象更为复杂和多元。</p>
+<p>我之前写过一篇分享：2024年终总结–开发十年，人生四十(<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/MpdDQYYAMcio_PG6sl896Q)%EF%BC%8C%E4%B9%9F%E6%9B%BE%E4%BB%8B%E7%BB%8D%E8%BF%87%E8%85%BE%E8%AE%AF%E4%B9%9F%E5%8F%91%E8%BF%87%E6%96%87%E7%AB%A0%E8%A1%A8%E6%98%8E%E8%BF%87%E5%AF%B9%E4%BA%8E%E5%B9%B4%E9%BE%84%E5%A4%A7%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%80%81%E5%BA%A6%EF%BC%8C%E4%BB%96%E4%BB%AC%E4%B9%9F%E4%BC%9A%E6%8B%9B%E4%B8%80%E4%BA%9B40+%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%91%98%EF%BC%8C%E5%8F%AA%E4%B8%8D%E8%BF%87%E8%A6%81%E6%B1%82%E6%8A%80%E6%9C%AF%E6%B0%B4%E5%B9%B3%E5%92%8C%E5%B9%B4%E9%BE%84%E8%A6%81%E5%8C%B9%E9%85%8D%E3%80%82">https://mp.weixin.qq.com/s/MpdDQYYAMcio_PG6sl896Q)，也曾介绍过腾讯也发过文章表明过对于年龄大的程序员的态度，他们也会招一些40+的程序员，只不过要求技术水平和年龄要匹配。</a></p>
+<p>虽然上面的例子不具有普遍性，但是我觉得对于35岁以上的程序员机会肯定还是有的，只是相对年龄小的少很多。我们其实也在招人，我也会去参与技术面试，根据我们行业的特性以及公司的要求，我们对年龄没有什么要求（我自己也是40岁，还在一线写代码），我们也是和其他一些公司一样，看你的技术水平，以及是否与你的年龄相匹配，虽然我们没有大厂要求那么高，但是参考点也是相似的。</p>
+<p>虽然上面这些例子不具有普遍性，但是，这些实例背后反映了几点行业变化：</p>
+<p>首先，技术行业的成熟使得对深度专业知识的需求增加。随着技术栈的复杂化和系统规模的扩大，经验丰富的开发者带来的不仅是代码能力，还有系统设计、风险控制和团队协作等方面的宝贵经验。</p>
+<p>其次，技术迭代的速度虽然很快，但底层逻辑和核心原理的变化相对缓慢。资深开发者积累的架构设计和问题解决能力具有长期价值，这不是短时间内能够培养的。</p>
+<p>再者，行业对技术价值的认识正在深化。企业可能也逐渐意识到，单纯追求年轻化团队可能带来的是短期成本优势，而拥有合理年龄结构的团队更能保证项目的稳定性和可持续性。</p>
+<p>当然，这并不意味着年龄增长不会带来挑战。技术行业要求所有人持续学习，不断更新知识储备。那些能够保持技术热情、跟上技术发展步伐的开发者，无论年龄大小，都能在职场中找到自己的位置。</p>
+<p>对于持续成长的技术人才，岁月赋予的经验和洞察力反而成为他们的竞争优势。行业正在逐渐认识到多样化的年龄结构对团队和项目的价值，这为技术人员的长期职业发展提供了更多可能性。</p>
+<p>年龄从来不是界定程序员价值的标尺，能力与适应力才是。在这个快速变化的行业中，保持学习热情和技术敏锐度，比担心年龄数字更有实际意义。</p>
+<p>最后分享一个我高考前学校分享的一个小故事：</p>
+<p>两个人在森林里，遇到了一只大老虎。一个人就赶紧从背后取下一双更轻便的运动鞋换上。另一个人急死了，骂道：“你干嘛呢，再换鞋也跑不过老虎啊！”</p>
+<p>换上运动鞋的运动员说：“我只要跑得比你快就好了。”</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2025/09/20/2025-09-20/">http://www.codemx.cn/2025/09/20/2025-09-20/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Mind/">Mind</a></div><div class="post-share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2025/04/26/AI-N8N-INIT/" title="使用Docker安装n8n并配置ollama本地模型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">使用Docker安装n8n并配置ollama本地模型</div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a href="/2024/12/28/2024/" title="2024年终总结--开发十年，人生四十"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-28</div><div class="title">2024年终总结--开发十年，人生四十</div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">墨香</div><div class="author-info-description">因为兴趣所以选择，因为选择所以坚持。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">59</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/yuchuangu85" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yuchuangu85@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/09/20/2025-09-20/" title="关于程序员年龄的一些体会">关于程序员年龄的一些体会</a><time datetime="2025-09-19T16:11:29.000Z" title="发表于 2025-09-20 00:11:29">2025-09-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/26/AI-N8N-INIT/" title="使用Docker安装n8n并配置ollama本地模型">使用Docker安装n8n并配置ollama本地模型</a><time datetime="2025-04-26T13:07:31.000Z" title="发表于 2025-04-26 21:07:31">2025-04-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/21/deepseeklocal/" title="本地部署Deepseek并关联到开发工具">本地部署Deepseek并关联到开发工具</a><time datetime="2025-02-21T14:53:26.000Z" title="发表于 2025-02-21 22:53:26">2025-02-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/28/2024/" title="2024年终总结--开发十年，人生四十">2024年终总结--开发十年，人生四十</a><time datetime="2024-12-27T16:20:45.000Z" title="发表于 2024-12-28 00:20:45">2024-12-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/24/ANR11/" title="ANR-实例分析-Waiting for Available buffer">ANR-实例分析-Waiting for Available buffer</a><time datetime="2024-12-24T14:44:31.000Z" title="发表于 2024-12-24 22:44:31">2024-12-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2025 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
