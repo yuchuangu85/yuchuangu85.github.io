@@ -6240,6 +6240,8 @@ html:not([data-theme='dark']) .pagination-post,
 html:not([data-theme='dark']) #sidebar #sidebar-menus .menus_items,
 html:not([data-theme='dark']) .search-dialog {
   border: 1px solid var(--mx-cherry-line);
+}
+html:not([data-theme='dark']) .search-dialog {
   backdrop-filter: blur(12px);
 }
 html:not([data-theme='dark']) #page-header.nav-fixed #nav,
@@ -6550,6 +6552,8 @@ html[data-theme='dark'] .pagination-post,
 html[data-theme='dark'] #sidebar #sidebar-menus .menus_items,
 html[data-theme='dark'] .search-dialog {
   border: 1px solid rgba(68,71,90,0.9);
+}
+html[data-theme='dark'] .search-dialog {
   backdrop-filter: blur(14px);
 }
 html[data-theme='dark'] #page-header.nav-fixed #nav,
@@ -6568,7 +6572,7 @@ html[data-theme='dark'] #page-header.not-top-img #nav span.site-page:hover {
   text-shadow: 0 0 8px rgba(255,85,85,0.55);
 }
 html[data-theme='dark'] #footer {
-  background-color: #f55;
+  background-color: rgba(31,33,44,0.78);
 }
 html[data-theme='dark'] #sidebar #sidebar-menus .menus_items .site-page:hover,
 html[data-theme='dark'] #aside-content .card-archives ul.card-archive-list > .card-archive-list-item a:hover,
