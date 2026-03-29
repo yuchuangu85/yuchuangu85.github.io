@@ -6014,6 +6014,17 @@ blockquote.pullquote.right {
 .read-mode #article-container h5,
 .read-mode #article-container h6 {
   padding: 0;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -o-transform: none !important;
+  -ms-transform: none !important;
+  transform: none !important;
+  text-shadow: none !important;
+  -webkit-transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
+  -moz-transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
+  -o-transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
+  -ms-transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 .read-mode #article-container h1:before,
 .read-mode #article-container h2:before,
@@ -6022,6 +6033,29 @@ blockquote.pullquote.right {
 .read-mode #article-container h5:before,
 .read-mode #article-container h6:before {
   content: '';
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -o-transform: none !important;
+  -ms-transform: none !important;
+  transform: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+.read-mode #article-container h1:after,
+.read-mode #article-container h2:after,
+.read-mode #article-container h3:after,
+.read-mode #article-container h4:after,
+.read-mode #article-container h5:after,
+.read-mode #article-container h6:after {
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -o-transform: none !important;
+  -ms-transform: none !important;
+  transform: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
 }
 .read-mode #article-container h1:hover,
 .read-mode #article-container h2:hover,
@@ -6030,6 +6064,42 @@ blockquote.pullquote.right {
 .read-mode #article-container h5:hover,
 .read-mode #article-container h6:hover {
   padding: 0;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -o-transform: none !important;
+  -ms-transform: none !important;
+  transform: none !important;
+  text-shadow: none !important;
+}
+.read-mode #article-container h1:hover:before,
+.read-mode #article-container h2:hover:before,
+.read-mode #article-container h3:hover:before,
+.read-mode #article-container h4:hover:before,
+.read-mode #article-container h5:hover:before,
+.read-mode #article-container h6:hover:before,
+.read-mode #article-container h1:hover:after,
+.read-mode #article-container h2:hover:after,
+.read-mode #article-container h3:hover:after,
+.read-mode #article-container h4:hover:after,
+.read-mode #article-container h5:hover:after,
+.read-mode #article-container h6:hover:after {
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -o-transform: none !important;
+  -ms-transform: none !important;
+  transform: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+.read-mode #article-container h1:hover,
+.read-mode #article-container h2:hover,
+.read-mode #article-container h3:hover,
+.read-mode #article-container h4:hover,
+.read-mode #article-container h5:hover,
+.read-mode #article-container h6:hover {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
 }
 .read-mode #article-container ul:hover:before,
 .read-mode #article-container li:hover:before,
