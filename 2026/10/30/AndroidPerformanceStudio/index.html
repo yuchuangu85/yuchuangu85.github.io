@@ -1,0 +1,274 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Android Performance Studio：11 个性能工具，一个桌面应用 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Android Performance Studio 是一个开源、跨平台的 Android 性能分析工作台：从 Layout Inspector 到 Perfetto，从 HPROF 到 batterystats，采集、查看、关联、定位在一个窗口里完成。本地优先。  一、性能问题最难的地方，不是修，是找“首页滑动有点卡”“启动要两秒多”“内存又涨了 200MB”。 这三句话，背后往往是三套完全不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Performance Studio：11 个性能工具，一个桌面应用">
+<meta property="og:url" content="http://www.codemx.cn/2026/10/30/AndroidPerformanceStudio/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="Android Performance Studio 是一个开源、跨平台的 Android 性能分析工作台：从 Layout Inspector 到 Perfetto，从 HPROF 到 batterystats，采集、查看、关联、定位在一个窗口里完成。本地优先。  一、性能问题最难的地方，不是修，是找“首页滑动有点卡”“启动要两秒多”“内存又涨了 200MB”。 这三句话，背后往往是三套完全不">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2026-10-29T16:16:52.000Z">
+<meta property="article:modified_time" content="2026-10-29T16:21:11.218Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="Android Perfermance">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2026/10/30/AndroidPerformanceStudio/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Android Performance Studio：11 个性能工具，一个桌面应用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-10-30 00:21:11'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Android Performance Studio：11 个性能工具，一个桌面应用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-29T16:16:52.000Z" title="发表于 2026-10-30 00:16:52">2026-10-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-29T16:21:11.218Z" title="更新于 2026-10-30 00:21:11">2026-10-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Perfermance/">Perfermance</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Android Performance Studio：11 个性能工具，一个桌面应用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><blockquote>
+<p><strong>Android Performance Studio</strong> 是一个开源、跨平台的 Android 性能分析工作台：从 Layout Inspector 到 Perfetto，从 HPROF 到 batterystats，采集、查看、关联、定位在一个窗口里完成。本地优先。</p>
+</blockquote>
+<h2 id="一、性能问题最难的地方，不是修，是找"><a href="#一、性能问题最难的地方，不是修，是找" class="headerlink" title="一、性能问题最难的地方，不是修，是找"></a>一、性能问题最难的地方，不是修，是找</h2><p>“首页滑动有点卡”“启动要两秒多”“内存又涨了 200MB”。</p>
+<p>这三句话，背后往往是三套完全不同的工具链。</p>
+<p>滑动卡顿，你要打开 Android Studio Profiler 抓 CPU，或者用 Perfetto 抓系统 trace，盯着 RenderThread 和 SurfaceFlinger 看；内存涨了，你要导 HPROF，翻类直方图、支配树和引用链；启动慢，你要跑 Macrobenchmark，看 TTID、TTFD 和 Baseline Profile；耗电异常，你要导 batterystats，再去 Battery Historian 里对 Wakelock 和 Alarm；再加上 simpleperf 看 Native 热点、AGI 看 GPU、OkHttp 抓网络……</p>
+<p>每一个工具都能给你一段真相。但没有一个地方，把这几段真相拼在一起。</p>
+<p>更消耗人的是重复动作：换一个工具，就要重新选设备、重新选进程、重新对齐时间轴。分析完一轮，截图在桌面、trace 在 Downloads、HPROF 在某个临时目录，过两周再回来看，连当时抓的是哪个版本、哪台机器都说不清。</p>
+<p>Android Performance Studio 想解决的，就是这条断掉的“证据链”。</p>
+<h2 id="二、它不是又一个-Profiler，而是一个工作台"><a href="#二、它不是又一个-Profiler，而是一个工作台" class="headerlink" title="二、它不是又一个 Profiler，而是一个工作台"></a>二、它不是又一个 Profiler，而是一个工作台</h2><p><img src="/images/AndroidPerformanceStudio/media/AndroidPerformanceStudio00.png"></p>
+<p><em>主页：连接设备、快捷操作、分析模块和最近分析产物集中在一个入口。</em></p>
+<p>打开应用，首页同时回答三个问题：现在连着哪台设备、最近分析过哪些产物、接下来能做什么。设备与进程选择是全局上下文，在任何一个模块里切换，其他模块看到的都是同一套上下文。</p>
+<p>这是它和“把十一个工具各做成一个 Tab”最大的区别：<strong>共享上下文，但不共享数据模型。</strong></p>
+<p>每个分析器仍然是独立的 included build，有自己的采集路径、解析模型、证据边界和测试。Perfetto 的 trace 不会被硬塞进 HPROF 的内存模型，启动实验也不会复用帧分析的数据结构。共享的是入口、设备、进程、时间基准、产物管理和导航——而不是把所有证据揉成一个巨大的 JSON。</p>
+<p>技术上，它是一个 Compose Desktop（Kotlin）应用：macOS、Windows、Linux 都有原生安装包，自带 Java 运行时和准备好的分析器资源；支持中英文、明暗主题、跟随系统与显示缩放；在线靠 ADB 采集，离线可以直接分析导入的产物。</p>
+<p>安装包自带运行时，意味着用安装包不需要 Git、JDK、Node、Python，也不需要 Android SDK&#x2F;NDK 的构建工具链——只有设备采集时才需要 Platform Tools 里的 adb。</p>
+<h2 id="三、十一个模块，逐一摆上台面"><a href="#三、十一个模块，逐一摆上台面" class="headerlink" title="三、十一个模块，逐一摆上台面"></a>三、十一个模块，逐一摆上台面</h2><p>下面每一张截图，都是一次真实采集或查看时的界面（演示设备为 Android 15 &#x2F; API 35）。先看全局，再逐个模块；图片信息密度不低，手机上建议点开大图或横屏查看。</p>
+<h3 id="1-Layout-Inspector：先把“层级”看清楚"><a href="#1-Layout-Inspector：先把“层级”看清楚" class="headerlink" title="1. Layout Inspector：先把“层级”看清楚"></a>1. Layout Inspector：先把“层级”看清楚</h3><p><img src="/images/AndroidPerformanceStudio/media/AndroidPerformanceStudio01.png"></p>
+<p><em>Layout Inspector：左侧层级树、中央截图与边界、右侧节点属性、底部 Findings。</em></p>
+<p>左边是 View 层级树，中间是设备截图与 bounds overlay，右边是节点属性，底部是 Findings 和时间线。选中树上的某个节点，画布上同步高亮它的边界；反过来在画布上点一下，树也会定位到对应节点。</p>
+<p>截图里这次采集有 <strong>167 个节点、最大深度 21</strong>，超过阈值 10，Findings 直接给出一条 “Deep hierarchy” 警告；时间线还记录了一组快照之间的节点变化：<strong>+167 &#x2F; -73</strong>。</p>
+<p>层级深不一定是问题，但当一个页面里堆了二十多层 FrameLayout 和 wrapper，测量、布局、绘制三段的成本都会肉眼可见地涨上来。先把它看见，才谈得上收拾。</p>
+<p>需要说清楚的是 Compose 检查的边界：完整运行时 Compose 树需要经过校验的检查运行时、Android API 29+ 上的可调试进程、以及精确匹配的 Compose Inspector；View 或 Semantics 回退是另一种证据，不能当作完整的 Composable 树。工具会在界面上把降级原因标出来。</p>
+<h3 id="2-CPU-Profiler：找热点，但别只看火焰图"><a href="#2-CPU-Profiler：找热点，但别只看火焰图" class="headerlink" title="2. CPU Profiler：找热点，但别只看火焰图"></a>2. CPU Profiler：找热点，但别只看火焰图</h3><p><img src="/images/AndroidPerformanceStudio/media/AndroidPerformanceStudio02.png"></p>
+<p><em>CPU Profiler：线程时间线、正反向调用树、函数详情与采样质量指标。</em></p>
+<p>这次采集是 <strong>439 个样本、11 条线程、2.65 秒，有效采样率 166Hz，丢失样本 0</strong>。先看时间轴上的线程轨道：RenderThread、mali-compiler、binder、mali-mem-pur 各自在什么时候干活，一眼能对上。</p>
+<p>调用树支持正向和反向，选中从 <code>__start_thread</code> 到 <code>DrawFrameTask::postAndWait</code> 的这条链路，可以看到下层大量时间落在 libGLES_mali.so 的 Skia &#x2F; GL 调用里；右侧会同步给出 Total、Self、Samples、Threads 和调用路径。</p>
+<p>有意思的是顶部热点函数：<code>&lt;unknown-symbol&gt;</code>，占比 30.3%。<strong>符号没还原，本身就是一条结论</strong>——先补 debug info 或者换采集方式，再谈优化，否则很容易对着一个空名字“优化”半天。</p>
+<h3 id="3-Memory-Profiler：把“内存涨了”拆成可复核的证据"><a href="#3-Memory-Profiler：把“内存涨了”拆成可复核的证据" class="headerlink" title="3. Memory Profiler：把“内存涨了”拆成可复核的证据"></a>3. Memory Profiler：把“内存涨了”拆成可复核的证据</h3><p><img src="/images/AndroidPerformanceStudio/media/AndroidPerformanceStudio03.png"></p>
+<p><em>Memory Profiler：类直方图、实例列表、字段与引用，以及证据可用状态。</em></p>
+<p>这次堆里是 <strong>27,109 个类、492,862 个实例、shallow 20.2MB</strong>。类列表里 byte[]、String、Object[]、HashMap$Node 依次排开，每一行都能下钻到实例、字段和引用。</p>
+<p>更值得看的是 EmojiCompat 这个例子：这两个实例的 shallow size 加起来只有 20B，但 retained size 是 470.3KB。只盯 shallow size，会漏掉真正把内存攥在手里的持有关系。</p>
+<p>支配树、引用链、快照差异都在；按采集路径不同，还能看 Native Heap、Bitmap 转储和 ART 分配采样。</p>
+<p>还有一个容易被忽略的细节：Native Size 和 Retained 在汇总里显示的是 <strong>Unavailable</strong>。读不到就是读不到，工具不替你猜。</p>
+<h3 id="4-Frame-Profiler：卡顿要能落到具体一帧"><a href="#4-Frame-Profiler：卡顿要能落到具体一帧" class="headerlink" title="4. Frame Profiler：卡顿要能落到具体一帧"></a>4. Frame Profiler：卡顿要能落到具体一帧</h3><p><img src="/images/AndroidPerformanceStudio/media/AndroidPerformanceStudio04.png"></p>
+<p><em>Frame Profiler：帧时间线、deadline miss 聚类、单帧阶段拆分与布局预览。</em></p>
+<p>这次 132 帧：<strong>P50 7.17ms、P95 15.89ms、最差 66.79ms，deadline miss 率 2.4%</strong>。时间线把全部帧按“好帧 &#x2F; 高延迟 &#x2F; 自身 Jank &#x2F; SurfaceFlinger 导致 &#x2F; 丢帧”分色，顶部标出 miss 聚类。</p>
+<p>三次 miss 被拆成 SEVERE 81.51ms、MAJOR 56.28ms、MINOR 30.30ms 三档。点进最严重的那一帧，能看到它 66.79ms、预算 15.67ms、错过 4 次 vsync、活动类型是 Animation，阶段拆分里 Input 占了 3.62ms。</p>
+<p>这一帧到底是输入慢、动画慢还是绘制慢，Frame Profiler 给的是可继续往下查的入口——比如直接 “Open Layout” 跳到这一帧对应的布局证据，用关联而不是猜测去定位。</p>
+<p>页面底部也很坦诚：FrameMetrics Agent 不可用，回退到 gfxinfo 轮询；平台 Jank 信号拿不到时显示 “—”。deadline miss 和平台 Jank 是两种信号，不能混着讲。</p>
+<h3 id="5-Startup-Profiler：把“启动慢”变成可重复的实验"><a href="#5-Startup-Profiler：把“启动慢”变成可重复的实验" class="headerlink" title="5. Startup Profiler：把“启动慢”变成可重复的实验"></a>5. Startup Profiler：把“启动慢”变成可重复的实验</h3><p><img src="/images/AndroidPerformanceStudio/media/AndroidPerformanceStudio05.png"></p>
+<p><em>Startup Profiler：Cold&#x2F;Warm&#x2F;Hot 实验、逐轮指标、编译与 Baseline Profile 证据。</em></p>
+<p>5 轮 Cold 启动：<strong>TTID 中位数 2087ms，P95 2205ms，单轮在 1815ms 到 2205ms 之间，MAD 118ms</strong>。单看一个数字没有意义，五轮放在一起，才看得出这个页面的启动到底稳不稳定。</p>
+<p>同一屏上还并排放着 TTFD、First Frame、P95。这次 TTFD 和 First Frame 显示不可用，右侧的证据说明写得很直白：应用没有上报 Fully Drawn；Startup Agent 不可用时回退到平台计时。Baseline Profile 的状态是“未验证”，编译模式是 run-from-apk——这些状态都如实标了出来，反而让结论更可信。</p>
+<p>启动不该是一个数，而应该是一组可重复的实验：请求模式、观测模式、每轮记录、waterfall、CSV &#x2F; JSON 导出，缺一不可。</p>
+<h3 id="6-Battery-Profiler：电量问题要按-UID-归因"><a href="#6-Battery-Profiler：电量问题要按-UID-归因" class="headerlink" title="6. Battery Profiler：电量问题要按 UID 归因"></a>6. Battery Profiler：电量问题要按 UID 归因</h3><p><img src="/images/AndroidPerformanceStudio/media/AndroidPerformanceStudio06.png"></p>
+<p><em>Battery Profiler：实验会话、电池快照、UID 资源归因与热状态。</em></p>
+<p>这次按 UID 10277 做归因：11 秒实验，Wakelock 0、Wakeup Alarm 0、网络 0B，峰值温度 53.25°C。Wakelock、Alarm、Job、Sensor、Energy、Network、History 分栏排列，点一行就能看到对应证据。</p>
+<p>Battery 面板里有两个容易被混为一谈的东西：<strong>电池快照是某个时刻的采样</strong>，<strong>History 是另一条独立时间轴</strong>。工具把它们分开展示，而不是假装可以互相插值。</p>
+<p>能量的可用性也有等级（这次是 ENERGY_ENHANCED），不是每台设备、每个版本都能给出同样细的字段。结果可以导出，也可以转成传统 Battery Historian 的输入。</p>
+<h3 id="7-GPU-Inspector：老实当一个入口"><a href="#7-GPU-Inspector：老实当一个入口" class="headerlink" title="7. GPU Inspector：老实当一个入口"></a>7. GPU Inspector：老实当一个入口</h3><p><img src="/images/AndroidPerformanceStudio/media/AndroidPerformanceStudio07.png"></p>
+<p><em>GPU Inspector：产物索引、SHA-256 完整性校验、图形上下文与外部工具能力检测。</em></p>
+<p>一个索引产物、SHA-256 校验通过、60.7 MiB；设备信息里 Mali-G57 MC2、驱动 v1.r38p1、OpenGL ES &#x2F; EGL &#x2F; Vulkan 后端都列了出来。</p>
+<p>右边 AGI 能力区写着：版本未知、Unsupported，原因是没找到 AGI 的可执行文件。<strong>没装就写没装，不假装支持。</strong></p>
+<p>校验通过的 trace 可以一键交给 Perfetto 继续分析；配置好 AGI 之后，也能交给 AGI。GPU Inspector 自己不是完整的 GPU Profiler，它是索引、校验和跳转的入口——这个定位它写在了界面上，也写在了文档里。</p>
+<h3 id="8-还有四个模块，这次没有截图"><a href="#8-还有四个模块，这次没有截图" class="headerlink" title="8. 还有四个模块，这次没有截图"></a>8. 还有四个模块，这次没有截图</h3><ul>
+<li><strong>Trace Analyzer</strong>：采集或导入 Perfetto trace，用 trace_processor 做查询和诊断，保留最近会话、导出原始 trace，也能打开准备好的 Perfetto UI。</li>
+<li><strong>Network Profiler</strong>：分析配置了 <code>NetworkProfiler.eventListenerFactory</code> 的 OkHttp 采集数据或导入的 HAR，看请求活动、阶段耗时、失败、域名和连接&#x2F;TLS 证据。它不是整机抓包，WebView、Cronet、URLConnection 和 Native Socket 不在范围内。</li>
+<li><strong>Benchmark Regression</strong>：导入 AndroidX Benchmark JSON，选已保存结果作为基线和当前版本，在可比性与统计约束下比较并导出报告；可选的 Macrobenchmark 编排复用已有测试工程。</li>
+<li><strong>Source Workspaces</strong>：只读注册 Local、GitHub、AOSP 源码，管理不可变快照、索引和构建证据，把受支持的性能证据解析成可检查的源码定位候选。</li>
+</ul>
+<h2 id="四、把它们串起来：一次滑动卡顿的排查路径"><a href="#四、把它们串起来：一次滑动卡顿的排查路径" class="headerlink" title="四、把它们串起来：一次滑动卡顿的排查路径"></a>四、把它们串起来：一次滑动卡顿的排查路径</h2><p>如果只用这套工具去查一次“首页滑动卡顿”，我会按这个顺序走，而不是一上来就抓 Perfetto：</p>
+<ol>
+<li><strong>先用 Frame Profiler 定范围。</strong> 抓一段 10 秒左右的帧数据，看 P50、P95 和最差帧，确认 miss 是偶发还是成片，以及聚类落在哪些帧上。</li>
+<li><strong>对着最差的一帧看阶段拆分。</strong> Input、Animation、Layout、Draw、Sync 哪一段占大头，决定了下一步往哪走：Draw 重就去看 GPU 和 Skia，Input 重就去看手势处理和主线程排队。</li>
+<li><strong>在 Trace Analyzer 里对齐同一时间窗。</strong> 同一台设备、同一段采集，直接看 RenderThread、SurfaceFlinger、binder 的调度；不用再抓一次、再对一次时间轴。</li>
+<li><strong>需要 Native 热点时，再用 CPU Profiler 补 simpleperf。</strong> 如果热点还是 <code>&lt;unknown-symbol&gt;</code>，先补符号，别急着改代码。</li>
+<li><strong>回 Layout Inspector 验证结构。</strong> 看这一帧对应的页面是不是层级过深、有没有重复测量；如果是 Compose，就确认完整检查是否可用、有没有回退。</li>
+<li><strong>改完之后回到同一个工作台做回归。</strong> 启动、帧耗时、Benchmark 都用同一台设备、同一套产物记录，结论才可比较。</li>
+</ol>
+<p>这条路不一定每次都能走通——设备不支持 FrameTimeline、采集 Agent 不可用、符号缺失，都会让某一步降级。但降级本身也是结论：你知道自己现在站在哪块证据上，而不是在十一个工具之间凭感觉跳。</p>
+<h2 id="五、四个我坚持的设计选择"><a href="#五、四个我坚持的设计选择" class="headerlink" title="五、四个我坚持的设计选择"></a>五、四个我坚持的设计选择</h2><p>如果只把这当成一份功能清单，就低估它了。下面四条，才是它和“十一个工具的合集”最不一样的地方。</p>
+<p><strong>第一，证据分层。</strong> 原始产物、解析模型、界面展示和最终结论，是四种不同的东西。一条 trace 能被漂亮地画出来，不代表能把某个函数判定为根因；一张截图能说明布局深，不代表能证明它导致了卡顿。文档里反复强调的“可展示不等于可证明因果”，就是这条线。</p>
+<p><strong>第二，缺失就显示缺失。</strong> TTFD 没有 Fully Drawn 事件，就显示 Unavailable；Native Size 读不到，就写读不到；AGI 版本未知，就写未知。把 0 填进去，或者用一个估算值冒充测量值，是对分析者最坏的欺骗——因为你会在一个假数字上做真决策。</p>
+<p><strong>第三，关联不是因果。</strong> 跨工具跳转、时间轴重叠、UID 归因，这些是排查线索，不是判决书。Frame 里某一帧卡了、同一时间某个 SDK 在跑，只能说“值得一起看”，不能说“就是它干的”。</p>
+<p><strong>第四，本地优先，AI 显式触发。</strong> 默认的采集和分析都在本机完成。AI 辅助分析需要你主动触发，并且只发送你选中的证据；源码片段还需要工作区授权。注册一个源码工作区，不等于把整个工程上传。</p>
+<h2 id="六、一些工程侧的事实"><a href="#六、一些工程侧的事实" class="headerlink" title="六、一些工程侧的事实"></a>六、一些工程侧的事实</h2><ul>
+<li>技术栈是 Compose Desktop + Kotlin，按功能拆成多个 included build，各自有测试任务。</li>
+<li>上游资源固定版本：Perfetto UI、Firefox Profiler、trace_processor 都按固定版本准备，不跟最新的“可能可用”。</li>
+<li>发布矩阵覆盖十个安装包：macOS arm64 &#x2F; x64 的 DMG、PKG，Windows x64 的 MSI、EXE，Linux x64 &#x2F; arm64 的 DEB、RPM。</li>
+<li>安装包自带 JRE 和分析器资源；用安装包起步，不需要 Git、JDK、Node、Yarn、Python 或 Android SDK&#x2F;NDK 构建工具链。</li>
+<li>项目还在持续迭代（0.7.x），已知的能力缺口会写在文档里，而不是消失在宣传语里。</li>
+</ul>
+<h2 id="七、怎么开始"><a href="#七、怎么开始" class="headerlink" title="七、怎么开始"></a>七、怎么开始</h2><ol>
+<li>到 <a target="_blank" rel="noopener" href="https://github.com/yuchuangu85/AndroidPerformanceStudio/releases">GitHub Releases</a> 下载对应系统和架构的安装包。</li>
+<li>需要在线采集的话，准备好 Android SDK Platform Tools，打开 USB 调试并在设备上授权 adb。</li>
+<li>打开 <strong>Settings</strong>，配置 Android SDK 位置、语言、主题和显示缩放；源码和 AI 设置按需配置。</li>
+<li>首页直接 <strong>Start Capture</strong>，或者用 <strong>Import Trace &#x2F; Analyze HPROF</strong> 分析离线产物。</li>
+<li>更细的流程看<a target="_blank" rel="noopener" href="https://github.com/yuchuangu85/AndroidPerformanceStudio/blob/main/docs-user-zh/README.md">中文用户指南</a>。</li>
+</ol>
+<p><strong>它适合谁</strong>：需要把多种证据串起来看的 Android 性能、稳定性工程师；要啃复杂页面、启动、内存、功耗和回归分析的团队。</p>
+<p><strong>它暂时不适合谁</strong>：想替代 IDE 断点调试的人；需要整机网络抓包的人；需要完整 GPU 深度分析的人——那件事仍然应该交给 AGI、RenderDoc 这类专业工具。</p>
+<h2 id="八、写在最后"><a href="#八、写在最后" class="headerlink" title="八、写在最后"></a>八、写在最后</h2><p>做这个工具的过程中，我越来越确信一件事：性能排查里最贵的不是工具本身，而是<strong>把证据重新找回来、重新对齐、重新解释一遍的成本</strong>。</p>
+<p>Android Performance Studio 未必能替你下结论，但它至少想把证据摆齐、把边界说清、把上下文留住。</p>
+<p>性能优化没有银弹，但可以让证据不再流浪。</p>
+<p>项目是开源的：<a target="_blank" rel="noopener" href="https://github.com/yuchuangu85/AndroidPerformanceStudio">github.com&#x2F;yuchuangu85&#x2F;AndroidPerformanceStudio</a>。如果它对你有用，欢迎 Star；发现 bug 或者想要某个模块，也欢迎开 Issue。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2026/10/30/AndroidPerformanceStudio/">http://www.codemx.cn/2026/10/30/AndroidPerformanceStudio/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Android-Perfermance/">Android Perfermance</a></div><div class="post-share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2026/06/17/llm-anr/" title="从海量 Log 到可审计结论：llm-anr 的设计思想、开发流程与最终结果"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">从海量 Log 到可审计结论：llm-anr 的设计思想、开发流程与最终结果</div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">墨香</div><div class="author-info-description">因为兴趣所以选择，因为选择所以坚持。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">23</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/yuchuangu85" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yuchuangu85@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E6%9C%80%E9%9A%BE%E7%9A%84%E5%9C%B0%E6%96%B9%EF%BC%8C%E4%B8%8D%E6%98%AF%E4%BF%AE%EF%BC%8C%E6%98%AF%E6%89%BE"><span class="toc-number">1.</span> <span class="toc-text">一、性能问题最难的地方，不是修，是找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%83%E4%B8%8D%E6%98%AF%E5%8F%88%E4%B8%80%E4%B8%AA-Profiler%EF%BC%8C%E8%80%8C%E6%98%AF%E4%B8%80%E4%B8%AA%E5%B7%A5%E4%BD%9C%E5%8F%B0"><span class="toc-number">2.</span> <span class="toc-text">二、它不是又一个 Profiler，而是一个工作台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%8D%81%E4%B8%80%E4%B8%AA%E6%A8%A1%E5%9D%97%EF%BC%8C%E9%80%90%E4%B8%80%E6%91%86%E4%B8%8A%E5%8F%B0%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">三、十一个模块，逐一摆上台面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Layout-Inspector%EF%BC%9A%E5%85%88%E6%8A%8A%E2%80%9C%E5%B1%82%E7%BA%A7%E2%80%9D%E7%9C%8B%E6%B8%85%E6%A5%9A"><span class="toc-number">3.1.</span> <span class="toc-text">1. Layout Inspector：先把“层级”看清楚</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CPU-Profiler%EF%BC%9A%E6%89%BE%E7%83%AD%E7%82%B9%EF%BC%8C%E4%BD%86%E5%88%AB%E5%8F%AA%E7%9C%8B%E7%81%AB%E7%84%B0%E5%9B%BE"><span class="toc-number">3.2.</span> <span class="toc-text">2. CPU Profiler：找热点，但别只看火焰图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Memory-Profiler%EF%BC%9A%E6%8A%8A%E2%80%9C%E5%86%85%E5%AD%98%E6%B6%A8%E4%BA%86%E2%80%9D%E6%8B%86%E6%88%90%E5%8F%AF%E5%A4%8D%E6%A0%B8%E7%9A%84%E8%AF%81%E6%8D%AE"><span class="toc-number">3.3.</span> <span class="toc-text">3. Memory Profiler：把“内存涨了”拆成可复核的证据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Frame-Profiler%EF%BC%9A%E5%8D%A1%E9%A1%BF%E8%A6%81%E8%83%BD%E8%90%BD%E5%88%B0%E5%85%B7%E4%BD%93%E4%B8%80%E5%B8%A7"><span class="toc-number">3.4.</span> <span class="toc-text">4. Frame Profiler：卡顿要能落到具体一帧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Startup-Profiler%EF%BC%9A%E6%8A%8A%E2%80%9C%E5%90%AF%E5%8A%A8%E6%85%A2%E2%80%9D%E5%8F%98%E6%88%90%E5%8F%AF%E9%87%8D%E5%A4%8D%E7%9A%84%E5%AE%9E%E9%AA%8C"><span class="toc-number">3.5.</span> <span class="toc-text">5. Startup Profiler：把“启动慢”变成可重复的实验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Battery-Profiler%EF%BC%9A%E7%94%B5%E9%87%8F%E9%97%AE%E9%A2%98%E8%A6%81%E6%8C%89-UID-%E5%BD%92%E5%9B%A0"><span class="toc-number">3.6.</span> <span class="toc-text">6. Battery Profiler：电量问题要按 UID 归因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-GPU-Inspector%EF%BC%9A%E8%80%81%E5%AE%9E%E5%BD%93%E4%B8%80%E4%B8%AA%E5%85%A5%E5%8F%A3"><span class="toc-number">3.7.</span> <span class="toc-text">7. GPU Inspector：老实当一个入口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E8%BF%98%E6%9C%89%E5%9B%9B%E4%B8%AA%E6%A8%A1%E5%9D%97%EF%BC%8C%E8%BF%99%E6%AC%A1%E6%B2%A1%E6%9C%89%E6%88%AA%E5%9B%BE"><span class="toc-number">3.8.</span> <span class="toc-text">8. 还有四个模块，这次没有截图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%8A%8A%E5%AE%83%E4%BB%AC%E4%B8%B2%E8%B5%B7%E6%9D%A5%EF%BC%9A%E4%B8%80%E6%AC%A1%E6%BB%91%E5%8A%A8%E5%8D%A1%E9%A1%BF%E7%9A%84%E6%8E%92%E6%9F%A5%E8%B7%AF%E5%BE%84"><span class="toc-number">4.</span> <span class="toc-text">四、把它们串起来：一次滑动卡顿的排查路径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%9B%9B%E4%B8%AA%E6%88%91%E5%9D%9A%E6%8C%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E9%80%89%E6%8B%A9"><span class="toc-number">5.</span> <span class="toc-text">五、四个我坚持的设计选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%B8%80%E4%BA%9B%E5%B7%A5%E7%A8%8B%E4%BE%A7%E7%9A%84%E4%BA%8B%E5%AE%9E"><span class="toc-number">6.</span> <span class="toc-text">六、一些工程侧的事实</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%80%8E%E4%B9%88%E5%BC%80%E5%A7%8B"><span class="toc-number">7.</span> <span class="toc-text">七、怎么开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">8.</span> <span class="toc-text">八、写在最后</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/30/AndroidPerformanceStudio/" title="Android Performance Studio：11 个性能工具，一个桌面应用">Android Performance Studio：11 个性能工具，一个桌面应用</a><time datetime="2026-10-29T16:16:52.000Z" title="发表于 2026-10-30 00:16:52">2026-10-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/17/llm-anr/" title="从海量 Log 到可审计结论：llm-anr 的设计思想、开发流程与最终结果">从海量 Log 到可审计结论：llm-anr 的设计思想、开发流程与最终结果</a><time datetime="2026-06-17T13:57:52.000Z" title="发表于 2026-06-17 21:57:52">2026-06-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/14/Launcher3-004/" title="Launcher3-Dagger2-依赖注入详细流程图.">Launcher3-Dagger2-依赖注入详细流程图.</a><time datetime="2026-05-14T15:57:36.000Z" title="发表于 2026-05-14 23:57:36">2026-05-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/11/Launcher3-003/" title="Launcher3引入Dagger前后对比">Launcher3引入Dagger前后对比</a><time datetime="2026-05-11T15:29:23.000Z" title="发表于 2026-05-11 23:29:23">2026-05-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/10/Launcher3-002/" title="Launcher3基础部分架构">Launcher3基础部分架构</a><time datetime="2026-05-10T03:09:05.000Z" title="发表于 2026-05-10 11:09:05">2026-05-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2026 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
