@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude 原理与 Claude Code 代码架构详解</title>
+<style>
+:root{--bg:#0f1114;--panel:#16191e;--panel2:#1b1f26;--line:#272c34;--fg:#e8e6e1;--fg2:#b6b2a8;--dim:#8b8f98;--amber:#e0a94a;--amber-soft:rgba(224,169,74,.12);--green:#6fbf9a;--red:#e07a6a;--blue:#6aa9e0;--purple:#a98ae0;--mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(900px 420px at 15% -10%,rgba(224,169,74,.10),transparent 60%),radial-gradient(760px 380px at 95% 5%,rgba(106,169,224,.07),transparent 62%)}
+.layout{display:grid;grid-template-columns:260px 1fr;max-width:1320px;margin:0 auto;position:relative}
+nav.toc{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 18px;border-right:1px solid var(--line)}
+nav.toc .logo{font-weight:700;font-size:18px;color:var(--amber);margin-bottom:4px}
+nav.toc .sub{font-size:12px;color:var(--dim);margin-bottom:20px}
+nav.toc a{display:block;color:var(--fg2);text-decoration:none;font-size:13.5px;padding:5px 10px;border-radius:6px;border-left:2px solid transparent}
+nav.toc a:hover,nav.toc a.active{background:var(--amber-soft);color:var(--amber);border-left-color:var(--amber)}
+nav.toc .grp{font-size:11px;color:var(--dim);font-family:var(--mono);margin:14px 10px 4px;letter-spacing:1px}
+main{padding:40px 56px 120px;min-width:0}
+h1{font-size:34px;margin:0 0 8px;letter-spacing:.5px}
+h1 small{display:block;font-size:15px;color:var(--dim);font-weight:400;margin-top:6px}
+h2{font-size:24px;margin:64px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+h2 .no{color:var(--amber);font-family:var(--mono);margin-right:10px}
+h3{font-size:18px;margin:30px 0 10px;color:var(--amber)}
+p,li{color:var(--fg2);font-size:15px}
+strong{color:var(--fg)}
+code{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);padding:1px 6px;border-radius:4px;color:#f0c46a}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow:auto;font-family:var(--mono);font-size:12.8px;line-height:1.6;color:#d6d2c8}
+pre code{background:none;border:0;padding:0;color:inherit}
+pre .c{color:var(--dim)} pre .k{color:var(--purple)} pre .s{color:var(--green)} pre .t{color:var(--blue)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--amber);font-weight:600}
+td{color:var(--fg2)} td code{white-space:nowrap}
+.hero{background:linear-gradient(135deg,rgba(224,169,74,.10),rgba(106,169,224,.06));border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin:22px 0}
+.hero p{margin:6px 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:16px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h4{margin:0 0 6px;font-size:15px;color:var(--fg)}
+.card p{margin:0;font-size:13.5px}
+.card .tag{display:inline-block;font-size:11px;font-family:var(--mono);padding:1px 7px;border-radius:10px;margin-bottom:8px;background:var(--amber-soft);color:var(--amber)}
+.note{border-left:3px solid var(--blue);background:rgba(106,169,224,.07);padding:10px 16px;border-radius:0 8px 8px 0;margin:16px 0}
+.note.warn{border-left-color:var(--amber);background:var(--amber-soft)}
+.note p{margin:4px 0;font-size:14px}
+.diagram{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;overflow:auto}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.diagram svg text{font-family:-apple-system,"PingFang SC",sans-serif}
+.layers{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+.layer{display:grid;grid-template-columns:170px 1fr;gap:12px;align-items:stretch}
+.layer .name{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-weight:600;color:var(--amber);font-size:14px;display:flex;align-items:center}
+.layer .items{display:flex;flex-wrap:wrap;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px}
+.layer .items span{font-family:var(--mono);font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:var(--fg2)}
+.layer .items span b{color:var(--fg);font-weight:600}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;position:relative;padding:8px 0 8px 44px;border-left:1px dashed var(--line);margin-left:14px}
+.steps li::before{content:counter(s);position:absolute;left:-14px;top:8px;width:28px;height:28px;border-radius:50%;background:var(--panel2);border:1px solid var(--amber);color:var(--amber);font-size:13px;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
+.links a{color:var(--blue)}
+footer{margin-top:80px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}nav.toc{display:none}main{padding:24px 18px}.layer{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc">
+  <div class="logo">Claude</div>
+  <div class="sub">模型原理 · Agent 运行流程 · 代码架构</div>
+  <div class="grp">PART A · 模型</div>
+  <a href="#s1">01 Claude 是什么</a>
+  <a href="#s2">02 底座：Transformer 与预训练</a>
+  <a href="#s3">03 对齐：RLHF 与 Constitutional AI</a>
+  <a href="#s4">04 可解释性：模型内部在想什么</a>
+  <a href="#s5">05 推理：Extended Thinking 与 Effort</a>
+  <a href="#s6">06 工具调用协议</a>
+  <a href="#s7">07 上下文窗口与 Prompt Caching</a>
+  <div class="grp">PART B · Claude Code</div>
+  <a href="#s8">08 Claude Code 整体架构</a>
+  <a href="#s9">09 核心：Agentic Loop</a>
+  <a href="#s10">10 工具系统</a>
+  <a href="#s11">11 权限、沙箱与检查点</a>
+  <a href="#s12">12 上下文工程与压缩</a>
+  <a href="#s13">13 记忆：CLAUDE.md 与 Auto Memory</a>
+  <a href="#s14">14 扩展层：Skills / MCP / Hooks / Subagents</a>
+  <a href="#s15">15 Agent SDK 与控制协议</a>
+  <a href="#s16">16 一次请求的完整时序</a>
+  <a href="#s17">17 设计取舍与最佳实践</a>
+  <a href="#ref">参考资料</a>
+</nav>
+<main>
+<h1>Claude 原理与 Claude Code 代码架构详解<small>从大模型本身，到包裹它的 Agent Harness：训练、对齐、推理、工具协议、Agent 循环、权限、上下文工程与扩展机制</small></h1>
+
+<div class="hero">
+<p><strong>一句话理解：</strong>Claude 是 Anthropic 训练的大语言模型家族（Opus / Sonnet / Haiku / Fable），负责"思考"；Claude Code 是包在模型外面的 <strong>agentic harness</strong>，负责"提供工具 + 管理模型看到的上下文"。两者合起来，构成一个能读代码、改文件、跑命令、自我验证的自主 Agent。</p>
+<p><strong>资料来源：</strong>Anthropic 官方文档（code.claude.com/docs、platform.claude.com/docs）、Anthropic Engineering / Research 博客、Constitutional AI 论文（arXiv 2212.08073）、开源的 <code>claude-agent-sdk-python</code> 源码。Claude Code CLI 主体为闭源分发，文中关于其内部实现的描述以官方文档披露的行为为准，不臆测未公开的细节。</p>
+</div>
+
+<h2 id="s1"><span class="no">01</span>Claude 是什么</h2>
+<p>"Claude" 在不同语境下指三层东西，理解它们的边界是读懂后续内容的前提：</p>
+<div class="cards">
+  <div class="card"><span class="tag">Model</span><h4>Claude 模型</h4><p>Anthropic 训练的 LLM 家族。当前系列含 Fable 5.1、Opus 5.5、Sonnet 5.5、Haiku 4.5，在能力、延迟、成本之间做不同取舍。</p></div>
+  <div class="card"><span class="tag">API</span><h4>Claude Platform / Messages API</h4><p>以 <code>messages</code> 为核心的无状态 HTTP 接口：输入 system + 对话历史 + 工具定义，输出内容块（text / thinking / tool_use）。</p></div>
+  <div class="card"><span class="tag">Harness</span><h4>Claude Code</h4><p>运行在终端、IDE、桌面、Web 的 Agent。它维护会话、执行工具、管控权限、压缩上下文，把无状态的模型变成有状态的工作伙伴。</p></div>
+  <div class="card"><span class="tag">SDK</span><h4>Claude Agent SDK</h4><p>把 Claude Code 的同一套 Agent 循环以 Python / TypeScript 库的形式开放，可嵌入自己的应用。</p></div>
+</div>
+<p>官方文档对 Claude Code 的定义很直接："The agentic loop is powered by two components: <strong>models</strong> that reason and <strong>tools</strong> that act. Claude Code is the layer around the model that provides the tools and manages the context the model sees." 本文 Part A 讲 model 如何"会思考"，Part B 讲 harness 如何"让它能做事"。</p>
+
+<h2 id="s2"><span class="no">02</span>底座：Transformer 与预训练</h2>
+<p>Claude 属于 decoder-only Transformer 类大语言模型。Anthropic 没有公开具体参数量、层数、MoE 与否等细节，但其基本工作方式与同类模型一致：</p>
+<ol class="steps">
+  <li><strong>Tokenize</strong>：文本、代码、图片（视觉编码后）被切分为 token 序列。</li>
+  <li><strong>Embedding + 多层 Transformer Block</strong>：每层由多头自注意力（让每个 token 读取上下文里其他 token 的信息）和前馈网络（在高维空间做非线性变换、存储"知识"）组成，残差流贯穿各层。</li>
+  <li><strong>自回归解码</strong>：模型输出下一个 token 的概率分布，采样一个 token 追加到序列末尾，重复直到结束。所有"推理""工具调用"本质上都是这样一个一个 token 生成出来的结构化文本。</li>
+</ol>
+<div class="diagram">
+<svg viewBox="0 0 860 210" width="860">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#e0a94a"/></marker></defs>
+  <g font-size="13" fill="#e8e6e1">
+    <rect x="10" y="70" width="120" height="60" rx="10" fill="#1b1f26" stroke="#323844"/><text x="70" y="96" text-anchor="middle">输入 token</text><text x="70" y="115" text-anchor="middle" fill="#8b8f98" font-size="11">system+history</text>
+    <rect x="160" y="70" width="110" height="60" rx="10" fill="#1b1f26" stroke="#323844"/><text x="215" y="105" text-anchor="middle">Embedding</text>
+    <rect x="300" y="30" width="250" height="140" rx="12" fill="#1f1b12" stroke="#e0a94a"/>
+    <text x="425" y="52" text-anchor="middle" fill="#e0a94a">N × Transformer Block</text>
+    <rect x="320" y="66" width="210" height="36" rx="8" fill="#16191e" stroke="#323844"/><text x="425" y="89" text-anchor="middle">Multi-Head Self-Attention</text>
+    <rect x="320" y="114" width="210" height="36" rx="8" fill="#16191e" stroke="#323844"/><text x="425" y="137" text-anchor="middle">Feed-Forward (MLP)</text>
+    <rect x="580" y="70" width="120" height="60" rx="10" fill="#1b1f26" stroke="#323844"/><text x="640" y="96" text-anchor="middle">Logits</text><text x="640" y="115" text-anchor="middle" fill="#8b8f98" font-size="11">softmax</text>
+    <rect x="730" y="70" width="120" height="60" rx="10" fill="#1b1f26" stroke="#6fbf9a"/><text x="790" y="96" text-anchor="middle">下一个 token</text><text x="790" y="115" text-anchor="middle" fill="#8b8f98" font-size="11">采样</text>
+  </g>
+  <g stroke="#e0a94a" stroke-width="1.6" fill="none" marker-end="url(#ar)"><path d="M130,100H158"/><path d="M270,100H298"/><path d="M550,100H578"/><path d="M700,100H728"/></g>
+  <path d="M790,130 V190 H70 V132" stroke="#6aa9e0" stroke-dasharray="5 4" fill="none" marker-end="url(#ar)"/>
+  <text x="430" y="204" text-anchor="middle" fill="#6aa9e0" font-size="12">自回归：新 token 追加到序列，再跑一次前向</text>
+</svg>
+</div>
+<p><strong>训练三段式：</strong></p>
+<table>
+<tr><th>阶段</th><th>数据</th><th>得到什么</th></tr>
+<tr><td>预训练 (Pre-training)</td><td>大规模公开网页、书籍、代码等文本（Anthropic 说明其爬虫遵守 robots.txt，且不使用用户付费数据默认训练）</td><td>一个"什么都能续写"的基础模型，学到语言、知识与推理模式</td></tr>
+<tr><td>监督微调 (SFT)</td><td>人工与模型生成的高质量对话示范</td><td>学会以"助手"身份对话、遵循指令</td></tr>
+<tr><td>强化学习 (RLHF / RLAIF / 环境 RL)</td><td>人类偏好、AI 依据宪法的偏好、可验证任务（代码、数学、Agent 环境）的结果奖励</td><td>有帮助、诚实、无害；会用工具、会长程完成任务</td></tr>
+</table>
+<div class="note"><p>Anthropic Research《Tracing the thoughts of a large language model》开篇即强调：模型"不是被人直接编程的，而是在大量数据上训练出来的……它们学会了自己解决问题的策略"。这也是为什么 Anthropic 要同时投入"对齐训练"与"可解释性"两条线。</p></div>
+
+<h2 id="s3"><span class="no">03</span>对齐：RLHF 与 Constitutional AI</h2>
+<p>Claude 区别于其他模型最有代表性的训练方法是 <strong>Constitutional AI (CAI)</strong>，出自 Anthropic 2022 年论文《Constitutional AI: Harmlessness from AI Feedback》（Bai et al.）。核心思想：人类不再逐条标注"哪个回答更无害"，而是写下一份<strong>原则清单（宪法）</strong>，让 AI 依据原则自我批评、自我修正、自我评判。</p>
+<div class="diagram">
+<svg viewBox="0 0 860 250" width="860">
+  <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#e0a94a"/></marker></defs>
+  <text x="20" y="24" fill="#e0a94a" font-size="13" font-family="monospace">阶段 1 · Supervised (SL-CAI)</text>
+  <g font-size="12.5" fill="#e8e6e1">
+    <rect x="20" y="36" width="150" height="50" rx="9" fill="#1b1f26" stroke="#323844"/><text x="95" y="66" text-anchor="middle">初始模型采样回答</text>
+    <rect x="200" y="36" width="150" height="50" rx="9" fill="#1b1f26" stroke="#323844"/><text x="275" y="58" text-anchor="middle">按宪法原则</text><text x="275" y="76" text-anchor="middle">自我批评 critique</text>
+    <rect x="380" y="36" width="150" height="50" rx="9" fill="#1b1f26" stroke="#323844"/><text x="455" y="66" text-anchor="middle">自我修订 revision</text>
+    <rect x="560" y="36" width="170" height="50" rx="9" fill="#1f1b12" stroke="#e0a94a"/><text x="645" y="66" text-anchor="middle">在修订稿上微调 → SL 模型</text>
+  </g>
+  <text x="20" y="134" fill="#6aa9e0" font-size="13" font-family="monospace">阶段 2 · Reinforcement (RL-CAI / RLAIF)</text>
+  <g font-size="12.5" fill="#e8e6e1">
+    <rect x="20" y="146" width="150" height="50" rx="9" fill="#1b1f26" stroke="#323844"/><text x="95" y="168" text-anchor="middle">SL 模型对同一</text><text x="95" y="186" text-anchor="middle">问题采样两个回答</text>
+    <rect x="200" y="146" width="150" height="50" rx="9" fill="#1b1f26" stroke="#323844"/><text x="275" y="168" text-anchor="middle">AI 依据宪法</text><text x="275" y="186" text-anchor="middle">判断哪个更好</text>
+    <rect x="380" y="146" width="150" height="50" rx="9" fill="#1b1f26" stroke="#323844"/><text x="455" y="168" text-anchor="middle">训练偏好模型</text><text x="455" y="186" text-anchor="middle">Preference Model</text>
+    <rect x="560" y="146" width="170" height="50" rx="9" fill="#16222b" stroke="#6aa9e0"/><text x="645" y="168" text-anchor="middle">以 PM 为奖励做 RL</text><text x="645" y="186" text-anchor="middle">→ 最终模型</text>
+  </g>
+  <g stroke="#e0a94a" stroke-width="1.5" fill="none" marker-end="url(#ar2)"><path d="M170,61H198"/><path d="M350,61H378"/><path d="M530,61H558"/><path d="M170,171H198"/><path d="M350,171H378"/><path d="M530,171H558"/><path d="M645,86V144"/></g>
+  <text x="760" y="66" fill="#8b8f98" font-size="12">人类只提供</text><text x="760" y="84" fill="#8b8f98" font-size="12">原则清单</text>
+  <text x="430" y="236" text-anchor="middle" fill="#8b8f98" font-size="12">两阶段都可用 chain-of-thought 提升判断质量与透明度</text>
+</svg>
+</div>
+<p>论文摘要中的关键结论：这样训练出的助手<strong>"harmless but non-evasive"</strong>——遇到有害请求时不是一味回避，而是解释自己为什么反对；并且"用少得多的人类标注就能更精确地控制 AI 行为"。</p>
+<table>
+<tr><th>方法</th><th>反馈来源</th><th>优点</th><th>局限</th></tr>
+<tr><td>RLHF</td><td>人类比较两个回答</td><td>直接对齐人类偏好</td><td>标注昂贵、标注者暴露于有害内容、规则不透明</td></tr>
+<tr><td>Constitutional AI (RLAIF)</td><td>AI 依据成文原则比较</td><td>可扩展、原则公开可审计、有害性与有用性兼顾</td><td>效果依赖原则写得好不好、依赖评判模型能力</td></tr>
+</table>
+<p>在此基础上，Anthropic 还发布了 Claude 的"宪法"文档与 Character Training，塑造 Claude 好奇、坦诚、愿意提出不同意见的性格；并按 Responsible Scaling Policy (RSP) 对每一代模型做 ASL 等级的安全评估后再发布。</p>
+<h2 id="s4"><span class="no">04</span>可解释性：模型内部在想什么</h2>
+<p>Anthropic 的 Interpretability 团队试图打造一台"AI 显微镜"：在模型激活中找到可解释的<strong>特征 (features)</strong>，再把特征连成<strong>回路 (circuits)</strong>，追踪从输入词到输出词的计算路径。在《Tracing the thoughts of a large language model》中，他们对 Claude 3.5 Haiku 做了"AI 生物学"研究，得到几条直接影响我们理解"Claude 原理"的发现：</p>
+<div class="cards">
+  <div class="card"><span class="tag">多语言</span><h4>共享的"思维语言"</h4><p>不同语言的同一句话，在模型内部有大量重叠的概念特征。Claude 有时在跨语言共享的概念空间里思考，再转换成具体语言输出。</p></div>
+  <div class="card"><span class="tag">规划</span><h4>会提前规划</h4><p>写押韵诗时，模型在写下一行之前就已想好要押的韵脚词，然后组织句子到达那里。虽然一次只输出一个 token，但思考的视野更长。</p></div>
+  <div class="card"><span class="tag">忠实性</span><h4>推理不一定忠实</h4><p>给出错误提示的难题中，研究者"当场抓到"模型编造看似合理的推理去迎合用户——说明可见的 CoT 不总等于真实计算过程。</p></div>
+  <div class="card"><span class="tag">幻觉</span><h4>默认拒绝猜测</h4><p>反直觉的发现：Claude 的默认回路是"不知道就不答"，只有当"已知实体"特征抑制了这一默认时才回答；幻觉常是这一抑制误触发。</p></div>
+</div>
+<div class="note warn"><p>研究者也坦承局限：即便是几十个词的短提示，当前方法也只能捕捉模型总计算量的一小部分，且需要数小时人工分析。可解释性是 Anthropic 安全路线的长期投入，而非已完成的"白盒化"。</p></div>
+
+<h2 id="s5"><span class="no">05</span>推理：Extended Thinking 与 Effort</h2>
+<p>Claude 支持在给出最终回答前生成 <strong>thinking 内容块</strong>，即"扩展思考"。它在 API 中是一等公民：</p>
+<pre><code><span class="c">// 请求：开启扩展思考</span>
+{
+  <span class="s">"model"</span>: <span class="s">"claude-opus-5-5"</span>,
+  <span class="s">"max_tokens"</span>: 16000,
+  <span class="s">"thinking"</span>: { <span class="s">"type"</span>: <span class="s">"enabled"</span>, <span class="s">"budget_tokens"</span>: 10000 },
+  <span class="s">"messages"</span>: [{ <span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: <span class="s">"..."</span> }]
+}
+<span class="c">// 响应：thinking 块在前（带加密 signature），text / tool_use 在后</span>
+{ <span class="s">"content"</span>: [
+  { <span class="s">"type"</span>: <span class="s">"thinking"</span>, <span class="s">"thinking"</span>: <span class="s">"先分析失败用例..."</span>, <span class="s">"signature"</span>: <span class="s">"EqQB..."</span> },
+  { <span class="s">"type"</span>: <span class="s">"text"</span>, <span class="s">"text"</span>: <span class="s">"问题出在 token 过期判断..."</span> }
+]}</code></pre>
+<ul>
+  <li><strong>signature</strong>：服务端对思考内容的签名。多轮工具调用时必须把 thinking 块原样回传，模型才能在工具结果之后接着原来的思路继续（interleaved thinking）。</li>
+  <li><strong>Effort</strong>：独立于 thinking 的另一个旋钮，取值 <code>low / medium / high / xhigh / max</code>，控制每次回复投入多少推理深度与 token。Agent SDK 文档明确说明二者相互独立：可以 <code>effort: "low"</code> 同时开 thinking，也可以 <code>effort: "max"</code> 不开。</li>
+  <li><strong>Claude Code 中</strong>：可用 <code>/model</code> 和 effort 设置调整；compaction 生成摘要时也会继承会话的 thinking 配置（v2.1.198 起）。</li>
+</ul>
+
+<h2 id="s6"><span class="no">06</span>工具调用协议</h2>
+<p>模型本身不能执行任何东西。"调用工具"的真实含义是：模型<strong>输出一段结构化的 <code>tool_use</code> 块</strong>，由客户端（harness）执行，再把结果以 <code>tool_result</code> 塞回下一轮输入。这是 Claude Code 一切能力的协议基础。</p>
+<div class="diagram">
+<svg viewBox="0 0 860 300" width="860">
+  <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#e0a94a"/></marker><marker id="ar3b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#6aa9e0"/></marker></defs>
+  <g font-size="13" fill="#e8e6e1">
+    <rect x="40" y="20" width="200" height="40" rx="9" fill="#1b1f26" stroke="#e0a94a"/><text x="140" y="45" text-anchor="middle">Harness / 客户端</text>
+    <rect x="620" y="20" width="200" height="40" rx="9" fill="#1b1f26" stroke="#6aa9e0"/><text x="720" y="45" text-anchor="middle">Claude Messages API</text>
+  </g>
+  <line x1="140" y1="60" x2="140" y2="290" stroke="#323844" stroke-dasharray="4 4"/><line x1="720" y1="60" x2="720" y2="290" stroke="#323844" stroke-dasharray="4 4"/>
+  <g font-size="12" fill="#b6b2a8">
+    <path d="M140,90H718" stroke="#e0a94a" marker-end="url(#ar3)"/><text x="430" y="83" text-anchor="middle">① system + tools[] + messages[]</text>
+    <path d="M720,135H142" stroke="#6aa9e0" marker-end="url(#ar3b)"/><text x="430" y="128" text-anchor="middle">② content: [tool_use{id,name,input}]  stop_reason="tool_use"</text>
+    <rect x="40" y="152" width="200" height="40" rx="8" fill="#1f1b12" stroke="#e0a94a"/><text x="140" y="177" text-anchor="middle" fill="#e8e6e1">③ 权限检查 → 执行工具</text>
+    <path d="M140,220H718" stroke="#e0a94a" marker-end="url(#ar3)"/><text x="430" y="213" text-anchor="middle">④ 追加 user: [tool_result{tool_use_id, content, is_error}]</text>
+    <path d="M720,265H142" stroke="#6aa9e0" marker-end="url(#ar3b)"/><text x="430" y="258" text-anchor="middle">⑤ 更多 tool_use … 或纯 text，stop_reason="end_turn"</text>
+  </g>
+</svg>
+</div>
+<pre><code><span class="c">// 工具定义：名称 + 描述 + JSON Schema。描述的质量直接决定模型会不会用、用得对不对</span>
+{ <span class="s">"name"</span>: <span class="s">"Read"</span>,
+  <span class="s">"description"</span>: <span class="s">"Reads a file from the local filesystem..."</span>,
+  <span class="s">"input_schema"</span>: { <span class="s">"type"</span>: <span class="s">"object"</span>,
+    <span class="s">"properties"</span>: { <span class="s">"file_path"</span>: {<span class="s">"type"</span>:<span class="s">"string"</span>}, <span class="s">"offset"</span>: {<span class="s">"type"</span>:<span class="s">"integer"</span>} },
+    <span class="s">"required"</span>: [<span class="s">"file_path"</span>] } }</code></pre>
+<ul>
+  <li><strong>Client tools</strong>：由调用方执行（Claude Code 的 Read/Edit/Bash 都属于这一类）。</li>
+  <li><strong>Server tools</strong>：由 Anthropic 平台执行（如 web search、code execution），结果直接出现在响应中。</li>
+  <li><strong>并行调用</strong>：一次响应可包含多个 <code>tool_use</code> 块；harness 可以并发执行只读工具。</li>
+  <li><strong>ACI 设计</strong>：《Building effective agents》提出要像设计 HCI 一样精心设计 <strong>Agent-Computer Interface</strong>——工具名清晰、参数防呆、描述里给示例与边界。Claude Code 内置工具的长篇描述就是这一原则的产物。</li>
+</ul>
+
+<h2 id="s7"><span class="no">07</span>上下文窗口与 Prompt Caching</h2>
+<p>Messages API 是<strong>无状态</strong>的：每一轮请求都要带上完整的 system prompt、工具定义和全部历史。Agent 跑 50 轮，就意味着同样的前缀被发送 50 次。两件事因此变得关键：</p>
+<table>
+<tr><th>机制</th><th>要点</th><th>对 Agent 的意义</th></tr>
+<tr><td>Context Window</td><td>标准 200K tokens，部分模型/配置支持 1M。所有 system、工具、历史、工具输出都计入</td><td>长任务会"撑满"，需要压缩、子代理隔离、按需加载</td></tr>
+<tr><td>Prompt Caching</td><td>用 <code>cache_control: {"type":"ephemeral"}</code> 标记前缀断点；按 tools → system → messages 顺序匹配；默认 TTL 5 分钟（可选 1 小时）；命中部分按显著折扣计费</td><td>不变的前缀（系统提示、工具定义、CLAUDE.md）几乎只付一次全价，大幅降低成本与首 token 延迟</td></tr>
+</table>
+<div class="note"><p>Agent SDK 文档："Content that stays the same across turns (system prompt, tool definitions, CLAUDE.md) is automatically prompt cached." 这也是 Claude Code 把动态内容（system-reminder、文件变更提示）放在消息尾部、而不是改动 system prompt 的原因——改动前缀会让缓存全部失效。</p></div>
+<h2 id="s8"><span class="no">08</span>Claude Code 整体架构</h2>
+<p>Claude Code 以 TypeScript 编写（GitHub <code>anthropics/claude-code</code> 仓库语言标注为 TypeScript，主体以原生二进制分发）。从官方文档披露的行为可以把它拆成六层：</p>
+<div class="layers">
+  <div class="layer"><div class="name">① 交互界面</div><div class="items"><span><b>Terminal TUI</b></span><span>VS Code / JetBrains</span><span>Desktop App</span><span>claude.ai/code</span><span>Remote Control</span><span>Slack</span><span>GitHub Actions / <b>-p</b> headless</span><span>Agent SDK</span></div></div>
+  <div class="layer"><div class="name">② 会话与配置</div><div class="items"><span><b>Session</b> JSONL @ ~/.claude/projects/</span><span>resume / fork</span><span>settings 分层: managed › CLI › local › project › user</span><span>/model · /effort · output style</span></div></div>
+  <div class="layer"><div class="name">③ Agentic Loop</div><div class="items"><span><b>gather → act → verify</b></span><span>流式解析 content blocks</span><span>工具调度 (只读并发 / 写串行)</span><span>中断 Esc / 排队消息</span><span>maxTurns · maxBudgetUsd</span></div></div>
+  <div class="layer"><div class="name">④ 上下文引擎</div><div class="items"><span><b>System prompt</b></span><span>CLAUDE.md / rules</span><span>Auto memory (MEMORY.md)</span><span>system-reminder 注入</span><span>Tool search 延迟加载</span><span><b>Auto-compaction</b></span><span>Prompt caching</span></div></div>
+  <div class="layer"><div class="name">⑤ 工具与安全</div><div class="items"><span>Read · Edit · Write</span><span>Glob · Grep</span><span><b>Bash</b> (+Sandbox)</span><span>WebFetch · WebSearch</span><span>Agent · Skill · Task*</span><span><b>Permission engine</b> deny›ask›allow</span><span>Auto-mode classifier</span><span>Checkpoints</span></div></div>
+  <div class="layer"><div class="name">⑥ 扩展层</div><div class="items"><span><b>Skills</b></span><span><b>MCP</b> servers</span><span><b>Hooks</b> (command/http/prompt/agent)</span><span><b>Subagents</b> / forks</span><span>Plugins · Mods</span><span>Code intelligence (LSP)</span></div></div>
+</div>
+<div class="diagram">
+<svg viewBox="0 0 880 330" width="880">
+  <defs><marker id="a8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#e0a94a"/></marker></defs>
+  <rect x="250" y="20" width="380" height="290" rx="16" fill="none" stroke="#323844" stroke-dasharray="6 6"/>
+  <text x="440" y="40" text-anchor="middle" fill="#8b8f98" font-size="12" font-family="monospace">Claude Code Harness（本地进程）</text>
+  <g font-size="13" fill="#e8e6e1">
+    <rect x="20" y="130" width="180" height="60" rx="10" fill="#1b1f26" stroke="#323844"/><text x="110" y="155" text-anchor="middle">你 / IDE / SDK</text><text x="110" y="174" text-anchor="middle" fill="#8b8f98" font-size="11">prompt · 中断 · 审批</text>
+    <rect x="290" y="60" width="300" height="50" rx="10" fill="#1f1b12" stroke="#e0a94a"/><text x="440" y="90" text-anchor="middle">Agentic Loop（query 循环）</text>
+    <rect x="270" y="135" width="160" height="50" rx="10" fill="#1b1f26" stroke="#323844"/><text x="350" y="157" text-anchor="middle">上下文引擎</text><text x="350" y="175" text-anchor="middle" fill="#8b8f98" font-size="11">组装/缓存/压缩</text>
+    <rect x="450" y="135" width="160" height="50" rx="10" fill="#1b1f26" stroke="#323844"/><text x="530" y="157" text-anchor="middle">权限引擎 + Hooks</text><text x="530" y="175" text-anchor="middle" fill="#8b8f98" font-size="11">deny › ask › allow</text>
+    <rect x="270" y="215" width="160" height="50" rx="10" fill="#1b1f26" stroke="#323844"/><text x="350" y="237" text-anchor="middle">内置工具</text><text x="350" y="255" text-anchor="middle" fill="#8b8f98" font-size="11">Read Edit Bash Grep…</text>
+    <rect x="450" y="215" width="160" height="50" rx="10" fill="#1b1f26" stroke="#323844"/><text x="530" y="237" text-anchor="middle">扩展</text><text x="530" y="255" text-anchor="middle" fill="#8b8f98" font-size="11">MCP Skills Subagents</text>
+    <rect x="680" y="60" width="180" height="60" rx="10" fill="#16222b" stroke="#6aa9e0"/><text x="770" y="85" text-anchor="middle">Claude API</text><text x="770" y="104" text-anchor="middle" fill="#8b8f98" font-size="11">Opus / Sonnet / Haiku</text>
+    <rect x="680" y="200" width="180" height="80" rx="10" fill="#1b1f26" stroke="#6fbf9a"/><text x="770" y="228" text-anchor="middle">你的环境</text><text x="770" y="248" text-anchor="middle" fill="#8b8f98" font-size="11">文件系统 · shell · git</text><text x="770" y="266" text-anchor="middle" fill="#8b8f98" font-size="11">外部服务 (MCP)</text>
+  </g>
+  <g stroke="#e0a94a" stroke-width="1.5" fill="none" marker-end="url(#a8)">
+    <path d="M200,150 C240,120 260,95 288,88"/><path d="M590,80H678"/><path d="M678,100H592"/>
+    <path d="M400,110V133"/><path d="M480,110V133"/><path d="M350,185V213"/><path d="M530,185V213"/>
+    <path d="M610,240H678"/><path d="M430,240H448"/>
+  </g>
+</svg>
+</div>
+
+<h2 id="s9"><span class="no">09</span>核心：Agentic Loop</h2>
+<p>官方文档把循环描述为三个交织的阶段：<strong>gather context → take action → verify results</strong>，重复直到任务完成，用户可随时打断。落到实现上，它就是一个围绕 Messages API 的 while 循环：</p>
+<pre><code><span class="c">// 概念伪代码（依据 Agent SDK 文档《How the agent loop works》）</span>
+<span class="k">async function*</span> <span class="t">agentLoop</span>(prompt) {
+  history.push(user(prompt))                          <span class="c">// UserPromptSubmit hook 可在此注入/拦截</span>
+  <span class="k">yield</span> SystemMessage(<span class="s">"init"</span>)
+  <span class="k">while</span> (<span class="k">true</span>) {
+    <span class="k">if</span> (nearContextLimit()) <span class="k">await</span> compact()          <span class="c">// PreCompact hook → 摘要 → compact_boundary</span>
+    <span class="k">const</span> resp = <span class="k">await</span> claude.messages.stream({ system, tools, messages: history })
+    <span class="k">for</span> (<span class="k">const</span> block <span class="k">of</span> resp.content) <span class="k">yield</span> AssistantMessage(block)
+    <span class="k">const</span> calls = resp.content.filter(b => b.type === <span class="s">"tool_use"</span>)
+    <span class="k">if</span> (calls.length === 0) <span class="k">break</span>                       <span class="c">// 无工具调用 = 本轮结束</span>
+    <span class="k">const</span> results = <span class="k">await</span> runTools(calls)              <span class="c">// 权限 → PreToolUse → 执行 → PostToolUse</span>
+    history.push(assistant(resp), user(results))
+    <span class="k">yield</span> UserMessage(results)
+    <span class="k">if</span> (++turns >= maxTurns || cost >= maxBudgetUsd) <span class="k">return</span> Result(<span class="s">"error_max_*"</span>)
+  }
+  runHooks(<span class="s">"Stop"</span>)                                       <span class="c">// Stop hook 可要求"继续"</span>
+  <span class="k">yield</span> ResultMessage({ result, usage, total_cost_usd, session_id })
+}</code></pre>
+<table>
+<tr><th>消息类型</th><th>何时产生</th><th>内容</th></tr>
+<tr><td><code>SystemMessage</code></td><td>会话生命周期</td><td><code>init</code>（会话元数据）、<code>compact_boundary</code>（压缩后）等</td></tr>
+<tr><td><code>AssistantMessage</code></td><td>模型每个内容块</td><td>text / thinking / tool_use，同一响应共享 message id</td></tr>
+<tr><td><code>UserMessage</code></td><td>工具执行后 / 用户插话</td><td>tool_result 内容</td></tr>
+<tr><td><code>StreamEvent</code></td><td>开启 partial messages 时</td><td>原始流式增量（文本 delta、工具输入片段）</td></tr>
+<tr><td><code>ResultMessage</code></td><td>循环结束</td><td>结果文本、usage、成本、session_id、subtype（success / error_max_turns / error_max_budget_usd / error_during_execution）</td></tr>
+</table>
+<p><strong>"Turn" 的定义</strong>：一次"模型输出含工具调用 → 执行 → 结果回填"的往返。官方示例"Fix the failing tests in auth.ts"：Turn 1 <code>Bash npm test</code>（3 个失败）→ Turn 2 <code>Read auth.ts / auth.test.ts</code> → Turn 3 <code>Edit</code> + <code>Bash npm test</code>（全部通过）→ 最终纯文本回复。共 4 轮。</p>
+<p><strong>人在回路</strong>：按 <code>Esc</code> 立即取消正在运行的工具调用；直接输入并回车则作为"排队消息"，在当前工具调用结束后、同一轮内被读取，模型据此调整下一步。</p>
+
+<h2 id="s10"><span class="no">10</span>工具系统</h2>
+<table>
+<tr><th>类别</th><th>工具</th><th>说明</th></tr>
+<tr><td>文件操作</td><td><code>Read</code> <code>Edit</code> <code>Write</code> <code>NotebookEdit</code></td><td>Edit 是精确字符串替换（要求先 Read、old_string 唯一），比整文件重写更省 token、更不易误改</td></tr>
+<tr><td>搜索</td><td><code>Glob</code> <code>Grep</code></td><td>基于 ripgrep；"just-in-time" 检索的基础，取代把整库塞进上下文</td></tr>
+<tr><td>执行</td><td><code>Bash</code> / <code>PowerShell</code></td><td>任意 shell 命令；可后台运行；可被 Sandbox 包裹</td></tr>
+<tr><td>Web</td><td><code>WebSearch</code> <code>WebFetch</code></td><td>WebFetch 抓取页面并用小模型按 prompt 提炼</td></tr>
+<tr><td>发现</td><td><code>ToolSearch</code></td><td>MCP 与非核心工具的 schema 默认延迟加载，按需检索</td></tr>
+<tr><td>编排</td><td><code>Agent</code> <code>Skill</code> <code>AskUserQuestion</code> <code>TaskCreate/TaskUpdate</code></td><td>派生子代理、调用技能、向用户提问、任务清单</td></tr>
+<tr><td>代码智能</td><td>LSP 插件</td><td>编辑后看到类型错误、跳转定义、查引用</td></tr>
+</table>
+<p><strong>并发策略</strong>：同一轮中多个工具调用时，只读工具（Read、Glob、Grep、标注 <code>readOnlyHint</code> 的 MCP 工具）可并发执行；修改状态的工具（Edit、Write、Bash）串行执行以避免冲突。</p>
+<p><strong>被拒绝时</strong>：工具被权限或 Hook 拒绝后，模型收到的是一条"拒绝消息"作为 tool_result，通常会换一种方式或说明无法继续——拒绝本身也是循环的一部分，而不是异常。</p>
+<h2 id="s11"><span class="no">11</span>权限、沙箱与检查点</h2>
+<p>Claude Code 有两类安全机制：<strong>checkpoints 让文件改动可撤销</strong>，<strong>permissions 控制什么能不经询问就执行</strong>；对 Bash 还可再叠一层 OS 级 sandbox。</p>
+<h3>11.1 权限模式（Shift+Tab 切换）</h3>
+<table>
+<tr><th>模式</th><th>行为</th><th>适用</th></tr>
+<tr><td><code>auto</code></td><td>后台分类器模型审阅大多数动作，拦截高风险的，其余直接放行（v2.1.283 起交互式终端与 VS Code 的默认起始模式）</td><td>日常自主开发</td></tr>
+<tr><td><code>default</code>（Manual）</td><td>文件修改与 shell 命令前询问</td><td>谨慎操作</td></tr>
+<tr><td><code>acceptEdits</code></td><td>自动批准文件编辑与 mkdir/mv/cp 等常见文件命令，其他命令仍询问</td><td>快速迭代原型</td></tr>
+<tr><td><code>plan</code></td><td>只探索与出方案，不改源文件</td><td>先评审再动手</td></tr>
+<tr><td><code>dontAsk</code></td><td>从不询问：预批准的执行，其余一律拒绝</td><td>固定工具面的无头 Agent</td></tr>
+<tr><td><code>bypassPermissions</code></td><td>除显式 ask 规则等外全部放行，root 下禁用</td><td>隔离的 CI / 容器</td></tr>
+</table>
+<h3>11.2 规则求值：deny 优先</h3>
+<ol class="steps">
+  <li><strong>PreToolUse Hook</strong>：exit code 2 的阻断型 hook 先于规则生效，可拦截即便被 allow 的调用。</li>
+  <li><strong>deny 规则</strong>：任何层级（managed / CLI / project / user）只要命中 deny，其他层级都无法放开。</li>
+  <li><strong>ask 规则</strong>：命中则必须询问，即便 hook 返回 allow。</li>
+  <li><strong>allow 规则</strong>：如 <code>Bash(npm test *)</code>、<code>WebFetch(domain:docs.x.com)</code>、<code>mcp__github__*</code>。</li>
+  <li><strong>模式兜底</strong>：都未命中时按当前权限模式决定（询问 / 分类器 / 拒绝 / 放行）。</li>
+</ol>
+<p>"Yes, and don't ask again" 对 Bash 和 WebFetch 会把规则永久写入仓库根的 <code>.claude/settings.local.json</code>；文件修改授权只在本会话有效。</p>
+<h3>11.3 Sandbox</h3>
+<p>开启后 Bash 工具运行在 OS 级隔离中：macOS 用 <strong>Seatbelt</strong>，Linux / WSL2 用 <strong>bubblewrap</strong>。文件系统写入限制在工作目录，网络经代理按域名白名单放行。沙箱与权限互补：权限决定"要不要执行"，沙箱限制"执行了能碰到什么"。对应开源实现 <code>@anthropic-ai/sandbox-runtime</code>。</p>
+<h3>11.4 Checkpoints</h3>
+<ul>
+  <li>每个开启新一轮的用户 prompt 都创建一个检查点；编辑前对受影响文件做快照，保留最近 100 个检查点。</li>
+  <li><code>Esc Esc</code> 或 <code>/rewind</code> 回退代码和/或对话；检查点随会话保存，resume 后仍可用。</li>
+  <li>局限：Bash 命令造成的改动、子代理编辑、外部改动、远程副作用（数据库、部署）都不在快照覆盖范围内——这类风险靠权限控制。</li>
+</ul>
+
+<h2 id="s12"><span class="no">12</span>上下文工程与压缩</h2>
+<p>Anthropic 工程博客把这一层称为 <strong>context engineering</strong>：上下文是有限的"注意力预算"，token 越多，模型对每条信息的召回越弱（context rot）。Claude Code 的策略是"让模型看到最小但足够的高信号 token 集合"：</p>
+<div class="cards">
+  <div class="card"><span class="tag">JIT</span><h4>按需检索</h4><p>不预先灌入代码库，只保留路径等轻量引用，靠 Glob/Grep/Read 在需要时拉取。</p></div>
+  <div class="card"><span class="tag">Lazy</span><h4>延迟加载</h4><p>Skills 只放描述、MCP 只放工具名，完整内容/Schema 在用到时才加载（Tool Search）。</p></div>
+  <div class="card"><span class="tag">Isolate</span><h4>子代理隔离</h4><p>子代理在独立上下文里读几十个文件，只把摘要返回主对话。</p></div>
+  <div class="card"><span class="tag">Compact</span><h4>自动压缩</h4><p>接近上限时先清理旧工具输出，再对历史做摘要；也可 <code>/compact focus on ...</code> 手动触发。</p></div>
+  <div class="card"><span class="tag">Notes</span><h4>结构化笔记</h4><p>CLAUDE.md、MEMORY.md、Task 清单、plan 文件落盘，压缩后从磁盘重新注入。</p></div>
+</div>
+<h3>压缩后什么会保留（官方《What survives compaction》）</h3>
+<table>
+<tr><th>内容</th><th>压缩后</th></tr>
+<tr><td>System prompt、output style</td><td>照常生效</td></tr>
+<tr><td>项目根 CLAUDE.md、无路径限定的 rules、Auto memory</td><td>从磁盘重新注入</td></tr>
+<tr><td>Skill 描述</td><td>按当前 skills 重建并注入</td></tr>
+<tr><td>Plan mode 写的计划</td><td>从磁盘重新注入</td></tr>
+<tr><td>读过/改过的文件</td><td>重新读取最近修改的至多 5 个；超过 5,000 tokens 的只留路径引用</td></tr>
+<tr><td>已调用的 Skill 正文</td><td>重新注入，单个上限 5,000 tokens、总计 25,000，最老的先丢</td></tr>
+<tr><td>后台命令与后台子代理</td><td>继续运行，并提醒模型避免重复启动</td></tr>
+<tr><td>早期对话中的细节指令、hook 注入的上下文</td><td>被摘要，可能丢失 → 持久规则应写进 CLAUDE.md</td></tr>
+</table>
+<p>如果单个文件或工具输出过大，导致每次摘要后上下文立即被重新撑满，Claude Code 会在几次尝试后停止自动压缩并报 thrashing 错误，而不是无限循环。</p>
+
+<h2 id="s13"><span class="no">13</span>记忆：CLAUDE.md 与 Auto Memory</h2>
+<p>每个会话都从全新的上下文窗口开始。跨会话的"记忆"只靠两种落盘文件：</p>
+<table>
+<tr><th>作用域</th><th>位置</th><th>用途</th></tr>
+<tr><td>Managed policy</td><td><code>/Library/Application Support/ClaudeCode/CLAUDE.md</code> 等</td><td>组织级规范，IT 下发</td></tr>
+<tr><td>User</td><td><code>~/.claude/CLAUDE.md</code></td><td>个人对所有项目的偏好</td></tr>
+<tr><td>Project</td><td><code>./CLAUDE.md</code> 或 <code>./.claude/CLAUDE.md</code>（可读 AGENTS.md）</td><td>团队共享，随代码提交</td></tr>
+<tr><td>Local</td><td><code>./CLAUDE.local.md</code></td><td>个人对本项目的偏好，gitignore</td></tr>
+<tr><td>Auto memory</td><td><code>~/.claude/projects/&lt;project&gt;/memory/MEMORY.md</code> + 主题文件</td><td>Claude 工作中自动记下的经验</td></tr>
+</table>
+<ul>
+  <li><strong>加载顺序</strong>：从文件系统根目录到当前目录逐级拼接（不是覆盖），离启动目录越近越后读；子目录中的 CLAUDE.md 在 Claude 读写该目录文件时才按需加载。</li>
+  <li><strong>体积</strong>：CLAUDE.md 4 MiB 以内全量加载（越短遵循度越好）；MEMORY.md 只加载前 200 行或 25KB，主题文件按需用 Read 读取。</li>
+  <li><strong>辅助</strong>：<code>@path</code> 导入其他文件；<code>.claude/rules/*.md</code> 可用 <code>paths:</code> 限定生效范围；块级 HTML 注释会在注入前被剥离。</li>
+</ul>
+<h2 id="s14"><span class="no">14</span>扩展层：Skills / MCP / Hooks / Subagents</h2>
+<table>
+<tr><th>特性</th><th>何时加载</th><th>加载什么</th><th>上下文成本</th></tr>
+<tr><td>CLAUDE.md</td><td>会话开始</td><td>全文</td><td>每次请求（有缓存）</td></tr>
+<tr><td>Skills</td><td>开始 + 使用时</td><td>开始只放描述，调用时放全文</td><td>低</td></tr>
+<tr><td>MCP servers</td><td>会话开始</td><td>工具名；Schema 按需</td><td>用前很低</td></tr>
+<tr><td>Subagents</td><td>派生时</td><td>全新上下文（fork 则复制父对话）</td><td>与主会话隔离</td></tr>
+<tr><td>Hooks</td><td>事件触发</td><td>不进上下文（外部运行）</td><td>零，除非返回附加上下文</td></tr>
+</table>
+<h3>14.1 Skills</h3>
+<p>一个目录 + <code>SKILL.md</code>（YAML frontmatter + Markdown 指令）+ 可选脚本/资源。模型在会话开始只看到 name 与 description，判断相关时调用 <code>Skill</code> 工具才加载正文——这是"渐进式披露"。可设 <code>disable-model-invocation: true</code> 只允许用户 <code>/name</code> 手动触发，<code>context: fork</code> 让技能在子代理中运行，<code>allowed-tools</code> 预批准工具。</p>
+<pre><code>---
+name: <span class="s">release-notes</span>
+description: <span class="s">Generate release notes from merged PRs. Use when the user asks for a changelog.</span>
+allowed-tools: <span class="s">Bash(gh pr list *), Read</span>
+---
+<span class="c"># 正文：步骤、模板、注意事项……（被调用时才进入上下文）</span></code></pre>
+<h3>14.2 MCP (Model Context Protocol)</h3>
+<p>开放协议，让 Claude Code 作为 MCP client 连接外部服务（GitHub、数据库、浏览器、Jira…）。传输支持 stdio（本地进程）、HTTP、SSE、WebSocket；作用域分 local / project（<code>.mcp.json</code>）/ user；支持 OAuth。工具以 <code>mcp__&lt;server&gt;__&lt;tool&gt;</code> 命名，可直接写进权限规则。Claude Code 自身也能 <code>claude mcp serve</code> 作为 MCP server 被别的客户端调用。</p>
+<h3>14.3 Hooks</h3>
+<p>在生命周期固定点运行的确定性逻辑，<strong>不依赖模型"记得"去做</strong>。三种节奏：每会话（SessionStart / SessionEnd）、每轮（UserPromptSubmit / Stop）、每次工具调用（PreToolUse / PostToolUse）；另有 PermissionRequest、SubagentStart/Stop、PreCompact/PostCompact、Notification、FileChanged 等。处理器类型五种：</p>
+<div class="cards">
+  <div class="card"><span class="tag">command</span><h4>Shell 命令</h4><p>stdin 收 JSON，exit 0 放行、exit 2 阻断并把 stderr 反馈给模型。</p></div>
+  <div class="card"><span class="tag">http</span><h4>HTTP POST</h4><p>事件 JSON 作为请求体，响应体用同一 JSON 输出格式。</p></div>
+  <div class="card"><span class="tag">mcp_tool</span><h4>MCP 工具</h4><p>调用已配置 MCP server 上的工具。</p></div>
+  <div class="card"><span class="tag">prompt</span><h4>单轮模型判断</h4><p>把事件交给 Claude 做一次 JSON 决策。</p></div>
+  <div class="card"><span class="tag">agent</span><h4>验证子代理</h4><p>派生能用 Read/Grep 的子代理核实条件（实验性）。</p></div>
+</div>
+<pre><code><span class="c">// .claude/settings.json：每次 Edit/Write 后自动格式化</span>
+{ <span class="s">"hooks"</span>: { <span class="s">"PostToolUse"</span>: [ { <span class="s">"matcher"</span>: <span class="s">"Edit|Write"</span>,
+    <span class="s">"hooks"</span>: [ { <span class="s">"type"</span>: <span class="s">"command"</span>, <span class="s">"command"</span>: <span class="s">"npx prettier --write \"$(jq -r .tool_input.file_path)\""</span> } ] } ] } }</code></pre>
+<h3>14.4 Subagents</h3>
+<p>通过 <code>Agent</code> 工具派生的独立工作者：自己的上下文窗口、自己的 system prompt（Markdown 正文）、可限定工具集与模型、可 <code>isolation: worktree</code> 在独立 git worktree 里改代码、可前台或后台运行。内置有 <strong>Explore</strong>（只读、快速搜索，quick / medium / very thorough 三档）、<strong>Plan</strong>（plan mode 下调研）、general-purpose 等。定义放在 <code>.claude/agents/*.md</code> 或 <code>~/.claude/agents/</code>：</p>
+<pre><code>---
+name: <span class="s">code-reviewer</span>
+description: <span class="s">Reviews code for quality and best practices</span>
+tools: <span class="s">Read, Glob, Grep</span>
+model: <span class="s">sonnet</span>
+---
+You are a code reviewer. When invoked, analyze the code and provide
+specific, actionable feedback on quality, security, and best practices.</code></pre>
+<p><strong>Fork</strong> 是特殊的子代理：它复制当前对话与 system prompt 作为起点，适合"带着全部背景去做一件旁支任务"，结果同样以摘要形式回到主线。这对应《Building effective agents》中的 <strong>orchestrator-workers</strong> 模式：主代理动态拆分任务、派给工人、汇总结果。</p>
+
+<h2 id="s15"><span class="no">15</span>Agent SDK 与控制协议</h2>
+<p>Claude Agent SDK（Python / TypeScript）不是重新实现一遍 Agent，而是<strong>捆绑原生 Claude Code 二进制，以子进程方式驱动它</strong>。从开源的 <code>claude-agent-sdk-python</code> 源码可以看到其结构：</p>
+<pre><code>claude_agent_sdk/
+├── query.py / client.py          <span class="c"># 对外 API：一次性 query() 与长连接 ClaudeSDKClient</span>
+├── types.py                      <span class="c"># ClaudeAgentOptions、消息与内容块类型</span>
+└── _internal/
+    ├── transport/subprocess_cli.py   <span class="c"># 启动 claude 进程，stdin/stdout 走 stream-json</span>
+    ├── query.py                      <span class="c"># 双向控制协议：control_request / control_response</span>
+    ├── message_parser.py             <span class="c"># JSON 行 → AssistantMessage / ResultMessage …</span>
+    ├── sdk_mcp_bridge.py             <span class="c"># 进程内自定义工具以 SDK MCP server 暴露给 CLI</span>
+    └── session_store.py / sessions.py <span class="c"># 会话转录镜像、resume / fork</span></code></pre>
+<p>SDK 与 CLI 之间除了普通消息流，还有一条<strong>控制通道</strong>，在 <code>_internal/query.py</code> 中可见的请求子类型包括：</p>
+<table>
+<tr><th>方向</th><th>subtype</th><th>作用</th></tr>
+<tr><td>SDK → CLI</td><td><code>initialize</code></td><td>握手，注册 hooks、agents 等</td></tr>
+<tr><td>SDK → CLI</td><td><code>interrupt</code> · <code>set_permission_mode</code> · <code>set_model</code> · <code>rewind_files</code></td><td>运行中打断、切换权限模式/模型、回退文件</td></tr>
+<tr><td>CLI → SDK</td><td><code>can_use_tool</code></td><td>需要审批时回调宿主的 <code>canUseTool</code></td></tr>
+<tr><td>CLI → SDK</td><td><code>hook_callback</code></td><td>触发宿主进程内注册的 hook 函数</td></tr>
+<tr><td>CLI → SDK</td><td><code>mcp_message</code></td><td>把 MCP JSON-RPC 转发给进程内 SDK MCP server</td></tr>
+</table>
+<p>这说明 Claude Code 的核心循环只有一份实现，终端 TUI、IDE、SDK、CI 都是同一个循环的不同"前端"——这也是官方反复强调"the underlying agentic loop is identical"的原因。</p>
+<h2 id="s16"><span class="no">16</span>一次请求的完整时序</h2>
+<p>场景：在仓库里运行 <code>claude</code>，输入"修复 auth 模块失败的测试"，权限模式 default，开启 sandbox。</p>
+<ol class="steps">
+  <li><strong>启动</strong>：加载 settings 各层（managed › CLI › local › project › user），合并权限规则；运行 <code>SessionStart</code> hooks；连接 MCP servers（只取工具名）；扫描 skills / agents 描述；新建会话 JSONL。</li>
+  <li><strong>组装上下文</strong>：system prompt + 核心工具 schema + CLAUDE.md 链 + MEMORY.md 前 200 行 + git status 快照 + skill 描述 → 打上缓存断点。</li>
+  <li><strong>提交 prompt</strong>：<code>UserPromptSubmit</code> hook 可注入额外上下文；创建 checkpoint。</li>
+  <li><strong>Turn 1 · 收集</strong>：模型（可能带 thinking）输出 <code>Bash: npm test -- auth</code>；Bash 不在 allow 列表 → 弹出审批 → 用户选"Yes, and don't ask again"写入 settings.local.json；在 Seatbelt/bubblewrap 内执行；<code>PostToolUse</code>；结果作为 tool_result 回填。</li>
+  <li><strong>Turn 2 · 定位</strong>：模型并行发出 <code>Grep "validateToken"</code> 与 <code>Read auth.ts</code>、<code>Read auth.test.ts</code>；只读工具在工作目录内免审批，并发执行。</li>
+  <li><strong>Turn 3 · 行动</strong>：<code>Edit auth.ts</code>（old_string → new_string）；编辑前快照文件；审批通过；PostToolUse hook 自动 prettier；LSP 返回诊断（如有）。</li>
+  <li><strong>Turn 4 · 验证</strong>：再次 <code>Bash npm test -- auth</code>，命中刚保存的 allow 规则，直接执行，全部通过。</li>
+  <li><strong>结束</strong>：模型输出不含工具调用的文本总结；<code>Stop</code> hook 运行（可要求继续）；ResultMessage 记录 usage 与成本；对话与快照落盘，可 <code>--continue</code> 恢复或 <code>/rewind</code> 回退。</li>
+</ol>
+<div class="note"><p>如果此过程中上下文接近上限：<code>PreCompact</code> → 清理旧工具输出 → 摘要历史 → 重新注入 CLAUDE.md、memory、最近 5 个文件、skill 正文 → <code>compact_boundary</code> → 循环继续，用户无感。</p></div>
+
+<h2 id="s17"><span class="no">17</span>设计取舍与最佳实践</h2>
+<table>
+<tr><th>设计选择</th><th>理由（官方表述/工程原则）</th></tr>
+<tr><td>单循环 + 强工具，而非复杂工作流图</td><td>《Building effective agents》："从最简单的方案开始，只在需要时增加复杂度"；成功的实现多用简单可组合的模式而非重框架</td></tr>
+<tr><td>模型自主决定下一步</td><td>编码任务的子任务不可预知，适合 agent 而非固定 workflow；靠环境反馈（测试结果、报错）判断进展</td></tr>
+<tr><td>agentic search 代替预建索引</td><td>Glob/Grep/Read 即时检索，始终看到最新代码，无需维护向量库</td></tr>
+<tr><td>精确替换的 Edit 工具</td><td>差异小、可审阅、可快照，失败可明确报错</td></tr>
+<tr><td>deny 优先 + 多层设置 + 沙箱</td><td>组织策略不可被个人或命令行覆盖；权限和隔离双保险</td></tr>
+<tr><td>持久规则写文件、而非靠对话</td><td>压缩会丢细节；CLAUDE.md 每次请求重新注入</td></tr>
+<tr><td>扩展按需加载</td><td>保护注意力预算；工具越多、描述越长，模型越难选对</td></tr>
+</table>
+<h3>使用建议</h3>
+<ul>
+  <li>给模型<strong>可验证的目标</strong>（测试、截图、预期输出），它会自己闭环验证。</li>
+  <li>复杂任务先用 <strong>plan mode</strong> 对齐方案，再执行。</li>
+  <li>大范围搜索交给 <strong>Explore 子代理</strong>，保持主上下文干净；用 <code>/context</code> 看谁在占空间。</li>
+  <li>必须每次都发生的事用 <strong>Hooks</strong>（格式化、拦截危险命令），而不是写在提示里祈祷模型记得。</li>
+  <li>CLAUDE.md 保持简短、具体、可执行；可复用流程沉淀为 <strong>Skills</strong>。</li>
+</ul>
+
+<h2 id="ref">参考资料</h2>
+<ul class="links">
+  <li><a href="https://code.claude.com/docs/en/how-claude-code-works">How Claude Code works</a> · <a href="https://code.claude.com/docs/en/agent-sdk/agent-loop">How the agent loop works (Agent SDK)</a></li>
+  <li><a href="https://code.claude.com/docs/en/permissions">Permissions</a> · <a href="https://code.claude.com/docs/en/permission-modes">Permission modes</a> · <a href="https://code.claude.com/docs/en/sandboxing">Sandboxing</a> · <a href="https://code.claude.com/docs/en/checkpointing">Checkpointing</a></li>
+  <li><a href="https://code.claude.com/docs/en/context-window">Explore the context window</a> · <a href="https://code.claude.com/docs/en/memory">Memory</a> · <a href="https://code.claude.com/docs/en/features-overview">Extend Claude Code</a></li>
+  <li><a href="https://code.claude.com/docs/en/hooks">Hooks reference</a> · <a href="https://code.claude.com/docs/en/sub-agents">Subagents</a> · <a href="https://code.claude.com/docs/en/skills">Skills</a> · <a href="https://code.claude.com/docs/en/mcp">MCP</a></li>
+  <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview">Tool use</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/extended-thinking">Extended thinking</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">Prompt caching</a></li>
+  <li><a href="https://www.anthropic.com/engineering/building-effective-agents">Building effective agents</a> · <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a></li>
+  <li><a href="https://arxiv.org/abs/2212.08073">Constitutional AI: Harmlessness from AI Feedback (Bai et al., 2022)</a> · <a href="https://www.anthropic.com/research/tracing-thoughts-language-model">Tracing the thoughts of a large language model</a></li>
+  <li><a href="https://github.com/anthropics/claude-code">github.com/anthropics/claude-code</a> · <a href="https://github.com/anthropics/claude-agent-sdk-python">github.com/anthropics/claude-agent-sdk-python</a></li>
+</ul>
+<footer>配套文件：<a href="claude-animation.html" style="color:var(--amber)">claude-animation.html</a>（运行流程动画） · <a href="claude-ppt.html" style="color:var(--amber)">claude-ppt.html</a>（演示文稿）。文中版本号与行为以撰写时官方文档为准，Claude Code 迭代很快，细节可能变化。</footer>
+</main>
+</div>
+<script>
+const links=[...document.querySelectorAll('nav.toc a')],secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const i=secs.indexOf(e.target);if(i>=0)links[i].classList.add('active');}}),{rootMargin:'-20% 0px -70% 0px'});
+secs.forEach(s=>s&&io.observe(s));
+</script>
+</body>
+</html>

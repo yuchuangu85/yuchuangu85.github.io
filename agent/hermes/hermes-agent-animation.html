@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hermes-agent 工作原理 · 动画模型</title>
+<style>
+:root{
+  --bg:#0f1114; --panel:#16191e; --panel2:#1b1f26; --panel3:#21262e;
+  --line:#272c34; --line2:#323844;
+  --fg:#e8e6e1; --fg2:#b6b2a8; --dim:#8b8f98;
+  --amber:#e0a94a; --amber2:#f0c46a; --amber-soft:rgba(224,169,74,.12);
+  --green:#6fbf9a; --red:#e07a6a; --blue:#6aa9e0; --purple:#a98ae0;
+  --mono:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased; display:flex; flex-direction:column; min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(900px 420px at 18% -10%, rgba(224,169,74,.10), transparent 60%),
+    radial-gradient(760px 380px at 92% 8%, rgba(106,169,224,.07), transparent 62%);
+}
+.top{
+  position:relative; z-index:5; display:flex; align-items:center; gap:18px;
+  padding:14px 24px; border-bottom:1px solid var(--line);
+  background:rgba(15,17,20,.82); backdrop-filter:blur(10px);
+}
+.brand{display:flex; align-items:center; gap:10px; flex:0 0 auto}
+.mark{
+  width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:16px;color:#1a1408;
+  background:linear-gradient(135deg,var(--amber2),var(--amber)); box-shadow:0 6px 18px rgba(224,169,74,.25);
+}
+.brand b{display:block; font-size:14px; letter-spacing:.02em}
+.brand i{display:block; font-style:normal; font-size:11px; color:var(--dim); letter-spacing:.06em}
+.tabs{display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; flex:1}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:0 0 auto; border:1px solid transparent; background:transparent; color:var(--dim);
+  font:inherit; font-size:12.5px; padding:7px 12px; border-radius:999px; cursor:pointer;
+  transition:.2s; white-space:nowrap;
+}
+.tab:hover{color:var(--fg); background:var(--panel2)}
+.tab.on{color:#1a1408; background:linear-gradient(135deg,var(--amber2),var(--amber)); font-weight:600}
+.hint{font-size:11.5px; color:var(--dim); flex:0 0 auto; white-space:nowrap}
+
+main{position:relative; z-index:1; flex:1; display:flex; flex-direction:column; justify-content:center; padding:16px 24px 18px; gap:12px}
+.stage-wrap{display:flex; justify-content:center; align-items:center; min-height:0}
+.stage{
+  position:relative; width:100%; max-width:1280px; margin:0 auto;
+  height:clamp(430px, 56vh, 540px); min-height:0;
+  border:1px solid var(--line); border-radius:18px; overflow:hidden;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.02), transparent 40%),
+    var(--panel);
+  box-shadow:0 24px 60px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
+}
+.stage::before{
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(80% 80% at 50% 40%, #000 40%, transparent 100%);
+}
+.scene{position:absolute; inset:0; padding:22px clamp(26px, 5vw, 84px); opacity:0; visibility:hidden; transform:scale(.995); transition:opacity .4s ease, transform .4s ease, visibility .4s;
+  overflow:auto; display:flex; flex-direction:column; justify-content:safe center}
+.scene.on{opacity:1; visibility:visible; transform:none}
+
+.scene-head{display:flex; align-items:baseline; gap:12px; margin-bottom:6px}
+.tag{font:600 11px var(--mono); color:var(--amber); letter-spacing:.12em; border:1px solid rgba(224,169,74,.3); background:var(--amber-soft); padding:2px 7px; border-radius:6px}
+.scene-head h2{font-size:19px; margin:0; letter-spacing:-.01em}
+.scene-head p{margin:0; font-size:12px; color:var(--dim); margin-left:auto}
+
+[data-step]{opacity:0; transform:translateY(10px); transition:opacity .45s ease, transform .45s ease}
+[data-step].on{opacity:1; transform:none}
+
+/* ---------- S1 layers ---------- */
+.layers{margin-top:14px; display:flex; flex-direction:column; gap:7px}
+.layer{
+  display:grid; grid-template-columns:44px 116px 1fr; align-items:center; gap:14px;
+  padding:9px 14px; border:1px solid var(--line); border-radius:10px; background:var(--panel2);
+  transform:translateX(-14px); transition:opacity .45s, transform .45s, border-color .3s, background .3s;
+}
+.layer.on{transform:none}
+.layer .lx{font:600 12px var(--mono); color:var(--amber); letter-spacing:.08em}
+.layer .ln{font-size:13.5px; font-weight:600}
+.layer .ld{font:12px var(--mono); color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.layer.hot{border-color:rgba(224,169,74,.55); background:linear-gradient(90deg, rgba(224,169,74,.13), rgba(224,169,74,.02)); box-shadow:0 0 0 1px rgba(224,169,74,.12)}
+.scene-note{margin-top:12px; font-size:12px; color:var(--dim); display:flex; gap:8px; align-items:center}
+.scene-note b{color:var(--amber); font-weight:600}
+
+/* ---------- S2 pipeline ---------- */
+.pipe{position:relative; margin-top:12px; display:flex; flex-direction:column; gap:6px; padding-left:26px}
+.pcard{
+  position:relative; display:flex; align-items:center; gap:10px; padding:7px 12px;
+  border:1px solid var(--line); border-radius:9px; background:var(--panel2); font-size:12.5px;
+}
+.pcard .pc-n{font:600 11px var(--mono); color:var(--dim); width:18px}
+.pcard .pc-f{font:11.5px var(--mono); color:var(--amber)}
+.pcard .pc-d{color:var(--dim); font-size:11.5px; margin-left:auto}
+.pcard.hasloop{padding-right:104px}
+.pcard.hot{border-color:rgba(224,169,74,.5); background:var(--amber-soft)}
+.pcard.loop{border-color:rgba(106,169,224,.45); background:rgba(106,169,224,.08)}
+.pipe .spine{position:absolute; left:11px; top:6px; bottom:6px; width:1px; background:linear-gradient(var(--line2), var(--line2)); }
+.loopback{position:absolute; left:-4px; width:34px; top:0; height:0; overflow:visible; opacity:0; transition:opacity .4s}
+.loopback.on{opacity:1}
+.loopback path{fill:none; stroke:var(--blue); stroke-width:1.6; stroke-dasharray:5 5; opacity:.75}
+
+/* ---------- shared cards ---------- */
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px}
+.panel{background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:12px 14px}
+.panel h4{margin:0 0 8px; font-size:12px; letter-spacing:.08em; color:var(--dim); font-weight:600}
+.mono{font-family:var(--mono)}
+.kv{display:flex; flex-direction:column; gap:6px}
+.bullet{display:flex; gap:8px; font-size:12px; color:var(--fg2); line-height:1.5}
+.bullet span.dot{width:5px;height:5px;border-radius:50%;background:var(--amber); margin-top:6px; flex:0 0 auto}
+
+/* ---------- controls ---------- */
+.caption{
+  max-width:1280px; margin:0 auto; width:100%; display:flex; align-items:center; gap:14px;
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:11px 16px; min-height:56px;
+}
+.stepno{font:600 11.5px var(--mono); color:var(--amber); letter-spacing:.08em; flex:0 0 auto; border-right:1px solid var(--line2); padding-right:14px}
+.caption p{margin:0; font-size:13.5px; color:var(--fg2); line-height:1.5}
+.bar{max-width:1280px; margin:0 auto; width:100%; display:flex; align-items:center; gap:10px}
+button.ctl{
+  width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--panel);
+  color:var(--fg2); font-size:14px; cursor:pointer; display:grid; place-items:center; transition:.2s;
+}
+button.ctl:hover{background:var(--panel3); color:var(--fg); border-color:var(--line2)}
+button.ctl.primary{background:linear-gradient(135deg,var(--amber2),var(--amber)); color:#1a1408; border-color:transparent; font-weight:700}
+.speeds{display:flex; gap:4px; margin-left:6px}
+.sp{border:1px solid var(--line); background:transparent; color:var(--dim); font:11.5px var(--mono); padding:5px 9px; border-radius:7px; cursor:pointer}
+.sp.on{color:var(--amber); border-color:rgba(224,169,74,.45); background:var(--amber-soft)}
+.progress{flex:1; height:4px; background:var(--line); border-radius:99px; overflow:hidden; margin-left:8px}
+.progress i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--amber),var(--amber2)); border-radius:99px; transition:width .3s}
+#pct{font:11.5px var(--mono); color:var(--dim); width:38px; text-align:right}
+
+@media (max-width:1080px){
+  .top{flex-wrap:wrap}
+  .hint{display:none}
+  .stage{min-height:520px}
+  .cols{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark">☤</span><div><b>hermes-agent</b><i>工作原理动画模型</i></div></div>
+  <nav class="tabs" id="tabs"></nav>
+  <div class="hint">空格 播放/暂停 · ← → 步进</div>
+</header>
+<main>
+  <div class="stage-wrap"><div class="stage" id="stage">
+
+  <section class="scene" data-scene="1">
+    <div class="scene-head"><span class="tag">S1</span><h2>七层架构</h2><p>能力在边缘，核心是窄腰</p></div>
+    <div class="layers">
+      <div class="layer" data-step="7"><span class="lx">L6</span><span class="ln">宿主面</span><span class="ld">CLI · TUI · Desktop · Gateway(20+ 平台) · ACP · Cron</span></div>
+      <div class="layer" data-step="6"><span class="lx">L5</span><span class="ln">会话与状态</span><span class="ld">state.db (SQLite + FTS5) · 单一写者 · profile 隔离 · lineage</span></div>
+      <div class="layer" data-step="5" id="layer4"><span class="lx">L4</span><span class="ln">回合引擎</span><span class="ld">AIAgent · 13 个阶段 · 预算与中断</span></div>
+      <div class="layer" data-step="4"><span class="lx">L3</span><span class="ln">上下文工程</span><span class="ld">三层冻结 prompt · 双阈压缩 · 缓存断点</span></div>
+      <div class="layer" data-step="3"><span class="lx">L2</span><span class="ln">能力层</span><span class="ld">Tool Registry(70+ / 28 toolset) · Skills · Plugins · MCP</span></div>
+      <div class="layer" data-step="2"><span class="lx">L1</span><span class="ln">模型接入</span><span class="ld">3 种 API mode · 30+ 失败分类 · fallback 链 · auxiliary</span></div>
+      <div class="layer" data-step="1"><span class="lx">L0</span><span class="ln">运行时</span><span class="ld">deadline · 中断控制 · 7 种终端后端 · secret scope</span></div>
+    </div>
+    <div class="scene-note" data-step="8"><b>读法</b><span>用户输入自上而下穿透；每一层只依赖下一层的抽象，换掉任一层不影响上层。</span></div>
+  </section>
+
+  <section class="scene" data-scene="2">
+    <div class="scene-head"><span class="tag">S2</span><h2>一次 turn 的生命周期</h2><p>13 个阶段，合并为 7 个可观察步骤</p></div>
+    <div class="pipe" id="pipe">
+      <span class="spine"></span>
+      <div class="pcard" data-step="1"><span class="pc-n">01</span><span class="pc-f">build_turn_context</span><span class="pc-d">恢复 prompt · 首轮压缩 · 租约</span></div>
+      <div class="pcard" data-step="2" id="pc2"><span class="pc-n">02</span><span class="pc-f">assemble_api_request</span><span class="pc-d">消息 + 工具 schema → 请求体</span></div>
+      <div class="pcard" data-step="3"><span class="pc-n">03</span><span class="pc-f">perform_api_call</span><span class="pc-d">可中断 HTTP · 流式</span></div>
+      <div class="pcard" data-step="4"><span class="pc-n">04</span><span class="pc-f">check / normalize</span><span class="pc-d">空响应 · 截断 · 统一形状</span></div>
+      <div class="pcard hasloop" data-step="5" id="pc5"><span class="pc-n">05</span><span class="pc-f">run_tool_round</span><span class="pc-d">执行工具 → 追加结果</span><span class="loopchip" data-step="5">↺ 回到 02</span></div>
+      <div class="pcard" data-step="6"><span class="pc-n">06</span><span class="pc-f">finish_text_response</span><span class="pc-d">四道 stop gates 可能拒绝收尾</span></div>
+      <div class="pcard" data-step="7"><span class="pc-n">07</span><span class="pc-f">finalize_turn</span><span class="pc-d">落盘 · 刷记忆 · 触发复盘</span></div>
+    </div>
+    <div class="scene-note" data-step="7"><b>回边</b><span>模型返回 tool_calls 就回到 02，而不是重新开始 turn；预算 500 次，耗尽后还有一次"恩典调用"体面收尾。</span></div>
+  </section>
+
+  <section class="scene" data-scene="3">
+    <div class="scene-head"><span class="tag">S3</span><h2>Prompt 装配</h2><p>三层冻结，会话期间字节不变</p></div>
+    <div class="cols">
+      <div class="panel">
+        <h4>SYSTEM PROMPT · 三层</h4>
+        <div class="stack">
+          <div class="pcard" data-step="1"><span class="pc-f">stable</span><span class="pc-d">身份 SOUL.md · 工具准则 · 编码守则 · 平台提示</span></div>
+          <div class="pcard" data-step="2"><span class="pc-f">context</span><span class="pc-d">项目上下文 · worktree 快照 · 运维指令</span></div>
+          <div class="pcard" data-step="3"><span class="pc-f">volatile</span><span class="pc-d">技能索引 · MEMORY.md · USER.md · 时间 · 运行环境</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h4>拼装结果</h4>
+        <div class="frozen" data-step="4">
+          <div class="frozen-bar"><span>stable → context → volatile</span><b>🔒 字节稳定</b></div>
+          <div class="frozen-note">同一会话内不再重建；改写历史是唯一禁止的动作</div>
+        </div>
+        <div class="cache" data-step="5">
+          <div class="cache-row"><span>缓存前缀复用</span><b>98%</b></div>
+          <div class="cache-track"><i style="width:98%"></i></div>
+          <div class="cache-note">只有压缩允许打断缓存，其余注入一律走 user / tool 通道</div>
+        </div>
+      </div>
+    </div>
+    <div class="scene-note" data-step="5"><b>代价</b><span>改了技能/设置默认下个会话才生效——换来长会话成本线性而非平方级。</span></div>
+  </section>
+
+  <section class="scene" data-scene="4">
+    <div class="scene-head"><span class="tag">S4</span><h2>工具调度</h2><p>不是"有多个就并发"，而是分段规划</p></div>
+    <div class="s4-model" data-step="1"><span class="dotpulse"></span>模型一次性返回 3 个 tool_call</div>
+    <div class="calls">
+      <div class="call" data-step="1"><b>1</b> read_file A</div>
+      <div class="call" data-step="1"><b>2</b> read_file B</div>
+      <div class="call w" data-step="1"><b>3</b> patch_file C</div>
+    </div>
+    <div class="lanes">
+      <div class="lane" data-step="3">
+        <div class="lane-h"><span class="badge par">parallel</span>读读可并发</div>
+        <div class="slot"><span>read A</span><i class="prog" style="--w:100%"></i></div>
+        <div class="slot"><span>read B</span><i class="prog" style="--w:100%"></i></div>
+      </div>
+      <div class="barrier" data-step="4"><span>⛔ 写冲突 → 屏障</span></div>
+      <div class="lane seq" data-step="4">
+        <div class="lane-h"><span class="badge sseq">sequential</span>与写操作有路径重叠</div>
+        <div class="slot"><span>patch C</span><i class="prog" style="--w:100%"></i></div>
+      </div>
+    </div>
+    <div class="results" data-step="5">
+      <span class="rlabel">结果按原序回填</span>
+      <span class="res">1 ✓</span><span class="res">2 ✓</span><span class="res">3 ✓</span>
+      <span class="rnote">完成顺序可以不同，写入历史的顺序永远是 1 → 2 → 3</span>
+    </div>
+  </section>
+
+  <section class="scene" data-scene="5">
+    <div class="scene-head"><span class="tag">S5</span><h2>上下文压缩</h2><p>四阶段：剪枝 → 定界 → 摘要 → 拼装</p></div>
+    <div class="s5">
+      <div class="msglist" id="msglist">
+        <div class="mrow head" data-step="1"><span class="r">system</span><span class="t">身份 · 工具准则</span></div>
+        <div class="mrow head" data-step="1"><span class="r">user</span><span class="t">帮我把这个仓库的 CI 修好</span></div>
+        <div class="mrow mid" data-step="1"><span class="r">asst</span><span class="t">先看下流水线配置</span></div>
+        <div class="mrow mid tool"><span class="r">tool</span><span class="t">read_file .github/workflows/ci.yml — 4.2 KB 输出</span></div>
+        <div class="mrow mid" data-step="1"><span class="r">asst</span><span class="t">第 12 行缺 Node 缓存</span></div>
+        <div class="mrow mid tool"><span class="r">tool</span><span class="t">search_files "setup-node" — 37 条命中</span></div>
+        <div class="mrow mid" data-step="1"><span class="r">asst</span><span class="t">改完跑一次本地构建</span></div>
+        <div class="mrow mid tool"><span class="r">tool</span><span class="t">terminal npm run build — 210 行日志</span></div>
+        <div class="summary" data-step="4"><span>摘要</span>Goal / Progress / Decisions / Files / Next / Critical …</div>
+        <div class="mrow tail" data-step="1"><span class="r">asst</span><span class="t">现在把缓存配置写进去</span></div>
+        <div class="mrow tail" data-step="1"><span class="r">user</span><span class="t">顺便把 lint 也修了</span></div>
+        <div class="mrow tail" data-step="1"><span class="r">asst</span><span class="t">好，先看 lint 报错</span></div>
+        <div class="mrow tail" data-step="1"><span class="r">tool</span><span class="t">terminal npm run lint — 9 条</span></div>
+      </div>
+      <div class="gaugewrap">
+        <div class="gauge" data-step="1">
+          <span class="gname">context 占用</span>
+          <b id="gval">60%</b>
+          <div class="gtrack"><i id="gbar" style="height:60%"></i></div>
+          <span class="gnote">50% 触发 · 85% 网关兜底</span>
+        </div>
+        <div class="stagelegend">
+          <span><i class="sw head"></i>保护头</span>
+          <span><i class="sw mid"></i>中段 → 摘要</span>
+          <span><i class="sw tail"></i>保护尾</span>
+        </div>
+      </div>
+    </div>
+    <div class="scene-note" data-step="5"><b>记账</b><span>token 数先信 provider 返回的真实 usage，估算只在没有 anchor 时兜底；压缩失败有 60s→300s→900s 冷却阶梯。</span></div>
+  </section>
+
+  <section class="scene" data-scene="6">
+    <div class="scene-head"><span class="tag">S6</span><h2>学习闭环</h2><p>回合后 fork 一个自己复盘</p></div>
+    <div class="flow">
+      <div class="node main" data-step="1"><b>主回合结束</b><span>finalize_turn 落盘</span></div>
+      <div class="forkarrow" data-step="2"><span>fork →</span></div>
+      <div class="node fork" data-step="2"><b>复盘 AIAgent</b><span>继承 provider / 模型 / 缓存前缀</span></div>
+      <div class="outs">
+        <div class="out" data-step="3"><b>SKILL.md</b><span>update → 改已加载技能 / 加支撑文件 / 才新建</span></div>
+        <div class="out" data-step="3"><b>MEMORY.md</b><span>只记"用户是谁"，不记"这类活怎么做"</span></div>
+      </div>
+      <div class="shield" data-step="4"><b>主会话缓存不受影响</b><span>复盘只写 store，绝不改主 prompt</span></div>
+    </div>
+    <div class="curator" data-step="5">
+      <span class="clabel">技能生命周期</span>
+      <span class="cstate on">active</span><span class="carrow">→</span>
+      <span class="cstate">stale</span><span class="carrow">→</span>
+      <span class="cstate">archived</span>
+      <span class="cnote">只归档不删除 · pinned 豁免</span>
+    </div>
+  </section>
+
+  <section class="scene" data-scene="7">
+    <div class="scene-head"><span class="tag">S7</span><h2>失败与降级</h2><p>30+ 种失败分类，决定完全不同的动作</p></div>
+    <div class="err-row">
+      <div class="err" data-step="1"><b>429</b><span>rate_limit</span></div>
+      <div class="to" data-step="2">→</div>
+      <div class="cls" data-step="2"><b>FailoverReason</b><span>分类器</span></div>
+    </div>
+    <div class="branches">
+      <div class="br" data-step="3">退避<span>rate_limit / overloaded</span></div>
+      <div class="br" data-step="3">刷凭据<span>auth 401/403</span></div>
+      <div class="br" data-step="3">换模型<span>model_not_found</span></div>
+      <div class="br" data-step="3">压缩<span>context_overflow</span></div>
+      <div class="br" data-step="3">改写请求<span>image_too_large</span></div>
+      <div class="br no" data-step="3">不重试<span>content_policy</span></div>
+    </div>
+    <div class="path" data-step="4">
+      <span>实际路径</span>
+      <i>退避 2s</i><em>→</em><i>重试</i><em>→</em><i>仍 503</i><em>→</em><i class="hl">切 fallback 模型</i><em>→</em><i class="ok">成功</i>
+    </div>
+    <div class="scene-note" data-step="5"><b>要点</b><span>"重试"至少有 8 种不同语义，混成一个 except: retry 就是线上事故的来源。</span></div>
+  </section>
+
+  </div></div>
+  <div class="caption"><span class="stepno" id="stepno">S1 · 1/8</span><p id="capText"></p></div>
+  <div class="bar">
+    <button class="ctl" id="prev" title="上一步">‹</button>
+    <button class="ctl primary" id="play" title="播放 / 暂停">▶</button>
+    <button class="ctl" id="next" title="下一步">›</button>
+    <div class="speeds" id="speeds">
+      <button class="sp" data-sp="0.5">0.5x</button>
+      <button class="sp on" data-sp="1">1x</button>
+      <button class="sp" data-sp="2">2x</button>
+    </div>
+    <div class="progress"><i id="fill"></i></div>
+    <span id="pct">0%</span>
+  </div>
+</main>
+
+<style>
+/* ---------- shared bits used by scenes ---------- */
+.stack{display:flex;flex-direction:column;gap:7px}
+.loopchip{position:absolute; right:10px; top:-9px; font:10.5px var(--mono); color:var(--blue);
+  border:1px solid rgba(106,169,224,.45); background:#0f1114; padding:1px 8px; border-radius:999px;
+  opacity:0; transform:translateY(4px); transition:.35s}
+.past5 .loopchip{opacity:1; transform:none}
+.stack .pcard{display:block}
+.stack .pcard .pc-d{margin-left:0;display:block;margin-top:2px}
+.frozen{border:1px solid rgba(224,169,74,.45);background:linear-gradient(135deg,rgba(224,169,74,.14),rgba(224,169,74,.03));border-radius:12px;padding:12px 14px}
+.frozen-bar{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--fg)}
+.frozen-bar span{font-family:var(--mono);font-size:11.5px;color:var(--amber)}
+.frozen-note{margin-top:8px;font-size:11.5px;color:var(--dim)}
+.cache{margin-top:10px}
+.cache-row{display:flex;justify-content:space-between;font-size:12px;color:var(--fg2)}
+.cache-row b{color:var(--green);font-family:var(--mono)}
+.cache-track{margin-top:7px;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.cache-track i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),var(--amber2));width:0;transition:width .8s ease .1s}
+.past5 .cache-track i{width:98%}
+.cache-note{margin-top:8px;font-size:11.5px;color:var(--dim)}
+
+/* ---------- S4 ---------- */
+.s4-model{display:inline-flex;align-items:center;gap:9px;margin-top:10px;font-size:12.5px;color:var(--fg2);border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:6px 14px}
+.dotpulse{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 0 rgba(224,169,74,.5);animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(224,169,74,.45)}70%{box-shadow:0 0 0 8px rgba(224,169,74,0)}100%{box-shadow:0 0 0 0 rgba(224,169,74,0)}}
+.calls{display:flex;gap:8px;margin-top:10px}
+.call{font:12px var(--mono);border:1px solid var(--line);background:var(--panel2);border-radius:8px;padding:6px 10px;color:var(--fg2)}
+.call b{color:var(--amber);margin-right:6px}
+.call.w{border-color:rgba(224,122,106,.4);color:#f0b3a8}
+.lanes{display:grid;grid-template-columns:1fr 92px 1fr;gap:10px;margin-top:14px;align-items:center}
+.lane{border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:var(--panel2)}
+.lane.seq{border-color:rgba(224,122,106,.35)}
+.lane-h{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--dim)}
+.badge{font:600 10.5px var(--mono);padding:2px 7px;border-radius:5px}
+.badge.par{color:var(--green);background:rgba(111,191,154,.12);border:1px solid rgba(111,191,154,.3)}
+.badge.sseq{color:var(--red);background:rgba(224,122,106,.12);border:1px solid rgba(224,122,106,.3)}
+.slot{position:relative;display:flex;align-items:center;justify-content:space-between;margin-top:7px;font:11.5px var(--mono);color:var(--fg2);border:1px solid var(--line);border-radius:7px;padding:5px 9px;overflow:hidden}
+.prog{position:absolute;left:0;bottom:0;height:2px;width:0;background:linear-gradient(90deg,var(--amber),var(--amber2));transition:width .9s ease;opacity:.9}
+.past3 .prog{width:var(--w)}
+.past4 .lane.seq .prog{width:var(--w)}
+.barrier{text-align:center;font-size:10.5px;color:var(--red);line-height:1.4}
+.results{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:12px;color:var(--dim)}
+.rlabel{color:var(--fg2)}
+.res{font:11.5px var(--mono);color:var(--green);border:1px solid rgba(111,191,154,.3);background:rgba(111,191,154,.08);padding:2px 8px;border-radius:6px}
+.rnote{margin-left:auto;font-size:11.5px}
+
+/* ---------- S5 ---------- */
+.s5{display:grid;grid-template-columns:1fr 210px;gap:16px;margin-top:10px;align-items:start}
+.msglist{display:flex;flex-direction:column;gap:5px}
+.mrow{display:flex;gap:10px;align-items:baseline;border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:11.5px;background:var(--panel2);max-height:60px;transition:max-height .45s ease,opacity .35s,padding .35s,border-color .35s}
+.mrow .r{font:10.5px var(--mono);color:var(--dim);width:46px;flex:0 0 auto}
+.mrow .t{color:var(--fg2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mrow.head{border-left:2px solid var(--green)}
+.mrow.mid{border-left:2px solid var(--amber)}
+.mrow.tail{border-left:2px solid var(--blue)}
+.mrow.tool{background:#14171b}
+.past3 .mrow.tool{max-height:0;opacity:.15;padding-top:0;padding-bottom:0;border-color:transparent;overflow:hidden}
+.past4 .mrow.mid,.past4 .mrow.tool{display:none}
+.past4 .msglist{gap:2px}
+.past3 .mrow.tool{border-width:0}
+.summary{display:none}
+.past4 .summary{display:flex;gap:9px;align-items:center;border:1px dashed rgba(224,169,74,.45);background:rgba(224,169,74,.07);border-radius:8px;padding:8px 11px;font-size:11.5px;color:var(--fg2)}
+.summary span{font:10.5px var(--mono);color:var(--amber);border:1px solid rgba(224,169,74,.35);padding:1px 6px;border-radius:5px}
+.gauge{border:1px solid var(--line);border-radius:12px;background:var(--panel2);padding:11px 13px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.gname{font-size:11px;color:var(--dim)}
+.gauge b{font:600 20px var(--mono);color:var(--amber)}
+.gtrack{width:34px;height:120px;border-radius:8px;background:var(--line);display:flex;align-items:flex-end;overflow:hidden}
+.gtrack i{width:100%;height:60%;background:linear-gradient(180deg,var(--amber),rgba(224,169,74,.35));transition:height .8s ease}
+.gnote{font-size:10.5px;color:var(--dim);text-align:center}
+.stagelegend{display:flex;flex-direction:column;gap:5px;margin-top:10px;font-size:11px;color:var(--dim)}
+.sw{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px}
+.sw.head{background:var(--green)} .sw.mid{background:var(--amber)} .sw.tail{background:var(--blue)}
+
+/* ---------- S6 ---------- */
+.flow{display:grid;grid-template-columns:1fr 70px 1fr;gap:12px;align-items:center;margin-top:12px}
+.node{border:1px solid var(--line);border-radius:11px;background:var(--panel2);padding:10px 13px}
+.node b{display:block;font-size:12.5px}
+.node span{display:block;font-size:11px;color:var(--dim);margin-top:3px}
+.node.main{border-color:rgba(106,169,224,.35)}
+.node.fork{border-color:rgba(224,169,74,.45);background:rgba(224,169,74,.06)}
+.forkarrow{display:flex;flex-direction:column;align-items:center;gap:7px;font:10.5px var(--mono);color:var(--amber)}
+.forkarrow::before{content:"";width:100%;height:1px;background:repeating-linear-gradient(90deg,rgba(224,169,74,.55) 0 4px,transparent 4px 9px)}
+.outs{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.out{border:1px solid var(--line);border-left:2px solid var(--amber);border-radius:9px;background:var(--panel2);padding:9px 12px}
+.out b{font:600 11.5px var(--mono);color:var(--amber)}
+.out span{display:block;font-size:11px;color:var(--dim);margin-top:3px;line-height:1.45}
+.shield{grid-column:1 / -1;display:flex;align-items:center;gap:10px;border:1px solid rgba(111,191,154,.35);background:rgba(111,191,154,.07);border-radius:9px;padding:8px 12px;margin-top:2px}
+.shield b{font-size:12px;color:var(--green);white-space:nowrap}
+.shield span{font-size:11px;color:var(--dim)}
+.curator{display:flex;align-items:center;gap:9px;margin-top:14px;font-size:11.5px;color:var(--dim)}
+.clabel{margin-right:4px;color:var(--fg2)}
+.cstate{border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:3px 11px;font:11px var(--mono)}
+.cstate.on{color:var(--green);border-color:rgba(111,191,154,.4)}
+.carrow{color:var(--line2)}
+.cnote{margin-left:auto;font-size:10.5px}
+
+/* ---------- S7 ---------- */
+.err-row{display:flex;align-items:center;gap:12px;margin-top:12px}
+.err{display:flex;align-items:center;gap:10px;border:1px solid rgba(224,122,106,.45);background:rgba(224,122,106,.1);border-radius:10px;padding:9px 14px}
+.err b{font:700 16px var(--mono);color:var(--red)}
+.err span{font-size:11.5px;color:#f0b3a8;font-family:var(--mono)}
+.to{color:var(--dim);font-size:16px}
+.cls{display:flex;flex-direction:column;border:1px solid rgba(224,169,74,.45);background:rgba(224,169,74,.08);border-radius:10px;padding:7px 14px}
+.cls b{font:600 12px var(--mono);color:var(--amber)}
+.cls span{font-size:10.5px;color:var(--dim)}
+.branches{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:14px}
+.br{border:1px solid var(--line);border-radius:9px;background:var(--panel2);padding:8px 9px;font-size:11.5px;color:var(--fg2);text-align:center}
+.br span{display:block;font:10px var(--mono);color:var(--dim);margin-top:4px}
+.br.no{border-color:rgba(224,122,106,.3)}
+.path{display:flex;align-items:center;gap:7px;margin-top:14px;font-size:11.5px;color:var(--dim);flex-wrap:wrap}
+.path > span{color:var(--fg2)}
+.path i{font-style:normal;font-family:var(--mono);font-size:11px;border:1px solid var(--line);background:var(--panel2);padding:3px 8px;border-radius:6px;color:var(--fg2)}
+.path i.hl{border-color:rgba(224,169,74,.45);color:var(--amber)}
+.path i.ok{border-color:rgba(111,191,154,.45);color:var(--green)}
+.path em{font-style:normal;color:var(--line2)}
+
+@media (max-width:1080px){
+  .s5{grid-template-columns:1fr}
+  .gaugewrap{display:flex;gap:16px;align-items:center}
+  .lanes{grid-template-columns:1fr}
+  .barrier{display:none}
+  .branches{grid-template-columns:repeat(3,1fr)}
+  .flow{grid-template-columns:1fr}
+  .forkarrow{height:24px}
+  .outs{grid-template-columns:1fr}
+  .layer{grid-template-columns:40px 100px 1fr}
+}
+</style>
+
+<script>
+(function(){
+  "use strict";
+  var SCENES = [
+    { name:"七层架构", caps:[
+      "L0 运行时：deadline、中断控制、终端后端、secret scope —— 保证一次执行不挂死、可打断、密钥可审计。",
+      "L1 模型接入：3 种 API mode 收敛到同一套内部消息形状，回合引擎不需要知道底下是哪个协议。",
+      "L2 能力层：70+ 工具分 28 个 toolset 按平台暴露；注册不等于暴露。",
+      "L3 上下文工程：三层 prompt 冻结 + 双层压缩，整套系统最硬的部分。",
+      "L4 回合引擎：AIAgent 用 13 个阶段驱动一次 turn，每个阶段一个文件。",
+      "L5 会话与状态：SQLite + FTS5，单一写者，历史只追加。",
+      "L6 宿主面：CLI、TUI、桌面、20+ 消息平台、ACP、cron 共用同一个内核。",
+      "七层的关系是窄腰：越往上越可替换，越往下越通用。"
+    ]},
+    { name:"Turn 生命周期", caps:[
+      "回合开始：恢复或构建 system prompt；首轮若已超阈值，直接走压缩分支。",
+      "组装请求：messages + 工具 schema 变成请求体，调用前还有一道 preflight 压缩闸门。",
+      "调用模型：可中断的 HTTP，用户随时可以 /stop 或 /steer。",
+      "响应检查与规范化：空响应、长度截断、拒答，都在这里拦下。",
+      "有 tool_calls 就进工具轮：执行完把结果追回历史，然后回到第 2 步 —— 这是回边。",
+      "纯文本就尝试收尾：四道 stop gates 可能把答案降级为 interim 并继续，防止假完成。",
+      "finalize：落盘、刷记忆、触发复盘。预算 500 次，耗尽后还有一次恩典调用体面收尾。"
+    ]},
+    { name:"Prompt 装配", caps:[
+      "stable 层：身份、工具准则、编码守则、平台提示 —— 最不该变的部分。",
+      "context 层：项目上下文与 worktree 快照，同项目的不同 worktree 因此共享同一段前缀。",
+      "volatile 层：技能索引、记忆快照、时间与环境；虽是易变信息，也仍在缓存里。",
+      "拼装完成即冻结：整个会话字节不变，模型看到的前缀永远一致。",
+      "代价与收益：改技能/改设置默认下个会话生效，换来长会话成本线性而非平方级。"
+    ]},
+    { name:"工具调度", caps:[
+      "模型一次吐出三个调用：读 A、读 B、写 C。",
+      "规划器先把整批切成有序段，而不是有多个就并发。",
+      "读读之间没有冲突，合成一个并行段，一起跑。",
+      "写操作与任何路径重叠就切断：屏障之后，写单独成段顺序执行。",
+      "结果按原始顺序回填，完成顺序不影响写入历史的顺序。",
+      "既保证语义等价于全顺序执行，又让读多写少的场景真正提速。"
+    ]},
+    { name:"上下文压缩", caps:[
+      "上下文接近阈值：消息列表里，头、中、尾三段的命运完全不同。",
+      "保护头（system + 首轮）和保护尾（按 token 预算回走）不动，中段才是可压缩的。",
+      "第一阶段剪枝：超过 200 字符的旧工具结果直接替换成占位符，不调 LLM。",
+      "第二阶段摘要：中段交给 auxiliary 小模型，压成八段式结构化摘要。",
+      "拼装：头 + 摘要 + 尾，token 从 60% 降到 25%，会话可以继续跑。",
+      "记账先信 provider 的真实 usage；摘要失败有 60s→300s→900s 冷却，不会每回合重试。"
+    ]},
+    { name:"学习闭环", caps:[
+      "主回合结束，finalize 已经把这一轮写进会话库。",
+      "后台 fork 一个 AIAgent 复盘：继承 provider、模型、凭据和缓存前缀，几乎不额外花钱。",
+      "复盘只做两件事：改技能（这类活怎么做）、写记忆（用户是谁）。",
+      "它只写 store，绝不改主会话的 prompt —— 所以主缓存不会被打断。",
+      "技能有生命周期：active → stale → archived，只归档不删除，pinned 豁免一切自动流转。"
+    ]},
+    { name:"失败与降级", caps:[
+      "一次调用失败：429 限流、503 过载、401 鉴权，表面都是错了，处理方式却完全不同。",
+      "先分类：30+ 种 FailoverReason，决定下一步是退避、换 key、换模型还是压缩。",
+      "六类策略：退避 / 刷凭据 / 换模型 / 压缩 / 改写请求 / 直接不重试。",
+      "实际路径可能是：退避 2 秒 → 重试 → 仍失败 → 切 fallback 模型 → 成功。",
+      "关键在于区分：context_overflow 要压缩而不是换模型，content_policy 则根本不该重试。",
+      "把重试当成一种动作、而不是一种策略，就是线上事故的来源。"
+    ]}
+  ];
+
+  var scenes = Array.prototype.slice.call(document.querySelectorAll(".scene"));
+  var tabsEl = document.getElementById("tabs");
+  var capText = document.getElementById("capText");
+  var stepno = document.getElementById("stepno");
+  var fill = document.getElementById("fill");
+  var pct = document.getElementById("pct");
+  var playBtn = document.getElementById("play");
+  var gval = document.getElementById("gval");
+  var gbar = document.getElementById("gbar");
+  var loopback = document.getElementById("loopback");
+
+  var s = 0, step = 1, playing = false, speed = 1, timer = null;
+
+  SCENES.forEach(function(sc, i){
+    var b = document.createElement("button");
+    b.className = "tab" + (i === 0 ? " on" : "");
+    b.type = "button";
+    b.textContent = "S" + (i + 1) + " " + sc.name;
+    b.addEventListener("click", function(){ go(i, 1); });
+    tabsEl.appendChild(b);
+  });
+  var tabs = Array.prototype.slice.call(tabsEl.children);
+
+  function maxStep(){ return SCENES[s].caps.length; }
+
+  function render(){
+    scenes.forEach(function(el, i){
+      el.classList.toggle("on", i === s);
+      el.setAttribute("data-cur", String(step));
+      var max = SCENES[i].caps.length;
+      for (var k = 1; k <= max; k++) el.classList.toggle("past" + k, i === s && step >= k);
+      el.querySelectorAll("[data-step]").forEach(function(node){
+        var n = parseInt(node.getAttribute("data-step"), 10);
+        node.classList.toggle("on", step >= n);
+        node.classList.toggle("hot", i === s && step === n);
+      });
+    });
+    tabs.forEach(function(t, i){ t.classList.toggle("on", i === s); });
+    capText.textContent = SCENES[s].caps[step - 1];
+    stepno.textContent = "S" + (s + 1) + " · " + step + "/" + maxStep();
+    var p = maxStep() > 1 ? (step - 1) / (maxStep() - 1) : 1;
+    fill.style.width = Math.round(p * 100) + "%";
+    pct.textContent = Math.round(p * 100) + "%";
+
+    if (loopback) loopback.classList.toggle("on", s === 1 && step >= 5);
+    if (gval) gval.textContent = (s === 4 && step >= 5) ? "25%" : "60%";
+    if (gbar) gbar.style.height = (s === 4 && step >= 5) ? "25%" : "60%";
+  }
+
+  function go(sceneIdx, st){
+    s = Math.max(0, Math.min(SCENES.length - 1, sceneIdx));
+    step = Math.max(1, Math.min(SCENES[s].caps.length, st || 1));
+    render();
+    syncUrl();
+  }
+
+  function syncUrl(){
+    try {
+      var qs = "?scene=" + (s + 1) + "&step=" + step;
+      history.replaceState(null, "", qs);
+    } catch(e) {}
+  }
+
+  function next(){
+    if (step < maxStep()) { step++; render(); return true; }
+    return false;
+  }
+  function prev(){
+    if (step > 1) { step--; render(); return true; }
+    return false;
+  }
+
+  function setPlaying(v){
+    playing = v;
+    playBtn.textContent = v ? "❚❚" : "▶";
+    if (v) tick(); else if (timer) { clearTimeout(timer); timer = null; }
+  }
+
+  function tick(){
+    if (timer) clearTimeout(timer);
+    if (!playing) return;
+    timer = setTimeout(function(){
+      if (next()) { tick(); return; }
+      if (s < SCENES.length - 1) { go(s + 1, 1); tick(); return; }
+      setPlaying(false);
+    }, 1500 / speed);
+  }
+
+  function advance(){
+    if (!next()) setPlaying(false);
+  }
+
+  playBtn.addEventListener("click", function(){
+    if (!playing) {
+      if (s === SCENES.length - 1 && step >= maxStep()) go(0, 1);
+      else if (step >= maxStep()) { step = 1; render(); }
+    }
+    setPlaying(!playing);
+  });
+  document.getElementById("next").addEventListener("click", function(){ setPlaying(false); next(); });
+  document.getElementById("prev").addEventListener("click", function(){ setPlaying(false); prev(); });
+
+  document.getElementById("speeds").addEventListener("click", function(e){
+    var b = e.target.closest(".sp");
+    if (!b) return;
+    speed = parseFloat(b.getAttribute("data-sp"));
+    Array.prototype.forEach.call(this.children, function(x){ x.classList.toggle("on", x === b); });
+    if (playing) tick();
+  });
+
+  document.addEventListener("keydown", function(e){
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    if (e.key === " ") { e.preventDefault(); playBtn.click(); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); setPlaying(false); next(); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); setPlaying(false); prev(); }
+    else if (e.key >= "1" && e.key <= "7") { go(parseInt(e.key, 10) - 1, 1); }
+  });
+
+  var params = new URLSearchParams(location.search);
+  var qs = parseInt(params.get("scene"), 10);
+  var qstep = parseInt(params.get("step"), 10);
+  if (qs >= 1 && qs <= SCENES.length) {
+    go(qs - 1, qstep || 1);
+    setPlaying(false);
+  } else {
+    go(0, 1);
+    setTimeout(function(){ setPlaying(true); }, 700);
+  }
+  render();
+})();
+</script>
+</body>
+</html>

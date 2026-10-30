@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenAI Codex 原理与架构 · 演示文稿</title>
+<style>
+:root{--bg:#0f1114;--panel:#16191e;--panel2:#1b1f26;--line:#272c34;--line2:#323844;--fg:#e8e6e1;--fg2:#b6b2a8;--dim:#8b8f98;--amber:#e0a94a;--amber-soft:rgba(224,169,74,.13);--green:#6fbf9a;--red:#e07a6a;--blue:#6aa9e0;--purple:#a98ae0;--mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#08090b;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--fg);-webkit-font-smoothing:antialiased}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);padding:56px 72px;opacity:0;visibility:hidden;transition:opacity .45s,transform .45s;transform:translateX(24px);overflow:hidden;border-radius:6px}
+.slide::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(800px 380px at 10% -10%,rgba(224,169,74,.11),transparent 60%),radial-gradient(700px 360px at 100% 110%,rgba(106,169,224,.08),transparent 60%)}
+.slide.on{opacity:1;visibility:visible;transform:none}
+.slide>*{position:relative}
+.kicker{font-family:var(--mono);font-size:14px;color:var(--amber);letter-spacing:1px;margin-bottom:8px}
+h1{font-size:56px;margin:0 0 18px;line-height:1.15}
+h2{font-size:36px;margin:0 0 26px}
+p,li{font-size:20px;color:var(--fg2);line-height:1.65}
+ul{margin:0;padding-left:24px}li{margin:6px 0}
+b,strong{color:var(--fg)}
+code{font-family:var(--mono);font-size:.85em;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 7px;color:#f0c46a}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 22px;font-family:var(--mono);font-size:15px;line-height:1.6;color:#d6d2c8;margin:0;white-space:pre}
+pre .c{color:var(--dim)}pre .k{color:var(--purple)}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.box h3{margin:0 0 8px;font-size:21px;color:var(--fg)}
+.box p{margin:0;font-size:16.5px;line-height:1.6}
+.box .tag{display:inline-block;font-family:var(--mono);font-size:12px;color:var(--amber);background:var(--amber-soft);padding:2px 9px;border-radius:10px;margin-bottom:10px}
+.box.hl{border-color:var(--amber);background:#1f1b12}
+table{width:100%;border-collapse:collapse;font-size:17px}
+th,td{border:1px solid var(--line);padding:10px 14px;text-align:left}
+th{background:var(--panel2);color:var(--amber)}td{color:var(--fg2)}
+.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.flow .st{background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:12px 16px;font-size:17px;text-align:center}
+.flow .st small{display:block;font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:3px}
+.flow .st.a{border-color:var(--amber);color:var(--amber)}
+.flow .ar{color:var(--amber);font-size:22px}
+.layer{display:grid;grid-template-columns:190px 1fr;gap:12px;margin-bottom:10px}
+.layer .n{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--amber);font-weight:600;font-size:17px;display:flex;align-items:center}
+.layer .i{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.layer .i span{font-family:var(--mono);font-size:14px;background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:4px 10px;color:var(--fg2)}
+.num{display:inline-flex;width:30px;height:30px;border-radius:50%;border:1px solid var(--amber);color:var(--amber);align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;margin-right:10px;flex:0 0 auto}
+.steps>div{display:flex;align-items:flex-start;margin:11px 0;font-size:18.5px;color:var(--fg2);line-height:1.5}
+.quote{border-left:4px solid var(--amber);padding:6px 18px;background:var(--amber-soft);border-radius:0 10px 10px 0;font-size:19px;color:var(--fg)}
+.foot{position:absolute;left:72px;right:72px;bottom:24px;display:flex;justify-content:space-between;font-size:13px;color:var(--dim);font-family:var(--mono)}
+.reveal>*{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}
+.slide.on .reveal>*{opacity:1;transform:none}
+.slide.on .reveal>*:nth-child(2){transition-delay:.08s}.slide.on .reveal>*:nth-child(3){transition-delay:.16s}.slide.on .reveal>*:nth-child(4){transition-delay:.24s}.slide.on .reveal>*:nth-child(5){transition-delay:.32s}.slide.on .reveal>*:nth-child(6){transition-delay:.4s}
+#bar{position:fixed;left:0;bottom:0;height:3px;background:var(--amber);transition:width .35s;z-index:5}
+#nav{position:fixed;right:18px;bottom:14px;display:flex;gap:8px;align-items:center;z-index:5;font-family:var(--mono);font-size:13px;color:var(--dim)}
+#nav button{background:var(--panel2);color:var(--fg);border:1px solid var(--line2);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:13px}
+#nav button:hover,#nav button:focus-visible{border-color:var(--amber);color:var(--amber);outline:none}
+#overview{position:fixed;inset:0;background:rgba(8,9,11,.96);display:none;z-index:10;overflow:auto;padding:30px}
+#overview.on{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;align-content:start}
+#overview button{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:left;color:var(--fg);cursor:pointer;font-size:15px;font-family:inherit}
+#overview button span{display:block;font-family:var(--mono);color:var(--amber);font-size:12px;margin-bottom:6px}
+#overview button:hover,#overview button.cur{border-color:var(--amber)}
+@media print{html,body{overflow:visible;background:#fff}#deck{position:static;transform:none!important;width:auto;height:auto}.slide{position:relative;opacity:1;visibility:visible;transform:none;page-break-after:always;width:1280px;height:720px}.reveal>*{opacity:1!important;transform:none!important}#nav,#bar{display:none}}
+</style>
+</head>
+<body>
+<div id="deck">
+<section class="slide" data-title="封面">
+  <div style="margin-top:120px" class="reveal">
+    <div class="kicker">OPENAI CODEX · DEEP DIVE</div>
+    <h1>Codex 原理、运行流程<br>与代码架构</h1>
+    <p style="font-size:22px;max-width:820px">一个运行在本地的编码 Agent 如何把"模型 + 循环 + 工具 + 沙箱"组合成可靠的软件工程助手</p>
+    <p style="font-size:15px;color:var(--dim);margin-top:40px;font-family:var(--mono)">基于 github.com/openai/codex（codex-rs）源码与官方文档</p>
+  </div>
+</section>
+
+<section class="slide" data-title="目录">
+  <div class="kicker">AGENDA</div><h2>内容概览</h2>
+  <div class="grid g2 reveal" style="gap:14px 40px">
+    <div class="steps"><div><span class="num">1</span>Codex 产品形态</div><div><span class="num">2</span>核心原理：Agent Loop</div><div><span class="num">3</span>整体架构分层</div><div><span class="num">4</span>Session / Task / Turn</div><div><span class="num">5</span>Prompt 组装与缓存</div><div><span class="num">6</span>SQ/EQ 协议与 App Server</div></div>
+    <div class="steps"><div><span class="num">7</span>工具系统</div><div><span class="num">8</span>审批策略 × 沙箱策略</div><div><span class="num">9</span>平台沙箱实现</div><div><span class="num">10</span>Orchestrator 升级流程</div><div><span class="num">11</span>上下文压缩与持久化</div><div><span class="num">12</span>完整时序与代码地图</div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="产品形态">
+  <div class="kicker">01 · WHAT IS CODEX</div><h2>同一个引擎，多种前端</h2>
+  <div class="grid g4 reveal">
+    <div class="box"><span class="tag">本地</span><h3>CLI / TUI</h3><p><code>codex</code> 交互式终端界面；<code>codex exec</code> 无头运行，适合脚本与 CI。</p></div>
+    <div class="box"><span class="tag">本地</span><h3>IDE / 桌面 App</h3><p>VS Code、Cursor 插件与 <code>codex app</code>，通过 <code>app-server</code> JSON-RPC 驱动。</p></div>
+    <div class="box"><span class="tag">云端</span><h3>Codex Web</h3><p>chatgpt.com/codex，在云端容器中并行执行任务并生成 PR。</p></div>
+    <div class="box"><span class="tag">模型</span><h3>Codex 模型</h3><p>面向软件工程训练的 GPT 变体，擅长长时程工具调用与补丁编辑。</p></div>
+  </div>
+  <p class="quote" style="margin-top:34px">开源实现 <b>codex-rs</b>：由 TypeScript 迁移到 Rust，单一静态二进制，原生集成各平台沙箱。核心 <code>codex-core</code> 与 UI 完全解耦。</p>
+</section>
+
+<section class="slide" data-title="Agent Loop">
+  <div class="kicker">02 · CORE PRINCIPLE</div><h2>Agent Loop：输出即下一轮输入</h2>
+  <div class="flow reveal" style="margin:10px 0 30px">
+    <div class="st">用户输入<small>Op::UserTurn</small></div><span class="ar">→</span>
+    <div class="st a">组装 Prompt<small>build_prompt()</small></div><span class="ar">→</span>
+    <div class="st a">流式采样<small>Responses API</small></div><span class="ar">→</span>
+    <div class="st a">执行工具<small>ToolRouter</small></div><span class="ar">→</span>
+    <div class="st a">回填历史<small>FunctionCallOutput</small></div><span class="ar">↺</span>
+    <div class="st">最终回答<small>TurnComplete</small></div>
+  </div>
+  <div class="grid g2 reveal">
+    <pre><span class="k">loop</span> {
+  <span class="k">let</span> prompt = build_prompt(history, tools);
+  <span class="k">let</span> r = run_sampling_request(prompt).<span class="k">await</span>;
+  <span class="c">// 工具调用 → 执行 → 输出写回 history</span>
+  <span class="k">if</span> token_limit_reached { run_auto_compact(); }
+  <span class="k">if</span> !r.needs_follow_up { <span class="k">break</span>; }
+}</pre>
+    <div class="box hl"><h3>循环终止条件只有一个</h3><p>只要模型本轮发出任何工具调用，结果就必须回传给模型，因此 <code>needs_follow_up = true</code>，继续采样。模型只输出文本消息时循环自然结束。<br><br>源码：<code>core/src/session/turn.rs · run_turn()</code></p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="架构分层">
+  <div class="kicker">03 · ARCHITECTURE</div><h2>五层架构</h2>
+  <div class="reveal">
+    <div class="layer"><div class="n">① 前端</div><div class="i"><span>tui</span><span>exec</span><span>IDE 插件</span><span>桌面 App</span><span>mcp-server</span></div></div>
+    <div class="layer"><div class="n">② 接入 / 协议</div><div class="i"><span>cli + arg0</span><span>app-server (JSON-RPC)</span><span>protocol: Op / EventMsg / ResponseItem</span></div></div>
+    <div class="layer"><div class="n">③ 引擎 core</div><div class="i"><span>ThreadManager</span><span>Session</span><span>SessionTask</span><span>run_turn</span><span>ContextManager</span><span>compact</span><span>rollout</span></div></div>
+    <div class="layer"><div class="n">④ 工具 / 执行</div><div class="i"><span>ToolRouter</span><span>ToolRegistry</span><span>ToolOrchestrator</span><span>unified_exec (PTY)</span><span>apply-patch</span><span>codex-mcp</span><span>execpolicy</span></div></div>
+    <div class="layer"><div class="n">⑤ 平台 / 外部</div><div class="i"><span>Seatbelt</span><span>bubblewrap + seccomp</span><span>Windows sandbox</span><span>network-proxy</span><span>Responses API</span><span>Ollama / LM Studio</span></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="核心实体">
+  <div class="kicker">04 · ENTITIES</div><h2>Session · Task · Turn</h2>
+  <table class="reveal">
+    <tr><th style="width:150px">实体</th><th>含义</th><th style="width:430px">关键约束</th></tr>
+    <tr><td><code>Codex</code></td><td>核心引擎，后台线程或独立进程运行</td><td>只通过 SQ / EQ 与 UI 通信</td></tr>
+    <tr><td><code>Session</code></td><td>当前配置与状态：模型、cwd、策略、历史</td><td>同一时刻最多一个 Task；重新配置会中止执行</td></tr>
+    <tr><td><code>Task</code></td><td>响应一次用户输入的完整工作</td><td>新输入或 <code>Op::Interrupt</code> 会终止它</td></tr>
+    <tr><td><code>Turn</code></td><td>一次"采样 → 执行工具 → 回填"迭代</td><td>上一轮输出是下一轮输入；无输出则结束</td></tr>
+    <tr><td><code>Model</code></td><td>Responses API 或兼容 Provider</td><td>SSE / WebSocket 流式返回 ResponseItem</td></tr>
+  </table>
+  <p style="margin-top:22px;font-size:17px">来源：<code>codex-rs/docs/protocol_v1.md</code>。需要并行时，为每条工作线运行独立的 Thread 或子 Agent。</p>
+</section>
+<section class="slide" data-title="Prompt 组装">
+  <div class="kicker">05 · PROMPT</div><h2>Prompt 组装与前缀缓存</h2>
+  <div class="grid g2 reveal">
+    <pre><span class="c">// 每次采样都是一次完整请求</span>
+instructions: &lt;基础系统指令&gt;
+tools: [exec_command, apply_patch,
+        update_plan, view_image, mcp__*]
+input: [
+  developer: &lt;权限 / 沙箱说明&gt;
+  user:      &lt;AGENTS.md 指令&gt;
+  user:      &lt;environment_context&gt;
+  ...history (只追加)
+  user:      "本次输入"
+]</pre>
+    <div>
+      <div class="box" style="margin-bottom:14px"><h3>AGENTS.md 发现</h3><p>从 cwd 向上找到项目根（默认 <code>.git</code>），再从根到 cwd 逐层收集 AGENTS.md 并拼接，越靠近 cwd 优先级越高；再合并 <code>~/.codex/AGENTS.md</code>。</p></div>
+      <div class="box hl"><h3>只追加，不改写</h3><p>静态前缀在前、历史在后，最大化 prompt cache 命中。配置变化以追加消息表达。请求默认无状态，推理以 <code>encrypted_content</code> 回传，兼容 ZDR。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="协议">
+  <div class="kicker">06 · PROTOCOL</div><h2>SQ / EQ 队列对与 App Server</h2>
+  <div class="grid g2 reveal">
+    <div class="box"><span class="tag">UI → Codex · Op</span><h3>Submission Queue</h3><p><code>UserTurn</code> 用户输入 + 每轮上下文<br><code>Interrupt</code> 中断<br><code>ExecApproval</code> / <code>PatchApproval</code> 审批回复<br><code>UserInputAnswer</code> 回答提问<br><code>Compact</code> / <code>Review</code> / <code>Shutdown</code></p></div>
+    <div class="box"><span class="tag">Codex → UI · EventMsg</span><h3>Event Queue</h3><p><code>TurnStarted</code> / <code>TurnComplete</code><br><code>AgentMessageContentDelta</code> 流式文本<br><code>ExecApprovalRequest</code> 请求审批<br><code>ExecCommandBegin/End</code>、<code>PatchApplyBegin/End</code><br><code>TokenCount</code> / <code>Warning</code> / <code>Error</code></p></div>
+  </div>
+  <div class="flow reveal" style="margin-top:26px">
+    <div class="st">IDE / 桌面 App</div><span class="ar">⇄</span>
+    <div class="st a">app-server<small>JSON-RPC · stdio / WebSocket</small></div><span class="ar">⇄</span>
+    <div class="st">Thread<small>start / resume / fork</small></div>
+    <div class="st">Turn<small>start / interrupt</small></div>
+    <div class="st">Item<small>started → delta → completed</small></div>
+  </div>
+</section>
+
+<section class="slide" data-title="工具系统">
+  <div class="kicker">07 · TOOLS</div><h2>工具系统</h2>
+  <table class="reveal" style="font-size:16px">
+    <tr><th>工具</th><th>作用</th></tr>
+    <tr><td><code>exec_command</code> / <code>write_stdin</code></td><td>unified_exec：基于 PTY 的命令执行，支持长驻进程与交互输入，输出头尾截断</td></tr>
+    <tr><td><code>apply_patch</code></td><td>自定义 diff 语法（<code>*** Begin Patch</code>）增删改文件，Codex 的主要编辑方式</td></tr>
+    <tr><td><code>update_plan</code></td><td>维护步骤与状态的任务计划，UI 显示为 TODO 列表</td></tr>
+    <tr><td><code>view_image</code> / <code>web_search</code></td><td>附加本地图片；服务端执行的网页搜索</td></tr>
+    <tr><td>MCP 工具 / <code>tool_search</code></td><td>rmcp-client 连接 MCP Server；工具多时延迟加载 schema</td></tr>
+    <tr><td><code>request_user_input</code> / 多 Agent</td><td>结构化提问；派生子 Agent 并互相通信</td></tr>
+  </table>
+  <p class="quote reveal" style="margin-top:20px;font-size:17px"><b>arg0 分发：</b>同一个 codex 二进制，<code>argv[0]=codex-linux-sandbox</code> 时变身沙箱 helper，<code>argv[1]=--codex-run-as-apply-patch</code> 时变身补丁工具。</p>
+</section>
+
+<section class="slide" data-title="安全模型">
+  <div class="kicker">08 · SECURITY MODEL</div><h2>审批策略 × 沙箱策略</h2>
+  <div class="grid g2 reveal">
+    <table style="font-size:16px"><tr><th colspan="2">AskForApproval：何时问人</th></tr>
+      <tr><td><code>untrusted</code></td><td>除 execpolicy 允许的命令外都要审批</td></tr>
+      <tr><td><code>on-request</code></td><td>默认；模型按需申请提权（<code>on-failure</code> 为别名）</td></tr>
+      <tr><td><code>granular</code></td><td>按类别细粒度开关</td></tr>
+      <tr><td><code>never</code></td><td>从不询问，失败直接返回模型</td></tr></table>
+    <table style="font-size:16px"><tr><th colspan="2">SandboxPolicy：系统允许做什么</th></tr>
+      <tr><td><code>read-only</code></td><td>全盘只读，默认断网</td></tr>
+      <tr><td><code>workspace-write</code></td><td>cwd 与 writable_roots 可写，<code>.git</code>/<code>.codex</code> 只读</td></tr>
+      <tr><td><code>danger-full-access</code></td><td>无限制</td></tr>
+      <tr><td><code>external-sandbox</code></td><td>已在容器内，全盘访问</td></tr></table>
+  </div>
+  <p class="reveal" style="margin-top:22px;font-size:18px">再叠加 <b>execpolicy</b>（Starlark <code>prefix_rule</code>：allow / prompt / forbidden）与 <b>network-proxy</b>，形成纵深防御。</p>
+</section>
+
+<section class="slide" data-title="平台沙箱">
+  <div class="kicker">09 · OS SANDBOX</div><h2>各平台沙箱实现</h2>
+  <div class="grid g3 reveal">
+    <div class="box"><span class="tag">macOS</span><h3>Seatbelt</h3><p><code>/usr/bin/sandbox-exec</code> 加载动态生成的 SBPL profile：按可写根放开 <code>file-write*</code>，拒绝网络，保留偏好设置读取。</p></div>
+    <div class="box"><span class="tag">Linux</span><h3>bubblewrap + seccomp</h3><p><code>--ro-bind / /</code> 默认只读，<code>--bind</code> 叠加可写根，受保护子路径重新只读；<code>PR_SET_NO_NEW_PRIVS</code> + seccomp 屏蔽网络与 <code>io_uring</code>。Landlock 为旧路径。</p></div>
+    <div class="box"><span class="tag">Windows</span><h3>Restricted Token</h3><p>非提权模式用受限令牌；提权模式支持精确读写根与只读子目录。无法强制执行的策略 <b>fail closed</b>。</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Orchestrator">
+  <div class="kicker">10 · TOOL ORCHESTRATOR</div><h2>审批 → 沙箱 → 升级重试</h2>
+  <div class="flow reveal" style="margin-bottom:26px">
+    <div class="st a">execpolicy + 策略<small>Skip / NeedsApproval / Forbidden</small></div><span class="ar">→</span>
+    <div class="st">请求审批<small>ExecApprovalRequest</small></div><span class="ar">→</span>
+    <div class="st a">沙箱内首次执行<small>SandboxManager</small></div><span class="ar">→</span>
+    <div class="st" style="border-color:var(--red)">沙箱拒绝?<small>SandboxErr::Denied</small></div><span class="ar">→</span>
+    <div class="st">再审批 + 无沙箱重试<small>escalated</small></div>
+  </div>
+  <div class="grid g2 reveal">
+    <div class="box"><h3>审批决策 ReviewDecision</h3><p><code>Approved</code>、<code>ApprovedForSession</code>（会话缓存）、<code>ApprovedExecpolicyAmendment</code>（写入规则）、<code>Denied</code>、<code>Abort</code>。也可由 Guardian 自动审查代为决定。</p></div>
+    <div class="box hl"><h3>谁来决定升级</h3><p><code>untrusted</code>：沙箱失败后自动请求无沙箱重试。<br><code>on-request</code>：不自动升级，拒绝信息返回模型，由模型带 <code>require_escalated</code> 显式申请审批。<br><code>never</code>：从不询问，失败直接交给模型处理。</p></div>
+  </div>
+</section>
+<section class="slide" data-title="上下文压缩">
+  <div class="kicker">11 · CONTEXT &amp; PERSISTENCE</div><h2>上下文压缩与会话持久化</h2>
+  <div class="grid g2 reveal">
+    <div class="steps">
+      <div><span class="num">1</span><span><b>触发：</b>token 超过 <code>model_auto_compact_token_limit</code> 且仍需继续；采样前或切换小窗口模型时也会检查</span></div>
+      <div><span class="num">2</span><span><b>摘要：</b>本地用压缩提示词总结；远程模式由 Responses API 返回不透明的 <code>Compaction</code> item</span></div>
+      <div><span class="num">3</span><span><b>替换：</b><code>SUMMARY_PREFIX</code> + 摘要 + 最近用户消息，重新插入初始上下文</span></div>
+      <div><span class="num">4</span><span><b>继续：</b>同一 Turn 接着采样；也可 <code>/compact</code> 手动触发</span></div>
+    </div>
+    <div>
+      <div class="box" style="margin-bottom:14px"><span class="tag">Rollout</span><h3>JSONL 会话记录</h3><p><code>~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl</code>，<code>codex resume</code> 重放恢复。</p></div>
+      <div class="box" style="margin-bottom:14px"><span class="tag">Config</span><h3>config.toml</h3><p>模型、Provider、策略默认值、MCP Servers、profiles、features。</p></div>
+      <div class="box"><span class="tag">OTel</span><h3>可观测性</h3><p>工具决策来源、沙箱结果、采样耗时等指标。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="完整时序">
+  <div class="kicker">12 · END-TO-END</div><h2>一次请求的完整时序</h2>
+  <div class="grid g2 reveal" style="gap:8px 40px">
+    <div class="steps">
+      <div><span class="num">1</span>TUI 发送 <code>Op::UserTurn</code></div>
+      <div><span class="num">2</span>Session 启动 RegularTask → <code>TurnStarted</code></div>
+      <div><span class="num">3</span>组装 Prompt，流式请求 Responses API</div>
+      <div><span class="num">4</span>模型调用 <code>exec_command: cargo test</code></div>
+      <div><span class="num">5</span>Orchestrator：Skip 审批，沙箱内执行</div>
+      <div><span class="num">6</span>失败输出回填，<code>needs_follow_up=true</code></div>
+    </div>
+    <div class="steps">
+      <div><span class="num">7</span>模型发出 <code>apply_patch</code>，自动批准写入</div>
+      <div><span class="num">8</span>重新测试，需联网 → 沙箱拒绝</div>
+      <div><span class="num">9</span>模型 <code>require_escalated</code> → 用户批准</div>
+      <div><span class="num">10</span>无沙箱执行通过；超阈值自动压缩</div>
+      <div><span class="num">11</span>模型输出总结，无工具调用 → 退出循环</div>
+      <div><span class="num">12</span><code>TurnComplete</code>，rollout 落盘</div>
+    </div>
+  </div>
+  <p class="reveal" style="font-size:16px;margin-top:16px">逐步动画演示见 <a href="codex-animation.html" style="color:var(--blue)">codex-animation.html</a></p>
+</section>
+
+<section class="slide" data-title="代码地图">
+  <div class="kicker">13 · CODE MAP</div><h2>codex-rs 关键代码</h2>
+  <div class="grid g3 reveal" style="gap:12px">
+    <div class="box"><span class="tag">入口</span><p><code>cli</code> 多功能入口<br><code>arg0</code> 二进制角色分发<br><code>tui</code> ratatui 界面<br><code>exec</code> 无头模式<br><code>app-server</code> JSON-RPC</p></div>
+    <div class="box hl"><span class="tag">core/src</span><p><code>session/turn.rs</code> 主循环<br><code>tasks/</code> regular · review · compact<br><code>context_manager/</code> 历史<br><code>compact*.rs</code> 压缩<br><code>agents_md.rs</code> · <code>client.rs</code></p></div>
+    <div class="box"><span class="tag">core/src/tools</span><p><code>router.rs</code> 解析分发<br><code>registry.rs</code> 注册表<br><code>orchestrator.rs</code> 审批沙箱<br><code>parallel.rs</code> 并行调用<br><code>handlers/*</code> 各工具实现</p></div>
+    <div class="box"><span class="tag">执行</span><p><code>unified_exec/</code> PTY 进程<br><code>apply-patch</code> 补丁<br><code>execpolicy</code> Starlark 规则</p></div>
+    <div class="box"><span class="tag">沙箱</span><p><code>sandboxing</code> 策略转换<br><code>linux-sandbox</code> · <code>bwrap</code><br><code>network-proxy</code></p></div>
+    <div class="box"><span class="tag">生态</span><p><code>protocol</code> 共享类型<br><code>codex-mcp</code> · <code>rmcp-client</code><br><code>model-provider</code> · <code>ollama</code></p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="设计取舍">
+  <div class="kicker">14 · TAKEAWAYS</div><h2>设计取舍</h2>
+  <div class="grid g3 reveal">
+    <div class="box"><h3>引擎与 UI 解耦</h3><p>SQ/EQ 让 TUI、IDE、App、MCP Server 共享同一个 core。</p></div>
+    <div class="box"><h3>单 Task 模型</h3><p>每个 Session 一次只跑一个 Task，避免并发编辑冲突。</p></div>
+    <div class="box"><h3>纵深防御</h3><p>规则 + 审批 + OS 沙箱 + 网络代理；不能强制执行就 fail closed。</p></div>
+    <div class="box"><h3>只追加 Prompt</h3><p>最大化前缀缓存命中；无状态请求兼容 ZDR。</p></div>
+    <div class="box"><h3>补丁式编辑</h3><p>输出更短、更易审阅，UI 直接渲染 diff。</p></div>
+    <div class="box"><h3>Rust 单二进制</h3><p>启动快、无运行时依赖，沙箱 helper 与补丁工具内置。</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="参考资料">
+  <div style="margin-top:90px" class="reveal">
+    <div class="kicker">REFERENCES</div><h1>谢谢</h1>
+    <ul style="font-size:18px">
+      <li><code>github.com/openai/codex</code>：codex-rs 源码</li>
+      <li><code>codex-rs/docs/protocol_v1.md</code>：Session / Task / Turn 与 SQ/EQ</li>
+      <li><code>codex-rs/core/README.md</code>、<code>linux-sandbox/README.md</code>：沙箱实现</li>
+      <li><code>codex-rs/execpolicy/README.md</code>：命令策略语言</li>
+      <li><code>developers.openai.com/codex</code>：官方文档</li>
+      <li>OpenAI Blog · Unrolling the Codex agent loop</li>
+    </ul>
+    <p style="font-size:15px;color:var(--dim);margin-top:30px">配套：Codex-架构原理详解.html · codex-animation.html</p>
+  </div>
+</section>
+</div>
+<div id="bar"></div>
+<div id="nav"><button id="ov" aria-label="幻灯片总览">总览 (O)</button><button id="pv" aria-label="上一页">◀</button><span id="pg">1 / 1</span><button id="nx" aria-label="下一页">▶</button><button id="fs" aria-label="全屏">全屏 (F)</button></div>
+<div id="overview" role="dialog" aria-label="幻灯片总览"></div>
+<script>
+const slides=[...document.querySelectorAll(".slide")],deck=document.getElementById("deck"),ov=document.getElementById("overview");
+let i=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1))||1)-1));
+slides.forEach((s,k)=>{const f=document.createElement("div");f.className="foot";f.innerHTML=`<span>OpenAI Codex · 原理与架构</span><span>${s.dataset.title||""}</span>`;s.appendChild(f);
+  const b=document.createElement("button");b.innerHTML=`<span>${String(k+1).padStart(2,"0")}</span>`;b.append(s.dataset.title||"");b.onclick=()=>{show(k);ov.classList.remove("on");};ov.appendChild(b);});
+function fit(){const s=Math.min(innerWidth/1280,innerHeight/720)*0.96;deck.style.transform=`translate(-50%,-50%) scale(${s})`;}
+function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>{s.classList.toggle("on",k===i);s.setAttribute("aria-hidden",k!==i);});
+  document.getElementById("pg").textContent=`${i+1} / ${slides.length}`;document.getElementById("bar").style.width=((i+1)/slides.length*100)+"%";
+  [...ov.children].forEach((b,k)=>b.classList.toggle("cur",k===i));history.replaceState(null,"","#"+(i+1));}
+document.getElementById("nx").onclick=()=>show(i+1);document.getElementById("pv").onclick=()=>show(i-1);
+document.getElementById("ov").onclick=()=>ov.classList.toggle("on");
+document.getElementById("fs").onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+document.addEventListener("keydown",e=>{const k=e.key;
+  if(["ArrowRight","PageDown"," ","Enter"].includes(k)){e.preventDefault();show(i+1);}
+  else if(["ArrowLeft","PageUp","Backspace"].includes(k)){e.preventDefault();show(i-1);}
+  else if(k==="Home")show(0);else if(k==="End")show(slides.length-1);
+  else if(k==="o"||k==="O")ov.classList.toggle("on");else if(k==="Escape")ov.classList.remove("on");
+  else if(k==="f"||k==="F")document.getElementById("fs").click();});
+let tx=null;addEventListener("touchstart",e=>tx=e.touches[0].clientX);addEventListener("touchend",e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)show(i+(d<0?1:-1));tx=null;});
+addEventListener("resize",fit);fit();show(i);
+</script>
+</body>
+</html>

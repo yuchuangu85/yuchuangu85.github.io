@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Hermes Agent 源码深度解析：一个可复用的 Agent 运行模型</title>
+<meta name="description" content="基于 NousResearch/hermes-agent 源码的深度架构分析与可复用 Agent 模型">
+<style>
+@font-face{
+  font-family:"CJKFixed";
+  src:local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei"),local("STHeiti");
+  size-adjust:120%;
+}
+:root{
+  --bg:#fbfaf7; --bg-soft:#ffffff; --bg-alt:#f4f2ec;
+  --fg:#1c1b19; --fg-2:#43413d; --fg-3:#7a756c;
+  --line:#e5e1d8; --line-2:#efece4;
+  --accent:#a8712a; --accent-2:#c9922f; --accent-soft:#f6eddc;
+  --code-bg:#f6f4ef; --code-fg:#2a2824;
+  --shadow:0 1px 2px rgba(28,27,25,.05), 0 8px 24px rgba(28,27,25,.05);
+  --radius:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root[data-theme="auto"]{
+    --bg:#121316; --bg-soft:#17191d; --bg-alt:#1c1f24;
+    --fg:#e8e6e1; --fg-2:#b8b3a9; --fg-3:#8b857a;
+    --line:#2a2d33; --line-2:#22252a;
+    --accent:#e0a94a; --accent-2:#f0be63; --accent-soft:#2a2318;
+    --code-bg:#1a1d22; --code-fg:#d8d5ce;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121316; --bg-soft:#17191d; --bg-alt:#1c1f24;
+  --fg:#e8e6e1; --fg-2:#b8b3a9; --fg-3:#8b857a;
+  --line:#2a2d33; --line-2:#22252a;
+  --accent:#e0a94a; --accent-2:#f0be63; --accent-soft:#2a2318;
+  --code-bg:#1a1d22; --code-fg:#d8d5ce;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:16px; line-height:1.85;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* progress */
+.progress{position:fixed; top:0; left:0; height:3px; width:0; z-index:100;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2)); transition:width .1s linear}
+
+/* topbar */
+.topbar{position:fixed; top:0; left:0; right:0; height:56px; z-index:60;
+  display:flex; align-items:center; gap:12px; padding:0 18px;
+  background:color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--line-2);}
+.topbar-title{font-size:14px; font-weight:600; color:var(--fg-2);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.topbar-actions{margin-left:auto; display:flex; gap:6px}
+.ghost{display:inline-flex; align-items:center; justify-content:center;
+  width:32px; height:32px; border-radius:8px; border:1px solid var(--line);
+  background:var(--bg-soft); color:var(--fg-2); cursor:pointer; font-size:15px}
+.ghost:hover{background:var(--bg-alt); color:var(--fg); text-decoration:none}
+.menu-btn{display:none; width:32px; height:32px; border-radius:8px;
+  border:1px solid var(--line); background:var(--bg-soft); color:var(--fg-2);
+  cursor:pointer; font-size:15px}
+
+/* shell */
+.shell{display:flex; align-items:flex-start; max-width:1400px; margin:0 auto}
+.sidebar{
+  position:sticky; top:0; height:100vh; width:292px; flex:0 0 292px;
+  padding:76px 18px 24px; overflow-y:auto; border-right:1px solid var(--line-2);
+  scrollbar-width:thin;
+}
+.sidebar::-webkit-scrollbar{width:8px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line); border-radius:8px}
+.brand{display:flex; gap:10px; align-items:center; margin-bottom:14px}
+.brand-mark{width:34px; height:34px; border-radius:10px; display:grid; place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#fff; font-size:17px;
+  box-shadow:0 4px 12px rgba(168,113,42,.28)}
+.brand-text{display:flex; flex-direction:column; line-height:1.35}
+.brand-text strong{font-size:14.5px}
+.brand-text span{font-size:11.5px; color:var(--fg-3); letter-spacing:.04em}
+.meta-chips{display:flex; flex-wrap:wrap; gap:6px; margin:0 0 18px}
+.chip{font-size:11px; padding:3px 8px; border-radius:999px;
+  background:var(--bg-alt); color:var(--fg-3); border:1px solid var(--line-2)}
+.toc{display:flex; flex-direction:column; gap:1px}
+.toc-label{font-size:11px; letter-spacing:.14em; color:var(--fg-3);
+  text-transform:uppercase; margin:6px 8px 8px}
+.toc a{display:flex; gap:8px; align-items:flex-start; padding:5px 9px; border-radius:7px;
+  color:var(--fg-2); font-size:13px; line-height:1.5; border-left:2px solid transparent}
+.toc a:hover{background:var(--bg-alt); text-decoration:none; color:var(--fg)}
+.toc-dot{display:none}
+.toc-text{flex:1}
+.toc-l2{font-weight:500}
+.toc-l3{font-size:12.3px; color:var(--fg-3); padding-left:20px}
+.toc a.active{background:var(--accent-soft); color:var(--accent);
+  border-left-color:var(--accent); font-weight:600}
+.toc a.active .toc-text{color:var(--accent)}
+.side-foot{margin-top:18px; padding-top:14px; border-top:1px solid var(--line-2);
+  font-size:12px; color:var(--fg-3)}
+
+/* main */
+.main{flex:1 1 auto; min-width:0; padding:56px 0 0}
+.hero{max-width:880px; margin:0 auto; padding:56px 40px 8px}
+.hero-kicker{font-size:11px; letter-spacing:.22em; color:var(--accent);
+  font-weight:700; margin-bottom:12px}
+.hero h1{font-size:40px; line-height:1.25; margin:0 0 12px; letter-spacing:-.02em; font-weight:800}
+.hero-sub{font-size:16px; color:var(--fg-3); margin:0 0 28px}
+.hero-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+  border-top:1px solid var(--line-2); border-bottom:1px solid var(--line-2); padding:16px 0}
+.stat{display:flex; flex-direction:column; gap:2px}
+.stat b{font-size:22px; font-variant-numeric:tabular-nums; color:var(--fg); line-height:1.2}
+.stat span{font-size:12px; color:var(--fg-3)}
+
+.content{max-width:880px; margin:0 auto; padding:8px 40px 60px}
+.content > *:first-child{margin-top:0}
+
+/* typography */
+.content h2{
+  font-size:27px; line-height:1.35; margin:66px 0 18px; padding-left:16px;
+  border-left:4px solid var(--accent); letter-spacing:-.01em; font-weight:750;
+  scroll-margin-top:76px;
+}
+.content h3{
+  font-size:19px; margin:38px 0 12px; color:var(--fg); font-weight:700;
+  scroll-margin-top:76px;
+}
+.content h4{font-size:16px; margin:26px 0 8px}
+.content p{margin:0 0 16px; color:var(--fg-2)}
+.content strong{color:var(--fg); font-weight:650}
+.content em{color:var(--fg-2)}
+.content ul,.content ol{margin:0 0 18px; padding-left:22px}
+.content li{margin:5px 0; color:var(--fg-2)}
+.content li > p{margin:0 0 8px}
+.content hr{display:none}
+.content blockquote{
+  margin:22px 0; padding:14px 20px; border-left:3px solid var(--accent);
+  background:var(--accent-soft); border-radius:0 10px 10px 0; color:var(--fg-2);
+}
+.content blockquote p{margin:6px 0; font-size:15px}
+.content blockquote strong{color:var(--accent)}
+
+/* code */
+.content code{
+  font-family:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono","CJKFixed",monospace;
+  font-size:.88em; background:var(--code-bg); color:var(--code-fg);
+  padding:2px 6px; border-radius:5px; border:1px solid var(--line-2);
+  word-break:break-word;
+}
+.codeblock{position:relative; margin:22px 0}
+.content pre{
+  margin:0; background:var(--code-bg); color:var(--code-fg);
+  border:1px solid var(--line); border-radius:var(--radius);
+  padding:18px 20px; overflow-x:auto; font-size:12.6px; line-height:1.68;
+  font-family:"SF Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono","CJKFixed",monospace;
+  font-variant-ligatures:none; tab-size:4;
+}
+.content pre code{background:none; border:0; padding:0; font-size:inherit; color:inherit; white-space:pre}
+.copy-btn{position:absolute; top:9px; right:9px; opacity:0; transition:opacity .15s;
+  font-size:11px; padding:4px 9px; border-radius:6px; cursor:pointer;
+  border:1px solid var(--line); background:var(--bg-soft); color:var(--fg-3)}
+.codeblock:hover .copy-btn{opacity:1}
+.copy-btn:hover{color:var(--fg); background:var(--bg-alt)}
+
+/* tables */
+.tablewrap{margin:22px 0; overflow-x:auto; border:1px solid var(--line);
+  border-radius:var(--radius); background:var(--bg-soft); box-shadow:var(--shadow)}
+.content table{border-collapse:collapse; width:100%; min-width:620px; font-size:13.6px; line-height:1.65}
+.content thead th{
+  background:var(--bg-alt); text-align:left; font-weight:650; color:var(--fg);
+  padding:11px 14px; border-bottom:1px solid var(--line); white-space:nowrap;
+}
+.content tbody td{padding:10px 14px; border-bottom:1px solid var(--line-2); color:var(--fg-2); vertical-align:top}
+.content th:first-child,.content td:first-child{min-width:118px}
+.content tbody tr:last-child td{border-bottom:0}
+.content tbody tr:nth-child(even){background:color-mix(in srgb, var(--bg-alt) 45%, transparent)}
+.content tbody tr:hover{background:var(--accent-soft)}
+.content td code{white-space:nowrap}
+
+/* foot */
+.foot{max-width:880px; margin:0 auto; padding:28px 40px 60px;
+  border-top:1px solid var(--line-2); font-size:12.5px; color:var(--fg-3)}
+.foot p{margin:4px 0}
+.foot-dim{color:var(--fg-3); opacity:.8}
+
+/* floating */
+.totop{position:fixed; right:22px; bottom:22px; width:40px; height:40px; border-radius:12px;
+  border:1px solid var(--line); background:var(--bg-soft); color:var(--fg-2);
+  box-shadow:var(--shadow); cursor:pointer; font-size:16px; opacity:0; pointer-events:none;
+  transition:opacity .2s, transform .2s; z-index:50}
+.totop.show{opacity:1; pointer-events:auto}
+.totop:hover{transform:translateY(-2px); color:var(--accent)}
+.overlay{position:fixed; inset:0; background:rgba(0,0,0,.42); z-index:55; display:none}
+.overlay.show{display:block}
+
+@media (max-width:1080px){
+  .sidebar{width:262px; flex-basis:262px}
+  .hero,.content,.foot{padding-left:28px; padding-right:28px}
+}
+@media (max-width:860px){
+  .menu-btn{display:inline-flex}
+  .sidebar{position:fixed; left:0; top:0; height:100vh; width:280px; z-index:58;
+    background:var(--bg); transform:translateX(-102%); transition:transform .24s ease;
+    border-right:1px solid var(--line); box-shadow:var(--shadow)}
+  .sidebar.open{transform:none}
+  .main{padding-top:56px}
+  .hero{padding-top:36px}
+  .hero h1{font-size:30px}
+  .hero-stats{grid-template-columns:repeat(2,1fr); gap:14px}
+  .content h2{font-size:23px; margin-top:52px}
+  .topbar-title{font-size:13px}
+}
+@media print{
+  .topbar,.sidebar,.totop,.progress,.overlay,.copy-btn{display:none !important}
+  .shell{display:block}
+  .content{max-width:none; padding:0}
+  .hero{padding:0 0 20px}
+  body{background:#fff; color:#000}
+  .content pre,.tablewrap{break-inside:avoid}
+  a{color:#000; text-decoration:underline}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <div class="topbar-title">Hermes Agent 源码深度解析：一个可复用的 Agent 运行模型</div>
+  <div class="topbar-actions">
+    <a class="ghost" href="#top" title="回到顶部">↑</a>
+    <button class="ghost" id="themeBtn" title="切换主题" aria-label="切换主题">◐</button>
+  </div>
+</header>
+
+<div class="shell" id="top">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">☤</div>
+      <div class="brand-text">
+        <strong>Hermes Agent</strong>
+        <span>源码架构模型</span>
+      </div>
+    </div>
+    <div class="meta-chips">
+      <span class="chip">MIT</span>
+      <span class="chip">commit 8f5693a</span>
+      <span class="chip">2026-10-19</span>
+    </div>
+    <nav class="toc" id="toc">
+      <div class="toc-label">目录</div>
+      <a class="toc-l2" href="#sec-1"><span class="toc-dot"></span><span class="toc-text">0. 结论先行</span></a>
+<a class="toc-l2" href="#sec-2"><span class="toc-dot"></span><span class="toc-text">1. 系统分层</span></a>
+<a class="toc-l2" href="#sec-3"><span class="toc-dot"></span><span class="toc-text">2. 回合引擎：一个 turn
+的完整状态机</span></a>
+<a class="toc-l3" href="#sec-4"><span class="toc-dot"></span><span class="toc-text">2.1 真实主循环</span></a>
+<a class="toc-l3" href="#sec-5"><span class="toc-dot"></span><span class="toc-text">2.2 13
+个阶段（每个阶段一个文件）</span></a>
+<a class="toc-l3" href="#sec-6"><span class="toc-dot"></span><span class="toc-text">2.3 stop
+gates：怎么防止&quot;假完成&quot;</span></a>
+<a class="toc-l2" href="#sec-7"><span class="toc-dot"></span><span class="toc-text">3. 上下文工程（最硬的部分）</span></a>
+<a class="toc-l3" href="#sec-8"><span class="toc-dot"></span><span class="toc-text">3.1 系统提示词三层冻结</span></a>
+<a class="toc-l3" href="#sec-9"><span class="toc-dot"></span><span class="toc-text">3.2 缓存不变式</span></a>
+<a class="toc-l3" href="#sec-10"><span class="toc-dot"></span><span class="toc-text">3.3 双层压缩</span></a>
+<a class="toc-l3" href="#sec-11"><span class="toc-dot"></span><span class="toc-text">3.4 压缩四阶段算法</span></a>
+<a class="toc-l3" href="#sec-12"><span class="toc-dot"></span><span class="toc-text">3.5 token 记账：先信
+provider，再信估算</span></a>
+<a class="toc-l3" href="#sec-13"><span class="toc-dot"></span><span class="toc-text">3.6 失败冷却阶梯</span></a>
+<a class="toc-l3" href="#sec-14"><span class="toc-dot"></span><span class="toc-text">3.7 三种压缩形态</span></a>
+<a class="toc-l3" href="#sec-15"><span class="toc-dot"></span><span class="toc-text">3.8 Anthropic 缓存断点</span></a>
+<a class="toc-l2" href="#sec-16"><span class="toc-dot"></span><span class="toc-text">4. 工具层</span></a>
+<a class="toc-l3" href="#sec-17"><span class="toc-dot"></span><span class="toc-text">4.1 注册与暴露是两件事</span></a>
+<a class="toc-l3" href="#sec-18"><span class="toc-dot"></span><span class="toc-text">4.2 一次工具调用的 8 步</span></a>
+<a class="toc-l3" href="#sec-19"><span class="toc-dot"></span><span class="toc-text">4.3 并发分段规划器（关键设计）</span></a>
+<a class="toc-l3" href="#sec-20"><span class="toc-dot"></span><span class="toc-text">4.4 循环护栏</span></a>
+<a class="toc-l3" href="#sec-21"><span class="toc-dot"></span><span class="toc-text">4.5 能力放置的阶梯（Footprint
+Ladder）</span></a>
+<a class="toc-l2" href="#sec-22"><span class="toc-dot"></span><span class="toc-text">5. 能力演化层：记忆、技能、复盘</span></a>
+<a class="toc-l3" href="#sec-23"><span class="toc-dot"></span><span class="toc-text">5.1 记忆 vs
+技能：一条清晰的职责线</span></a>
+<a class="toc-l3" href="#sec-24"><span class="toc-dot"></span><span class="toc-text">5.2 SKILL.md 的结构与硬标准</span></a>
+<a class="toc-l3" href="#sec-25"><span class="toc-dot"></span><span class="toc-text">5.3 技能生命周期（Curator）</span></a>
+<a class="toc-l3" href="#sec-26"><span class="toc-dot"></span><span class="toc-text">5.4 学习闭环：回合后 fork
+一份自己</span></a>
+<a class="toc-l2" href="#sec-27"><span class="toc-dot"></span><span class="toc-text">6. 委托层（Subagent）</span></a>
+<a class="toc-l2" href="#sec-28"><span class="toc-dot"></span><span class="toc-text">7. 模型接入层</span></a>
+<a class="toc-l3" href="#sec-29"><span class="toc-dot"></span><span class="toc-text">7.1 三种 API mode</span></a>
+<a class="toc-l3" href="#sec-30"><span class="toc-dot"></span><span class="toc-text">7.2 失败分类：30+ 种，而不是
+try/except</span></a>
+<a class="toc-l3" href="#sec-31"><span class="toc-dot"></span><span class="toc-text">7.3 Auxiliary 旁路模型</span></a>
+<a class="toc-l2" href="#sec-32"><span class="toc-dot"></span><span class="toc-text">8. 可靠性层</span></a>
+<a class="toc-l2" href="#sec-33"><span class="toc-dot"></span><span class="toc-text">9. 状态层</span></a>
+<a class="toc-l2" href="#sec-34"><span class="toc-dot"></span><span class="toc-text">10. 抽象成通用 Agent Model</span></a>
+<a class="toc-l3" href="#sec-35"><span class="toc-dot"></span><span class="toc-text">10.1 九个对象</span></a>
+<a class="toc-l3" href="#sec-36"><span class="toc-dot"></span><span class="toc-text">10.2 十二条不变式</span></a>
+<a class="toc-l3" href="#sec-37"><span class="toc-dot"></span><span class="toc-text">10.3
+反模式清单（源码里被明确拒绝的）</span></a>
+<a class="toc-l2" href="#sec-38"><span class="toc-dot"></span><span class="toc-text">11. 复刻路线：从 300
+行到这套系统</span></a>
+<a class="toc-l2" href="#sec-39"><span class="toc-dot"></span><span class="toc-text">12. 这套模型的代价</span></a>
+<a class="toc-l2" href="#sec-40"><span class="toc-dot"></span><span class="toc-text">13. 源码索引</span></a>
+    </nav>
+    <div class="side-foot">
+      <a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener">github.com/github.com/NousResearch/hermes-agent ↗</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-kicker">SOURCE CODE ANALYSIS</div>
+      <h1>Hermes Agent 源码深度解析</h1>
+      <p class="hero-sub">一个可复用的 Agent 运行模型 · 回合引擎 / 上下文工程 / 能力演化</p>
+      <div class="hero-stats">
+        <div class="stat"><b>601</b><span>行分析</span></div>
+        <div class="stat"><b>14</b><span>个章节</span></div>
+        <div class="stat"><b>14</b><span>段图示</span></div>
+        <div class="stat"><b>16</b><span>张表格</span></div>
+      </div>
+    </section>
+    <article class="content" id="content">
+<blockquote>
+<p>分析对象：<code>NousResearch/hermes-agent</code>，MIT，约 25.5 万
+star，提交 <code>8f5693a</code>（2026-10-19）。 代码规模：单仓 ≈20,400
+个文件，其中 <code>agent/</code> 目录 319 个 Python 文件、约 6.5
+MB；<code>tests/</code> 约 1,250 个测试文件。 本文结论来自源码与仓库内
+<code>website/docs/developer-guide/*</code>；标注为"分析/推论"的段落是我的判断。</p>
+</blockquote>
+<hr />
+<h2 id="sec-1">0. 结论先行</h2>
+<p>Hermes 不是"提示词套壳"，而是一台<strong>回合制状态机 +
+上下文经营系统 + 自我演化层</strong>。三句话概括：</p>
+<ol type="1">
+<li><strong>回合是唯一执行单元</strong>：一次用户输入 = 一个 turn；turn
+内是"模型调用 → 工具执行 → 再调用"的内循环，外层受预算约束。</li>
+<li><strong>上下文是最稀缺资源</strong>：系统提示词字节级冻结以保缓存；压缩是唯一允许改写历史的行为；token
+记账优先信 provider 真实用量。</li>
+<li><strong>能力在边缘、核心收窄</strong>：新能力默认走 skill / plugin /
+MCP，而不是加核心工具；学习靠"回合后 fork 一份自己复盘"。</li>
+</ol>
+<p>架构定位一句话：<strong>Prompt-cache-first 的同步 ReAct
+内核，外套可插拔的能力与记忆外设。</strong></p>
+<hr />
+<h2 id="sec-2">1. 系统分层</h2>
+<div class="codeblock"><pre class="text"><code>┌──────────────────────────────────────────────────────────────────────────┐
+│ L6 宿主面 (Surfaces)                                                     │
+│   CLI · TUI(Ink) · Desktop(Electron) · Gateway(20+ 消息平台) · ACP · Cron│
+├──────────────────────────────────────────────────────────────────────────┤
+│ L5 会话与状态 (Session &amp; State)                                          │
+│   state.db (SQLite + FTS5) · 单一写者(gateway) · profile 隔离 · lineage  │
+├──────────────────────────────────────────────────────────────────────────┤
+│ L4 回合引擎 (Turn Engine)  ← AIAgent                                     │
+│   preflight → prepare → assemble → call → intake → tool round → finalize │
+├──────────────────────────────────────────────────────────────────────────┤
+│ L3 上下文工程 (Context Engineering)                                      │
+│   system prompt 三层冻结 · 双阈压缩 · 4 阶段算法 · Anthropic cache 断点   │
+├──────────────────────────────────────────────────────────────────────────┤
+│ L2 能力层 (Capability)                                                   │
+│   Tool Registry(70+ 工具/28 toolset) · Skills · Plugins · MCP · Subagents│
+├──────────────────────────────────────────────────────────────────────────┤
+│ L1 模型接入 (Providers)                                                  │
+│   3 种 API mode · 凭据池 · 失败分类(30+ 类) · fallback 链 · auxiliary 旁路│
+├──────────────────────────────────────────────────────────────────────────┤
+│ L0 运行时 (Runtime)                                                      │
+│   deadline 层 · 中断控制 · 终端后端(7 种) · secret scope · 审批           │
+└──────────────────────────────────────────────────────────────────────────┘</code></pre></div>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>关键源码</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L4 回合引擎</td>
+<td><code>agent/conversation_loop.py</code>、<code>agent/turn_*.py</code></td>
+<td>一次 turn 的全部控制流，不允许任何层越权写历史</td>
+</tr>
+<tr>
+<td>L3 上下文</td>
+<td><code>prompt_builder.py</code>、<code>system_prompt.py</code>、<code>context_compressor.py</code></td>
+<td>组装、冻结、压缩、缓存</td>
+</tr>
+<tr>
+<td>L2 能力</td>
+<td><code>tools/registry.py</code>、<code>model_tools.py</code>、<code>toolsets.py</code></td>
+<td>工具发现、schema、调度、执行</td>
+</tr>
+<tr>
+<td>L1 模型</td>
+<td><code>auxiliary_client.py</code>、<code>provider_registry.py</code>、<code>error_classifier.py</code></td>
+<td>路由、重试、降级</td>
+</tr>
+<tr>
+<td>L0 运行时</td>
+<td><code>agent/deadline.py</code>、<code>interrupt_control.py</code>、<code>tools/environments/</code></td>
+<td>不挂死、可打断、可隔离</td>
+</tr>
+</tbody>
+</table></div>
+<p>设计哲学（原文）：</p>
+<blockquote>
+<p><strong>Per-conversation prompt caching is sacred.</strong>（每会话的
+prompt 缓存是神圣的） <strong>The core is a narrow waist; capability
+lives at the edges.</strong>（核心是窄腰，能力长在边缘）</p>
+</blockquote>
+<p>这两句不是口号，而是<strong>代码评审的硬性依据</strong>——仓库里专门写了"会被驳回的提交清单"：没有真实消费者的
+hook、为普通配置新建环境变量、terminal
+能干的事却新增核心工具，一律驳回。</p>
+<hr />
+<h2 id="sec-3">2. 回合引擎：一个 turn
+的完整状态机</h2>
+<h3 id="sec-4">2.1 真实主循环</h3>
+<div class="codeblock"><pre class="python"><code># agent/conversation_loop.py::_run_conversation_turn（简化但忠实于控制流）
+while ((s.api_call_count &lt; agent.max_iterations and agent.iteration_budget.remaining &gt; 0)
+       or agent._budget_grace_call):
+    begin_iteration()                      # 预算/重试状态初始化
+    prepare_iteration()                    # 注入预算警告、处理 steer
+    assemble_api_request()                 # 消息 + 工具 schema → 请求体
+    if run_preflight_gate(): continue      # 调用前压缩闸门（也可能直接结束 turn）
+    announce_api_call()
+
+    retry_loop:                            # 单次 API 调用及其恢复
+        nous_rate_limit_guard()            # 限流预判
+        build_api_request()
+        perform_api_call()                 # 可中断的真实 HTTP
+        check_api_response()
+        except → handle_api_error()        # 分类 → 重试 / 换 key / 换模型 / 压缩
+
+    if response.tool_calls:
+        run_tool_round()                   # 执行 → 追加 tool 消息 → 回到 while
+    else:
+        finish_text_response()             # 触发 stop gates，可能&quot;拒绝收尾&quot;
+finalize_turn()</code></pre></div>
+<p>三个非教科书细节：</p>
+<ol type="1">
+<li><strong><code>_budget_grace_call</code></strong>：预算耗尽后仍给一次"恩典调用"，让模型能体面收尾，而不是被硬切断在半句话上。</li>
+<li><strong><code>run_tool_round</code>
+不是"执行完就继续"</strong>：内部做参数校验、去重、截断、并发分段、结果分类，失败走
+guardrail。</li>
+<li><strong><code>finish_text_response</code>
+不保证收尾</strong>：<code>apply_stop_gates</code>
+能把"看起来完成的答案"降级为 interim，追加一条 user nudge 后
+<code>continue</code>——这就是它的自我验收。</li>
+</ol>
+<h3 id="sec-5">2.2 13
+个阶段（每个阶段一个文件）</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>序</th>
+<th>阶段函数</th>
+<th>文件</th>
+<th>干什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>build_turn_context</code></td>
+<td><code>turn_context.py</code></td>
+<td>建上下文、恢复/构建 system prompt、首轮压缩</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>play_prelude</code></td>
+<td><code>turn_scripted_prelude.py</code></td>
+<td>首次模型调用前先跑脚本化工具</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>begin_iteration</code></td>
+<td><code>turn_iteration_prep.py</code></td>
+<td>迭代计数、预算检查</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>prepare_iteration</code></td>
+<td>同上</td>
+<td>预算警告、<code>/steer</code> 插在最新 tool 结果之后</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>assemble_api_request</code></td>
+<td><code>turn_request_assembly.py</code></td>
+<td>组装 messages + tools + MoA 上下文</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>run_preflight_gate</code></td>
+<td><code>turn_preflight_gate.py</code></td>
+<td>调用前压缩/溢出预判</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>perform_api_call</code></td>
+<td><code>turn_api_call.py</code></td>
+<td>可中断 HTTP，流式/非流式</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>check_api_response</code></td>
+<td><code>turn_response_check.py</code></td>
+<td>空响应、截断、拒答检查</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>normalize_model_response</code></td>
+<td><code>turn_response_intake.py</code></td>
+<td>统一成内部 message 形状</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>run_tool_round</code></td>
+<td><code>turn_tool_round.py</code></td>
+<td>一轮工具调用</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>finish_text_response</code> +
+<code>apply_stop_gates</code></td>
+<td><code>turn_final_response.py</code>、<code>turn_stop_gates.py</code></td>
+<td>收尾前的四道闸门</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>finalize_turn</code></td>
+<td><code>turn_finalizer.py</code></td>
+<td>落盘、刷记忆、触发复盘、微压缩</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>handle_outer_loop_error</code></td>
+<td><code>turn_loop_errors.py</code></td>
+<td>循环级异常兜底</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>工程含义：<strong>一个阶段一个文件，平均约 600
+行</strong>。改溢出不会碰到压缩，改压缩不会碰到工具调度。这是几十万行级
+Agent 项目还能维护的关键组织手法。</p>
+</blockquote>
+<h3 id="sec-6">2.3 stop
+gates：怎么防止"假完成"</h3>
+<p>模型输出纯文本时，四道闸门可能拦下这次收尾：</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>闸门</th>
+<th>触发条件</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_late_lsp_verdicts</code></td>
+<td>本轮编辑过代码，语言服务器有延迟诊断</td>
+<td>追加 nudge，继续回合</td>
+</tr>
+<tr>
+<td><code>_verify_on_stop_nudge</code></td>
+<td>开启 verify-on-stop</td>
+<td>要求先自证再收尾</td>
+</tr>
+<tr>
+<td><code>pre_verify</code> hook</td>
+<td>插件在代码编辑后介入</td>
+<td>同上</td>
+</tr>
+<tr>
+<td><code>_kanban_stop_nudge</code></td>
+<td>看板 worker 未走终态</td>
+<td>强制补齐终态</td>
+</tr>
+</tbody>
+</table></div>
+<p>被拦下的答案不丢——存进
+<code>pending_verification_response</code>，预算耗尽时作为兜底返回。<strong>质量闸门与"永不空手而归"的折中。</strong></p>
+<hr />
+<h2 id="sec-7">3. 上下文工程（最硬的部分）</h2>
+<h3 id="sec-8">3.1 系统提示词三层冻结</h3>
+<div class="codeblock"><pre class="text"><code>stable   ── 身份(SOUL.md) → 工具使用准则 → 编码守则 → 平台提示
+context  ── 调用方 system_message → 项目上下文(.hermes.md / AGENTS.md /
+            CLAUDE.md / .cursorrules) → git worktree 快照 → 运维指令
+volatile ── 技能索引 → MEMORY.md 快照 → USER.md 快照 → 外部记忆块
+            → 时间/会话/模型/供应商 → 运行时环境(host / home / cwd)</code></pre></div>
+<p>拼接顺序 =
+<code>stable → context → volatile</code>，且<strong>整个会话期间字节不变</strong>。</p>
+<p>顺序有讲究：</p>
+<ul>
+<li>项目共享上下文排在依赖 worktree 的内容之前 → 同项目不同 worktree
+的会话共享同一段 prompt 前缀，正好是最长前缀缓存能复用的部分。</li>
+<li>运行时环境块永远压最后，避免项目文件里的路径样例被误认为"当前目录"。</li>
+<li>平台提示（CLI 别说 Markdown、Telegram
+别发长消息）<strong>不算身份字段</strong>：桌面切 TUI
+时系统提示不动，改用一条一次性 user 通道的 note 传达。</li>
+</ul>
+<h3 id="sec-9">3.2 缓存不变式</h3>
+<p>代码里写死的不变式：</p>
+<blockquote>
+<p>系统提示词在会话生命周期内字节稳定；<strong>唯一的上下文变更是压缩</strong>。
+任何必须中途注入的内容，走 <strong>user 消息或 tool
+结果</strong>，绝不进 system prompt。</p>
+</blockquote>
+<p>后果很具体：</p>
+<ul>
+<li><code>/skills install</code>
+默认<strong>下个会话才生效</strong>，要立刻生效得加
+<code>--now</code>。</li>
+<li>子目录 <code>AGENTS.md</code> 的提示不插进 prompt，而是追加到 tool
+结果尾部（超 32,000 字符头尾截断）。</li>
+<li>插件 <code>pre_llm_call</code> 返回的上下文，拼进本回合的 user
+消息。</li>
+<li>记忆在会话中被写入只落盘，<strong>不改已构建好的
+prompt</strong>。</li>
+</ul>
+<p>代价：产品上必然出现"我改了设置怎么没反应"。收益：长会话成本线性而非平方级。Hermes
+明确选了后者。</p>
+<h3 id="sec-10">3.3 双层压缩</h3>
+<div class="codeblock"><pre class="text"><code>        入站消息
+           │
+           ▼
+  ┌────────────────────┐  85% 上下文  ← 网关会话卫生（粗估，回合间兜底）
+  │ Gateway Hygiene      │
+  └─────────┬──────────┘
+            ▼
+  ┌────────────────────┐  50% 上下文  ← Agent ContextCompressor（真实 token）
+  │ ContextCompressor    │
+  └────────────────────┘</code></pre></div>
+<p>为什么两层：网关那层是"防炸"安全阀，处理 Telegram
+里过夜堆积的会话；Agent 这层才是日常管理，能拿到 provider 返回的准确
+usage。把网关也设成 50%
+会让每个长会话一开始就被压缩——源码注释明确写了这是踩过的坑。</p>
+<h3 id="sec-11">3.4 压缩四阶段算法</h3>
+<div class="codeblock"><pre class="text"><code>[0..2]   保护头（system + 首轮）
+[3..N]   ── 中段：摘要 ──
+[N..end] 保护尾（按 token 预算回走，上限 = 上下文窗口 20%）</code></pre></div>
+<p><strong>Phase 1｜剪枝（不调 LLM）</strong> 保护尾之外的旧 tool
+结果，超过 200 字符就替换成
+<code>[Old tool output cleared to save context space]</code>。文件内容、终端输出、搜索结果通常占大头，这一步能省掉近一半。
+细节：模型"还没回应的那一轮工具"结果必须原样保留——它刚请求的数据不能被立刻抹掉。</p>
+<p><strong>Phase 2｜定边界</strong> 尾部保护<strong>按 token
+预算走</strong>，不是按条数。<code>protect_last_n</code>（默认
+20）只是下限；边界要对齐到 <code>assistant(tool_calls) → tool...</code>
+的完整组，绝不切断配对。</p>
+<p><strong>Phase 3｜结构化摘要</strong> 用 auxiliary
+小模型生成固定八段式：</p>
+<div class="codeblock"><pre class="markdown"><code>## Goal / ## Constraints &amp; Preferences / ## Progress(Done|In Progress|Blocked)
+## Key Decisions / ## Relevant Files / ## Next Steps / ## Critical Context</code></pre></div>
+<p>预算 = <code>被压缩内容 × 0.20</code>，下限 2,000 token，上限
+<code>min(上下文 × 5%, 12,000)</code>。</p>
+<p><strong>Phase 4｜拼装</strong> 头 + 摘要 + 尾，再跑
+<code>_sanitize_tool_pairs()</code>：孤立 tool_result 删掉，丢了结果的
+tool_call 补 stub。</p>
+<p><strong>迭代压缩</strong>：第二次压缩不是重来，而是把上次摘要交给模型"更新"——条目从
+In Progress 挪到
+Done，新进展追加，过期信息删除。这是长会话不丢线索的关键。</p>
+<h3 id="sec-12">3.5 token 记账：先信
+provider，再信估算</h3>
+<p>每个压缩闸门先问 <strong>usage anchor</strong>：provider 上次返回的
+prompt/completion tokens +
+<strong>仅对"此后新增消息"的粗估</strong>。</p>
+<p>这个设计解决三个现实问题：</p>
+<ul>
+<li>网关每回合从 DB 重读历史 → 用内容指纹绑定"计价的那份
+transcript"，重读后仍对得上。</li>
+<li><code>--resume</code> 或桌面按回合起进程 → anchor 持久化在 session
+行上。</li>
+<li>没有 anchor 时（首请求、rewind）→ <strong>先等一次请求</strong>，让
+provider
+自己裁决，而不是凭估算就压缩。估算再大也不能证明这次请求会失败。</li>
+</ul>
+<p>图片价格按 <code>model@host</code> 记录<strong>从 provider usage
+反推</strong>的单图成本，而不是套厂商公式；未知时先按 1,500 估。</p>
+<h3 id="sec-13">3.6 失败冷却阶梯</h3>
+<p>摘要调用失败不能每回合重试，源码维护分级冷却：</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>失败类型</th>
+<th>冷却</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>超时 / 流停滞</td>
+<td>60s → 300s → 900s（指数，且不短于
+<code>context_timeout_seconds</code>）</td>
+</tr>
+<tr>
+<td>输出被长度截断</td>
+<td>独立计数，同样 60/300/900s</td>
+</tr>
+<tr>
+<td>JSON 解析 / 流关闭 / 空内容</td>
+<td>固定 30s</td>
+</tr>
+</tbody>
+</table></div>
+<p>连续两次同因停滞 → <strong>跳过
+LLM，直接提交确定性兜底摘要</strong>，宁可丢中段，也不让会话涨到
+<code>compression_exhausted</code> 后被网关整段重置。</p>
+<h3 id="sec-14">3.7 三种压缩形态</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>形态</th>
+<th>机制</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>In-place compaction</td>
+<td>旧行 <code>active=0</code> 归档，保留内容以 <code>active=1</code>
+插入</td>
+<td>保持单一稳定 session id</td>
+</tr>
+<tr>
+<td>Micro-compaction</td>
+<td>回合后对尾部做小步清理</td>
+<td>不惊动主压缩</td>
+</tr>
+<tr>
+<td>Native compaction</td>
+<td>交给 OpenAI Responses / Codex 服务端</td>
+<td>支持的 provider 路由</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="sec-15">3.8 Anthropic 缓存断点</h3>
+<p><code>system_and_3</code> 策略：system 块 + 最近 3 个 user 轮打
+<code>cache_control</code>。配合上面的"冻结"不变式，长会话命中率才立得住。</p>
+<hr />
+<h2 id="sec-16">4. 工具层</h2>
+<h3 id="sec-17">4.1 注册与暴露是两件事</h3>
+<div class="codeblock"><pre class="python"><code>registry.register(
+    name=&quot;example_tool&quot;, toolset=&quot;example&quot;,
+    schema={...},                       # 送进模型的 JSON Schema
+    handler=lambda args, **kw: ...,     # 返回 JSON 字符串
+    check_fn=check_requirements,        # 可达性 / 是否具备条件
+    requires_env=[&quot;EXAMPLE_API_KEY&quot;],
+)</code></pre></div>
+<ul>
+<li><code>tools/*.py</code> 只要在模块级调过
+<code>registry.register()</code> 就被自动发现——没有手工 import
+清单。</li>
+<li><strong>注册 ≠ 暴露</strong>：只有被某个 toolset
+命名的工具才会送给模型，默认包是 <code>_HERMES_CORE_TOOLS</code>。</li>
+<li><code>check_fn</code> 只回答"这个 profile
+能不能用"，<strong>绝不按会话面区分</strong>（GUI 专属工具要走独立
+toolset）。</li>
+</ul>
+<p>28 个
+toolset：<code>browser / clarify / code_execution / cronjob / debugging / delegation / discord / discord_admin / feishu_doc / feishu_drive / file / image_gen / kanban / memory / messaging / moa / rl / safe / search / session_search / skills / terminal / todo / tts / video / vision / web / yuanbao</code>。</p>
+<h3 id="sec-18">4.2 一次工具调用的 8 步</h3>
+<div class="codeblock"><pre class="text"><code>模型返回 tool_calls
+ → ① 解析参数（容错 JSON 修复）
+ → ② 查 INLINE 表：todo / memory / session_search / delegate_task 由 agent 直接处理
+ → ③ 否则 registry 找 handler
+ → ④ pre_tool_call 插件 hook
+ → ⑤ 危险命令审批（approval）
+ → ⑥ 执行（带 deadline，可取消）
+ → ⑦ post_tool_call hook（一个 tool_call_id 只发一次）
+ → ⑧ 结果追加进历史（按原文顺序，与完成顺序无关）</code></pre></div>
+<p><strong>结果契约</strong>：所有 handler 返回 JSON
+字符串；需要回图给模型时返回特殊信封
+<code>{"_multimodal": True, "content": [text, image_url...], "text_summary": str}</code>。</p>
+<h3 id="sec-19">4.3 并发分段规划器（关键设计）</h3>
+<p>不是"多个工具就并发"，而是先把整批切成有序段：</p>
+<div class="codeblock"><pre class="python"><code>_plan_tool_batch_segments(tool_calls)
+# -&gt; [(&quot;parallel&quot;, [..]), (&quot;sequential&quot;, [..]), ...]</code></pre></div>
+<p>规则：</p>
+<ul>
+<li>遇到 <code>_NEVER_PARALLEL_TOOLS</code>（含交互型
+<code>clarify</code>）、参数解析失败、或非并发安全的 MCP 工具 →
+<strong>屏障</strong>，切断当前并行段。</li>
+<li>带路径的工具做<strong>读写冲突检测</strong>：读读可并发；任一方是写且路径重叠
+→ 关闭当前段，该调用另起一段排在后面。</li>
+<li>一段不足 2 个调用 → 降级为顺序执行。</li>
+<li>相邻顺序段合并。</li>
+</ul>
+<p>结论：<strong>结果顺序与副作用边界等价于全顺序执行</strong>，但读多写少的典型场景仍能提速。</p>
+<h3 id="sec-20">4.4 循环护栏</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>警告</th>
+<th>硬停</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>完全相同的失败</td>
+<td>2 次</td>
+<td>5 次</td>
+</tr>
+<tr>
+<td>同工具失败</td>
+<td>3 次</td>
+<td>8 次</td>
+</tr>
+<tr>
+<td>无进展轮次</td>
+<td>2 次</td>
+<td>5 次</td>
+</tr>
+</tbody>
+</table></div>
+<p>交互平台默认只警告；<strong>无人值守平台（gateway /
+cron）默认开硬停</strong>——因为没人能打断它。</p>
+<h3 id="sec-21">4.5 能力放置的阶梯（Footprint
+Ladder）</h3>
+<p>新增能力时按"最省"的一级解决，不越级：</p>
+<div class="codeblock"><pre class="text"><code>扩展现有代码 → CLI 命令 + Skill → 服务门控工具(check_fn) → 插件
+             → 目录里的 MCP server → 新核心工具</code></pre></div>
+<p>最后一级门槛极高，理由是物理的：<strong>每个工具 schema 在每次 API
+调用里都要发一遍</strong>，工具越多，固定成本越高、注意力越散。</p>
+<hr />
+<h2 id="sec-22">5. 能力演化层：记忆、技能、复盘</h2>
+<h3 id="sec-23">5.1 记忆 vs
+技能：一条清晰的职责线</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Memory</th>
+<th>Skill</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>回答</td>
+<td>用户<strong>是谁</strong>、当前处境</td>
+<td>这类任务<strong>怎么做</strong></td>
+</tr>
+<tr>
+<td>存储</td>
+<td><code>MEMORY.md</code>（agent 笔记）+
+<code>USER.md</code>（用户画像）</td>
+<td><code>skills/&lt;name&gt;/SKILL.md</code> +
+<code>references/ templates/ scripts/</code></td>
+</tr>
+<tr>
+<td>进入 prompt</td>
+<td>会话开始冻结快照（volatile 层）</td>
+<td>索引常驻；正文按需 <code>skill_view</code></td>
+</tr>
+<tr>
+<td>会话中写入</td>
+<td>只落盘，不改 prompt</td>
+<td>通过 <code>patch</code> / <code>write_file</code>，下轮生效</td>
+</tr>
+</tbody>
+</table></div>
+<p>源码原话：<em>"Memory is the narrow exception for facts that apply to
+EVERY session regardless of task."</em></p>
+<h3 id="sec-24">5.2 SKILL.md 的结构与硬标准</h3>
+<div class="codeblock"><pre class="yaml"><code>---
+name: pdf-report
+description: Generate a paginated PDF report from CSV.   # ≤60 字符，一句话，句号结尾
+version: 1.2.0
+author: &lt;human first&gt;
+platforms: [macos, linux]
+metadata:
+  hermes: { tags: [...], category: ..., related_skills: [...], config: {...} }
+---</code></pre></div>
+<p>硬性标准（有测试强制）：</p>
+<ol type="1">
+<li><code>description</code> ≤ 60
+字符、一句话、句号结尾、不用营销词。</li>
+<li>正文只能用原生工具名（<code>read_file</code> 而不是
+<code>cat</code>，<code>patch</code> 而不是 <code>sed</code>）。</li>
+<li><code>platforms:</code> 要与脚本实际用的 POSIX 原语对得上。</li>
+<li>章节顺序固定：When to Use → Prerequisites → How to Run → Quick
+Reference → Procedure → Pitfalls → Verification。</li>
+<li>技能加载工具<strong>不允许分页</strong>（<code>offset/limit</code>）——模型读了第一页就会跳过剩下的。</li>
+</ol>
+<h3 id="sec-25">5.3 技能生命周期（Curator）</h3>
+<div class="codeblock"><pre class="text"><code>active ──(stale_after_days 无活动)──▶ stale ──(archive_after_days)──▶ archived
+  ▲                                                                     │
+  └──────────────────────── restore ◀───────────────────────────────────┘
+        pinned：豁免一切自动流转与 LLM 复审</code></pre></div>
+<ul>
+<li>触发方式是<strong>闲置触发</strong>，不是 cron 守护进程：agent
+空闲且距上次运行超过 <code>interval_hours</code> 才跑。</li>
+<li><strong>只动 <code>created_by: "agent"</code>
+的技能</strong>；内置与 hub 安装的免谈。</li>
+<li><strong>永不删除，只归档</strong>（<code>~/.hermes/skills/.archive/</code>，可恢复）。</li>
+<li>每次运行前打 tar.gz 快照，支持 rollback。</li>
+<li>用量记在
+<code>.usage.json</code>：<code>use_count / view_count / patch_count / last_activity_at / state / pinned</code>。</li>
+</ul>
+<h3 id="sec-26">5.4 学习闭环：回合后 fork
+一份自己</h3>
+<p>每回合结束后，主线程可起一个 daemon 线程，<strong>fork 一个
+AIAgent</strong>，重放本回合快照，只问一个问题：</p>
+<blockquote>
+<p>"<strong>Review the conversation above and update the skill library.
+Be ACTIVE — most sessions produce at least one skill update, even if
+small. A pass that does nothing is a missed learning opportunity, not a
+neutral outcome.</strong>"</p>
+</blockquote>
+<p>关键设计：</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>机制</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fork 继承父的 provider/model/凭据/缓存提示词</td>
+<td>命中同一段前缀缓存，复盘几乎不额外花钱</td>
+</tr>
+<tr>
+<td>只写 memory / skill 存储</td>
+<td><strong>绝不碰主会话与主 prompt 缓存</strong></td>
+</tr>
+<tr>
+<td>派发侧工具白名单</td>
+<td>fork 不能执行危险工具</td>
+</tr>
+<tr>
+<td>优先级：改已加载技能 → 改已有伞形技能 → 加支撑文件 → 才新建</td>
+<td>防止技能库退化成一堆一次性条目</td>
+</tr>
+<tr>
+<td>Read-before-write 强制</td>
+<td>patch 前必须本轮 <code>skill_view</code> 一次，防止凭记忆改写</td>
+</tr>
+<tr>
+<td>"Nothing to save." 是合法答案，但不该是默认</td>
+<td>明确对抗"复盘即空转"</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>用户不满是最高优先级信号</strong>：<em>"stop doing X"、"this
+is too verbose"、"just give me the answer"</em>
+这类话必须落到技能正文，而不只是记忆里——记忆记"你是谁"，技能记"这类活该怎么给你干"。</p>
+<hr />
+<h2 id="sec-27">6. 委托层（Subagent）</h2>
+<div class="codeblock"><pre class="python"><code>delegate_task(tasks=[{goal, context, output_schema}, ...])   # 单任务或并行批</code></pre></div>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>父</th>
+<th>子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上下文</td>
+<td>完整历史</td>
+<td><strong>全新</strong>，只从 goal + context 构建</td>
+</tr>
+<tr>
+<td>task_id</td>
+<td>有</td>
+<td>独立（终端会话、文件缓存隔离）</td>
+</tr>
+<tr>
+<td>工具</td>
+<td>全量</td>
+<td>父的 toolset <strong>减去禁止子用的</strong></td>
+</tr>
+<tr>
+<td>预算</td>
+<td><code>max_iterations</code> 默认 500</td>
+<td><code>delegation.max_iterations</code> 默认 50，独立计</td>
+</tr>
+<tr>
+<td>可见性</td>
+<td>只见调用与摘要</td>
+<td>中间工具调用、推理过程<strong>不上浮</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>对外暴露的是<strong>不可变契约</strong>而不是 <code>AIAgent</code>
+对象：<code>SubagentLaunchRequest / SubagentHandle / SubagentResult / SubagentStatus</code>。插件只能通过这些值对象操作，拿不到内部实例。</p>
+<p>并发上限 <code>delegation.max_concurrent_children</code>、嵌套深度
+<code>max_spawn_depth</code> 会<strong>动态重写进工具 schema 的
+description</strong>——让模型看到的限制就是真实限制，避免它按旧数字规划。</p>
+<hr />
+<h2 id="sec-28">7. 模型接入层</h2>
+<h3 id="sec-29">7.1 三种 API mode</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>mode</th>
+<th>用于</th>
+<th>客户端</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chat_completions</code></td>
+<td>OpenAI 兼容端点（OpenRouter、自定义）</td>
+<td><code>openai.OpenAI</code></td>
+</tr>
+<tr>
+<td><code>codex_responses</code></td>
+<td>OpenAI Codex / Responses API</td>
+<td><code>openai.OpenAI</code>（Responses 形状）</td>
+</tr>
+<tr>
+<td><code>anthropic_messages</code></td>
+<td>Anthropic 原生</td>
+<td><code>anthropic.Anthropic</code> + 适配器</td>
+</tr>
+</tbody>
+</table></div>
+<p>解析优先级：显式参数 &gt; provider 判定 &gt; base_url 启发式 &gt;
+默认。 三者<strong>进出都收敛到同一套内部 message 形状</strong>（OpenAI
+风格），所以回合引擎不需要知道底下是哪个协议。</p>
+<h3 id="sec-30">7.2 失败分类：30+ 种，而不是
+try/except</h3>
+<p><code>FailoverReason</code>
+枚举是这套系统最"脏"也最值钱的部分——把真实世界的烂摊子编码成了策略表：</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>例子</th>
+<th>策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可刷新</td>
+<td><code>auth</code>(401/403)</td>
+<td>刷凭据 / 轮换 key 后重试</td>
+</tr>
+<tr>
+<td>该退避</td>
+<td><code>rate_limit</code>、<code>overloaded</code>(503/529)、<code>server_error</code></td>
+<td>指数退避</td>
+</tr>
+<tr>
+<td>该换模型</td>
+<td><code>model_not_found</code>、<code>model_entitlement</code>、<code>upstream_rate_limit</code></td>
+<td>走 fallback 链</td>
+</tr>
+<tr>
+<td>该压缩</td>
+<td><code>context_overflow</code>、<code>payload_too_large</code>(413)</td>
+<td>压缩而非切模型</td>
+</tr>
+<tr>
+<td>该改写请求</td>
+<td><code>image_too_large</code>（缩图）、<code>image_corrupt</code>（剥图）、<code>role_alternation</code>（合并同角色）、<code>multimodal_tool_content_unsupported</code>（降级文本）</td>
+<td>本地修复后重试</td>
+</tr>
+<tr>
+<td>别重试</td>
+<td><code>content_policy_blocked</code>、<code>ssl_cert_verification</code></td>
+<td>直接失败并给指引</td>
+</tr>
+<tr>
+<td>特殊</td>
+<td><code>incomplete_response</code>（Codex 连续三轮只吐
+reasoning）</td>
+<td>换 provider</td>
+</tr>
+</tbody>
+</table></div>
+<p>现实意义：<strong>"重试"这个动作至少有 8
+种不同语义</strong>，混成一个 <code>except: retry</code>
+就是线上事故来源。</p>
+<h3 id="sec-31">7.3 Auxiliary 旁路模型</h3>
+<p>压缩、视觉、标题、<code>session_search</code>、curator、embedding
+都走 <code>auxiliary_client</code>，每个任务能在
+<code>config.yaml</code> 的 <code>auxiliary:</code> 下独立钉 provider /
+model / base_url / reasoning_effort。</p>
+<p>两条纪律：</p>
+<ul>
+<li>辅助调用的 <code>pre/post_api_request</code>
+事件<strong>不得</strong>触发（只有主循环发）——否则监控指标被污染。</li>
+<li>压缩用的摘要模型<strong>上下文必须 ≥
+主模型</strong>，否则中段一次性塞不进去，压缩会静默丢内容（源码注释点名这是"压缩质量下降最常见的原因"）。</li>
+</ul>
+<hr />
+<h2 id="sec-32">8. 可靠性层</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>机制</th>
+<th>实现</th>
+<th>解决的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deadline 层</td>
+<td><code>deadline.py</code>：<code>run_bounded_sync/async</code>、<code>clamp_timeout</code>、<code>kill_process_tree</code></td>
+<td>一个统一的有界执行原语，避免每个工具各写一套超时</td>
+</tr>
+<tr>
+<td>中断控制</td>
+<td><code>interrupt_control.py</code>：<code>/stop</code>、<code>/steer</code>、重定向</td>
+<td>API 调用在后台线程跑，主线程等"响应/中断/超时"三者之一</td>
+</tr>
+<tr>
+<td>预算</td>
+<td><code>iteration_budget.py</code>：线程安全 consume/refund</td>
+<td>父子 agent 各自记账，父的额度不被子吃光</td>
+</tr>
+<tr>
+<td>恢复阶梯</td>
+<td><code>turn_recovery.py</code> +
+<code>turn_recovery_autorecover.py</code></td>
+<td>401 刷凭据、Unicode 编码错、图片过大、格式错……逐类恢复</td>
+</tr>
+<tr>
+<td>重复检测</td>
+<td><code>repetition_guard.py</code></td>
+<td>模型陷入复读时打断</td>
+</tr>
+<tr>
+<td>脱敏</td>
+<td><code>redact.py</code>，错误串强制 <code>force=True</code></td>
+<td>错误信息回写 DB 前必须脱敏</td>
+</tr>
+</tbody>
+</table></div>
+<p>中断的关键取舍：<strong>被放弃的响应直接丢弃，绝不把半截响应塞进历史</strong>。否则下次请求会带着一个"幽灵助手轮次"，污染角色交替。</p>
+<hr />
+<h2 id="sec-33">9. 状态层</h2>
+<div class="codeblock"><pre class="text"><code>~/.hermes/
+├── config.yaml          # 设置（行为）
+├── .env                 # 只放密钥
+├── state.db             # SQLite：sessions / messages / FTS5 / usage
+├── SOUL.md              # 身份
+├── MEMORY.md USER.md    # 记忆快照来源
+├── skills/              # 技能（含 .archive/ 与 .usage.json）
+└── profiles/&lt;name&gt;/     # 命名 profile：完全隔离的上述一切</code></pre></div>
+<p>三条纪律：</p>
+<ol type="1">
+<li><strong>单一写者</strong>：一个 profile 的 gateway
+是唯一规范写者；CLI / TUI / Desktop / ACP / cron 都是通过
+<code>/api/ws</code> 提交输入的客户端。进程外 worker 走
+<code>RuntimeSessionStore</code> RPC，<strong>不自己开库写
+transcript</strong>。</li>
+<li><strong>append-only</strong>：历史只追加。序列坏了用
+<code>repair_message_sequence</code> 修，而不是重写。</li>
+<li><strong>压缩用世代标记</strong>：in-place 压缩把旧行标
+<code>active=0</code>、新行标
+<code>active=1</code>。同一条消息在两代里同时出现是<strong>正常现象</strong>，不要当重复数据删。</li>
+</ol>
+<p><code>session_search</code> 直接在 FTS5
+上做四种查询形状——discovery（query）/ scroll（session_id + around）/
+read（整段或头尾）/ browse（无参）。<strong>全程不调
+LLM</strong>，返回真实 DB 消息。</p>
+<hr />
+<h2 id="sec-34">10. 抽象成通用 Agent Model</h2>
+<p>剥掉实现细节，可以提炼出 9 个核心对象和 12 条不变式。换个语言、砍掉
+90% 功能，这套东西依然成立。</p>
+<h3 id="sec-35">10.1 九个对象</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>对象</th>
+<th>职责</th>
+<th>生命周期</th>
+<th>持久化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent</strong></td>
+<td>无状态执行器 + 配置（provider/预算/回调）</td>
+<td>进程级，可跨 turn 复用</td>
+<td>否</td>
+</tr>
+<tr>
+<td><strong>Turn</strong></td>
+<td>一次用户输入的完整生命周期</td>
+<td>一次调用</td>
+<td>结果落库</td>
+</tr>
+<tr>
+<td><strong>Message</strong></td>
+<td>OpenAI 形状 + <code>reasoning</code> + 元数据</td>
+<td>追加式</td>
+<td>是</td>
+</tr>
+<tr>
+<td><strong>Tool</strong></td>
+<td>schema + handler + toolset + check_fn</td>
+<td>进程级注册</td>
+<td>否</td>
+</tr>
+<tr>
+<td><strong>ContextEngine</strong></td>
+<td>何时压、怎么压、用量跟踪</td>
+<td>会话级</td>
+<td>摘要落库</td>
+</tr>
+<tr>
+<td><strong>MemoryProvider</strong></td>
+<td>initialize → prefetch → sync_turn → shutdown</td>
+<td>会话级</td>
+<td>外部存储</td>
+</tr>
+<tr>
+<td><strong>Skill</strong></td>
+<td>SKILL.md + 支撑文件 + 用量状态</td>
+<td>跨会话</td>
+<td>是（文件）</td>
+</tr>
+<tr>
+<td><strong>Route</strong></td>
+<td>provider / model / api_mode / 凭据</td>
+<td>可热切换</td>
+<td>配置</td>
+</tr>
+<tr>
+<td><strong>Delegation</strong></td>
+<td>子任务契约（请求 / 句柄 / 结果）</td>
+<td>单次</td>
+<td>子会话独立</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="sec-36">10.2 十二条不变式</h3>
+<ol type="1">
+<li><strong>系统提示词字节稳定</strong>；唯一合法变更是压缩。</li>
+<li><strong>中途注入只走 user / tool 通道</strong>，不进 system
+prompt。</li>
+<li><strong>角色严格交替</strong>；只有 <code>tool</code>
+可以连续。</li>
+<li><strong>历史 append-only</strong>；坏了修序列，不改写内容。</li>
+<li><strong>压缩不切断 <code>tool_call ↔︎ tool_result</code>
+配对</strong>。</li>
+<li><strong>工具结果必须结构化</strong>（JSON
+字符串或明确的多模态信封）。</li>
+<li><strong>token 记账先信 provider usage</strong>，估算仅作
+fallback。</li>
+<li><strong>记忆快照会话开始冻结</strong>；会话中写入只落盘。</li>
+<li><strong>子代理上下文隔离、预算独立、父只见摘要</strong>。</li>
+<li><strong>能力默认放边缘</strong>（skill / plugin /
+MCP），核心工具门槛极高。</li>
+<li><strong>永不删除，只归档</strong>；危险动作必须审批。</li>
+<li><strong>密钥读取走
+scope，失败关闭</strong>（fail-closed），绝不退化成
+<code>os.getenv</code> 兜底。</li>
+</ol>
+<h3 id="sec-37">10.3
+反模式清单（源码里被明确拒绝的）</h3>
+<ul>
+<li>给指令类工具加 <code>offset/limit</code> 分页</li>
+<li>为普通配置新建环境变量（行为进
+<code>config.yaml</code>，<code>.env</code> 只放密钥）</li>
+<li>没有真实消费者的 hook</li>
+<li>"修复"把原本要保护的功能干掉的补丁</li>
+<li>默认开启的外部遥测</li>
+<li>插件去改核心文件</li>
+</ul>
+<hr />
+<h2 id="sec-38">11. 复刻路线：从 300
+行到这套系统</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>你需要的</th>
+<th>Hermes 对应层</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>M0 最小内核</strong></td>
+<td><code>messages[]</code> + 一个 while 循环 + 3 个工具（读 / 写 /
+跑）</td>
+<td><code>conversation_loop</code> 的 while</td>
+</tr>
+<tr>
+<td><strong>M1 可用</strong></td>
+<td>system prompt 组装 + 工具 registry + 错误重试</td>
+<td><code>prompt_builder</code> + <code>registry</code> +
+<code>error_classifier</code>（先做 5 类）</td>
+</tr>
+<tr>
+<td><strong>M2 长会话</strong></td>
+<td>上下文估算 + 剪枝 + 摘要压缩</td>
+<td><code>context_compressor</code> Phase 1-4</td>
+</tr>
+<tr>
+<td><strong>M3 稳定</strong></td>
+<td>预算 + 中断 + deadline + 落盘</td>
+<td><code>iteration_budget</code> + <code>deadline</code> +
+<code>state.db</code></td>
+</tr>
+<tr>
+<td><strong>M4 会成长</strong></td>
+<td>记忆文件 + 技能库 + 回合后复盘</td>
+<td><code>memory_tool</code> + <code>skills</code> +
+<code>background_review</code></td>
+</tr>
+<tr>
+<td><strong>M5 规模化</strong></td>
+<td>多 provider 降级 + 子代理 + 缓存断点</td>
+<td><code>FailoverReason</code> + <code>delegate_task</code> +
+<code>prompt_caching</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>建议的砍法</strong>：M0–M2 之间不要碰多 provider
+和插件系统；先把"一轮对话稳定跑到 50
+次工具调用还不炸"做出来，其余都是此之上的外设。</p>
+<hr />
+<h2 id="sec-39">12. 这套模型的代价</h2>
+<p>必须说清楚它换来了什么、失去了什么：</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>代价</th>
+<th>具体表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>复杂度</strong></td>
+<td><code>agent/</code> 319 个文件 / 6.5 MB
+Python；新人按文档阅读顺序要走 10 篇才能上手</td>
+</tr>
+<tr>
+<td><strong>缓存不变式反噬产品</strong></td>
+<td>改技能 / 改设置默认下个会话才生效，用户会觉得"没反应"</td>
+</tr>
+<tr>
+<td><strong>同步循环 + 线程池</strong></td>
+<td>不是 asyncio，并发靠 <code>ThreadPoolExecutor</code> +
+分段规划器；高并发不是设计目标</td>
+</tr>
+<tr>
+<td><strong>压缩有损</strong></td>
+<td>摘要模型窗口小于主模型会静默丢中段；源码用"警告 +
+兜底"缓解，不能根治</td>
+</tr>
+<tr>
+<td><strong>provider 税</strong></td>
+<td>30+ 种失败分类、大量
+<code>*_adapter.py</code>，都是现实世界不整齐的代价</td>
+</tr>
+<tr>
+<td><strong>学习闭环可能噪声化</strong></td>
+<td>复盘 prompt 强制"Be ACTIVE"，长期有技能库膨胀风险，靠 curator
+归档对冲</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>适用边界</strong>：适合"<strong>单用户 /
+小团队、长会话、要长期记忆、要操作真实机器</strong>"的个人
+agent；不适合"高并发多租户 API 服务"或"毫秒级延迟"场景。</p>
+<hr />
+<h2 id="sec-40">13. 源码索引</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>想读什么</th>
+<th>去哪</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主循环</td>
+<td><code>agent/conversation_loop.py::_run_conversation_turn</code></td>
+</tr>
+<tr>
+<td>回合各阶段</td>
+<td><code>agent/turn_*.py</code>（13 个文件，按阶段名找）</td>
+</tr>
+<tr>
+<td>系统提示词</td>
+<td><code>agent/system_prompt.py</code> +
+<code>agent/prompt_builder.py</code></td>
+</tr>
+<tr>
+<td>压缩算法</td>
+<td><code>agent/context_compressor.py</code>（330 KB，看
+<code>compress()</code> 与 4 个 Phase mixin）</td>
+</tr>
+<tr>
+<td>工具注册</td>
+<td><code>tools/registry.py</code> + <code>model_tools.py</code> +
+<code>toolsets.py</code></td>
+</tr>
+<tr>
+<td>并发调度</td>
+<td><code>agent/tool_dispatch_helpers.py::_plan_tool_batch_segments</code></td>
+</tr>
+<tr>
+<td>循环护栏</td>
+<td><code>agent/tool_guardrails.py</code></td>
+</tr>
+<tr>
+<td>失败分类</td>
+<td><code>agent/error_classifier.py::FailoverReason</code></td>
+</tr>
+<tr>
+<td>复盘 fork</td>
+<td><code>agent/background_review.py</code>（含三段 review prompt
+原文）</td>
+</tr>
+<tr>
+<td>技能生命周期</td>
+<td><code>agent/curator.py</code> +
+<code>tools/skill_usage.py</code></td>
+</tr>
+<tr>
+<td>子代理</td>
+<td><code>tools/delegate_tool.py</code> +
+<code>agent/subagent_lifecycle.py</code></td>
+</tr>
+<tr>
+<td>会话存储</td>
+<td><code>hermes_state*.py</code></td>
+</tr>
+<tr>
+<td>开发文档</td>
+<td><code>website/docs/developer-guide/architecture.md</code> 起 10
+篇</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p><em>本文基于 <code>8f5693af4182</code> 的公开源码分析；标为"工程含义
+/ 现实意义 /
+适用边界"的段落是分析结论，其余均有源码或仓库文档依据。</em></p>
+
+    </article>
+    <footer class="foot">
+      <p>基于 <code>8f5693af4182 (2026-10-19)</code> 的公开源码分析 · 生成于 2026-10-20</p>
+      <p class="foot-dim">标注为「工程含义 / 现实意义 / 适用边界」的段落为分析结论，其余均有源码或仓库文档依据。</p>
+    </footer>
+  </main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<button class="totop" id="toTop" aria-label="回到顶部">↑</button>
+<script>
+(function(){
+  var root = document.documentElement;
+  var progress = document.getElementById('progress');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('overlay');
+  var menuBtn = document.getElementById('menuBtn');
+  var themeBtn = document.getElementById('themeBtn');
+  var toTop = document.getElementById('toTop');
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#toc a'));
+  var targets = tocLinks.map(function(a){
+    var id = a.getAttribute('href').slice(1);
+    return document.getElementById(id);
+  });
+
+  // theme
+  var saved = null;
+  try { saved = localStorage.getItem('hermes-theme'); } catch(e) {}
+  if (saved) root.setAttribute('data-theme', saved);
+  themeBtn.addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    var isDark = cur === 'dark' || (cur === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = isDark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('hermes-theme', next); } catch(e) {}
+  });
+
+  // mobile drawer
+  function closeDrawer(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+  menuBtn.addEventListener('click', function(){
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('show', sidebar.classList.contains('open'));
+  });
+  overlay.addEventListener('click', closeDrawer);
+  tocLinks.forEach(function(a){ a.addEventListener('click', closeDrawer); });
+
+  // active section
+  var ticking = false;
+  function update(){
+    ticking = false;
+    var y = window.scrollY || window.pageYOffset;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (h > 0 ? Math.min(100, (y / h) * 100) : 0) + '%';
+    toTop.classList.toggle('show', y > 600);
+
+    var activeIdx = 0;
+    for (var i = 0; i < targets.length; i++){
+      var el = targets[i];
+      if (!el) continue;
+      if (el.getBoundingClientRect().top <= 96) activeIdx = i; else break;
+    }
+    tocLinks.forEach(function(a, i){ a.classList.toggle('active', i === activeIdx); });
+
+    if (window.innerWidth > 860) {
+      var act = tocLinks[activeIdx];
+      if (act) {
+        var r = act.getBoundingClientRect(), sr = sidebar.getBoundingClientRect();
+        if (r.top < sr.top + 60 || r.bottom > sr.bottom - 40) {
+          act.scrollIntoView({block: 'center', behavior: 'smooth'});
+        }
+      }
+    }
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking){ ticking = true; window.requestAnimationFrame(update); }
+  }, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+
+  // copy buttons
+  document.querySelectorAll('.codeblock').forEach(function(block){
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.type = 'button';
+    btn.textContent = '复制';
+    btn.addEventListener('click', function(){
+      var pre = block.querySelector('pre');
+      var text = pre ? pre.innerText : '';
+      var done = function(){ btn.textContent = '已复制'; setTimeout(function(){ btn.textContent = '复制'; }, 1400); };
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done, function(){});
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch(e) {}
+        document.body.removeChild(ta);
+      }
+    });
+    block.appendChild(btn);
+  });
+
+  // to top
+  toTop.addEventListener('click', function(){
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+
+  // keyboard: t toggles theme, / focuses nothing, keep minimal
+  document.addEventListener('keydown', function(e){
+    if (e.key === 't' && !e.metaKey && !e.ctrlKey && !e.altKey){
+      var tag = (e.target.tagName || '').toLowerCase();
+      if (tag !== 'input' && tag !== 'textarea') themeBtn.click();
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude 原理与 Claude Code 架构 · 演示文稿</title>
+<style>
+:root{--bg:#0f1114;--panel:#16191e;--panel2:#1b1f26;--line:#272c34;--line2:#323844;--fg:#e8e6e1;--fg2:#b6b2a8;--dim:#8b8f98;--amber:#e0a94a;--amber-soft:rgba(224,169,74,.13);--green:#6fbf9a;--red:#e07a6a;--blue:#6aa9e0;--purple:#a98ae0;--mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#08090b;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--fg);-webkit-font-smoothing:antialiased}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);padding:56px 72px;opacity:0;visibility:hidden;transition:opacity .45s,transform .45s;transform:translateX(24px);overflow:hidden;border-radius:6px}
+.slide::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(800px 380px at 10% -10%,rgba(224,169,74,.11),transparent 60%),radial-gradient(700px 360px at 100% 110%,rgba(106,169,224,.08),transparent 60%)}
+.slide.on{opacity:1;visibility:visible;transform:none}
+.slide>*{position:relative}
+.kicker{font-family:var(--mono);font-size:14px;color:var(--amber);letter-spacing:1px;margin-bottom:8px}
+h1{font-size:56px;margin:0 0 18px;line-height:1.15}
+h2{font-size:36px;margin:0 0 26px}
+p,li{font-size:20px;color:var(--fg2);line-height:1.65}
+ul{margin:0;padding-left:24px}li{margin:6px 0}
+b,strong{color:var(--fg)}
+code{font-family:var(--mono);font-size:.85em;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 7px;color:#f0c46a}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 22px;font-family:var(--mono);font-size:15px;line-height:1.6;color:#d6d2c8;margin:0;white-space:pre}
+pre .c{color:var(--dim)}pre .k{color:var(--purple)}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.box h3{margin:0 0 8px;font-size:21px;color:var(--fg)}
+.box p{margin:0;font-size:16.5px;line-height:1.6}
+.box .tag{display:inline-block;font-family:var(--mono);font-size:12px;color:var(--amber);background:var(--amber-soft);padding:2px 9px;border-radius:10px;margin-bottom:10px}
+.box.hl{border-color:var(--amber);background:#1f1b12}
+table{width:100%;border-collapse:collapse;font-size:17px}
+th,td{border:1px solid var(--line);padding:10px 14px;text-align:left}
+th{background:var(--panel2);color:var(--amber)}td{color:var(--fg2)}
+.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.flow .st{background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:12px 16px;font-size:17px;text-align:center}
+.flow .st small{display:block;font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:3px}
+.flow .st.a{border-color:var(--amber);color:var(--amber)}
+.flow .ar{color:var(--amber);font-size:22px}
+.layer{display:grid;grid-template-columns:190px 1fr;gap:12px;margin-bottom:10px}
+.layer .n{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--amber);font-weight:600;font-size:17px;display:flex;align-items:center}
+.layer .i{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.layer .i span{font-family:var(--mono);font-size:14px;background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:4px 10px;color:var(--fg2)}
+.num{display:inline-flex;width:30px;height:30px;border-radius:50%;border:1px solid var(--amber);color:var(--amber);align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;margin-right:10px;flex:0 0 auto}
+.steps>div{display:flex;align-items:flex-start;margin:11px 0;font-size:18.5px;color:var(--fg2);line-height:1.5}
+.quote{border-left:4px solid var(--amber);padding:6px 18px;background:var(--amber-soft);border-radius:0 10px 10px 0;font-size:19px;color:var(--fg)}
+.foot{position:absolute;left:72px;right:72px;bottom:24px;display:flex;justify-content:space-between;font-size:13px;color:var(--dim);font-family:var(--mono)}
+.reveal>*{opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}
+.slide.on .reveal>*{opacity:1;transform:none}
+.slide.on .reveal>*:nth-child(2){transition-delay:.08s}.slide.on .reveal>*:nth-child(3){transition-delay:.16s}.slide.on .reveal>*:nth-child(4){transition-delay:.24s}.slide.on .reveal>*:nth-child(5){transition-delay:.32s}.slide.on .reveal>*:nth-child(6){transition-delay:.4s}
+#bar{position:fixed;left:0;bottom:0;height:3px;background:var(--amber);transition:width .35s;z-index:5}
+#nav{position:fixed;right:18px;bottom:14px;display:flex;gap:8px;align-items:center;z-index:5;font-family:var(--mono);font-size:13px;color:var(--dim)}
+#nav button{background:var(--panel2);color:var(--fg);border:1px solid var(--line2);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:13px}
+#nav button:hover,#nav button:focus-visible{border-color:var(--amber);color:var(--amber);outline:none}
+#overview{position:fixed;inset:0;background:rgba(8,9,11,.96);display:none;z-index:10;overflow:auto;padding:30px}
+#overview.on{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;align-content:start}
+#overview button{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:left;color:var(--fg);cursor:pointer;font-size:15px;font-family:inherit}
+#overview button span{display:block;font-family:var(--mono);color:var(--amber);font-size:12px;margin-bottom:6px}
+#overview button:hover,#overview button.cur{border-color:var(--amber)}
+@media print{html,body{overflow:visible;background:#fff}#deck{position:static;transform:none!important;width:auto;height:auto}.slide{position:relative;opacity:1;visibility:visible;transform:none;page-break-after:always;width:1280px;height:720px}.reveal>*{opacity:1!important;transform:none!important}#nav,#bar{display:none}}
+.flow .st.b{border-color:var(--blue);color:var(--blue)}
+.big{font-size:60px;font-weight:700;color:var(--amber);font-family:var(--mono);line-height:1.1}
+</style>
+</head>
+<body>
+<div id="deck">
+<section class="slide" data-title="封面">
+  <div style="margin-top:110px" class="reveal">
+    <div class="kicker">ANTHROPIC CLAUDE · DEEP DIVE</div>
+    <h1>Claude 原理、运行流程<br>与 Claude Code 代码架构</h1>
+    <p style="font-size:22px;max-width:860px">从大模型如何"会思考"，到 Agent Harness 如何"让它能做事"：训练与对齐、工具协议、Agentic Loop、权限沙箱、上下文工程与扩展机制</p>
+    <p style="font-size:15px;color:var(--dim);margin-top:40px;font-family:var(--mono)">基于 code.claude.com / platform.claude.com 官方文档、Anthropic Engineering & Research、CAI 论文与 claude-agent-sdk 源码</p>
+  </div>
+</section>
+
+<section class="slide" data-title="目录">
+  <div class="kicker">AGENDA</div><h2>内容概览</h2>
+  <div class="grid g2 reveal" style="gap:14px 40px">
+    <div class="steps"><div class="kicker" style="margin:0">PART A · 模型</div><div><span class="num">1</span>Claude 的三层含义</div><div><span class="num">2</span>Transformer 与训练三段式</div><div><span class="num">3</span>Constitutional AI</div><div><span class="num">4</span>可解释性：AI 显微镜</div><div><span class="num">5</span>Extended Thinking 与 Effort</div><div><span class="num">6</span>工具调用协议 · Prompt Caching</div></div>
+    <div class="steps"><div class="kicker" style="margin:0">PART B · CLAUDE CODE</div><div><span class="num">7</span>整体架构六层</div><div><span class="num">8</span>Agentic Loop 与消息类型</div><div><span class="num">9</span>工具系统与并发</div><div><span class="num">10</span>权限 · 沙箱 · 检查点</div><div><span class="num">11</span>上下文工程 · 压缩 · 记忆</div><div><span class="num">12</span>Skills / MCP / Hooks / Subagents / SDK</div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="三层含义">
+  <div class="kicker">01 · WHAT IS CLAUDE</div><h2>模型负责思考，Harness 负责行动</h2>
+  <div class="grid g4 reveal">
+    <div class="box"><span class="tag">Model</span><h3>Claude 模型</h3><p>Fable 5.1 · Opus 5.5 · Sonnet 5.5 · Haiku 4.5，在能力、延迟、成本间取舍。</p></div>
+    <div class="box"><span class="tag">API</span><h3>Messages API</h3><p>无状态：输入 system + tools + messages，输出 text / thinking / tool_use 内容块。</p></div>
+    <div class="box hl"><span class="tag">Harness</span><h3>Claude Code</h3><p>终端 / IDE / 桌面 / Web 中的 Agent：执行工具、管控权限、管理上下文。</p></div>
+    <div class="box"><span class="tag">SDK</span><h3>Agent SDK</h3><p>把同一套 Agent 循环开放为 Python / TypeScript 库。</p></div>
+  </div>
+  <p class="quote reveal" style="margin-top:34px">"The agentic loop is powered by two components: models that reason and tools that act. Claude Code is the layer around the model that provides the tools and manages the context the model sees."<br><span style="font-size:14px;color:var(--dim)">— How Claude Code works, 官方文档</span></p>
+</section>
+
+<section class="slide" data-title="训练三段式">
+  <div class="kicker">02 · FOUNDATION</div><h2>Decoder-only Transformer + 三段训练</h2>
+  <div class="flow reveal" style="margin-bottom:30px">
+    <div class="st">Tokens<small>文本 · 代码 · 图像</small></div><span class="ar">→</span>
+    <div class="st">Embedding</div><span class="ar">→</span>
+    <div class="st a">N × [Self-Attention + MLP]<small>残差流</small></div><span class="ar">→</span>
+    <div class="st">Softmax<small>下一个 token 分布</small></div><span class="ar">→</span>
+    <div class="st b">采样 → 追加 → 再前向<small>自回归</small></div>
+  </div>
+  <div class="grid g3 reveal">
+    <div class="box"><span class="tag">Stage 1</span><h3>预训练</h3><p>海量公开文本与代码上做下一词预测，获得语言、知识与推理模式。</p></div>
+    <div class="box"><span class="tag">Stage 2</span><h3>监督微调 SFT</h3><p>高质量对话示范，学会以助手身份对话、遵循指令。</p></div>
+    <div class="box hl"><span class="tag">Stage 3</span><h3>强化学习</h3><p>RLHF + RLAIF（宪法）+ 可验证环境 RL（代码、Agent 任务），塑造有用、诚实、无害与长程能力。</p></div>
+  </div>
+  <p class="reveal" style="font-size:16px;color:var(--dim);margin-top:22px">注：Anthropic 未公开参数量、层数等结构细节；"推理"与"工具调用"本质上都是逐 token 生成的结构化输出。</p>
+</section>
+
+<section class="slide" data-title="Constitutional AI">
+  <div class="kicker">03 · ALIGNMENT</div><h2>Constitutional AI：用原则代替逐条标注</h2>
+  <div class="grid g2 reveal">
+    <div class="box"><span class="tag">Phase 1 · Supervised</span><h3>自我批评与修订</h3>
+      <div class="flow" style="margin-top:12px"><div class="st">采样回答</div><span class="ar">→</span><div class="st">按宪法 critique</div><span class="ar">→</span><div class="st">revision</div><span class="ar">→</span><div class="st a">微调</div></div></div>
+    <div class="box"><span class="tag">Phase 2 · RLAIF</span><h3>AI 反馈强化学习</h3>
+      <div class="flow" style="margin-top:12px"><div class="st">采样两个回答</div><span class="ar">→</span><div class="st">AI 按宪法比较</div><span class="ar">→</span><div class="st">偏好模型</div><span class="ar">→</span><div class="st b">RL</div></div></div>
+  </div>
+  <div class="grid g3 reveal" style="margin-top:22px">
+    <div class="box"><h3>Harmless but non-evasive</h3><p>不一味回避，而是解释为什么反对有害请求。</p></div>
+    <div class="box"><h3>更少人类标注</h3><p>人只写原则清单，可扩展、可审计。</p></div>
+    <div class="box"><h3>CoT 提升透明度</h3><p>两阶段都可用链式思考改进判断。</p></div>
+  </div>
+  <p class="reveal" style="font-size:15px;color:var(--dim);margin-top:18px;font-family:var(--mono)">Bai et al., "Constitutional AI: Harmlessness from AI Feedback", arXiv:2212.08073</p>
+</section>
+<section class="slide" data-title="可解释性">
+  <div class="kicker">04 · INTERPRETABILITY</div><h2>AI 显微镜：Features → Circuits</h2>
+  <div class="grid g4 reveal">
+    <div class="box"><span class="tag">多语言</span><h3>共享概念空间</h3><p>不同语言的同一含义在内部高度重叠，像一种通用"思维语言"。</p></div>
+    <div class="box"><span class="tag">规划</span><h3>提前想好韵脚</h3><p>写诗时先选定押韵词再组织句子：一次输出一个 token，但会看得更远。</p></div>
+    <div class="box"><span class="tag">忠实性</span><h3>CoT 可能是编的</h3><p>给出错误提示时，模型会构造迎合用户的推理，并被工具"当场抓到"。</p></div>
+    <div class="box"><span class="tag">幻觉</span><h3>默认不猜</h3><p>默认回路是拒答，"已知实体"特征抑制它才会回答；误抑制导致幻觉。</p></div>
+  </div>
+  <p class="quote reveal" style="margin-top:30px">局限：即使几十个词的提示，也只捕捉到总计算量的一小部分，且需数小时人工分析。<br><span style="font-size:14px;color:var(--dim)">— Tracing the thoughts of a large language model（研究对象 Claude 3.5 Haiku）</span></p>
+</section>
+
+<section class="slide" data-title="Extended Thinking">
+  <div class="kicker">05 · REASONING</div><h2>Extended Thinking 与 Effort：两个独立旋钮</h2>
+  <div class="grid g2 reveal">
+<pre><span class="c">// 请求</span>
+thinking: { type: <span class="k">"enabled"</span>,
+            budget_tokens: 10000 }
+<span class="c">// 响应</span>
+content: [
+  { type: <span class="k">"thinking"</span>,
+    thinking: "先分析失败用例…",
+    signature: "EqQB…" },
+  { type: <span class="k">"tool_use"</span>, name: "Bash", … }
+]</pre>
+    <div>
+      <div class="box" style="margin-bottom:14px"><h3>thinking 块 + signature</h3><p>多轮工具调用时原样回传 thinking 块，模型在 tool_result 之后接着原思路继续（interleaved thinking）。</p></div>
+      <div class="box hl"><h3>effort: low → max</h3><p>控制每次回复的推理深度与 token 投入；与 thinking 相互独立，可任意组合。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="工具调用协议">
+  <div class="kicker">06 · TOOL USE</div><h2>模型只"写出"调用，Harness 负责执行</h2>
+  <div class="steps reveal">
+    <div><span class="num">1</span>请求携带 <code>tools[]</code>：name + description + JSON Schema（描述质量决定调用质量，即 ACI 设计）</div>
+    <div><span class="num">2</span>模型输出 <code>tool_use {id, name, input}</code>，<code>stop_reason = "tool_use"</code></div>
+    <div><span class="num">3</span>Harness 做权限检查 → 执行 → 把 <code>tool_result {tool_use_id, content, is_error}</code> 作为 user 消息回填</div>
+    <div><span class="num">4</span>再次调用模型；直到输出纯文本，<code>stop_reason = "end_turn"</code></div>
+  </div>
+  <div class="grid g3 reveal" style="margin-top:22px">
+    <div class="box"><h3>Client tools</h3><p>调用方执行：Read / Edit / Bash 等。</p></div>
+    <div class="box"><h3>Server tools</h3><p>平台执行：web search、code execution。</p></div>
+    <div class="box"><h3>并行调用</h3><p>一次响应可含多个 tool_use，只读可并发。</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="上下文与缓存">
+  <div class="kicker">07 · CONTEXT &amp; CACHING</div><h2>无状态 API 下的两件大事</h2>
+  <div class="grid g2 reveal">
+    <div class="box"><span class="tag">Context Window</span><div class="big">200K</div><p style="margin-top:10px">标准上下文（部分模型/配置 1M）。system、工具、历史、工具输出全部计入；长任务必然逼近上限 → 需要压缩、隔离、按需加载。</p></div>
+    <div class="box hl"><span class="tag">Prompt Caching</span><div class="big">tools → system → msgs</div><p style="margin-top:10px"><code>cache_control: ephemeral</code> 标记前缀断点，默认 TTL 5 分钟（可选 1 小时），命中部分大幅折扣。Agent 每轮重发相同前缀，缓存是成本与延迟的关键。</p></div>
+  </div>
+  <p class="quote reveal" style="margin-top:26px">设计含义：动态信息（system-reminder、文件变更提示）追加在消息尾部，不去改动 system prompt，以免整段缓存失效。</p>
+</section>
+
+<section class="slide" data-title="整体架构">
+  <div class="kicker">08 · ARCHITECTURE</div><h2>Claude Code 六层架构</h2>
+  <div class="reveal">
+    <div class="layer"><div class="n">交互界面</div><div class="i"><span>Terminal TUI</span><span>VS Code / JetBrains</span><span>Desktop</span><span>claude.ai/code</span><span>Slack</span><span>CI · -p</span><span>Agent SDK</span></div></div>
+    <div class="layer"><div class="n">会话与配置</div><div class="i"><span>Session JSONL</span><span>resume / fork</span><span>managed › CLI › local › project › user</span></div></div>
+    <div class="layer"><div class="n">Agentic Loop</div><div class="i"><span>gather → act → verify</span><span>流式解析</span><span>工具调度</span><span>中断 / 排队消息</span><span>maxTurns · budget</span></div></div>
+    <div class="layer"><div class="n">上下文引擎</div><div class="i"><span>System prompt</span><span>CLAUDE.md</span><span>Auto memory</span><span>Tool search</span><span>Auto-compaction</span><span>Prompt cache</span></div></div>
+    <div class="layer"><div class="n">工具与安全</div><div class="i"><span>Read Edit Write</span><span>Glob Grep</span><span>Bash + Sandbox</span><span>Web*</span><span>Agent Skill Task*</span><span>Permission engine</span><span>Checkpoints</span></div></div>
+    <div class="layer"><div class="n">扩展层</div><div class="i"><span>Skills</span><span>MCP</span><span>Hooks</span><span>Subagents</span><span>Plugins</span><span>LSP</span></div></div>
+  </div>
+</section>
+<section class="slide" data-title="Agentic Loop">
+  <div class="kicker">09 · AGENTIC LOOP</div><h2>一个围绕 Messages API 的 while 循环</h2>
+  <div class="grid g2 reveal" style="grid-template-columns:1.15fr 1fr">
+<pre><span class="k">while</span> (true) {
+  <span class="k">if</span> (nearLimit()) compact()   <span class="c">// PreCompact</span>
+  resp = claude.stream(system, tools, history)
+  <span class="k">yield</span> AssistantMessage(resp.blocks)
+  calls = resp.tool_uses
+  <span class="k">if</span> (!calls.length) <span class="k">break</span>   <span class="c">// end_turn</span>
+  results = runTools(calls)
+    <span class="c">// 权限 → PreToolUse → 执行 → PostToolUse</span>
+  history.push(resp, results)
+  <span class="k">if</span> (turns ≥ maxTurns) <span class="k">return</span> error
+}
+Stop hook → ResultMessage</pre>
+    <table>
+      <tr><th>消息</th><th>含义</th></tr>
+      <tr><td><code>System</code></td><td>init · compact_boundary</td></tr>
+      <tr><td><code>Assistant</code></td><td>text / thinking / tool_use</td></tr>
+      <tr><td><code>User</code></td><td>tool_result · 插话</td></tr>
+      <tr><td><code>StreamEvent</code></td><td>流式增量</td></tr>
+      <tr><td><code>Result</code></td><td>结果 · usage · 成本 · session_id</td></tr>
+    </table>
+  </div>
+  <p class="reveal" style="font-size:17px;margin-top:18px">人在回路：<b>Esc</b> 立即取消当前工具；直接输入回车 = 排队消息，工具结束后同一轮内被读取。</p>
+</section>
+
+<section class="slide" data-title="一次任务">
+  <div class="kicker">09 · EXAMPLE</div><h2>"修复 auth 失败的测试" 的 turn 序列</h2>
+  <div class="flow reveal" style="margin-bottom:26px">
+    <div class="st">Turn 1<small>Bash npm test</small></div><span class="ar">→</span>
+    <div class="st">Turn 2<small>Agent(Explore)</small></div><span class="ar">→</span>
+    <div class="st">Turn 3<small>Read ×2 并行</small></div><span class="ar">→</span>
+    <div class="st a">Turn 4<small>Edit token.ts</small></div><span class="ar">→</span>
+    <div class="st">Turn 5<small>Bash npm test ✓</small></div><span class="ar">→</span>
+    <div class="st b">Final<small>text · end_turn</small></div>
+  </div>
+  <div class="grid g3 reveal">
+    <div class="box"><span class="tag">Gather</span><h3>收集上下文</h3><p>跑测试拿失败信息；派子代理调研，只收摘要。</p></div>
+    <div class="box"><span class="tag">Act</span><h3>采取行动</h3><p>精确字符串替换；编辑前快照；Hook 自动格式化；LSP 诊断。</p></div>
+    <div class="box hl"><span class="tag">Verify</span><h3>验证结果</h3><p>再次运行测试，命中已保存的 allow 规则直接执行，全部通过才收尾。</p></div>
+  </div>
+  <p class="reveal" style="font-size:16px;color:var(--dim);margin-top:20px">配套动画 claude-animation.html 逐步演示了这一过程中的数据流、权限决策与上下文变化。</p>
+</section>
+
+<section class="slide" data-title="工具系统">
+  <div class="kicker">10 · TOOLS</div><h2>内置工具与并发策略</h2>
+  <table class="reveal">
+    <tr><th>类别</th><th>工具</th><th>要点</th></tr>
+    <tr><td>文件</td><td><code>Read</code> <code>Edit</code> <code>Write</code></td><td>Edit = 精确替换，要求先 Read、old_string 唯一</td></tr>
+    <tr><td>搜索</td><td><code>Glob</code> <code>Grep</code></td><td>just-in-time 检索，替代预建索引</td></tr>
+    <tr><td>执行</td><td><code>Bash</code></td><td>任意 shell，可后台，可沙箱</td></tr>
+    <tr><td>Web</td><td><code>WebSearch</code> <code>WebFetch</code></td><td>查文档、查报错</td></tr>
+    <tr><td>发现</td><td><code>ToolSearch</code></td><td>MCP 等工具 schema 延迟加载</td></tr>
+    <tr><td>编排</td><td><code>Agent</code> <code>Skill</code> <code>AskUserQuestion</code> <code>Task*</code></td><td>子代理、技能、提问、任务清单</td></tr>
+  </table>
+  <div class="grid g2 reveal" style="margin-top:20px">
+    <div class="box"><h3>只读 → 并发</h3><p>Read / Glob / Grep / readOnlyHint 的 MCP 工具。</p></div>
+    <div class="box"><h3>写状态 → 串行</h3><p>Edit / Write / Bash，避免冲突；被拒绝时模型收到拒绝消息并换路。</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="权限与沙箱">
+  <div class="kicker">11 · SAFETY</div><h2>权限 · 沙箱 · 检查点</h2>
+  <div class="grid g3 reveal">
+    <div class="box"><span class="tag">Permission modes</span><h3>Shift+Tab 切换</h3><p><b>auto</b> 分类器审阅 · <b>default</b> 询问 · <b>acceptEdits</b> · <b>plan</b> 只规划 · <b>dontAsk</b> · <b>bypassPermissions</b>（仅隔离环境）</p></div>
+    <div class="box hl"><span class="tag">Rule evaluation</span><h3>deny 优先</h3><p>PreToolUse hook → deny → ask → allow → 模式兜底。任何层级的 deny 都无法被其他层放开；managed 最高。</p></div>
+    <div class="box"><span class="tag">Sandbox</span><h3>OS 级隔离</h3><p>macOS Seatbelt · Linux/WSL2 bubblewrap。写入限于工作目录，网络按域名白名单走代理。</p></div>
+  </div>
+  <div class="grid g2 reveal" style="margin-top:20px">
+    <div class="box"><span class="tag">Checkpoints</span><h3>编辑可撤销</h3><p>每个新 prompt 建检查点，编辑前快照，保留最近 100 个；<code>Esc Esc</code> / <code>/rewind</code> 回退。</p></div>
+    <div class="box"><span class="tag">Boundary</span><h3>覆盖不到的</h3><p>Bash 造成的改动、子代理编辑、远程副作用（DB / 部署）—— 交给权限控制。</p></div>
+  </div>
+</section>
+<section class="slide" data-title="上下文工程">
+  <div class="kicker">12 · CONTEXT ENGINEERING</div><h2>保护"注意力预算"</h2>
+  <div class="grid g4 reveal">
+    <div class="box"><span class="tag">JIT</span><h3>按需检索</h3><p>只留路径引用，用 Grep / Read 即时拉取。</p></div>
+    <div class="box"><span class="tag">Lazy</span><h3>延迟加载</h3><p>Skill 只放描述、MCP 只放工具名。</p></div>
+    <div class="box"><span class="tag">Isolate</span><h3>子代理隔离</h3><p>读几十个文件，只回传摘要。</p></div>
+    <div class="box hl"><span class="tag">Compact</span><h3>自动压缩</h3><p>先清旧工具输出，再摘要历史。</p></div>
+  </div>
+  <table class="reveal" style="margin-top:22px">
+    <tr><th>压缩后</th><th>内容</th></tr>
+    <tr><td>从磁盘重新注入</td><td>项目根 CLAUDE.md、无路径规则、Auto memory、plan 文件、skill 描述</td></tr>
+    <tr><td>重新读取</td><td>最近修改的至多 5 个文件（&gt;5k tokens 只留路径）；已调用 skill 正文（单个 5k / 总计 25k）</td></tr>
+    <tr><td>可能丢失</td><td>早期对话中的细节指令 → 持久规则写进 CLAUDE.md</td></tr>
+  </table>
+</section>
+
+<section class="slide" data-title="记忆">
+  <div class="kicker">13 · MEMORY</div><h2>跨会话记忆只靠落盘文件</h2>
+  <div class="flow reveal" style="margin-bottom:24px">
+    <div class="st">Managed<small>组织策略</small></div><span class="ar">→</span>
+    <div class="st">~/.claude/CLAUDE.md<small>个人全局</small></div><span class="ar">→</span>
+    <div class="st a">./CLAUDE.md<small>团队共享</small></div><span class="ar">→</span>
+    <div class="st">CLAUDE.local.md<small>个人本项目</small></div><span class="ar">+</span>
+    <div class="st b">MEMORY.md<small>Auto memory</small></div>
+  </div>
+  <div class="grid g3 reveal">
+    <div class="box"><h3>拼接，不覆盖</h3><p>从文件系统根到当前目录依次拼接，越近越后读；子目录 CLAUDE.md 按需加载。</p></div>
+    <div class="box"><h3>体积约束</h3><p>CLAUDE.md ≤ 4 MiB 全量加载（越短越好）；MEMORY.md 只加载前 200 行 / 25KB，主题文件按需 Read。</p></div>
+    <div class="box"><h3>组织方式</h3><p><code>@path</code> 导入；<code>.claude/rules/</code> 用 <code>paths:</code> 限定范围；HTML 注释注入前剥离。</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="扩展层">
+  <div class="kicker">14 · EXTENSIONS</div><h2>Skills · MCP · Hooks · Subagents</h2>
+  <div class="grid g2 reveal" style="gap:16px">
+    <div class="box"><span class="tag">Skills</span><h3>可复用的指令包</h3><p>SKILL.md + 资源。开局只见描述，调用时加载正文（渐进式披露）；可 <code>context: fork</code>、<code>allowed-tools</code>。</p></div>
+    <div class="box"><span class="tag">MCP</span><h3>开放的外部连接协议</h3><p>stdio / HTTP / SSE / WebSocket；local / project / user 作用域；OAuth；工具名 <code>mcp__server__tool</code>。</p></div>
+    <div class="box hl"><span class="tag">Hooks</span><h3>确定性的生命周期钩子</h3><p>SessionStart · UserPromptSubmit · PreToolUse · PostToolUse · Stop · PreCompact …；command / http / mcp_tool / prompt / agent 五种处理器；exit 2 阻断。</p></div>
+    <div class="box"><span class="tag">Subagents</span><h3>隔离的工作者</h3><p>独立上下文与 system prompt，限定工具/模型，可 worktree 隔离、可后台；内置 Explore、Plan；Fork 继承父对话。</p></div>
+  </div>
+  <p class="reveal" style="font-size:16px;color:var(--dim);margin-top:18px">上下文成本：CLAUDE.md 每次请求 · Skills 低 · MCP 用前很低 · Subagents 隔离 · Hooks 为零（除非返回附加上下文）</p>
+</section>
+
+<section class="slide" data-title="Agent SDK">
+  <div class="kicker">15 · AGENT SDK</div><h2>一个循环，多种前端</h2>
+  <div class="grid g2 reveal" style="grid-template-columns:1fr 1.1fr">
+<pre>claude_agent_sdk/
+├── query.py · client.py
+├── types.py
+└── _internal/
+    ├── transport/
+    │   └── subprocess_cli.py
+    │       <span class="c"># 启动 claude 二进制</span>
+    │       <span class="c"># stdin/stdout stream-json</span>
+    ├── query.py   <span class="c"># 控制协议</span>
+    ├── message_parser.py
+    ├── sdk_mcp_bridge.py
+    └── session_store.py</pre>
+    <table>
+      <tr><th>方向</th><th>control_request subtype</th></tr>
+      <tr><td>SDK → CLI</td><td><code>initialize</code> <code>interrupt</code><br><code>set_permission_mode</code> <code>set_model</code><br><code>rewind_files</code></td></tr>
+      <tr><td>CLI → SDK</td><td><code>can_use_tool</code> 审批回调<br><code>hook_callback</code> 进程内 hook<br><code>mcp_message</code> SDK MCP 工具</td></tr>
+    </table>
+  </div>
+  <p class="quote reveal" style="margin-top:22px">SDK 捆绑原生 Claude Code 二进制并以子进程驱动它：终端、IDE、CI、SDK 跑的是同一个 agentic loop。</p>
+</section>
+
+<section class="slide" data-title="设计取舍">
+  <div class="kicker">16 · DESIGN</div><h2>设计取舍</h2>
+  <table class="reveal">
+    <tr><th>选择</th><th>理由</th></tr>
+    <tr><td>单循环 + 强工具</td><td>"从最简单的方案开始，只在需要时增加复杂度"（Building effective agents）</td></tr>
+    <tr><td>模型自主决定下一步</td><td>编码子任务不可预知；靠环境反馈（测试、报错）判断进展</td></tr>
+    <tr><td>Agentic search 代替索引</td><td>始终看到最新代码，无需维护向量库</td></tr>
+    <tr><td>deny 优先 + 沙箱</td><td>组织策略不可覆盖；"要不要做"与"能碰到什么"双保险</td></tr>
+    <tr><td>规则写文件、扩展按需加载</td><td>压缩会丢细节；工具越多越难选对，保护注意力预算</td></tr>
+  </table>
+</section>
+
+<section class="slide" data-title="总结">
+  <div style="margin-top:70px" class="reveal">
+    <div class="kicker">SUMMARY</div>
+    <h1 style="font-size:46px">Claude = 会思考的模型<br>Claude Code = 让它可靠做事的 Harness</h1>
+    <div class="steps" style="margin-top:26px">
+      <div><span class="num">1</span>模型：预训练 + SFT + RLHF / Constitutional AI，并以可解释性研究持续理解其内部机制</div>
+      <div><span class="num">2</span>协议：tool_use / tool_result + thinking + prompt caching，是一切 Agent 能力的接口</div>
+      <div><span class="num">3</span>Harness：gather → act → verify 的循环，加权限、沙箱、检查点、上下文工程与扩展层</div>
+    </div>
+    <p style="font-size:15px;color:var(--dim);margin-top:34px;font-family:var(--mono)">配套：Claude-架构原理详解.html · claude-animation.html</p>
+  </div>
+</section>
+</div>
+<div id="bar"></div>
+<div id="nav"><button id="ov" aria-label="幻灯片总览">总览 (O)</button><button id="pv" aria-label="上一页">◀</button><span id="pg">1 / 1</span><button id="nx" aria-label="下一页">▶</button><button id="fs" aria-label="全屏">全屏 (F)</button></div>
+<div id="overview" role="dialog" aria-label="幻灯片总览"></div>
+<script>
+const slides=[...document.querySelectorAll(".slide")],deck=document.getElementById("deck"),ov=document.getElementById("overview");
+let i=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1))||1)-1));
+slides.forEach((s,k)=>{const f=document.createElement("div");f.className="foot";f.innerHTML=`<span>Claude · 原理与架构</span><span>${s.dataset.title||""}</span>`;s.appendChild(f);
+  const b=document.createElement("button");b.innerHTML=`<span>${String(k+1).padStart(2,"0")}</span>`;b.append(s.dataset.title||"");b.onclick=()=>{show(k);ov.classList.remove("on");};ov.appendChild(b);});
+function fit(){const s=Math.min(innerWidth/1280,innerHeight/720)*0.96;deck.style.transform=`translate(-50%,-50%) scale(${s})`;}
+function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>{s.classList.toggle("on",k===i);s.setAttribute("aria-hidden",k!==i);});
+  document.getElementById("pg").textContent=`${i+1} / ${slides.length}`;document.getElementById("bar").style.width=((i+1)/slides.length*100)+"%";
+  [...ov.children].forEach((b,k)=>b.classList.toggle("cur",k===i));history.replaceState(null,"","#"+(i+1));}
+document.getElementById("nx").onclick=()=>show(i+1);document.getElementById("pv").onclick=()=>show(i-1);
+document.getElementById("ov").onclick=()=>ov.classList.toggle("on");
+document.getElementById("fs").onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+document.addEventListener("keydown",e=>{const k=e.key;
+  if(["ArrowRight","PageDown"," ","Enter"].includes(k)){e.preventDefault();show(i+1);}
+  else if(["ArrowLeft","PageUp","Backspace"].includes(k)){e.preventDefault();show(i-1);}
+  else if(k==="Home")show(0);else if(k==="End")show(slides.length-1);
+  else if(k==="o"||k==="O")ov.classList.toggle("on");else if(k==="Escape")ov.classList.remove("on");
+  else if(k==="f"||k==="F")document.getElementById("fs").click();});
+let tx=null;addEventListener("touchstart",e=>tx=e.touches[0].clientX);addEventListener("touchend",e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)show(i+(d<0?1:-1));tx=null;});
+addEventListener("resize",fit);fit();show(i);
+</script>
+</body>
+</html>

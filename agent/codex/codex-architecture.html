@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenAI Codex 原理与代码架构详解</title>
+<style>
+:root{--bg:#0f1114;--panel:#16191e;--panel2:#1b1f26;--line:#272c34;--fg:#e8e6e1;--fg2:#b6b2a8;--dim:#8b8f98;--amber:#e0a94a;--amber-soft:rgba(224,169,74,.12);--green:#6fbf9a;--red:#e07a6a;--blue:#6aa9e0;--purple:#a98ae0;--mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(900px 420px at 15% -10%,rgba(224,169,74,.10),transparent 60%),radial-gradient(760px 380px at 95% 5%,rgba(106,169,224,.07),transparent 62%)}
+.layout{display:grid;grid-template-columns:260px 1fr;max-width:1320px;margin:0 auto;position:relative}
+nav.toc{position:sticky;top:0;height:100vh;overflow:auto;padding:28px 18px;border-right:1px solid var(--line)}
+nav.toc .logo{font-weight:700;font-size:18px;color:var(--amber);margin-bottom:4px}
+nav.toc .sub{font-size:12px;color:var(--dim);margin-bottom:20px}
+nav.toc a{display:block;color:var(--fg2);text-decoration:none;font-size:13.5px;padding:5px 10px;border-radius:6px;border-left:2px solid transparent}
+nav.toc a:hover,nav.toc a.active{background:var(--amber-soft);color:var(--amber);border-left-color:var(--amber)}
+main{padding:40px 56px 120px;min-width:0}
+h1{font-size:34px;margin:0 0 8px;letter-spacing:.5px}
+h1 small{display:block;font-size:15px;color:var(--dim);font-weight:400;margin-top:6px}
+h2{font-size:24px;margin:64px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+h2 .no{color:var(--amber);font-family:var(--mono);margin-right:10px}
+h3{font-size:18px;margin:30px 0 10px;color:var(--amber)}
+p,li{color:var(--fg2);font-size:15px}
+strong{color:var(--fg)}
+code{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);padding:1px 6px;border-radius:4px;color:#f0c46a}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow:auto;font-family:var(--mono);font-size:12.8px;line-height:1.6;color:#d6d2c8}
+pre code{background:none;border:0;padding:0;color:inherit}
+pre .c{color:var(--dim)} pre .k{color:var(--purple)} pre .s{color:var(--green)} pre .t{color:var(--blue)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--amber);font-weight:600}
+td{color:var(--fg2)} td code{white-space:nowrap}
+.hero{background:linear-gradient(135deg,rgba(224,169,74,.10),rgba(106,169,224,.06));border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin:22px 0}
+.hero p{margin:6px 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:16px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card h4{margin:0 0 6px;font-size:15px;color:var(--fg)}
+.card p{margin:0;font-size:13.5px}
+.card .tag{display:inline-block;font-size:11px;font-family:var(--mono);padding:1px 7px;border-radius:10px;margin-bottom:8px;background:var(--amber-soft);color:var(--amber)}
+.note{border-left:3px solid var(--blue);background:rgba(106,169,224,.07);padding:10px 16px;border-radius:0 8px 8px 0;margin:16px 0}
+.note.warn{border-left-color:var(--amber);background:var(--amber-soft)}
+.note p{margin:4px 0;font-size:14px}
+.diagram{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;overflow:auto}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.layers{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+.layer{display:grid;grid-template-columns:170px 1fr;gap:12px;align-items:stretch}
+.layer .name{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-weight:600;color:var(--amber);font-size:14px;display:flex;align-items:center}
+.layer .items{display:flex;flex-wrap:wrap;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px}
+.layer .items span{font-family:var(--mono);font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:var(--fg2)}
+.layer .items span b{color:var(--fg);font-weight:600}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;position:relative;padding:8px 0 8px 44px;border-left:1px dashed var(--line);margin-left:14px}
+.steps li::before{content:counter(s);position:absolute;left:-14px;top:8px;width:28px;height:28px;border-radius:50%;background:var(--panel2);border:1px solid var(--amber);color:var(--amber);font-size:13px;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
+.links a{color:var(--blue)}
+footer{margin-top:80px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}nav.toc{display:none}main{padding:24px 18px}.layer{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc">
+  <div class="logo">OpenAI Codex</div>
+  <div class="sub">原理 · 运行流程 · 代码架构</div>
+  <a href="#s1">01 Codex 是什么</a>
+  <a href="#s2">02 整体架构分层</a>
+  <a href="#s3">03 核心原理：Agent Loop</a>
+  <a href="#s4">04 Prompt 组装与缓存</a>
+  <a href="#s5">05 通信协议 SQ / EQ</a>
+  <a href="#s6">06 工具系统</a>
+  <a href="#s7">07 审批与沙箱</a>
+  <a href="#s8">08 上下文管理与压缩</a>
+  <a href="#s9">09 会话持久化与多端</a>
+  <a href="#s10">10 codex-rs 代码地图</a>
+  <a href="#s11">11 一次请求的完整时序</a>
+  <a href="#s12">12 设计取舍总结</a>
+  <a href="#s13">13 参考资料</a>
+</nav>
+<main>
+<h1>OpenAI Codex 原理与代码架构详解<small>基于 openai/codex 开源仓库（codex-rs）源码与官方文档整理</small></h1>
+
+<div class="hero">
+  <p><strong>一句话概括：</strong>Codex 是一个运行在本地的编码 Agent。它把用户输入、项目指令（AGENTS.md）、环境信息和工具定义组装成 Prompt，通过 OpenAI <strong>Responses API</strong> 流式采样模型输出；模型返回的工具调用（shell、apply_patch、MCP…）在<strong>审批策略 + 操作系统级沙箱</strong>的约束下执行，结果回填进对话历史，再发起下一次采样，直到模型不再需要工具为止。</p>
+  <p>核心引擎 <code>codex-core</code> 用 Rust 编写，与 UI 完全解耦，通过 <strong>Submission Queue / Event Queue</strong> 队列对通信。CLI、TUI、IDE 插件、桌面 App 都只是这个引擎的不同前端。</p>
+</div>
+
+<h2 id="s1"><span class="no">01</span>Codex 是什么</h2>
+<p>"Codex" 在 OpenAI 产品线里指一组共享同一 Agent 引擎的产品形态：</p>
+<div class="cards">
+  <div class="card"><span class="tag">本地</span><h4>Codex CLI / TUI</h4><p>终端里的交互式 Agent，<code>codex</code> 启动全屏 TUI，<code>codex exec</code> 无交互运行，适合脚本与 CI。</p></div>
+  <div class="card"><span class="tag">本地</span><h4>IDE 插件 / 桌面 App</h4><p>VS Code、Cursor 等编辑器插件和 <code>codex app</code>。底层通过 <code>codex app-server</code>（JSON-RPC）驱动同一个 core。</p></div>
+  <div class="card"><span class="tag">云端</span><h4>Codex Web / Cloud Tasks</h4><p>chatgpt.com/codex，在云端容器里并行执行任务、生成 PR；CLI 可通过 <code>cloud-tasks</code> 访问。</p></div>
+  <div class="card"><span class="tag">模型</span><h4>Codex 系列模型</h4><p>针对软件工程任务训练的 GPT 系列变体（如 GPT-5-Codex 系列），擅长长时程的工具调用、补丁编辑与代码审查。</p></div>
+</div>
+<div class="note"><p>本文聚焦开源的本地 Agent 实现 <code>codex-rs</code>。早期版本使用 TypeScript 编写，现已整体迁移到 Rust，以获得单一静态二进制、更低内存占用和原生沙箱集成能力。</p></div>
+
+<h2 id="s2"><span class="no">02</span>整体架构分层</h2>
+<p>从外到内可以分成五层。每一层只通过明确的协议与相邻层通信：</p>
+<div class="layers">
+  <div class="layer"><div class="name">① 前端 / UI</div><div class="items"><span><b>tui</b> 全屏终端界面</span><span><b>exec</b> 无头模式</span><span>IDE 插件</span><span>桌面 App</span><span><b>mcp-server</b> 作为 MCP 服务暴露</span></div></div>
+  <div class="layer"><div class="name">② 接入 / 协议</div><div class="items"><span><b>cli</b> 多功能入口 + arg0 分发</span><span><b>app-server</b> JSON-RPC（stdio / WebSocket）</span><span><b>protocol</b> Op / EventMsg / ResponseItem</span></div></div>
+  <div class="layer"><div class="name">③ 引擎 core</div><div class="items"><span><b>ThreadManager</b></span><span><b>Session</b></span><span><b>SessionTask</b>（regular / review / compact）</span><span><b>run_turn</b> 主循环</span><span><b>ContextManager</b> 历史</span><span><b>compact</b> 压缩</span><span><b>rollout</b> 持久化</span></div></div>
+  <div class="layer"><div class="name">④ 工具 / 执行</div><div class="items"><span><b>ToolRouter</b></span><span><b>ToolRegistry</b></span><span><b>ToolOrchestrator</b> 审批→沙箱→重试</span><span><b>unified_exec</b> PTY 进程</span><span><b>apply-patch</b></span><span><b>codex-mcp / rmcp-client</b></span><span><b>execpolicy</b> Starlark 规则</span></div></div>
+  <div class="layer"><div class="name">⑤ 平台 / 外部</div><div class="items"><span>macOS <b>Seatbelt</b>（sandbox-exec）</span><span>Linux <b>bubblewrap + seccomp</b>（Landlock 旧路径）</span><span>Windows <b>restricted token / elevated sandbox</b></span><span><b>network-proxy</b></span><span>OpenAI <b>Responses API</b></span><span>Ollama / LM Studio 等 Provider</span></div></div>
+</div>
+
+<div class="diagram">
+<svg viewBox="0 0 980 360" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,PingFang SC,sans-serif" font-size="13">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#e0a94a"/></marker></defs>
+  <g fill="#1b1f26" stroke="#323844">
+    <rect x="20" y="30" width="170" height="60" rx="10"/><rect x="20" y="110" width="170" height="60" rx="10"/><rect x="20" y="190" width="170" height="60" rx="10"/>
+    <rect x="260" y="110" width="170" height="60" rx="10"/>
+    <rect x="500" y="40" width="220" height="280" rx="14" fill="#16191e" stroke="#e0a94a"/>
+    <rect x="790" y="40" width="170" height="60" rx="10"/><rect x="790" y="150" width="170" height="60" rx="10"/><rect x="790" y="260" width="170" height="60" rx="10"/>
+  </g>
+  <g fill="#e8e6e1" text-anchor="middle">
+    <text x="105" y="65">TUI</text><text x="105" y="145">codex exec</text><text x="105" y="225">IDE / App</text>
+    <text x="345" y="137">Submission Queue</text><text x="345" y="157" fill="#8b8f98">Event Queue</text>
+    <text x="610" y="70" fill="#e0a94a" font-weight="700">codex-core</text>
+    <text x="610" y="105">Session</text><text x="610" y="135">run_turn 循环</text><text x="610" y="165">ContextManager</text><text x="610" y="195">ToolRouter</text><text x="610" y="225">ToolOrchestrator</text><text x="610" y="255">Compaction</text><text x="610" y="285">Rollout(JSONL)</text>
+    <text x="875" y="75">Responses API</text><text x="875" y="185">Sandbox 执行器</text><text x="875" y="295">MCP Servers</text>
+  </g>
+  <g stroke="#e0a94a" stroke-width="1.6" fill="none" marker-end="url(#ar)">
+    <path d="M190,60 L258,130"/><path d="M190,140 L258,140"/><path d="M190,220 L258,150"/>
+    <path d="M430,140 L498,140"/>
+    <path d="M720,90 L788,70"/><path d="M720,190 L788,180"/><path d="M720,260 L788,290"/>
+  </g>
+</svg>
+</div>
+
+<h2 id="s3"><span class="no">03</span>核心原理：Agent Loop</h2>
+<p>官方协议文档（<code>codex-rs/docs/protocol_v1.md</code>）定义了四个核心实体，理解它们就理解了 Codex 的运行模型：</p>
+<table>
+<tr><th>实体</th><th>含义</th><th>关键约束</th></tr>
+<tr><td><code>Model</code></td><td>OpenAI Responses API（或兼容 Provider）</td><td>以 SSE / WebSocket 流式返回 ResponseItem</td></tr>
+<tr><td><code>Codex</code></td><td>核心引擎，本地运行于后台线程或独立进程</td><td>通过 SQ/EQ 与 UI 通信，负责请求模型、执行命令、应用补丁</td></tr>
+<tr><td><code>Session</code></td><td>当前配置与状态（模型、cwd、审批策略、沙箱、历史）</td><td>同一时刻最多运行 <strong>一个</strong> Task；重新配置会中止当前执行</td></tr>
+<tr><td><code>Task</code></td><td>响应一次用户输入的完整工作</td><td>由多个 Turn 组成；新的用户输入或 <code>Op::Interrupt</code> 会终止它</td></tr>
+<tr><td><code>Turn</code></td><td>一次"采样 → 执行工具 → 回填"的迭代</td><td><strong>上一个 Turn 的输出就是下一个 Turn 的输入</strong>；无输出则 Task 结束</td></tr>
+</table>
+
+<h3>主循环伪代码（对应 core/src/session/turn.rs）</h3>
+<pre><code><span class="c">// run_turn(): 一个 Task 内的循环（已简化）</span>
+<span class="k">async fn</span> <span class="t">run_turn</span>(sess, turn_ctx, input) {
+    run_hooks_and_record_inputs(input);            <span class="c">// 记录用户输入，执行 hooks</span>
+    run_pre_sampling_compact();                     <span class="c">// 采样前若超出 token 上限，先压缩</span>
+    <span class="k">loop</span> {
+        <span class="k">let</span> prompt = build_prompt(history, tools, instructions);
+        <span class="k">let</span> result = run_sampling_request(prompt).<span class="k">await</span>;   <span class="c">// 流式请求 Responses API</span>
+        <span class="c">// 流中每个 OutputItemDone:</span>
+        <span class="c">//   Message / Reasoning  → 推送 AgentMessage 事件，记入历史</span>
+        <span class="c">//   FunctionCall / CustomToolCall / LocalShellCall → ToolRouter 分发执行</span>
+        <span class="c">//      → 生成 FunctionCallOutput 记入历史，needs_follow_up = true</span>
+        <span class="k">let</span> needs_follow_up = result.model_needs_follow_up || has_pending_input;
+        <span class="k">if</span> token_limit_reached && needs_follow_up { run_auto_compact(); }
+        <span class="k">if</span> !needs_follow_up { <span class="k">break</span>; }               <span class="c">// 模型只给出最终回答 → 结束</span>
+    }
+    emit(EventMsg::TurnComplete { last_agent_message });
+}</code></pre>
+
+<div class="note"><p><strong>关键点：</strong>决定循环是否继续的唯一信号是 <code>needs_follow_up</code>。只要模型本轮发出了任何工具调用，工具结果就必须回传给模型，因此必然再采样一次。模型只输出文本消息时循环才自然终止。这就是"Agent = 模型 + 循环 + 工具"的最小实现。</p></div>
+
+<h3>流式事件处理</h3>
+<p><code>try_run_sampling_request</code> 消费 <code>ResponseEvent</code> 流：<code>Created</code> 记录 response_id；<code>OutputItemAdded</code> 提前通知 UI（例如开始显示工具调用）；<code>OutputItemDone</code> 是完整 item，交给 <code>handle_output_item_done</code> 决定是记录消息还是分发工具；文本增量通过 <code>AgentMessageContentDelta</code> 实时推给 UI。多个支持并行的工具调用会被并发执行（<code>tools/parallel.rs</code>），在 <code>drain_in_flight</code> 中统一等待结果。</p>
+
+<h2 id="s4"><span class="no">04</span>Prompt 组装与缓存</h2>
+<p>每次采样请求都是对 Responses API 的一次完整调用，主要包含三部分：</p>
+<table>
+<tr><th>字段</th><th>内容</th><th>来源</th></tr>
+<tr><td><code>instructions</code></td><td>模型的基础系统指令（行为规范、编辑方式、输出格式）</td><td><code>codex-prompts</code> crate，按模型族选择</td></tr>
+<tr><td><code>tools</code></td><td>当前可用工具的 JSON Schema / 自定义语法定义</td><td><code>built_tools()</code> 根据配置、MCP、技能、插件动态生成</td></tr>
+<tr><td><code>input</code></td><td>有序的 ResponseItem 列表：权限说明 → 开发者指令 → AGENTS.md 用户指令 → 环境上下文（cwd、shell、日期）→ 历史对话与工具输出 → 本次用户消息</td><td><code>ContextManager</code> 历史 + 每轮注入的上下文</td></tr>
+</table>
+
+<h3>AGENTS.md 发现规则（core/src/agents_md.rs）</h3>
+<ol class="steps">
+  <li>从 cwd 向上查找，直到遇到 <code>project_root_markers</code>（默认 <code>.git</code>），确定项目根目录。</li>
+  <li>从项目根到 cwd（含）沿路收集每一层的 <code>AGENTS.md</code>（支持 <code>AGENTS.override.md</code> 和 <code>project_doc_fallback_filenames</code>）。</li>
+  <li>按从根到叶的顺序拼接，越靠近 cwd 的指令越靠后，因而优先级越高。</li>
+  <li>再与 <code>~/.codex/AGENTS.md</code> 等用户级全局指令合并，作为一条 user 角色消息注入。</li>
+</ol>
+
+<h3>为什么顺序很重要：Prompt Caching</h3>
+<p>Responses API 的提示缓存基于<strong>前缀精确匹配</strong>。Codex 刻意让 Prompt 只"追加"不"修改"：静态的 instructions、tools、权限与 AGENTS.md 放在最前面，历史按时间追加在后面。这样每轮采样都能命中前一轮的缓存前缀，推理成本和首 token 延迟都随之下降。中途改变沙箱/模型等配置时，Codex 会追加一条新的上下文更新消息，而不是改写旧消息，同样是为了保护缓存。</p>
+<div class="note warn"><p><strong>无状态设计：</strong>Codex 默认每次发送完整历史（而不是依赖服务端 <code>previous_response_id</code>），推理内容以加密形式（<code>encrypted_content</code>）随历史回传。这让它兼容零数据保留（ZDR）组织，也方便切换模型 Provider。</p></div>
+<h2 id="s5"><span class="no">05</span>通信协议：SQ / EQ 与 App Server</h2>
+<p>core 不直接操作 UI。UI 把 <strong>Submission</strong>（带 <code>sub_id</code> 的 <code>Op</code>）推入 Submission Queue，core 把 <strong>Event</strong>（<code>EventMsg</code>）推入 Event Queue。这让同一引擎可以运行在跨线程 channel、stdin/stdout、TCP、WebSocket 等任意双向流之上。</p>
+<table>
+<tr><th>方向</th><th>常见消息</th><th>用途</th></tr>
+<tr><td>UI → Codex (<code>Op</code>)</td><td><code>UserTurn</code> / <code>TurnInput</code></td><td>用户输入，附带 cwd、模型、沙箱、审批策略等每轮上下文</td></tr>
+<tr><td></td><td><code>Interrupt</code></td><td>中断当前 Turn（Esc / Ctrl-C）</td></tr>
+<tr><td></td><td><code>ExecApproval</code> / <code>PatchApproval</code></td><td>回复命令执行或补丁的审批请求</td></tr>
+<tr><td></td><td><code>UserInputAnswer</code> / <code>ResolveElicitation</code></td><td>回答 <code>request_user_input</code> 工具或 MCP elicitation</td></tr>
+<tr><td></td><td><code>Compact</code> / <code>Review</code> / <code>Shutdown</code></td><td>手动压缩、代码审查任务、关闭</td></tr>
+<tr><td>Codex → UI (<code>EventMsg</code>)</td><td><code>TurnStarted</code> / <code>TurnComplete</code></td><td>回合边界，包含上下文窗口大小、最终消息</td></tr>
+<tr><td></td><td><code>AgentMessageContentDelta</code> / <code>AgentMessage</code></td><td>流式文本与完整消息</td></tr>
+<tr><td></td><td><code>ExecApprovalRequest</code> / <code>ApplyPatchApprovalRequest</code></td><td>请求用户审批</td></tr>
+<tr><td></td><td><code>ExecCommandBegin/End</code>、<code>PatchApplyBegin/End</code></td><td>工具执行进度</td></tr>
+<tr><td></td><td><code>TokenCount</code> / <code>Warning</code> / <code>Error</code></td><td>用量与异常</td></tr>
+</table>
+<h3>App Server：给富客户端的 JSON-RPC 层</h3>
+<p>IDE 插件和桌面 App 需要更稳定的接口，于是 <code>codex app-server</code> 在 core 之上包了一层 JSON-RPC 2.0（stdio 或 WebSocket），把对话抽象成三个原语：</p>
+<div class="cards">
+  <div class="card"><span class="tag">Thread</span><h4>会话线程</h4><p><code>thread/start</code>、<code>thread/resume</code>、<code>thread/fork</code>、<code>thread/list</code>，对应一份可持久化的对话。</p></div>
+  <div class="card"><span class="tag">Turn</span><h4>回合</h4><p><code>turn/start</code>、<code>turn/interrupt</code>，一次用户输入引发的全部工作，结束时发 <code>turn/completed</code>。</p></div>
+  <div class="card"><span class="tag">Item</span><h4>条目</h4><p>消息、推理、命令执行、文件修改、MCP 调用等，以 <code>item/started</code> → delta → <code>item/completed</code> 的生命周期推送。</p></div>
+</div>
+
+<h2 id="s6"><span class="no">06</span>工具系统</h2>
+<p>模型返回的 <code>FunctionCall</code> / <code>CustomToolCall</code> / <code>LocalShellCall</code> 被 <code>ToolRouter::build_tool_call</code> 解析为统一的 <code>ToolCall</code>，再由 <code>ToolRegistry</code> 找到对应 handler（<code>core/src/tools/handlers/</code>）执行。</p>
+<table>
+<tr><th>工具</th><th>Handler</th><th>作用</th></tr>
+<tr><td><code>shell</code> / <code>exec_command</code></td><td><code>shell_spec.rs</code>、<code>unified_exec.rs</code></td><td>执行 shell 命令。unified_exec 基于 PTY，支持长驻进程、<code>write_stdin</code> 交互、输出头尾截断</td></tr>
+<tr><td><code>apply_patch</code></td><td><code>apply_patch.rs</code></td><td>以自定义 diff 语法（<code>*** Begin Patch</code> / <code>*** Update File</code>）增删改文件，是 Codex 的主要编辑方式</td></tr>
+<tr><td><code>update_plan</code></td><td><code>plan.rs</code></td><td>维护任务计划清单（步骤 + 状态），UI 展示为 TODO 列表</td></tr>
+<tr><td><code>view_image</code></td><td><code>view_image.rs</code></td><td>把本地图片附加进上下文</td></tr>
+<tr><td><code>web_search</code></td><td>Responses 内置工具</td><td>由服务端执行的网络搜索</td></tr>
+<tr><td>MCP 工具</td><td><code>mcp.rs</code>、<code>mcp_resource.rs</code></td><td>通过 <code>rmcp-client</code> 连接 <code>config.toml</code> 中声明的 MCP Server，工具名带命名空间</td></tr>
+<tr><td><code>tool_search</code></td><td><code>tool_search.rs</code></td><td>工具过多时延迟加载，模型先搜索再获得完整 schema</td></tr>
+<tr><td><code>request_user_input</code></td><td><code>request_user_input.rs</code></td><td>向用户发起结构化提问</td></tr>
+<tr><td>多 Agent 工具</td><td><code>multi_agents*.rs</code></td><td>派生子 Agent 线程、相互发送消息、等待结果</td></tr>
+</table>
+<div class="note"><p><strong>arg0 技巧：</strong>Codex 是单一二进制。当 <code>argv[0]</code> 为 <code>codex-linux-sandbox</code> 时它变身沙箱 helper；当 <code>argv[1]</code> 为 <code>--codex-run-as-apply-patch</code> 时它模拟一个虚拟的 <code>apply_patch</code> CLI。这样沙箱内部也能调用补丁逻辑，而无需额外安装程序（见 <code>codex-arg0</code> crate）。</p></div>
+
+<h2 id="s7"><span class="no">07</span>审批与沙箱：安全模型</h2>
+<p>Codex 的安全由两个正交维度组合而成：<strong>审批策略</strong>决定"什么时候问人"，<strong>沙箱策略</strong>决定"操作系统层面允许做什么"。</p>
+<h3>审批策略 AskForApproval</h3>
+<table>
+<tr><th>值</th><th>行为</th></tr>
+<tr><td><code>untrusted</code></td><td>未受信任项目：除 execpolicy 显式允许的安全命令外，全部需要审批</td></tr>
+<tr><td><code>on-request</code></td><td>默认值：由模型判断何时请求提升权限（例如需要联网或写出工作区时）；<code>on-failure</code> 为其别名</td></tr>
+<tr><td><code>granular</code></td><td>细粒度开关：分别控制 shell 提权、execpolicy prompt、技能脚本、request_permissions、MCP elicitation</td></tr>
+<tr><td><code>never</code></td><td>从不询问，失败直接返回模型（适合 CI / <code>codex exec</code>）</td></tr>
+</table>
+<h3>沙箱策略 SandboxPolicy</h3>
+<table>
+<tr><th>值</th><th>文件系统</th><th>网络</th></tr>
+<tr><td><code>read-only</code></td><td>全盘只读</td><td>默认关闭</td></tr>
+<tr><td><code>workspace-write</code></td><td>cwd + writable_roots + TMPDIR/tmp 可写；<code>.git</code>、<code>.codex</code> 保持只读</td><td>默认关闭，可配置</td></tr>
+<tr><td><code>danger-full-access</code></td><td>无限制</td><td>无限制</td></tr>
+<tr><td><code>external-sandbox</code></td><td>已处于外部沙箱（容器）中，全盘访问</td><td>按配置</td></tr>
+</table>
+<h3>平台实现</h3>
+<div class="cards">
+  <div class="card"><span class="tag">macOS</span><h4>Seatbelt</h4><p>通过 <code>/usr/bin/sandbox-exec</code> 加载动态生成的 SBPL profile，按可写根目录放开写权限，屏蔽网络。</p></div>
+  <div class="card"><span class="tag">Linux</span><h4>bubblewrap + seccomp</h4><p><code>--ro-bind / /</code> 默认只读，<code>--bind</code> 叠加可写根，受保护子路径重新 <code>--ro-bind</code>；seccomp 拦截网络 syscall 与 <code>io_uring</code>。Landlock 为旧路径。</p></div>
+  <div class="card"><span class="tag">Windows</span><h4>受限令牌 / 提权沙箱</h4><p>非提权模式使用 restricted token；提权模式支持精确读写根与只读子目录。无法强制执行的策略直接失败（fail closed）。</p></div>
+</div>
+<h3>ToolOrchestrator：审批 → 沙箱 → 升级重试</h3>
+<p><code>core/src/tools/orchestrator.rs</code> 的注释写得很直接："Coordinates tool approval, sandbox selection, and retries after sandbox denial."</p>
+<ol class="steps">
+  <li><strong>评估审批需求：</strong>execpolicy 规则（Starlark <code>prefix_rule</code>，decision 为 allow / prompt / forbidden）与审批策略共同得出 <code>Skip</code>、<code>NeedsApproval</code> 或 <code>Forbidden</code>。</li>
+  <li><strong>请求审批：</strong>需要时发出 <code>ExecApprovalRequest</code>，用户可选 Approved、ApprovedForSession（会话内缓存）、ApprovedExecpolicyAmendment（写入规则）、Denied、Abort。也可由 Guardian 自动审查代为决策。</li>
+  <li><strong>首次沙箱内执行：</strong>按 <code>SandboxManager</code> 选出的平台沙箱运行。</li>
+  <li><strong>沙箱拒绝后的升级：</strong>若执行因沙箱失败，在 <code>untrusted</code>（或 granular 中开启 <code>sandbox_approval</code>）下会再次请求审批，批准后<strong>脱离沙箱重试</strong>（<code>wants_no_sandbox_approval</code>）；在 <code>never</code> / <code>on-request</code> 下不会自动升级，而是把精简的拒绝信息返回给模型，由模型自行决定是否通过 <code>require_escalated</code> 参数显式申请提权。</li>
+</ol>
+<div class="note"><p>旧版本的 <code>on-failure</code> 策略现在只是 <code>on-request</code> 的序列化别名（<code>#[serde(alias = "on-failure")]</code>）。</p></div>
+<h2 id="s8"><span class="no">08</span>上下文管理与压缩</h2>
+<p>历史由 <code>ContextManager</code>（<code>core/src/context_manager/history.rs</code>）维护，存储的是 Responses API 原生的 <code>ResponseItem</code>，并在发送前做归一化（<code>normalize.rs</code>），例如确保每个工具调用都有对应输出、截断超长工具输出。</p>
+<h3>自动压缩（Auto Compaction）</h3>
+<ol class="steps">
+  <li><strong>触发：</strong>每次采样后统计 token；当已用 token 超过 <code>model_auto_compact_token_limit</code> 且仍需继续（needs_follow_up）时触发。采样前也会检查（<code>run_pre_sampling_compact</code>），切换到上下文更小的模型时同样会压缩。</li>
+  <li><strong>生成摘要：</strong>本地模式下用压缩提示词让模型总结当前进展；远程模式下调用 Responses API 的压缩能力，返回不透明的 <code>Compaction</code> item（可保留加密的推理状态）。</li>
+  <li><strong>替换历史：</strong>以 <code>SUMMARY_PREFIX</code> + 摘要 + 最近用户消息（上限约 2 万 token）构成新历史，并在正确位置重新插入初始上下文（权限、AGENTS.md、环境）。</li>
+  <li><strong>继续循环：</strong>压缩后同一个 Turn 接着采样，用户无感知。用户也可用 <code>/compact</code> 手动触发（<code>Op::Compact</code>）。</li>
+</ol>
+
+<h2 id="s9"><span class="no">09</span>会话持久化与多端</h2>
+<ul>
+  <li><strong>Rollout：</strong>每个会话以 JSONL 写入 <code>~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl</code>，记录所有 ResponseItem 与关键事件。<code>codex resume</code> 通过重放 rollout 重建历史（<code>rollout_reconstruction.rs</code>）。</li>
+  <li><strong>配置：</strong><code>~/.codex/config.toml</code> 定义模型、Provider、审批/沙箱默认值、MCP Servers、profiles、features 开关；项目可声明信任级别。</li>
+  <li><strong>ThreadManager：</strong>同一进程可管理多个线程（Thread），支持 fork、子 Agent（<code>thread_spawn.rs</code>、<code>agent_communication.rs</code>），每个线程仍遵守"一次只有一个 Task"的规则。</li>
+  <li><strong>可观测性：</strong><code>otel</code> crate 输出 OpenTelemetry 指标，涵盖工具决策来源、沙箱结果（denied / escalated）、采样耗时等。</li>
+</ul>
+
+<h2 id="s10"><span class="no">10</span>codex-rs 代码地图</h2>
+<p>codex-rs 是一个 Cargo workspace，包含上百个 crate。下面是理解主流程最关键的部分：</p>
+<table>
+<tr><th>Crate / 路径</th><th>职责</th></tr>
+<tr><td><code>cli</code></td><td><code>codex</code> 多功能入口：子命令 exec、login、mcp、sandbox、app-server、resume、apply 等</td></tr>
+<tr><td><code>arg0</code></td><td>根据 argv[0]/argv[1] 把同一个二进制分发为 linux-sandbox、apply_patch 等角色</td></tr>
+<tr><td><code>tui</code></td><td>基于 ratatui 的全屏终端界面：聊天视图、diff 渲染、审批弹窗、斜杠命令</td></tr>
+<tr><td><code>exec</code></td><td>无头模式，事件输出为人类可读文本或 <code>--json</code> JSONL</td></tr>
+<tr><td><code>app-server</code> / <code>app-server-protocol</code></td><td>JSON-RPC 服务及其 schema（Thread / Turn / Item），供 IDE 和桌面端使用</td></tr>
+<tr><td><code>protocol</code></td><td>共享类型：<code>Op</code>、<code>EventMsg</code>、<code>ResponseItem</code>、<code>SandboxPolicy</code>、<code>AskForApproval</code></td></tr>
+<tr><td><code>core/src/session/</code></td><td>Session 生命周期、<code>turn.rs</code> 主循环、<code>turn_context.rs</code>、输入队列、MCP 运行时</td></tr>
+<tr><td><code>core/src/tasks/</code></td><td><code>SessionTask</code> trait 及 regular、review、compact、user_shell 等任务实现</td></tr>
+<tr><td><code>core/src/tools/</code></td><td><code>router.rs</code>、<code>registry.rs</code>、<code>orchestrator.rs</code>、<code>parallel.rs</code>、<code>handlers/*</code>、<code>runtimes/*</code></td></tr>
+<tr><td><code>core/src/unified_exec/</code></td><td>PTY 进程管理器：会话复用、stdin 写入、输出缓冲</td></tr>
+<tr><td><code>core/src/context_manager/</code></td><td>对话历史的存储、归一化与增量更新</td></tr>
+<tr><td><code>core/src/compact*.rs</code></td><td>本地 / 远程上下文压缩</td></tr>
+<tr><td><code>core/src/agents_md.rs</code></td><td>AGENTS.md 发现与拼接</td></tr>
+<tr><td><code>core/src/client.rs</code></td><td>模型客户端：Responses API 流式请求、重试、WebSocket 传输</td></tr>
+<tr><td><code>sandboxing</code> / <code>linux-sandbox</code> / <code>bwrap</code></td><td>沙箱策略转换与各平台执行</td></tr>
+<tr><td><code>execpolicy</code></td><td>Starlark 命令规则引擎（<code>codex execpolicy check</code>）</td></tr>
+<tr><td><code>apply-patch</code></td><td>补丁语法解析与文件写入</td></tr>
+<tr><td><code>codex-mcp</code> / <code>rmcp-client</code> / <code>mcp-server</code></td><td>MCP 客户端连接管理，以及把 Codex 本身暴露成 MCP Server</td></tr>
+<tr><td><code>prompts</code></td><td>基础指令、压缩提示词、审查提示词、权限说明模板</td></tr>
+<tr><td><code>model-provider</code> / <code>ollama</code> / <code>lmstudio</code></td><td>多 Provider 支持（OpenAI、Azure、本地开源模型）</td></tr>
+<tr><td><code>login</code> / <code>keyring-store</code></td><td>ChatGPT 登录或 API Key 认证，凭证存储</td></tr>
+</table>
+
+<h2 id="s11"><span class="no">11</span>一次请求的完整时序</h2>
+<p>示例：用户在 TUI 中输入"修复失败的单元测试"，审批策略 on-request，沙箱 workspace-write。</p>
+<ol class="steps">
+  <li><strong>TUI</strong> 发送 <code>Op::UserTurn</code>（文本 + cwd + 模型 + 策略）到 SQ。</li>
+  <li><strong>Session</strong> 若无运行中任务，启动 <code>RegularTask</code>，发出 <code>TurnStarted</code>。</li>
+  <li><strong>run_turn</strong> 记录输入，组装 Prompt：instructions + tools + [权限说明, AGENTS.md, 环境上下文, 历史..., 用户消息]。</li>
+  <li><strong>ModelClient</strong> 流式调用 Responses API；模型先输出推理，再发出 <code>exec_command {"cmd":"cargo test"}</code>。</li>
+  <li><strong>ToolRouter</strong> 解析调用；<strong>Orchestrator</strong> 判断为工作区内只读类命令，Skip 审批，在 Seatbelt / bwrap 中执行。</li>
+  <li>测试输出（截断后）作为 <code>FunctionCallOutput</code> 写回历史，<code>needs_follow_up = true</code>，进入下一次采样。</li>
+  <li>模型阅读失败信息，发出 <code>apply_patch</code> 修改源文件；补丁在可写根内，自动通过；UI 收到 <code>PatchApplyBegin/End</code> 和 diff。</li>
+  <li>模型再次调用 <code>cargo test</code> 验证；全部通过。</li>
+  <li>模型输出总结消息且无工具调用 → <code>needs_follow_up = false</code>，循环结束。</li>
+  <li>发出 <code>TurnComplete</code>，rollout 落盘，TUI 显示最终回答和 token 用量。</li>
+</ol>
+<p>若第 5 步命令需要联网（如 <code>npm install</code>），沙箱会拒绝网络；模型可带 <code>require_escalated</code> 重新调用，此时 Orchestrator 发出 <code>ExecApprovalRequest</code>，用户批准后在沙箱外执行。</p>
+
+<h2 id="s12"><span class="no">12</span>设计取舍总结</h2>
+<div class="cards">
+  <div class="card"><h4>引擎与 UI 解耦</h4><p>SQ/EQ 让 TUI、IDE、App、MCP Server 共享同一个 core，一处修改，所有前端受益。</p></div>
+  <div class="card"><h4>单线程 Task 模型</h4><p>每个 Session 同时只跑一个 Task，避免并发编辑冲突；需要并行就开多个线程或子 Agent。</p></div>
+  <div class="card"><h4>纵深防御</h4><p>execpolicy 规则 + 审批 + OS 级沙箱 + 网络代理，四层叠加；无法强制执行的策略 fail closed。</p></div>
+  <div class="card"><h4>只追加的 Prompt</h4><p>静态前缀在前、历史追加在后，最大化 prompt cache 命中；无状态请求兼容 ZDR。</p></div>
+  <div class="card"><h4>补丁而非整文件重写</h4><p>apply_patch 语法让模型输出更短、更可审阅，UI 可直接渲染 diff。</p></div>
+  <div class="card"><h4>Rust 单二进制</h4><p>启动快、无运行时依赖，arg0 分发让沙箱 helper 与补丁工具都内置在同一文件中。</p></div>
+</div>
+
+<h2 id="s13"><span class="no">13</span>参考资料</h2>
+<ul class="links">
+  <li><a href="https://github.com/openai/codex">github.com/openai/codex</a>：源码仓库（codex-rs）</li>
+  <li><a href="https://github.com/openai/codex/blob/main/codex-rs/docs/protocol_v1.md">codex-rs/docs/protocol_v1.md</a>：Session / Task / Turn 与 SQ/EQ 协议</li>
+  <li><a href="https://github.com/openai/codex/blob/main/codex-rs/core/README.md">codex-rs/core/README.md</a>：各平台沙箱依赖说明</li>
+  <li><a href="https://github.com/openai/codex/blob/main/codex-rs/linux-sandbox/README.md">codex-rs/linux-sandbox/README.md</a>：bubblewrap + seccomp 实现</li>
+  <li><a href="https://github.com/openai/codex/blob/main/codex-rs/execpolicy/README.md">codex-rs/execpolicy/README.md</a>：命令策略语言</li>
+  <li><a href="https://developers.openai.com/codex">developers.openai.com/codex</a>：官方文档（CLI、配置、安全、AGENTS.md）</li>
+  <li><a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Unrolling the Codex agent loop</a>：OpenAI 官方博客，Agent Loop 与 Prompt 缓存</li>
+</ul>
+<footer>文档依据 openai/codex main 分支源码整理。仓库迭代很快，具体文件名与枚举值以最新代码为准。配套文件：<code>codex-animation.html</code>（原理动画）、<code>codex-ppt.html</code>（演示文稿）。</footer>
+</main>
+</div>
+</body>
+</html>

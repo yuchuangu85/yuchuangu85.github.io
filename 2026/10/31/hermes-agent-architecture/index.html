@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hermes Agent 源码解析：一个可复用的 Agent 运行模型 | 墨香博客</title><meta name="author" content="墨香"><meta name="copyright" content="墨香"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Hermes Agent 是 NousResearch 开源的个人 Agent 运行时（MIT，提交 8f5693a）。如果只把它看成”提示词套壳”会看错重点：它更像一台回合制状态机——一次用户输入就是一个 turn，turn 内部是”模型调用 → 工具执行 → 再调用”的内循环，外层受预算、闸门与压缩约束。整个仓库约两万文件，其中 agent&#x2F; 目录 319 个 Python 文件、约 6.5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hermes Agent 源码解析：一个可复用的 Agent 运行模型">
+<meta property="og:url" content="http://www.codemx.cn/2026/10/31/hermes-agent-architecture/index.html">
+<meta property="og:site_name" content="墨香博客">
+<meta property="og:description" content="Hermes Agent 是 NousResearch 开源的个人 Agent 运行时（MIT，提交 8f5693a）。如果只把它看成”提示词套壳”会看错重点：它更像一台回合制状态机——一次用户输入就是一个 turn，turn 内部是”模型调用 → 工具执行 → 再调用”的内循环，外层受预算、闸门与压缩约束。整个仓库约两万文件，其中 agent&#x2F; 目录 319 个 Python 文件、约 6.5">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.codemx.cn/img/head.jpg">
+<meta property="article:published_time" content="2026-10-31T02:20:00.000Z">
+<meta property="article:modified_time" content="2026-10-30T16:25:11.744Z">
+<meta property="article:author" content="墨香">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Hermes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.codemx.cn/img/head.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.codemx.cn/2026/10/31/hermes-agent-architecture/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hermes Agent 源码解析：一个可复用的 Agent 运行模型',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-10-31 00:25:11'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div id="web_bg" style="background-image: url(/img/bg.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/head.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="墨香博客"><span class="site-name">墨香博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Hermes Agent 源码解析：一个可复用的 Agent 运行模型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-31T02:20:00.000Z" title="发表于 2026-10-31 10:20:00">2026-10-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-30T16:25:11.744Z" title="更新于 2026-10-31 00:25:11">2026-10-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI/">AI</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Hermes Agent 源码解析：一个可复用的 Agent 运行模型"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p>Hermes Agent 是 NousResearch 开源的个人 Agent 运行时（MIT，提交 <code>8f5693a</code>）。如果只把它看成”提示词套壳”会看错重点：它更像一台回合制状态机——一次用户输入就是一个 turn，turn 内部是”模型调用 → 工具执行 → 再调用”的内循环，外层受预算、闸门与压缩约束。整个仓库约两万文件，其中 <code>agent/</code> 目录 319 个 Python 文件、约 6.5 MB，这些复杂度几乎都在回答同一组问题：这次请求该发什么、发出去之后坏了怎么办、历史该怎么变短。</p>
+<p>三条主线贯穿全部代码。第一，回合是唯一执行单元，任何层都不允许越权改写历史；第二，上下文是最稀缺的资源，系统提示词在会话期间按字节冻结，压缩是唯一被允许的改写，token 记账优先信 provider 返回的真实用量；第三，能力长在边缘、核心保持收窄，新能力默认走 skill、plugin、MCP，而不是往核心工具里加，学习靠”回合后 fork 一份自己复盘”。</p>
+<p>所以它的架构定位可以概括成一句话：Prompt-cache-first 的同步 ReAct 内核，外面套着可插拔的能力与记忆外设。这个定位不是口号，而是代码评审的硬依据——没有真实消费者的 hook、为普通配置新增环境变量、terminal 能干的事却新增核心工具，都属于会被驳回的提交。</p>
+<span id="more"></span>
+
+<h2 id="一、七层窄腰：分层与回合引擎"><a href="#一、七层窄腰：分层与回合引擎" class="headerlink" title="一、七层窄腰：分层与回合引擎"></a>一、七层窄腰：分层与回合引擎</h2><p>Hermes 的分层是自下而上七层，每层只依赖下一层的抽象：</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>内容</th>
+<th>关键源码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L6 宿主面</td>
+<td>CLI、TUI（Ink）、Desktop（Electron）、Gateway（20+ 消息平台）、ACP、Cron</td>
+<td>—</td>
+</tr>
+<tr>
+<td>L5 会话与状态</td>
+<td><code>state.db</code>（SQLite + FTS5）、单一写者、profile 隔离、lineage</td>
+<td><code>hermes_state*.py</code></td>
+</tr>
+<tr>
+<td>L4 回合引擎</td>
+<td>preflight → prepare → assemble → call → intake → tool round → finalize</td>
+<td><code>conversation_loop.py</code>、<code>turn_*.py</code></td>
+</tr>
+<tr>
+<td>L3 上下文工程</td>
+<td>三层冻结、双阈压缩、四阶段算法、缓存断点</td>
+<td><code>context_compressor.py</code>、<code>prompt_builder.py</code></td>
+</tr>
+<tr>
+<td>L2 能力层</td>
+<td>70+ 工具 &#x2F; 28 toolset、Skills、Plugins、MCP、Subagents</td>
+<td><code>tools/registry.py</code>、<code>toolsets.py</code></td>
+</tr>
+<tr>
+<td>L1 模型接入</td>
+<td>3 种 API mode、30+ 失败分类、fallback 链、auxiliary 旁路</td>
+<td><code>error_classifier.py</code>、<code>provider_registry.py</code></td>
+</tr>
+<tr>
+<td>L0 运行时</td>
+<td>deadline、中断控制、7 种终端后端、secret scope、审批</td>
+<td><code>deadline.py</code>、<code>interrupt_control.py</code></td>
+</tr>
+</tbody></table>
+<p>主循环本身很朴素，值得看的是三个非教科书细节：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># agent/conversation_loop.py::_run_conversation_turn（简化，保留控制流）</span></span><br><span class="line"><span class="keyword">while</span> ((s.api_call_count &lt; agent.max_iterations <span class="keyword">and</span> agent.iteration_budget.remaining &gt; <span class="number">0</span>)</span><br><span class="line">       <span class="keyword">or</span> agent._budget_grace_call):</span><br><span class="line">    begin_iteration()          <span class="comment"># 预算 / 重试状态初始化</span></span><br><span class="line">    prepare_iteration()        <span class="comment"># 预算警告，/steer 插在最新 tool 结果之后</span></span><br><span class="line">    assemble_api_request()     <span class="comment"># messages + 工具 schema → 请求体</span></span><br><span class="line">    <span class="keyword">if</span> run_preflight_gate():   <span class="comment"># 调用前压缩闸门，也可能直接结束 turn</span></span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        perform_api_call()     <span class="comment"># 可中断的真实 HTTP</span></span><br><span class="line">        check_api_response()   <span class="comment"># 空响应、截断、拒答</span></span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        handle_api_error()     <span class="comment"># 分类 → 重试 / 换 key / 换模型 / 压缩</span></span><br><span class="line">    <span class="keyword">if</span> response.tool_calls:</span><br><span class="line">        run_tool_round()       <span class="comment"># 执行 → 追加 tool 消息 → 回到循环头</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        finish_text_response() <span class="comment"># 过 stop gates，可能被拒绝收尾</span></span><br><span class="line">finalize_turn()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>_budget_grace_call</code>：预算耗尽后仍给一次”恩典调用”，让模型把话说完，而不是被硬切断在半句话上。</li>
+<li><code>run_tool_round</code> 不是”执行完就继续”：内部做参数校验、去重、截断、并发分段、结果分类，失败走 guardrail。</li>
+<li><code>finish_text_response</code> 不保证收尾：LSP 延迟诊断、verify-on-stop、<code>pre_verify</code> hook、看板终态四道闸门可以把”看起来完成”的答案降级为 interim，追加一条 user nudge 后 continue。被拦下的回答不会丢，存进 <code>pending_verification_response</code>，预算耗尽时兜底返回。</li>
+</ul>
+<p>这 13 个阶段基本一阶段一文件、平均约 600 行：改溢出不会碰到压缩，改压缩不会碰到工具调度。这是几十万行级 Agent 项目还能维护的关键组织手法。</p>
+<h2 id="二、上下文工程：把-prompt-缓存当成不变式"><a href="#二、上下文工程：把-prompt-缓存当成不变式" class="headerlink" title="二、上下文工程：把 prompt 缓存当成不变式"></a>二、上下文工程：把 prompt 缓存当成不变式</h2><h3 id="三层冻结"><a href="#三层冻结" class="headerlink" title="三层冻结"></a>三层冻结</h3><p>系统提示词按 stable → context → volatile 拼接，并在整个会话期间字节不变：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">stable   —— 身份(SOUL.md) → 工具使用准则 → 编码守则 → 平台提示</span><br><span class="line">context  —— 调用方 system_message → 项目上下文(.hermes.md / AGENTS.md /</span><br><span class="line">            CLAUDE.md / .cursorrules) → git worktree 快照 → 运维指令</span><br><span class="line">volatile —— 技能索引 → MEMORY.md 快照 → USER.md 快照 → 外部记忆块</span><br><span class="line">            → 时间/会话/模型/供应商 → 运行时环境(host / home / cwd)</span><br></pre></td></tr></table></figure>
+
+<p>顺序有讲究：项目共享上下文排在依赖 worktree 的内容之前，同项目不同 worktree 的会话就能共享同一段 prompt 前缀，正好是最长前缀缓存能复用的部分；运行时环境块永远压最后，避免项目文件里的路径样例被误认为”当前目录”。平台提示（CLI 别说 Markdown、Telegram 别发长消息）不算身份字段，桌面切 TUI 时系统提示不动，改用一次性 user note 传达。</p>
+<p>不变式很硬：系统提示词在会话生命周期内字节稳定，唯一的上下文变更是压缩；任何必须中途注入的内容，走 user 消息或 tool 结果，绝不进 system prompt。后果很具体——<code>/skills install</code> 默认下个会话才生效（要立刻生效得加 <code>--now</code>）；子目录 <code>AGENTS.md</code> 的提示不插进 prompt，而是追加到 tool 结果尾部（超 32,000 字符头尾截断）；插件 <code>pre_llm_call</code> 返回的上下文拼进本回合 user 消息；会话中写记忆只落盘，不改已构建好的 prompt。代价是产品上必然出现”我改了设置怎么没反应”，收益是长会话成本线性而非平方级。</p>
+<h3 id="双层压缩与四阶段算法"><a href="#双层压缩与四阶段算法" class="headerlink" title="双层压缩与四阶段算法"></a>双层压缩与四阶段算法</h3><p>网关层在 85% 上下文时做粗估兜底（防炸，处理 Telegram 里过夜堆积的会话），Agent 的 ContextCompressor 在 50% 时接管日常管理，此时能拿到 provider 返回的准确 usage。把网关也设成 50% 会让每个长会话一开始就被压缩，源码注释明确写了这是踩过的坑。</p>
+<p>压缩分四阶段，全程不切断工具配对：</p>
+<ol>
+<li>剪枝（不调 LLM）：保护尾之外的旧 tool 结果超过 200 字符就替换成 <code>[Old tool output cleared to save context space]</code>。文件内容、终端输出、搜索结果通常占大头，这一步能省掉近一半。模型”还没回应的那一轮工具”结果必须原样保留。</li>
+<li>定界：尾部保护按 token 预算走而不是按条数，<code>protect_last_n</code>（默认 20）只是下限；边界要对齐到 <code>assistant(tool_calls) → tool...</code> 的完整组。</li>
+<li>结构化摘要：用 auxiliary 小模型生成固定的分节摘要（Goal &#x2F; Constraints &amp; Preferences &#x2F; Progress(Done|In Progress|Blocked) &#x2F; Key Decisions &#x2F; Relevant Files &#x2F; Next Steps &#x2F; Critical Context），预算 &#x3D; 被压缩内容 × 0.20，下限 2,000 token，上限 <code>min(上下文 × 5%, 12,000)</code>。</li>
+<li>拼装：头 + 摘要 + 尾，再跑 <code>_sanitize_tool_pairs()</code>——孤立 tool_result 删掉，丢了结果的 tool_call 补 stub。</li>
+</ol>
+<p>第二次压缩不是重来，而是把上次摘要交给模型”更新”：条目从 In Progress 挪到 Done，新进展追加，过期信息删除。这是长会话不丢线索的关键。</p>
+<p>记账策略是先信 provider、再信估算：每个压缩闸门先问 usage anchor（provider 上次返回的 prompt&#x2F;completion tokens，加”仅对新增消息”的粗估），这样网关每回合从 DB 重读历史、<code>--resume</code> 换进程启动都对得上；没有 anchor 时先等一次请求，让 provider 自己裁决，而不是凭估算就压缩。摘要调用失败有分级冷却：超时与流停滞 60s → 300s → 900s，JSON 解析失败固定 30s；连续两次同因停滞就跳过 LLM，直接提交确定性兜底摘要，宁可丢中段，也不让会话涨到被网关整段重置。Anthropic 那边用 <code>system_and_3</code>（system 块 + 最近 3 个 user 轮打 <code>cache_control</code>），长会话命中率才立得住。</p>
+<h2 id="三、工具、委托与模型接入"><a href="#三、工具、委托与模型接入" class="headerlink" title="三、工具、委托与模型接入"></a>三、工具、委托与模型接入</h2><h3 id="工具层"><a href="#工具层" class="headerlink" title="工具层"></a>工具层</h3><p>注册与暴露是两件事。<code>tools/*.py</code> 在模块级调过 <code>registry.register()</code> 就被自动发现，没有手工 import 清单；但只有被某个 toolset 命名的工具才会送给模型，默认包是 <code>_HERMES_CORE_TOOLS</code>，一共 28 个 toolset。<code>check_fn</code> 只回答”这个 profile 能不能用”，绝不按会话面区分，GUI 专属工具要走独立 toolset。</p>
+<p>一次工具调用拆成 8 步：解析参数（容错 JSON 修复）→ 查 INLINE 表（todo、memory、session_search、delegate_task 由 agent 直接处理）→ registry 找 handler → <code>pre_tool_call</code> hook → 危险命令审批 → 执行（带 deadline、可取消）→ <code>post_tool_call</code>（一个 tool_call_id 只发一次）→ 结果按原文顺序追加进历史。所有 handler 返回 JSON 字符串，需要回图时返回 <code>{&quot;_multimodal&quot;: True, &quot;content&quot;: [...], &quot;text_summary&quot;: ...}</code> 信封。</p>
+<p>并发不是”有多个就并发”：<code>_plan_tool_batch_segments</code> 先把整批切成有序段。遇到 <code>_NEVER_PARALLEL_TOOLS</code>（含交互型 <code>clarify</code>）、参数解析失败或非并发安全的 MCP 工具就下屏障；带路径的工具做读写冲突检测，读读可并发，任一方是写且路径重叠就把该调用另起一段排到后面；一段不足 2 个调用降级为顺序执行，相邻顺序段合并。结论是结果顺序与副作用边界等价于全顺序执行，但读多写少的典型场景仍能提速。护栏按指标分级：完全相同的失败 2 次警告 &#x2F; 5 次硬停，同工具失败 3&#x2F;8，无进展轮次 2&#x2F;5；交互平台默认只警告，gateway 与 cron 这类无人值守平台默认开硬停。</p>
+<p>新增能力要按 Footprint Ladder 从最省的一级解决：扩展现有代码 → CLI 命令 + Skill → 服务门控工具 → 插件 → 目录里的 MCP server → 新核心工具。最后一级门槛极高，理由是物理的：每个工具 schema 在每次 API 调用里都要发一遍，工具越多固定成本越高、注意力越散。</p>
+<h3 id="委托层与模型接入"><a href="#委托层与模型接入" class="headerlink" title="委托层与模型接入"></a>委托层与模型接入</h3><p>Subagent 的出口是 <code>delegate_task(tasks=[{goal, context, output_schema}, ...])</code>，单任务或并行批。子代理上下文全新、只从 goal + context 构建，task_id 独立（终端会话、文件缓存隔离），工具是父的 toolset 减去禁止子用的，<code>max_iterations</code> 默认 50（父默认 500）且独立记账，中间工具调用与推理过程不上浮。对外暴露的是不可变契约而不是 <code>AIAgent</code> 对象：<code>SubagentLaunchRequest / SubagentHandle / SubagentResult / SubagentStatus</code>，插件只能通过这些值对象操作。并发上限与 <code>max_spawn_depth</code> 会动态重写进工具 schema 的 description，让模型看到的限制就是真实限制。</p>
+<p>模型接入支持三种 API mode：<code>chat_completions</code>（OpenAI 兼容端点）、<code>codex_responses</code>（Codex &#x2F; Responses API）、<code>anthropic_messages</code>（原生 SDK + 适配器）。解析优先级是显式参数 &gt; provider 判定 &gt; base_url 启发式 &gt; 默认，三者进出都收敛到同一套内部 message 形状，回合引擎不必知道底下是哪个协议。</p>
+<p>这套系统里最”脏”也最值钱的是 <code>FailoverReason</code>：30+ 种失败分类，而不是一个 <code>try/except</code>。<code>auth</code> 401&#x2F;403 刷凭据后重试；<code>rate_limit</code>、<code>overloaded</code>、<code>server_error</code> 指数退避；<code>model_not_found</code>、<code>model_entitlement</code> 走 fallback 链换模型；<code>context_overflow</code>、413 该压缩而不是切模型；<code>image_too_large</code> 缩图、<code>image_corrupt</code> 剥图、<code>role_alternation</code> 合并同角色，本地修复后重试；<code>content_policy_blocked</code> 直接失败并给指引。说到底，”重试”这个动作至少有 8 种不同语义，混成一个 <code>except: retry</code> 就是线上事故来源。</p>
+<p>压缩、视觉、标题、<code>session_search</code>、curator、embedding 都走 <code>auxiliary_client</code> 旁路，每个任务能独立钉 provider &#x2F; model &#x2F; base_url &#x2F; reasoning_effort。两条纪律：辅助调用的 <code>pre/post_api_request</code> 事件不得触发，否则监控指标被污染；压缩用的摘要模型上下文必须不小于主模型，否则中段一次性塞不进去，压缩会静默丢内容。</p>
+<h2 id="四、能力演化、状态与通用模型"><a href="#四、能力演化、状态与通用模型" class="headerlink" title="四、能力演化、状态与通用模型"></a>四、能力演化、状态与通用模型</h2><h3 id="记忆、技能与复盘"><a href="#记忆、技能与复盘" class="headerlink" title="记忆、技能与复盘"></a>记忆、技能与复盘</h3><p>记忆与技能有一条清晰的分工线：Memory 回答”用户是谁、当前处境”，落在 <code>MEMORY.md</code> 与 <code>USER.md</code>，会话开始时冻结快照进 volatile 层；Skill 回答”这类任务怎么做”，落在 <code>skills/&lt;name&gt;/SKILL.md</code> 加 <code>references/ templates/ scripts/</code>，索引常驻、正文按需 <code>skill_view</code>。源码原话是：”Memory is the narrow exception for facts that apply to EVERY session regardless of task.”</p>
+<p><code>SKILL.md</code> 的硬标准由测试强制：<code>description</code> 不超过 60 字符、一句话、句号结尾、不用营销词；正文只能写原生工具名（<code>read_file</code> 而不是 <code>cat</code>，<code>patch</code> 而不是 <code>sed</code>）；<code>platforms:</code> 要和脚本实际用的 POSIX 原语对得上；章节顺序固定为 When to Use → Prerequisites → How to Run → Quick Reference → Procedure → Pitfalls → Verification；技能加载工具不允许分页，因为模型读了第一页就会跳过剩下的。</p>
+<p>技能生命周期由 Curator 管：active → stale → archived，可 restore，pinned 豁免一切自动流转。触发方式是闲置触发而非 cron 守护进程——agent 空闲且距上次运行超过 <code>interval_hours</code> 才跑；只动 <code>created_by: &quot;agent&quot;</code> 的技能，内置与 hub 安装的免谈；永不删除只归档到 <code>~/.hermes/skills/.archive/</code>；每次运行前打 tar.gz 快照支持 rollback；用量记在 <code>.usage.json</code>。</p>
+<p>学习闭环是每回合结束后起一个 daemon 线程，fork 一个 AIAgent 重放本回合快照，只问一个问题：”Review the conversation above and update the skill library. Be ACTIVE — most sessions produce at least one skill update, even if small.”。它继承父的 provider、模型、凭据与缓存提示词，命中同一段前缀缓存，所以复盘几乎不额外花钱；它只能写 memory &#x2F; skill 存储，绝不碰主会话与主 prompt 缓存；派发侧有工具白名单。更新优先级是改已加载技能 → 改已有伞形技能 → 加支撑文件 → 才新建，防止技能库退化成一堆一次性条目；patch 前必须本轮 <code>skill_view</code> 一次（read-before-write），”Nothing to save.” 是合法答案但不该是默认。用户不满是最高优先级信号，”stop doing X”、”this is too verbose” 这类话必须落到技能正文，而不只是记忆里。</p>
+<h3 id="状态层与可靠性"><a href="#状态层与可靠性" class="headerlink" title="状态层与可靠性"></a>状态层与可靠性</h3><p>状态目录 <code>~/.hermes/</code> 里，<code>config.yaml</code> 放行为、<code>.env</code> 只放密钥、<code>state.db</code> 是可检索的会话库、<code>SOUL.md / MEMORY.md / USER.md</code> 是身份与记忆快照、<code>profiles/&lt;name&gt;/</code> 是完全隔离的上述一切。三条纪律：单一写者，一个 profile 的 gateway 是唯一规范写者，CLI &#x2F; TUI &#x2F; Desktop &#x2F; ACP &#x2F; cron 都通过 <code>/api/ws</code> 提交输入，进程外 worker 走 <code>RuntimeSessionStore</code> RPC，不自己开库写 transcript；历史 append-only，序列坏了用 <code>repair_message_sequence</code> 修而不是重写；压缩用世代标记，旧行 <code>active=0</code>、新行 <code>active=1</code>，同一条消息在两代里同时出现是正常现象。<code>session_search</code> 直接在 FTS5 上做四种查询形状（discovery &#x2F; scroll &#x2F; read &#x2F; browse），全程不调 LLM。</p>
+<p>可靠性层最关键的不是”重试”，而是中断语义：API 调用在后台线程跑，主线程等”响应 &#x2F; 中断 &#x2F; 超时”三者之一；被放弃的响应直接丢弃，绝不把半截响应塞进历史，否则下次请求会带着一个”幽灵助手轮次”污染角色交替。其余机制包括统一的 deadline 原语（<code>run_bounded_sync/async</code>、<code>clamp_timeout</code>、<code>kill_process_tree</code>）、线程安全的 iteration budget（父子各自记账，父的额度不被子吃光）、<code>repetition_guard</code> 打断复读，以及错误串回写 DB 前强制脱敏。</p>
+<h3 id="抽象成通用-Agent-Model"><a href="#抽象成通用-Agent-Model" class="headerlink" title="抽象成通用 Agent Model"></a>抽象成通用 Agent Model</h3><p>剥掉实现细节，这套东西可以提炼成 9 个对象和 12 条不变式：Agent（无状态执行器 + 配置）、Turn、Message、Tool、ContextEngine、MemoryProvider、Skill、Route、Delegation。其中几条最值得抄：系统提示词字节稳定、中途注入只走 user &#x2F; tool 通道、角色严格交替（只有 tool 可连续）、历史 append-only、压缩不切断 tool_call 与 tool_result 配对、工具结果必须结构化、token 记账先信 provider、记忆快照会话开始冻结、子代理上下文隔离且父只见摘要、能力默认放边缘、永不删除只归档、密钥读取失败关闭。</p>
+<p>复刻路线可以按 M0–M5 逐级走：M0 最小内核是 <code>messages[]</code> 加一个 while 循环加读 &#x2F; 写 &#x2F; 跑三个工具；M1 可用是 system prompt 组装、工具 registry、先做 5 类错误重试；M2 长会话是估算 + 剪枝 + 摘要压缩；M3 稳定是预算、中断、deadline、落盘；M4 会成长是记忆文件 + 技能库 + 回合后复盘；M5 规模化才是多 provider 降级、子代理与缓存断点。建议的砍法是 M0–M2 之间不要碰多 provider 和插件系统，先把”一轮对话稳定跑到 50 次工具调用还不炸”做出来。代价也要说清楚：<code>agent/</code> 319 个文件带来的复杂度、缓存不变式反噬产品体验、同步循环 + 线程池不是高并发设计、压缩有损只能缓解不能根治、30+ 失败分类的 provider 税、以及”Be ACTIVE”式复盘长期可能让技能库膨胀。它适合单用户 &#x2F; 小团队、长会话、要长期记忆、要操作真实机器的个人 Agent，不适合高并发多租户 API 服务或毫秒级延迟场景。</p>
+<p>源码索引可以直接按图索骥：主循环看 <code>agent/conversation_loop.py::_run_conversation_turn</code>，回合各阶段看 <code>agent/turn_*.py</code>（13 个文件按阶段名找），系统提示词看 <code>system_prompt.py</code> 与 <code>prompt_builder.py</code>，压缩算法看 <code>context_compressor.py</code>（330 KB，<code>compress()</code> 与 4 个 Phase mixin），并发调度看 <code>tool_dispatch_helpers.py::_plan_tool_batch_segments</code>，失败分类看 <code>error_classifier.py::FailoverReason</code>，复盘 fork 看 <code>background_review.py</code>，技能生命周期看 <code>curator.py</code> 与 <code>skill_usage.py</code>，子代理看 <code>delegate_tool.py</code> 与 <code>subagent_lifecycle.py</code>。</p>
+<h2 id="三种读法"><a href="#三种读法" class="headerlink" title="三种读法"></a>三种读法</h2><h3 id="架构详解"><a href="#架构详解" class="headerlink" title="架构详解"></a>架构详解</h3><p>完整的源码拆解另有长文：<a href="/agent/hermes/hermes-agent-architecture.html">Hermes Agent 源码深度解析</a>，逐章覆盖分层、13 个阶段、压缩算法公式与复刻路线，适合当参考手册。</p>
+<h3 id="动画：原理模型"><a href="#动画：原理模型" class="headerlink" title="动画：原理模型"></a>动画：原理模型</h3><p>七幕动画把上面这些机制压成了可步进的模型：七层窄腰、一次 turn 的 7 个可观察步骤、三层 prompt 冻结、分段并发、上下文压缩、学习闭环 fork、失败分类与降级路径。按空格播放，或用左右方向键逐帧看。</p>
+<div style="margin:18px 0 8px;">
+<iframe src="/agent/hermes/hermes-agent-animation.html" title="Hermes Agent 工作原理 · 动画模型" loading="lazy" style="width:100%;height:80vh;min-height:560px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#0f1114;"></iframe>
+</div>
+<p><a href="/agent/hermes/hermes-agent-animation.html" target="_blank" rel="noopener">在新窗口打开完整页面 →</a></p>
+
+<h3 id="一条消息的-12-站旅程"><a href="#一条消息的-12-站旅程" class="headerlink" title="一条消息的 12 站旅程"></a>一条消息的 12 站旅程</h3><p>如果更想看”一条消息从进入到交付”的完整轨迹，这个页面沿回合引擎的轨道排了 12 站：入口与会话、回合准备、请求装配、调用模型、响应摄入、分支判断、工具轮、预算回边、收尾闸门、回合落盘、后台复盘、交付与 resume。每一站右侧会显示这一刻的状态、护栏与持久化动作，第 8 站的回边能直观看到工具调用如何回到请求装配而不是重开一个 turn。</p>
+<div style="margin:18px 0 8px;">
+<iframe src="/agent/hermes/hermes-agent-flow.html" title="一条用户消息如何穿过 hermes-agent · 12 站旅程" loading="lazy" style="width:100%;height:80vh;min-height:560px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#0f1114;"></iframe>
+</div>
+<p><a href="/agent/hermes/hermes-agent-flow.html" target="_blank" rel="noopener">在新窗口打开完整页面 →</a></p>
+
+<h2 id="参考与延伸"><a href="#参考与延伸" class="headerlink" title="参考与延伸"></a>参考与延伸</h2><ul>
+<li>源码仓库：<a target="_blank" rel="noopener" href="https://github.com/NousResearch/hermes-agent">NousResearch&#x2F;hermes-agent</a>，开发文档在仓库内 <code>website/docs/developer-guide/</code>，从 <code>architecture.md</code> 起共 10 篇。</li>
+<li>Anthropic 缓存断点机制：<a target="_blank" rel="noopener" href="https://docs.claude.com/en/docs/build-with-claude/prompt-caching">Prompt caching</a>。</li>
+<li>Responses API 形状参考：<a target="_blank" rel="noopener" href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses API</a>。</li>
+<li>同系列：<a href="/2026/10/31/claude-agent-architecture/">Claude Code 源码解析</a> 与 <a href="/2026/10/31/codex-agent-architecture/">Codex 源码解析</a>。</li>
+<li>全部交互页的入口：<a href="/agent/">Agent 源码解析合集</a>。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://www.codemx.cn">墨香</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://www.codemx.cn/2026/10/31/hermes-agent-architecture/">http://www.codemx.cn/2026/10/31/hermes-agent-architecture/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.codemx.cn" target="_blank">墨香博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/Agent/">Agent</a><a class="post-meta__tags" href="/tags/Hermes/">Hermes</a></div><div class="post-share"><div class="social-share" data-image="/img/head.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2026/10/31/codex-agent-architecture/" title="OpenAI Codex 原理与架构：一个 while 循环与五层工程体系"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">OpenAI Codex 原理与架构：一个 while 循环与五层工程体系</div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a href="/2026/10/31/claude-agent-architecture/" title="Claude Code 原理与架构：模型负责思考，Harness 负责行动"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-31</div><div class="title">Claude Code 原理与架构：模型负责思考，Harness 负责行动</div></div></a><a href="/2026/10/31/codex-agent-architecture/" title="OpenAI Codex 原理与架构：一个 while 循环与五层工程体系"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-31</div><div class="title">OpenAI Codex 原理与架构：一个 while 循环与五层工程体系</div></div></a><a href="/2025/04/26/AI-N8N-INIT/" title="使用Docker安装n8n并配置ollama本地模型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-26</div><div class="title">使用Docker安装n8n并配置ollama本地模型</div></div></a><a href="/2025/02/21/deepseeklocal/" title="本地部署Deepseek并关联到开发工具"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-21</div><div class="title">本地部署Deepseek并关联到开发工具</div></div></a><a href="/2026/04/07/obsidian-wiki/" title="Obsidian-LLM构建自己的知识库"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-07</div><div class="title">Obsidian-LLM构建自己的知识库</div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">墨香</div><div class="author-info-description">因为兴趣所以选择，因为选择所以坚持。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">27</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuchuangu85"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/yuchuangu85" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yuchuangu85@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">路虽远，行则将至；事虽难，做则可成。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%83%E5%B1%82%E7%AA%84%E8%85%B0%EF%BC%9A%E5%88%86%E5%B1%82%E4%B8%8E%E5%9B%9E%E5%90%88%E5%BC%95%E6%93%8E"><span class="toc-number">1.</span> <span class="toc-text">一、七层窄腰：分层与回合引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B%EF%BC%9A%E6%8A%8A-prompt-%E7%BC%93%E5%AD%98%E5%BD%93%E6%88%90%E4%B8%8D%E5%8F%98%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">二、上下文工程：把 prompt 缓存当成不变式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%B1%82%E5%86%BB%E7%BB%93"><span class="toc-number">2.1.</span> <span class="toc-text">三层冻结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%B1%82%E5%8E%8B%E7%BC%A9%E4%B8%8E%E5%9B%9B%E9%98%B6%E6%AE%B5%E7%AE%97%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">双层压缩与四阶段算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B7%A5%E5%85%B7%E3%80%81%E5%A7%94%E6%89%98%E4%B8%8E%E6%A8%A1%E5%9E%8B%E6%8E%A5%E5%85%A5"><span class="toc-number">3.</span> <span class="toc-text">三、工具、委托与模型接入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%B1%82"><span class="toc-number">3.1.</span> <span class="toc-text">工具层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A7%94%E6%89%98%E5%B1%82%E4%B8%8E%E6%A8%A1%E5%9E%8B%E6%8E%A5%E5%85%A5"><span class="toc-number">3.2.</span> <span class="toc-text">委托层与模型接入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%83%BD%E5%8A%9B%E6%BC%94%E5%8C%96%E3%80%81%E7%8A%B6%E6%80%81%E4%B8%8E%E9%80%9A%E7%94%A8%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">四、能力演化、状态与通用模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%B0%E5%BF%86%E3%80%81%E6%8A%80%E8%83%BD%E4%B8%8E%E5%A4%8D%E7%9B%98"><span class="toc-number">4.1.</span> <span class="toc-text">记忆、技能与复盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%B1%82%E4%B8%8E%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-number">4.2.</span> <span class="toc-text">状态层与可靠性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E6%88%90%E9%80%9A%E7%94%A8-Agent-Model"><span class="toc-number">4.3.</span> <span class="toc-text">抽象成通用 Agent Model</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E8%AF%BB%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">三种读法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3"><span class="toc-number">5.1.</span> <span class="toc-text">架构详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E7%94%BB%EF%BC%9A%E5%8E%9F%E7%90%86%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">动画：原理模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E6%9D%A1%E6%B6%88%E6%81%AF%E7%9A%84-12-%E7%AB%99%E6%97%85%E7%A8%8B"><span class="toc-number">5.3.</span> <span class="toc-text">一条消息的 12 站旅程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E4%B8%8E%E5%BB%B6%E4%BC%B8"><span class="toc-number">6.</span> <span class="toc-text">参考与延伸</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/31/hermes-agent-architecture/" title="Hermes Agent 源码解析：一个可复用的 Agent 运行模型">Hermes Agent 源码解析：一个可复用的 Agent 运行模型</a><time datetime="2026-10-31T02:20:00.000Z" title="发表于 2026-10-31 10:20:00">2026-10-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/31/codex-agent-architecture/" title="OpenAI Codex 原理与架构：一个 while 循环与五层工程体系">OpenAI Codex 原理与架构：一个 while 循环与五层工程体系</a><time datetime="2026-10-31T02:10:00.000Z" title="发表于 2026-10-31 10:10:00">2026-10-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/31/claude-agent-architecture/" title="Claude Code 原理与架构：模型负责思考，Harness 负责行动">Claude Code 原理与架构：模型负责思考，Harness 负责行动</a><time datetime="2026-10-31T02:00:00.000Z" title="发表于 2026-10-31 10:00:00">2026-10-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/30/AndroidPerformanceStudio/" title="Android Performance Studio：11 个性能工具，一个桌面应用">Android Performance Studio：11 个性能工具，一个桌面应用</a><time datetime="2026-10-29T16:16:52.000Z" title="发表于 2026-10-30 00:16:52">2026-10-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/17/llm-anr/" title="从海量 Log 到可审计结论：llm-anr 的设计思想、开发流程与最终结果">从海量 Log 到可审计结论：llm-anr 的设计思想、开发流程与最终结果</a><time datetime="2026-06-17T13:57:52.000Z" title="发表于 2026-06-17 21:57:52">2026-06-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2026 By 墨香</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

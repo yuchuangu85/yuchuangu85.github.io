@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codex 工作原理 · 动画模型</title>
+<style>
+:root{--bg:#0f1114;--panel:#16191e;--panel2:#1b1f26;--panel3:#21262e;--line:#272c34;--line2:#323844;--fg:#e8e6e1;--fg2:#b6b2a8;--dim:#8b8f98;--amber:#e0a94a;--amber-soft:rgba(224,169,74,.14);--green:#6fbf9a;--red:#e07a6a;--blue:#6aa9e0;--purple:#a98ae0;--mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;flex-direction:column;min-height:100vh;-webkit-font-smoothing:antialiased}
+.top{display:flex;align-items:center;gap:16px;padding:12px 22px;border-bottom:1px solid var(--line);background:rgba(15,17,20,.9);flex-wrap:wrap}
+.top h1{font-size:17px;margin:0}.top h1 span{color:var(--amber)}
+.top .sub{color:var(--dim);font-size:12.5px}
+.ctrl{margin-left:auto;display:flex;gap:8px;align-items:center}
+button,select{background:var(--panel2);color:var(--fg);border:1px solid var(--line2);border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+button:hover{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,select:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+button.primary{background:var(--amber);color:#1a1408;border-color:var(--amber);font-weight:600}
+.wrap{flex:1;display:grid;grid-template-columns:1fr 380px;gap:0;min-height:0}
+.stage{position:relative;padding:14px;min-width:0}
+.stage svg{width:100%;height:100%;max-height:calc(100vh - 170px)}
+.side{border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:var(--panel)}
+.card{padding:16px 18px;border-bottom:1px solid var(--line)}
+.card .phase{font-family:var(--mono);font-size:11.5px;color:var(--amber);letter-spacing:.5px}
+.card h2{font-size:17px;margin:4px 0 8px}
+.card p{margin:0;color:var(--fg2);font-size:13.5px;line-height:1.7}
+.card pre{margin:10px 0 0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font-family:var(--mono);font-size:11.5px;color:#d6d2c8;white-space:pre-wrap;word-break:break-all;max-height:170px;overflow:auto}
+.state{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 18px;border-bottom:1px solid var(--line)}
+.kv{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+.kv .k{font-size:11px;color:var(--dim)}.kv .v{font-family:var(--mono);font-size:13px;margin-top:2px}
+.kv.wide{grid-column:span 2}
+.bar{height:6px;background:var(--bg);border-radius:4px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--amber));width:0;transition:width .6s}
+.log{flex:1;overflow:auto;padding:10px 18px;font-family:var(--mono);font-size:11.5px}
+.log .h{color:var(--dim);font-size:11px;margin-bottom:6px;font-family:inherit}
+.log div.e{padding:3px 0;border-bottom:1px dashed var(--line);color:var(--fg2)}
+.log div.e b{color:var(--blue);font-weight:500}.log div.e.op b{color:var(--amber)}.log div.e.ok b{color:var(--green)}.log div.e.warn b{color:var(--red)}
+.timeline{display:flex;gap:4px;padding:10px 22px;border-top:1px solid var(--line);align-items:center;flex-wrap:wrap}
+.timeline .dot{width:26px;height:26px;border-radius:50%;border:1px solid var(--line2);background:var(--panel2);color:var(--dim);font-size:11px;font-family:var(--mono);padding:0}
+.timeline .dot.done{border-color:var(--amber);color:var(--amber)}
+.timeline .dot.cur{background:var(--amber);color:#1a1408}
+.timeline .lbl{color:var(--dim);font-size:12px;margin-right:6px}
+.node rect{fill:var(--panel2);stroke:var(--line2);stroke-width:1.4;transition:all .35s}
+.node text{fill:var(--fg);font-size:14px;text-anchor:middle;pointer-events:none}
+.node text.s{fill:var(--dim);font-size:11px;font-family:var(--mono)}
+.node.on rect{stroke:var(--amber);fill:#2a2418;filter:drop-shadow(0 0 10px rgba(224,169,74,.45))}
+.node.on text.s{fill:var(--amber)}
+.edge{stroke:var(--line2);stroke-width:1.4;fill:none;stroke-dasharray:4 4}
+.edge.on{stroke:var(--amber);stroke-dasharray:none;stroke-width:2}
+.group{fill:none;stroke:var(--line);stroke-dasharray:6 6;rx:16}
+.glabel{fill:var(--dim);font-size:12px;font-family:var(--mono)}
+.loopring{fill:none;stroke:var(--amber);stroke-width:1.5;opacity:0;transition:opacity .4s}
+.loopring.on{opacity:.8}
+@media(max-width:1000px){.wrap{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1><span>Codex</span> 工作原理 · 动画模型</h1>
+  <div class="sub">场景：在 TUI 中输入"修复失败的单元测试"　审批 on-request · 沙箱 workspace-write</div>
+  <div class="ctrl">
+    <button id="prev" aria-label="上一步">◀ 上一步</button>
+    <button id="play" class="primary" aria-label="播放或暂停">▶ 播放</button>
+    <button id="next" aria-label="下一步">下一步 ▶</button>
+    <button id="reset" aria-label="重置">↺ 重置</button>
+    <label class="sub" for="speed">速度</label>
+    <select id="speed"><option value="0.6">0.6×</option><option value="1" selected>1×</option><option value="1.6">1.6×</option><option value="2.5">2.5×</option></select>
+  </div>
+</div>
+<div class="wrap">
+  <div class="stage">
+    <svg id="svg" viewBox="0 0 1000 640" role="img" aria-label="Codex 组件与数据流动画">
+      <rect class="group" x="22" y="50" width="176" height="560" rx="16"/><text class="glabel" x="34" y="42">UI / 前端</text>
+      <rect class="group" x="238" y="50" width="408" height="560" rx="16"/><text class="glabel" x="250" y="42">codex-core（Rust 引擎）</text>
+      <rect class="group" x="782" y="50" width="196" height="560" rx="16"/><text class="glabel" x="794" y="42">OS / 外部服务</text>
+      <g id="edges"></g>
+      <rect id="loopring" class="loopring" x="240" y="215" width="404" height="90" rx="14"/>
+      <g id="nodes"></g>
+      <g id="packets"></g>
+    </svg>
+  </div>
+  <aside class="side">
+    <div class="card" aria-live="polite">
+      <div class="phase" id="phase">STEP 0</div>
+      <h2 id="title">准备就绪</h2>
+      <p id="desc">点击"播放"或按空格键开始。左右方向键单步切换，也可点击下方时间轴跳转。</p>
+      <pre id="code">// 每一步会在这里显示真实的数据结构</pre>
+    </div>
+    <div class="state">
+      <div class="kv"><div class="k">采样请求次数</div><div class="v" id="sSample">0</div></div>
+      <div class="kv"><div class="k">needs_follow_up</div><div class="v" id="sFollow">-</div></div>
+      <div class="kv"><div class="k">当前工具</div><div class="v" id="sTool">-</div></div>
+      <div class="kv"><div class="k">执行环境</div><div class="v" id="sSandbox">-</div></div>
+      <div class="kv wide"><div class="k">上下文 token <span id="sTok">0 / 200k</span></div><div class="bar"><i id="sBar"></i></div></div>
+    </div>
+    <div class="log" id="log"><div class="h">Event Queue / 日志</div></div>
+  </aside>
+</div>
+<div class="timeline" id="timeline"><span class="lbl">时间轴</span></div>
+<script>
+const NODES={
+  user:{x:110,y:130,t:"用户 / TUI",s:"codex tui"},
+  sq:{x:110,y:330,t:"Submission Queue",s:"Op"},
+  eq:{x:110,y:520,t:"Event Queue",s:"EventMsg"},
+  session:{x:340,y:120,t:"Session",s:"session/mod.rs"},
+  turn:{x:340,y:260,t:"run_turn 循环",s:"session/turn.rs"},
+  ctx:{x:340,y:400,t:"ContextManager",s:"context_manager/"},
+  compact:{x:340,y:540,t:"Compaction",s:"compact.rs"},
+  prompt:{x:544,y:120,t:"Prompt Builder",s:"build_prompt()"},
+  router:{x:544,y:260,t:"ToolRouter",s:"tools/router.rs"},
+  orch:{x:544,y:400,t:"ToolOrchestrator",s:"审批→沙箱→重试"},
+  rollout:{x:544,y:540,t:"Rollout",s:"sessions/*.jsonl"},
+  model:{x:880,y:120,t:"Responses API",s:"SSE 流式"},
+  sandbox:{x:880,y:330,t:"OS 沙箱",s:"Seatbelt / bwrap"},
+  fs:{x:880,y:520,t:"工作区文件",s:"apply_patch"}
+};
+const BEND={"eq|user":[-70,325]};
+const W=168,H=56;
+// 每一步：paths 为并发执行的节点链；st 为该步之后的状态快照
+const STEPS=[
+ {ph:"SUBMIT",t:"用户提交输入",d:"TUI 把用户输入封装成 Op::UserTurn，连同本轮的 cwd、模型、审批策略、沙箱策略一起推入 Submission Queue。UI 与引擎之间只通过这对队列通信。",
+  paths:[["user","sq","session"]],code:`Submission {\n  id: "sub-1",\n  op: Op::UserTurn {\n    items: [Text("修复失败的单元测试")],\n    cwd: "/repo", model: "gpt-5-codex",\n    approval_policy: OnRequest,\n    sandbox_policy: WorkspaceWrite { network_access: false }\n  }\n}`,
+  log:[["op","Op::UserTurn"]],st:{s:0,f:"-",tool:"-",sb:"-",tok:120}},
+ {ph:"TASK",t:"启动 RegularTask",d:"Session 同一时刻只运行一个 Task。当前空闲，于是在后台 Tokio 任务中启动 RegularTask，并通过 Event Queue 通知 UI 回合开始。",
+  paths:[["session","turn","eq","user"]],code:`EventMsg::TurnStarted {\n  model_context_window: 200_000,\n  collaboration_mode_kind: Default\n}`,
+  log:[["","TurnStarted"]],st:{s:0,f:"-",tool:"-",sb:"-",tok:120}},
+ {ph:"CONTEXT",t:"组装 Prompt",d:"run_turn 记录用户输入，从 ContextManager 取出历史。build_prompt() 依次拼接：基础 instructions、工具定义、权限说明、AGENTS.md（项目根到 cwd 逐层拼接）、环境上下文、历史与本次消息。静态部分在前，保证前缀缓存命中。",
+  paths:[["turn","ctx","turn","prompt"]],code:`Prompt {\n  instructions: <base prompt>,\n  tools: [exec_command, write_stdin, apply_patch,\n          update_plan, view_image, mcp__*...],\n  input: [\n    developer: <permissions: workspace-write>,\n    user: <AGENTS.md 指令>,\n    user: <environment_context cwd=/repo shell=zsh>,\n    ...history,\n    user: "修复失败的单元测试"\n  ]\n}`,
+  log:[["","history.record(UserMessage)"]],st:{s:0,f:"-",tool:"-",sb:"-",tok:124}},
+ {ph:"SAMPLE #1",t:"流式请求 Responses API",d:"ModelClient 发起第 1 次采样请求（SSE/WebSocket）。请求无状态：完整历史随请求发送，推理内容以加密形式回传，兼容零数据保留。",
+  paths:[["prompt","model"]],code:`POST /v1/responses\n{ "model": "gpt-5-codex", "stream": true,\n  "instructions": "...", "tools": [...],\n  "input": [...], "include": ["reasoning.encrypted_content"],\n  "prompt_cache_key": "<thread-id>" }`,
+  log:[["","→ responses.create (stream)"]],st:{s:1,f:"-",tool:"-",sb:"-",tok:124}},
+ {ph:"STREAM",t:"模型返回工具调用",d:"流中依次到达 Reasoning item 和 FunctionCall item。每个 OutputItemDone 交给 handle_output_item_done：消息推给 UI，工具调用交给 ToolRouter，并标记 needs_follow_up = true。",
+  paths:[["model","turn"],["turn","eq","user"]],code:`ResponseEvent::OutputItemDone(\n  ResponseItem::FunctionCall {\n    name: "exec_command",\n    arguments: {"cmd":"cargo test","workdir":"/repo"},\n    call_id: "call_1"\n  })`,
+  log:[["","ExecCommandBegin cargo test"]],st:{s:1,f:"true",tool:"exec_command",sb:"-",tok:126}},
+ {ph:"ROUTE",t:"ToolRouter 分发",d:"build_tool_call() 把 ResponseItem 解析成统一的 ToolCall，ToolRegistry 找到 unified_exec handler，交给 ToolOrchestrator 处理审批与沙箱。",
+  paths:[["turn","router","orch"]],code:`ToolCall {\n  tool_name: "exec_command",\n  call_id: "call_1",\n  payload: Function { arguments }\n}\n// registry → UnifiedExecHandler`,
+  log:[["","dispatch_tool_call"]],st:{s:1,f:"true",tool:"exec_command",sb:"-",tok:126}},
+ {ph:"APPROVAL",t:"评估审批需求",d:"execpolicy 规则与审批策略共同决定 ExecApprovalRequirement。cargo test 在工作区内运行、未请求提权，结果为 Skip：无需打扰用户。",
+  paths:[["orch"]],code:`// orchestrator.rs: 1) Approval\nmatch default_exec_approval_requirement(\n        OnRequest, &fs_policy) {\n  Skip { .. }          => /* 直接执行 */,\n  NeedsApproval { .. } => request_approval(),\n  Forbidden { reason } => Err(Rejected),\n}`,
+  log:[["ok","decision: Skip (config)"]],st:{s:1,f:"true",tool:"exec_command",sb:"判定中",tok:126}},
+ {ph:"SANDBOX",t:"沙箱内首次执行",d:"SandboxManager 选择平台沙箱：macOS 用 sandbox-exec 加载 Seatbelt profile；Linux 用 bubblewrap（--ro-bind / /，--bind 可写根）+ seccomp 屏蔽网络。.git 与 .codex 保持只读。",
+  paths:[["orch","sandbox"]],code:`// 2) First attempt under the selected sandbox\nsandbox-exec -p <profile> -- cargo test\n#   (allow file-write* (subpath "/repo"))\n#   (deny network*)\n# Linux:\nbwrap --ro-bind / / --bind /repo /repo \\\n      --ro-bind /repo/.git /repo/.git ...`,
+  log:[["","sandbox: seatbelt"]],st:{s:1,f:"true",tool:"exec_command",sb:"Seatbelt",tok:126}},
+ {ph:"OUTPUT",t:"结果回填历史",d:"测试失败，退出码 101。输出经头尾截断后包装为 FunctionCallOutput 写回 ContextManager。因为本轮有工具调用，循环必须继续采样。",
+  paths:[["sandbox","orch","ctx"]],code:`ResponseItem::FunctionCallOutput {\n  call_id: "call_1",\n  output: "exit_code: 101\\n---- parser::tests::empty_input ----\\nthread panicked at src/parser.rs:42..."\n}`,
+  log:[["warn","ExecCommandEnd exit=101"]],st:{s:1,f:"true",tool:"-",sb:"Seatbelt",tok:132}},
+ {ph:"SAMPLE #2",t:"第 2 次采样：读取失败信息",d:"上一次的输出就是这一次的输入。Prompt 只在末尾追加了 FunctionCall 与 FunctionCallOutput，前缀不变，命中 prompt cache。",
+  paths:[["ctx","turn","prompt","model"]],code:`input: [ ...前缀(缓存命中)...,\n  FunctionCall{call_1, exec_command},\n  FunctionCallOutput{call_1, "exit_code: 101 ..."} ]\n// cached_input_tokens: 126_000`,
+  log:[["","→ responses.create #2"]],st:{s:2,f:"-",tool:"-",sb:"-",tok:132}},
+ {ph:"PATCH",t:"模型发出 apply_patch",d:"模型定位到 parser.rs 的空输入分支，用 apply_patch 的自定义语法输出最小补丁，而不是重写整个文件。",
+  paths:[["model","turn","router","orch"]],code:`*** Begin Patch\n*** Update File: src/parser.rs\n@@ fn parse(input: &str)\n-    let first = input.chars().next().unwrap();\n+    let Some(first) = input.chars().next() else {\n+        return Ok(Ast::Empty);\n+    };\n*** End Patch`,
+  log:[["","PatchApplyBegin src/parser.rs"]],st:{s:2,f:"true",tool:"apply_patch",sb:"-",tok:134}},
+ {ph:"APPLY",t:"补丁写入工作区",d:"补丁目标位于可写根 /repo 内，自动批准。arg0 机制让同一个 codex 二进制以 --codex-run-as-apply-patch 模式执行写入。UI 收到 diff 并渲染。",
+  paths:[["orch","fs","orch","ctx"],["turn","eq","user"]],code:`EventMsg::PatchApplyEnd {\n  call_id: "call_2", success: true,\n  changes: { "src/parser.rs": Update { +3 -1 } }\n}\nTurnDiff: unified diff → TUI`,
+  log:[["ok","PatchApplyEnd success"]],st:{s:2,f:"true",tool:"-",sb:"workspace",tok:140}},
+ {ph:"SAMPLE #3",t:"第 3 次采样：验证修复",d:"模型决定重新运行测试，但这次项目需要先拉取新依赖。",
+  paths:[["ctx","turn","prompt","model","turn"]],code:`FunctionCall {\n  name: "exec_command",\n  arguments: {"cmd":"cargo test","workdir":"/repo"},\n  call_id: "call_3"\n}`,
+  log:[["","→ responses.create #3"],["","ExecCommandBegin cargo test"]],st:{s:3,f:"true",tool:"exec_command",sb:"-",tok:146}},
+ {ph:"DENIED",t:"沙箱拒绝网络访问",d:"沙箱内 cargo 访问 crates.io 失败。策略为 on-request，Orchestrator 不会自动脱离沙箱重试（wants_no_sandbox_approval = false），而是把精简的拒绝信息返回给模型。",
+  paths:[["turn","router","orch","sandbox","orch"]],code:`SandboxErr::Denied {\n  output: "error: failed to get \`serde\` ...\\n  Could not resolve host: index.crates.io"\n}\n// Under Never / OnRequest: do not retry without sandbox`,
+  log:[["warn","sandbox denied: network"]],st:{s:3,f:"true",tool:"exec_command",sb:"Seatbelt ✕",tok:150}},
+ {ph:"SAMPLE #4",t:"模型申请提权",d:"拒绝信息回填后，模型理解是网络被沙箱限制，于是带上 sandbox_permissions = require_escalated 和理由重新调用同一命令。",
+  paths:[["orch","ctx","turn","prompt","model","turn"]],code:`FunctionCall {\n  name: "exec_command",\n  arguments: {\n    "cmd": "cargo test",\n    "sandbox_permissions": "require_escalated",\n    "justification": "需要联网下载依赖 serde"\n  }, call_id: "call_4" }`,
+  log:[["","→ responses.create #4"]],st:{s:4,f:"true",tool:"exec_command",sb:"-",tok:154}},
+ {ph:"ASK",t:"向用户请求审批",d:"Orchestrator 判定为 NeedsApproval，发出 ExecApprovalRequest。Task 在此挂起，等待 UI 回复。",
+  paths:[["turn","router","orch","turn","eq","user"]],code:`EventMsg::ExecApprovalRequest {\n  call_id: "call_4",\n  command: ["cargo", "test"],\n  cwd: "/repo",\n  reason: "需要联网下载依赖 serde"\n}`,
+  log:[["warn","ExecApprovalRequest"]],st:{s:4,f:"true",tool:"exec_command",sb:"等待审批",tok:154}},
+ {ph:"APPROVE",t:"用户批准",d:"用户在 TUI 弹窗中选择「本次会话内允许」。决策写入会话级审批缓存，之后相同命令不再询问。",
+  paths:[["user","sq","turn","orch"]],code:`Op::ExecApproval {\n  id: "call_4",\n  decision: ReviewDecision::ApprovedForSession\n}`,
+  log:[["op","Op::ExecApproval (ForSession)"]],st:{s:4,f:"true",tool:"exec_command",sb:"已批准",tok:154}},
+ {ph:"ESCALATE",t:"脱离沙箱执行",d:"批准后以提升后的权限运行，依赖下载完成，测试全部通过。大量编译日志进入历史，上下文逼近自动压缩阈值。",
+  paths:[["orch","sandbox","orch","ctx"]],code:`ExecToolCallOutput {\n  exit_code: 0,\n  aggregated_output: "Downloaded serde v1.0 ...\\ntest result: ok. 48 passed; 0 failed"\n}\n// otel: sandbox_outcome = "escalated"`,
+  log:[["ok","ExecCommandEnd exit=0"],["warn","TokenCount 182k ≥ auto_compact_limit"]],st:{s:4,f:"true",tool:"-",sb:"无沙箱(已批准)",tok:182}},
+ {ph:"COMPACT",t:"自动压缩上下文",d:"token 超过 model_auto_compact_token_limit 且仍需继续，run_auto_compact 生成摘要：SUMMARY_PREFIX + 进展总结 + 最近用户消息，并重新插入初始上下文。历史被替换，循环无感继续。",
+  paths:[["ctx","compact","ctx"]],code:`replace_compacted_history([\n  <permissions>, <AGENTS.md>, <environment_context>,\n  user: "修复失败的单元测试",\n  user: SUMMARY_PREFIX + "已修复 parser.rs 空输入 panic，\n        依赖已下载，48 个测试通过..."\n])`,
+  log:[["","ContextCompacted 182k → 46k"]],st:{s:4,f:"true",tool:"-",sb:"-",tok:46}},
+ {ph:"SAMPLE #5",t:"最终回答",d:"第 5 次采样，模型只输出总结消息，没有任何工具调用。needs_follow_up = false，run_turn 的 loop 结束。",
+  paths:[["ctx","turn","prompt","model","turn"]],code:`ResponseItem::Message {\n  role: "assistant",\n  content: "已修复 src/parser.rs 中空输入导致的 panic，\n            cargo test 全部 48 个用例通过。"\n}\n// needs_follow_up = false → break`,
+  log:[["","→ responses.create #5"],["","AgentMessage"]],st:{s:5,f:"false",tool:"-",sb:"-",tok:50}},
+ {ph:"DONE",t:"回合完成与持久化",d:"发出 TurnComplete，TUI 显示最终回答和 token 用量。所有 ResponseItem 已追加到 rollout JSONL，之后可用 codex resume 恢复会话。",
+  paths:[["turn","eq","user"],["ctx","rollout"]],code:`EventMsg::TurnComplete {\n  last_agent_message: "已修复 ..."\n}\n~/.codex/sessions/2025/10/20/rollout-<uuid>.jsonl`,
+  log:[["ok","TurnComplete"],["","rollout flushed"]],st:{s:5,f:"false",tool:"-",sb:"-",tok:50}}
+];
+const NS="http://www.w3.org/2000/svg",$=id=>document.getElementById(id);
+const mk=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent&&parent.appendChild(e);return e;};
+const key=(a,b)=>[a,b].sort().join("|");
+// 节点
+const nodeEls={};
+for(const id in NODES){const n=NODES[id];const g=mk("g",{class:"node",id:"n-"+id},$("nodes"));
+  mk("rect",{x:n.x-W/2,y:n.y-H/2,width:W,height:H,rx:10},g);
+  mk("text",{x:n.x,y:n.y-3},g).textContent=n.t;
+  mk("text",{x:n.x,y:n.y+16,class:"s"},g).textContent=n.s;nodeEls[id]=g;}
+// 连线：从所有步骤的路径中自动推导
+const edgeEls={};
+STEPS.forEach(s=>s.paths.forEach(p=>{for(let i=0;i<p.length-1;i++){const k=key(p[i],p[i+1]);if(edgeEls[k])continue;
+  const a=NODES[p[i]],b=NODES[p[i+1]],c=BEND[k];
+  edgeEls[k]=mk("path",{class:"edge",d:c?`M${a.x},${a.y} Q${c[0]},${c[1]} ${b.x},${b.y}`:`M${a.x},${a.y} L${b.x},${b.y}`},$("edges"));}}));
+function pt(a,b,t){const A=NODES[a],B=NODES[b],c=BEND[key(a,b)];
+  if(!c)return[A.x+(B.x-A.x)*t,A.y+(B.y-A.y)*t];const u=1-t;
+  return[u*u*A.x+2*u*t*c[0]+t*t*B.x,u*u*A.y+2*u*t*c[1]+t*t*B.y];}
+// 时间轴
+STEPS.forEach((s,i)=>{const b=document.createElement("button");b.className="dot";b.textContent=i+1;b.title=s.t;b.setAttribute("aria-label",`第 ${i+1} 步：${s.t}`);b.onclick=()=>{pause();go(i);};$("timeline").appendChild(b);});
+const dots=[...document.querySelectorAll(".timeline .dot")];
+let cur=-1,playing=false,raf=0,timer=0;
+const speed=()=>parseFloat($("speed").value);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function render(i){
+  const s=STEPS[i];
+  $("phase").textContent=`STEP ${i+1} / ${STEPS.length} · ${s.ph}`;$("title").textContent=s.t;$("desc").textContent=s.d;$("code").textContent=s.code;
+  Object.values(nodeEls).forEach(g=>g.classList.remove("on"));Object.values(edgeEls).forEach(e=>e.classList.remove("on"));
+  s.paths.forEach(p=>{p.forEach(n=>nodeEls[n].classList.add("on"));for(let j=0;j<p.length-1;j++)edgeEls[key(p[j],p[j+1])].classList.add("on");});
+  $("loopring").classList.toggle("on",/SAMPLE|STREAM|ROUTE|OUTPUT|PATCH|DENIED|ESCALATE/.test(s.ph));
+  const st=s.st;$("sSample").textContent=st.s;$("sFollow").textContent=st.f;$("sTool").textContent=st.tool;$("sSandbox").textContent=st.sb;
+  $("sTok").textContent=`${st.tok}k / 200k`;$("sBar").style.width=(st.tok/200*100)+"%";
+  $("sFollow").style.color=st.f==="true"?"var(--amber)":st.f==="false"?"var(--green)":"";
+  const log=$("log");log.innerHTML='<div class="h">Event Queue / 日志</div>';
+  for(let k=0;k<=i;k++)STEPS[k].log.forEach(([c,m])=>{const d=document.createElement("div");d.className="e "+c;d.innerHTML=`<span style="color:var(--dim)">#${String(k+1).padStart(2,"0")}</span> <b></b>`;d.querySelector("b").textContent=m;log.appendChild(d);});
+  log.scrollTop=log.scrollHeight;
+  dots.forEach((d,k)=>{d.classList.toggle("done",k<i);d.classList.toggle("cur",k===i);});
+}
+function animate(i,done){
+  cancelAnimationFrame(raf);$("packets").innerHTML="";
+  const s=STEPS[i],SEG=650/speed();
+  const runs=s.paths.filter(p=>p.length>1).map((p,k)=>({p,el:mk("circle",{r:7,fill:k?"var(--blue)":"var(--amber)",style:"filter:drop-shadow(0 0 6px currentColor)"},$("packets"))}));
+  if(reduce||!runs.length){runs.forEach(r=>r.el.remove());done&&done();return;}
+  const total=Math.max(...runs.map(r=>(r.p.length-1)*SEG)),t0=performance.now();
+  (function frame(now){const el=now-t0;
+    runs.forEach(r=>{const segs=r.p.length-1,dur=segs*SEG,e=Math.min(el,dur),idx=Math.min(Math.floor(e/SEG),segs-1),t=Math.min((e-idx*SEG)/SEG,1);
+      const [x,y]=pt(r.p[idx],r.p[idx+1],t);r.el.setAttribute("cx",x);r.el.setAttribute("cy",y);r.el.style.opacity=el>dur?0:1;});
+    if(el<total)raf=requestAnimationFrame(frame);else{$("packets").innerHTML="";done&&done();}})(t0);
+}
+function go(i,auto){cur=Math.max(0,Math.min(i,STEPS.length-1));render(cur);
+  animate(cur,()=>{if(auto&&playing){if(cur<STEPS.length-1)timer=setTimeout(()=>go(cur+1,true),1800/speed());else pause();}});}
+function play(){if(cur>=STEPS.length-1)cur=-1;playing=true;$("play").textContent="❚❚ 暂停";go(cur+1,true);}
+function pause(){playing=false;clearTimeout(timer);$("play").textContent="▶ 播放";}
+$("play").onclick=()=>playing?pause():play();
+$("next").onclick=()=>{pause();go(cur+1);};
+$("prev").onclick=()=>{pause();go(cur-1);};
+$("reset").onclick=()=>{pause();cancelAnimationFrame(raf);$("packets").innerHTML="";cur=-1;
+  Object.values(nodeEls).forEach(g=>g.classList.remove("on"));Object.values(edgeEls).forEach(e=>e.classList.remove("on"));
+  dots.forEach(d=>d.classList.remove("done","cur"));$("phase").textContent="STEP 0";$("title").textContent="准备就绪";
+  $("desc").textContent="点击\"播放\"或按空格键开始。左右方向键单步切换，也可点击下方时间轴跳转。";$("code").textContent="// 每一步会在这里显示真实的数据结构";
+  ["sSample"].forEach(k=>$(k).textContent="0");["sFollow","sTool","sSandbox"].forEach(k=>{$(k).textContent="-";$(k).style.color="";});
+  $("sTok").textContent="0 / 200k";$("sBar").style.width="0";$("loopring").classList.remove("on");$("log").innerHTML='<div class="h">Event Queue / 日志</div>';};
+document.addEventListener("keydown",e=>{if(e.target.tagName==="SELECT")return;
+  if(e.code==="Space"){e.preventDefault();playing?pause():play();}
+  else if(e.key==="ArrowRight"){pause();go(cur+1);}else if(e.key==="ArrowLeft"){pause();go(cur-1);}});
+</script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code 工作原理 · 动画模型</title>
+<style>
+:root{--bg:#0f1114;--panel:#16191e;--panel2:#1b1f26;--line:#272c34;--line2:#323844;--fg:#e8e6e1;--fg2:#b6b2a8;--dim:#8b8f98;--amber:#e0a94a;--amber-soft:rgba(224,169,74,.14);--green:#6fbf9a;--red:#e07a6a;--blue:#6aa9e0;--purple:#a98ae0;--mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;flex-direction:column;min-height:100vh;-webkit-font-smoothing:antialiased}
+.top{display:flex;align-items:center;gap:16px;padding:12px 22px;border-bottom:1px solid var(--line);background:rgba(15,17,20,.9);flex-wrap:wrap}
+.top h1{font-size:17px;margin:0}.top h1 span{color:var(--amber)}
+.top .sub{color:var(--dim);font-size:12.5px}
+.ctrl{margin-left:auto;display:flex;gap:8px;align-items:center}
+button,select{background:var(--panel2);color:var(--fg);border:1px solid var(--line2);border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:inherit}
+button:hover{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,select:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+button.primary{background:var(--amber);color:#1a1408;border-color:var(--amber);font-weight:600}
+.wrap{flex:1;display:grid;grid-template-columns:1fr 400px;min-height:0}
+.stage{position:relative;padding:14px;min-width:0;display:flex;align-items:center}
+.stage svg{width:100%;height:100%;max-height:calc(100vh - 150px)}
+.side{border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:var(--panel)}
+.card{padding:16px 18px;border-bottom:1px solid var(--line)}
+.card .phase{font-family:var(--mono);font-size:11.5px;color:var(--amber);letter-spacing:.5px}
+.card h2{font-size:17px;margin:4px 0 8px}
+.card p{margin:0;color:var(--fg2);font-size:13.5px;line-height:1.7}
+.card pre{margin:10px 0 0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font-family:var(--mono);font-size:11.5px;color:#d6d2c8;white-space:pre-wrap;word-break:break-all;max-height:190px;overflow:auto}
+.state{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 18px;border-bottom:1px solid var(--line)}
+.kv{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-width:0}
+.kv .k{font-size:11px;color:var(--dim)}.kv .v{font-family:var(--mono);font-size:12.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kv.wide{grid-column:span 3}
+.bar{height:6px;background:var(--bg);border-radius:4px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--amber));width:0;transition:width .6s}
+.log{flex:1;overflow:auto;padding:10px 18px;font-family:var(--mono);font-size:11.5px}
+.log .h{color:var(--dim);font-size:11px;margin-bottom:6px}
+.log .m{display:flex;gap:8px;padding:4px 0;border-bottom:1px dashed var(--line);color:var(--fg2)}
+.log .m .r{flex:0 0 66px;font-size:10.5px;text-align:center;border-radius:5px;padding:1px 0;height:18px}
+.r.system{background:rgba(169,138,224,.15);color:var(--purple)}.r.user{background:var(--amber-soft);color:var(--amber)}
+.r.assistant{background:rgba(106,169,224,.14);color:var(--blue)}.r.tool{background:rgba(111,191,154,.14);color:var(--green)}
+.log .m.new{animation:fl 1s}@keyframes fl{from{background:var(--amber-soft)}to{background:none}}
+.timeline{display:flex;gap:4px;padding:10px 22px;border-top:1px solid var(--line);align-items:center;flex-wrap:wrap}
+.timeline .dot{width:26px;height:26px;border-radius:50%;border:1px solid var(--line2);background:var(--panel2);color:var(--dim);font-size:11px;font-family:var(--mono);padding:0}
+.timeline .dot.done{border-color:var(--amber);color:var(--amber)}
+.timeline .dot.cur{background:var(--amber);color:#1a1408}
+.timeline .lbl{color:var(--dim);font-size:12px;margin-right:6px}
+.node rect{fill:var(--panel2);stroke:var(--line2);stroke-width:1.4;transition:all .35s}
+.node text{fill:var(--fg);font-size:14px;text-anchor:middle;pointer-events:none}
+.node text.s{fill:var(--dim);font-size:10.5px;font-family:var(--mono)}
+.node.on rect{stroke:var(--amber);fill:#2a2418;filter:drop-shadow(0 0 10px rgba(224,169,74,.45))}
+.node.on text.s{fill:var(--amber)}
+.node.model rect{stroke:#3d5872}.node.model.on rect{stroke:var(--blue);fill:#16222b;filter:drop-shadow(0 0 10px rgba(106,169,224,.5))}
+.edge{stroke:var(--line2);stroke-width:1.4;fill:none;stroke-dasharray:4 4}
+.edge.on{stroke:var(--amber);stroke-dasharray:none;stroke-width:2}
+.group{fill:none;stroke:var(--line);stroke-dasharray:6 6}
+.glabel{fill:var(--dim);font-size:11.5px;font-family:var(--mono)}
+.loopring{fill:none;stroke:var(--amber);stroke-width:1.5;stroke-dasharray:8 6;opacity:0;transition:opacity .4s}
+.loopring.on{opacity:.85;animation:spin 6s linear infinite}
+@keyframes spin{to{stroke-dashoffset:-140}}
+@media(max-width:1000px){.wrap{grid-template-columns:1fr}.side{border-left:0;border-top:1px solid var(--line)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1><span>Claude Code</span> 工作原理 · 动画模型</h1>
+  <div class="sub">场景：在仓库中输入"修复 auth 模块失败的测试"　权限模式 default · Sandbox 开启</div>
+  <div class="ctrl">
+    <button id="prev" aria-label="上一步">◀ 上一步</button>
+    <button id="play" class="primary" aria-label="播放或暂停">▶ 播放</button>
+    <button id="next" aria-label="下一步">下一步 ▶</button>
+    <button id="reset" aria-label="重置">↺ 重置</button>
+    <label class="sub" for="speed">速度</label>
+    <select id="speed"><option value="0.6">0.6×</option><option value="1" selected>1×</option><option value="1.6">1.6×</option><option value="2.5">2.5×</option></select>
+  </div>
+</div>
+<div class="wrap">
+  <div class="stage">
+    <svg id="svg" viewBox="0 0 1000 640" role="img" aria-label="Claude Code 架构与数据流动画">
+      <defs><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" fill="#4a5262"/></marker></defs>
+      <rect class="group" x="225" y="20" width="545" height="600" rx="18"/>
+      <text class="glabel" x="240" y="40">Claude Code Harness（本地进程）</text>
+      <rect class="group" x="790" y="20" width="195" height="230" rx="18"/>
+      <text class="glabel" x="805" y="40">Anthropic API</text>
+      <rect class="group" x="790" y="270" width="195" height="350" rx="18"/>
+      <text class="glabel" x="805" y="290">你的环境</text>
+      <rect class="loopring" id="loopring" x="378" y="196" width="244" height="98" rx="22"/>
+      <g id="edges"></g><g id="nodes"></g><g id="packets"></g>
+    </svg>
+  </div>
+  <aside class="side" aria-live="polite">
+    <div class="card">
+      <div class="phase" id="phase">STEP 0</div>
+      <h2 id="title">准备就绪</h2>
+      <p id="desc">点击"播放"或按空格键开始。左右方向键单步切换，也可点击下方时间轴跳转。</p>
+      <pre id="code">// 每一步会在这里显示真实的数据结构</pre>
+    </div>
+    <div class="state">
+      <div class="kv"><div class="k">Turn</div><div class="v" id="sTurn">0</div></div>
+      <div class="kv"><div class="k">Prompt Cache</div><div class="v" id="sCache">-</div></div>
+      <div class="kv"><div class="k">stop_reason</div><div class="v" id="sStop">-</div></div>
+      <div class="kv"><div class="k">当前工具</div><div class="v" id="sTool">-</div></div>
+      <div class="kv"><div class="k">权限决策</div><div class="v" id="sPerm">-</div></div>
+      <div class="kv"><div class="k">Checkpoint</div><div class="v" id="sCkpt">0</div></div>
+      <div class="kv wide"><div class="k">Context Window</div><div class="v" id="sTok">0k / 200k</div><div class="bar"><i id="sBar"></i></div></div>
+    </div>
+    <div class="log" id="log"><div class="h">messages[] · 发送给模型的对话历史</div></div>
+  </aside>
+</div>
+<div class="timeline" id="timeline"><span class="lbl">时间轴</span></div>
+<script>
+const NODES={
+  user:{x:110,y:320,t:"开发者",s:"终端 / IDE / SDK"},
+  settings:{x:310,y:90,t:"Settings · 记忆",s:"CLAUDE.md · MEMORY.md"},
+  ctx:{x:500,y:90,t:"上下文引擎",s:"组装 · 缓存 · 压缩"},
+  ext:{x:690,y:90,t:"扩展",s:"MCP · Skills · Agents"},
+  hooks:{x:310,y:245,t:"Hooks",s:"Pre/PostToolUse …"},
+  loop:{x:500,y:245,t:"Agentic Loop",s:"query() while 循环"},
+  session:{x:690,y:245,t:"Session",s:"JSONL 转录"},
+  perm:{x:310,y:400,t:"权限引擎",s:"deny › ask › allow"},
+  tools:{x:500,y:400,t:"工具调度",s:"Read Edit Bash Grep"},
+  sub:{x:690,y:400,t:"Subagent",s:"Explore · 独立上下文"},
+  ckpt:{x:310,y:550,t:"Checkpoint",s:"编辑前快照"},
+  sandbox:{x:500,y:550,t:"Sandbox",s:"Seatbelt / bwrap"},
+  api:{x:887,y:100,t:"Claude 模型",s:"Messages API",m:1},
+  cache:{x:887,y:195,t:"Prompt Cache",s:"前缀缓存",m:1},
+  fs:{x:887,y:340,t:"文件系统",s:"src/auth/*"},
+  shell:{x:887,y:450,t:"Shell",s:"npm test"},
+  lsp:{x:887,y:555,t:"LSP / MCP 服务",s:"诊断 · 外部服务"}
+};
+const W=150,H=56;
+// 每步：ph 阶段, t 标题, d 说明, on 高亮节点, paths 数据包路径, code 数据结构, st 状态, msg 追加到 messages[], ring 循环中
+const STEPS=[
+{ph:"SESSION START",t:"启动会话",d:"合并各层 settings（managed › CLI › local › project › user），运行 SessionStart hooks，连接 MCP servers（此时只取工具名），扫描 skills 与 agents 的描述，新建会话 JSONL。",
+ on:["user","loop","settings","ext","hooks","session"],paths:[["user","loop","hooks"],["ext","ctx"],["loop","session"]],
+ code:`$ claude
+settings  ← managed › CLI › local › project › user
+hooks     SessionStart(source="startup") ✓
+mcp       github: 14 tools (names only, schema deferred)
+skills    5 descriptions · agents: Explore, Plan, code-reviewer
+session   ~/.claude/projects/<repo>/3f9c….jsonl`,
+ st:{turn:0,cache:"-",stop:"-",tool:"-",perm:"-",ckpt:0,tok:0},msg:[]},
+{ph:"BUILD CONTEXT",t:"组装上下文",d:"上下文引擎把 system prompt、核心工具 schema、CLAUDE.md 链（从根目录到当前目录拼接）、MEMORY.md 前 200 行、git status 快照与 skill 描述拼成请求前缀，并在不变部分打上 cache_control 断点。",
+ on:["settings","ctx","ext"],paths:[["settings","ctx"],["ext","ctx"]],
+ code:`system: [
+  { text: "You are Claude Code…" },
+  { text: "<CLAUDE.md chain> <MEMORY.md ≤200 lines>",
+    cache_control: { type: "ephemeral" } }   // 缓存断点
+]
+tools: [Read, Edit, Write, Glob, Grep, Bash, Agent, Skill, ToolSearch …]`,
+ st:{turn:0,cache:"待写入",stop:"-",tool:"-",perm:"-",ckpt:0,tok:14},msg:[["system","system prompt + CLAUDE.md + memory + git status"]]},
+{ph:"USER PROMPT",t:"用户提交任务",d:"输入\"修复 auth 模块失败的测试\"。UserPromptSubmit hook 先运行（可注入上下文或拦截），随后为本轮创建 checkpoint，消息追加到 messages[]。",
+ on:["user","loop","hooks","ckpt"],paths:[["user","loop","hooks"],["loop","ckpt"]],
+ code:`hook UserPromptSubmit  → exit 0 (allow)
+checkpoint #1 created
+messages.push({ role: "user", content: "修复 auth 模块失败的测试" })`,
+ st:{turn:0,cache:"待写入",stop:"-",tool:"-",perm:"-",ckpt:1,tok:15},msg:[["user","修复 auth 模块失败的测试"]]},
+{ph:"TURN 1 · REQUEST",t:"调用模型",d:"Messages API 是无状态的：每轮都发送完整的前缀 + 历史。首轮把前缀写入 Prompt Cache，之后的轮次命中缓存，按折扣计费并降低首 token 延迟。",
+ on:["loop","ctx","api","cache"],paths:[["loop","ctx","api"],["api","cache"]],ring:1,
+ code:`POST /v1/messages  (stream: true)
+{ model: "claude-opus-5-5", max_tokens: 32000,
+  thinking: { type: "enabled", budget_tokens: 8000 },
+  system, tools, messages }
+usage: cache_creation_input_tokens: 14210`,
+ st:{turn:1,cache:"write 14.2k",stop:"…",tool:"-",perm:"-",ckpt:1,tok:15},msg:[]},
+{ph:"TURN 1 · THINK",t:"模型思考并决定行动",d:"模型先生成 thinking 块（带加密 signature，后续轮次需原样回传），判断\"先复现失败\"，然后输出 tool_use 块并以 stop_reason=tool_use 停止。模型自己并不执行任何东西，它只是写出一个结构化的调用请求。",
+ on:["api","loop"],paths:[["api","ctx","loop"]],ring:1,
+ code:`content: [
+  { type: "thinking", thinking: "先跑测试看失败信息…", signature: "EqQB…" },
+  { type: "tool_use", id: "toolu_01", name: "Bash",
+    input: { command: "npm test -- auth", description: "Run auth tests" } }
+]
+stop_reason: "tool_use"`,
+ st:{turn:1,cache:"write 14.2k",stop:"tool_use",tool:"Bash",perm:"-",ckpt:1,tok:16},msg:[["assistant","thinking + tool_use Bash(npm test -- auth)"]]},
+{ph:"PERMISSION",t:"权限求值：deny › ask › allow",d:"PreToolUse hook 先运行 → 检查 deny 规则 → ask 规则 → allow 规则 → 兜底到权限模式。Bash(npm test *) 不在 allow 列表，default 模式下弹出审批；用户选择\"Yes, and don't ask again\"，规则写入 .claude/settings.local.json。",
+ on:["loop","hooks","perm","user"],paths:[["loop","hooks","perm"],["perm","user"]],ring:1,
+ code:`PreToolUse(Bash)           → allow (no opinion)
+deny  rules               → no match
+ask   rules               → no match
+allow rules               → no match
+mode = default            → PROMPT
+user: "Yes, and don't ask again for: npm test *"
+→ .claude/settings.local.json  permissions.allow += "Bash(npm test *)"`,
+ st:{turn:1,cache:"write 14.2k",stop:"tool_use",tool:"Bash",perm:"ask → 用户批准",ckpt:1,tok:16},msg:[]},
+{ph:"EXECUTE · SANDBOX",t:"在沙箱中执行",d:"Bash 在 OS 级沙箱中运行：macOS 用 Seatbelt，Linux 用 bubblewrap。写入限制在工作目录，网络按域名白名单走代理。权限决定\"要不要执行\"，沙箱限制\"执行了能碰到什么\"。",
+ on:["perm","tools","sandbox","shell"],paths:[["perm","tools","sandbox","shell"]],ring:1,
+ code:`sandbox-exec (Seatbelt)
+  fs.write: ["<cwd>"]   net: proxy allowlist
+$ npm test -- auth
+FAIL src/auth/token.test.ts
+  ✕ rejects expired token (12 ms)
+  ✕ refreshes near-expiry token
+  ✕ keeps valid token
+Tests: 3 failed, 9 passed`,
+ st:{turn:1,cache:"write 14.2k",stop:"tool_use",tool:"Bash",perm:"allow (已保存)",ckpt:1,tok:16},msg:[]},
+{ph:"TOOL RESULT",t:"结果回填，闭合一轮",d:"PostToolUse hook 运行后，输出作为 tool_result（对应 tool_use_id）追加进 messages[]。这一来回就是一个 turn。没有得到最终答案，循环继续：带着失败信息再次询问模型。",
+ on:["shell","tools","hooks","loop"],paths:[["shell","sandbox","tools","loop"],["loop","hooks"]],ring:1,
+ code:`hook PostToolUse(Bash) → exit 0
+messages.push({ role: "user", content: [
+  { type: "tool_result", tool_use_id: "toolu_01",
+    content: "FAIL … 3 failed, 9 passed", is_error: false } ] })`,
+ st:{turn:1,cache:"write 14.2k",stop:"tool_use",tool:"-",perm:"-",ckpt:1,tok:18},msg:[["tool","tool_result: 3 failed, 9 passed"]]},
+{ph:"TURN 2 · DELEGATE",t:"派生 Explore 子代理",d:"第 2 轮命中缓存。模型判断需要大范围搜索 token 校验逻辑，调用 Agent 工具把调研交给只读的 Explore 子代理。子代理有自己的上下文窗口、自己的 system prompt、受限工具集。",
+ on:["loop","api","cache","tools","sub"],paths:[["loop","api","cache"],["api","loop","tools","sub"]],ring:1,
+ code:`usage: cache_read_input_tokens: 14210   // 命中缓存
+{ type: "tool_use", name: "Agent", input: {
+    subagent_type: "Explore",
+    description: "Find token expiry logic",
+    prompt: "定位 auth 中 token 过期判断的实现与调用方，very thorough" } }`,
+ st:{turn:2,cache:"read 14.2k ✓",stop:"tool_use",tool:"Agent(Explore)",perm:"allow",ckpt:1,tok:19},msg:[["assistant","tool_use Agent(Explore)"]]},
+{ph:"SUBAGENT LOOP",t:"子代理独立运行自己的循环",d:"Explore 在隔离上下文中跑完整的 agent 循环：调用模型、Grep、Read 十几个文件。这些中间 token 只消耗子代理自己的窗口，主对话的上下文条不增长。",
+ on:["sub","api","fs"],paths:[["sub","api"],["sub","fs"]],ring:0,
+ code:`[Explore · own context 31k tokens]
+Grep "isExpired|expiresAt"  → 9 files
+Read src/auth/token.ts
+Read src/auth/session.ts
+Read src/auth/token.test.ts   … (14 reads)
+main context: unchanged`,
+ st:{turn:2,cache:"read 14.2k ✓",stop:"tool_use",tool:"Explore: Grep/Read",perm:"只读",ckpt:1,tok:19},msg:[]},
+{ph:"SUBAGENT RESULT",t:"只返回摘要",d:"子代理结束时只把结论作为 tool_result 交回主循环：主上下文只增长约 1k，而不是 31k。这就是 orchestrator-workers 模式，也是保护\"注意力预算\"的关键手段。",
+ on:["sub","tools","loop"],paths:[["sub","tools","loop"]],ring:1,
+ code:`tool_result (Agent):
+"isExpired() 在 src/auth/token.ts:42 使用 <= 比较 expiresAt 与 now，
+ 秒/毫秒单位混用：expiresAt 为秒，Date.now() 为毫秒。
+ 调用方：session.ts:88、middleware.ts:17"`,
+ st:{turn:2,cache:"read 14.2k ✓",stop:"tool_use",tool:"-",perm:"-",ckpt:1,tok:20},msg:[["tool","tool_result: 摘要 (token.ts:42 单位混用)"]]},
+{ph:"TURN 3 · PARALLEL",t:"并行只读工具",d:"模型在一次响应中发出两个 Read。工作目录内的只读工具无需审批，并且可以并发执行；而 Edit、Write、Bash 这类修改状态的工具会串行执行以避免冲突。",
+ on:["loop","api","tools","fs"],paths:[["loop","api","loop"],["tools","fs"],["fs","tools","loop"]],ring:1,
+ code:`content: [
+  { type: "tool_use", id: "toolu_03", name: "Read", input: { file_path: "src/auth/token.ts" } },
+  { type: "tool_use", id: "toolu_04", name: "Read", input: { file_path: "src/auth/token.test.ts" } }
+]
+→ read-only · in cwd · no prompt · run concurrently`,
+ st:{turn:3,cache:"read 15.1k ✓",stop:"tool_use",tool:"Read ×2 (并行)",perm:"allow (只读)",ckpt:1,tok:26},msg:[["assistant","tool_use Read ×2"],["tool","tool_result ×2: 文件内容"]]},
+{ph:"TURN 4 · EDIT",t:"精确编辑 + 检查点快照",d:"模型用 Edit 做精确字符串替换（要求先 Read、old_string 唯一）。执行前对 token.ts 做快照写入 checkpoint；文件修改在 default 模式下需要审批，用户同意。",
+ on:["loop","api","perm","ckpt","tools","fs"],paths:[["loop","api","loop"],["loop","perm","ckpt"],["perm","tools","fs"]],ring:1,
+ code:`{ type: "tool_use", name: "Edit", input: {
+    file_path: "src/auth/token.ts",
+    old_string: "return token.expiresAt <= Date.now();",
+    new_string: "return token.expiresAt * 1000 <= Date.now();" } }
+checkpoint #1: snapshot src/auth/token.ts
+permission: Edit → ask → user: Yes`,
+ st:{turn:4,cache:"read 15.1k ✓",stop:"tool_use",tool:"Edit",perm:"ask → 用户批准",ckpt:1,tok:27},msg:[["assistant","tool_use Edit(token.ts)"]]},
+{ph:"POST-EDIT HOOK",t:"确定性 Hook + 代码智能",d:"PostToolUse hook（matcher: Edit|Write）自动运行 prettier；LSP 插件回传诊断。Hook 保证\"每次都发生\"，不依赖模型记得去做；诊断让模型立刻看到类型错误。",
+ on:["tools","hooks","lsp","loop"],paths:[["tools","hooks"],["tools","lsp","tools","loop"]],ring:1,
+ code:`hook PostToolUse matcher="Edit|Write"
+  $ npx prettier --write src/auth/token.ts   ✓
+LSP diagnostics: 0 errors, 0 warnings
+tool_result: "The file src/auth/token.ts has been updated."`,
+ st:{turn:4,cache:"read 15.1k ✓",stop:"tool_use",tool:"-",perm:"-",ckpt:1,tok:28},msg:[["tool","tool_result: updated · 0 diagnostics"]]},
+{ph:"TURN 5 · VERIFY",t:"自我验证",d:"gather → act → verify：模型再次运行测试。这次命中刚才保存的 allow 规则 Bash(npm test *)，不再询问，直接在沙箱中执行，12 个测试全部通过。",
+ on:["loop","api","perm","tools","sandbox","shell"],paths:[["loop","api","loop"],["loop","perm","tools","sandbox","shell"],["shell","sandbox","tools","loop"]],ring:1,
+ code:`tool_use Bash { command: "npm test -- auth" }
+allow rule "Bash(npm test *)" → ALLOW (no prompt)
+PASS src/auth/token.test.ts
+Tests: 12 passed, 12 total`,
+ st:{turn:5,cache:"read 15.3k ✓",stop:"tool_use",tool:"Bash",perm:"allow (规则命中)",ckpt:1,tok:30},msg:[["assistant","tool_use Bash(npm test -- auth)"],["tool","tool_result: 12 passed"]]},
+{ph:"FINAL ANSWER",t:"无工具调用 → 循环结束",d:"模型输出只含文本、不含 tool_use 的回复，stop_reason=end_turn，while 循环退出。Stop hook 运行；如果它返回 decision: \"block\"，Claude 会被要求继续工作（常用于\"测试没过不许停\"的守门）。",
+ on:["api","loop","hooks","user"],paths:[["loop","api","loop"],["loop","hooks"],["loop","user"]],ring:0,
+ code:`content: [{ type: "text", text:
+  "已修复：token.ts:42 把秒级 expiresAt 与毫秒级 Date.now() 直接比较。
+   改为 expiresAt * 1000，auth 相关 12 个测试全部通过。" }]
+stop_reason: "end_turn"
+hook Stop → exit 0`,
+ st:{turn:6,cache:"read 15.4k ✓",stop:"end_turn",tool:"-",perm:"-",ckpt:1,tok:31},msg:[["assistant","text: 已修复 … 12 个测试通过"]]},
+{ph:"RESULT · PERSIST",t:"结果与持久化",d:"ResultMessage 汇总 usage、成本与 session_id。整个对话、工具调用与文件快照都已写入本地 JSONL：可用 --continue 恢复、--fork-session 分叉，或 Esc Esc / /rewind 回到 checkpoint #1。",
+ on:["loop","session","ckpt","user"],paths:[["loop","session"],["loop","ckpt"],["loop","user"]],ring:0,
+ code:`{ type: "result", subtype: "success", num_turns: 6,
+  session_id: "3f9c…", total_cost_usd: 0.21,
+  usage: { input_tokens: 4120, cache_read_input_tokens: 75300,
+           cache_creation_input_tokens: 14210, output_tokens: 2210 } }`,
+ st:{turn:6,cache:"命中率 ~84%",stop:"end_turn",tool:"-",perm:"-",ckpt:1,tok:31},msg:[]},
+{ph:"BONUS · COMPACTION",t:"延伸：长任务中的自动压缩",d:"假设任务继续扩大、上下文涨到 186k 接近上限：PreCompact hook → 先清理旧工具输出 → 对历史做摘要 → 从磁盘重新注入 CLAUDE.md、memory、最近修改的至多 5 个文件与已调用 skill → 发出 compact_boundary，循环继续，用户无感。",
+ on:["loop","ctx","api","hooks","settings"],paths:[["loop","hooks"],["loop","ctx","api"],["api","ctx"],["settings","ctx","loop"]],ring:1,reset:1,
+ code:`hook PreCompact(trigger="auto")
+1. clear old tool outputs
+2. summarize history (inherits thinking config)
+3. re-inject: CLAUDE.md · MEMORY.md · plan · 5 recent files · skills
+{ type: "system", subtype: "compact_boundary" }
+context: 186k → 41k   (演示数值)`,
+ st:{turn:"…",cache:"重建",stop:"-",tool:"-",perm:"-",ckpt:1,tok:41,tokFrom:186},msg:[["system","system prompt + CLAUDE.md + memory（重新注入）"],["user","[compaction summary] 目标 · 已改文件 · 测试结果 · 关键决策"],["tool","re-read: token.ts, session.ts …"]]}
+];
+const $=id=>document.getElementById(id),NS="http://www.w3.org/2000/svg";
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const mk=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent&&parent.appendChild(e);return e;};
+const key=(a,b)=>a<b?a+"|"+b:b+"|"+a;
+const nodeEls={},edgeEls={};
+// 边由所有步骤的路径自动推导
+STEPS.forEach(s=>s.paths.forEach(p=>{for(let j=0;j<p.length-1;j++){const k=key(p[j],p[j+1]);if(!edgeEls[k]){const A=NODES[p[j]],B=NODES[p[j+1]];edgeEls[k]=mk("line",{class:"edge",x1:A.x,y1:A.y,x2:B.x,y2:B.y},$("edges"));}}}));
+for(const id in NODES){const n=NODES[id],g=mk("g",{class:"node"+(n.m?" model":"")},$("nodes"));
+  mk("rect",{x:n.x-W/2,y:n.y-H/2,width:W,height:H,rx:11},g);
+  mk("text",{x:n.x,y:n.y-3},g).textContent=n.t;mk("text",{class:"s",x:n.x,y:n.y+15},g).textContent=n.s;nodeEls[id]=g;}
+const pt=(a,b,t)=>[NODES[a].x+(NODES[b].x-NODES[a].x)*t,NODES[a].y+(NODES[b].y-NODES[a].y)*t];
+let cur=-1,playing=false,timer=null,raf=null;
+const speed=()=>parseFloat($("speed").value);
+const dots=STEPS.map((s,i)=>{const b=document.createElement("button");b.className="dot";b.textContent=i+1;b.title=s.t;b.setAttribute("aria-label",`第 ${i+1} 步：${s.t}`);b.onclick=()=>{pause();go(i);};$("timeline").appendChild(b);return b;});
+function setTok(v){$("sTok").textContent=`${v}k / 200k`;$("sBar").style.width=Math.min(v/200*100,100)+"%";}
+function render(i){
+  const s=STEPS[i];
+  $("phase").textContent=`STEP ${i+1}/${STEPS.length} · ${s.ph}`;$("title").textContent=s.t;$("desc").textContent=s.d;$("code").textContent=s.code;
+  Object.entries(nodeEls).forEach(([k,g])=>g.classList.toggle("on",s.on.includes(k)));
+  Object.values(edgeEls).forEach(e=>e.classList.remove("on"));
+  s.paths.forEach(p=>{for(let j=0;j<p.length-1;j++)edgeEls[key(p[j],p[j+1])].classList.add("on");});
+  $("loopring").classList.toggle("on",!!s.ring);
+  const st=s.st;$("sTurn").textContent=st.turn;$("sCache").textContent=st.cache;$("sStop").textContent=st.stop;
+  $("sTool").textContent=st.tool;$("sPerm").textContent=st.perm;$("sCkpt").textContent=st.ckpt?`#${st.ckpt}`:"0";
+  $("sStop").style.color=st.stop==="tool_use"?"var(--amber)":st.stop==="end_turn"?"var(--green)":"";
+  $("sCache").style.color=/✓|命中/.test(st.cache)?"var(--green)":"";
+  $("sPerm").style.color=/ask/.test(st.perm)?"var(--amber)":/allow|只读/.test(st.perm)?"var(--green)":"";
+  if(st.tokFrom){setTok(st.tokFrom);setTimeout(()=>{if(STEPS[cur]===s)setTok(st.tok);},reduce?0:900/speed());}else setTok(st.tok);
+  let start=0;for(let k=i;k>=0;k--)if(STEPS[k].reset){start=k;break;}
+  const log=$("log");log.innerHTML='<div class="h">messages[] · 发送给模型的对话历史'+(start?' · 已压缩':'')+'</div>';
+  for(let k=start;k<=i;k++)STEPS[k].msg.forEach(([r,m])=>{const d=document.createElement("div");d.className="m"+(k===i?" new":"");
+    const tag=document.createElement("span");tag.className="r "+r;tag.textContent=r;const tx=document.createElement("span");tx.textContent=m;d.append(tag,tx);log.appendChild(d);});
+  log.scrollTop=log.scrollHeight;
+  dots.forEach((d,k)=>{d.classList.toggle("done",k<i);d.classList.toggle("cur",k===i);});
+}
+function animate(i,done){
+  cancelAnimationFrame(raf);$("packets").innerHTML="";
+  const s=STEPS[i],SEG=620/speed(),cols=["var(--amber)","var(--blue)","var(--green)","var(--purple)"];
+  const runs=s.paths.filter(p=>p.length>1).map((p,k)=>({p,el:mk("circle",{r:7,fill:cols[k%4],style:"filter:drop-shadow(0 0 6px rgba(224,169,74,.7))"},$("packets"))}));
+  if(reduce||!runs.length){runs.forEach(r=>r.el.remove());done&&done();return;}
+  const total=Math.max(...runs.map(r=>(r.p.length-1)*SEG)),t0=performance.now();
+  (function frame(now){const el=now-t0;
+    runs.forEach(r=>{const segs=r.p.length-1,dur=segs*SEG,e=Math.min(el,dur),idx=Math.min(Math.floor(e/SEG),segs-1),t=Math.min((e-idx*SEG)/SEG,1);
+      const [x,y]=pt(r.p[idx],r.p[idx+1],t);r.el.setAttribute("cx",x);r.el.setAttribute("cy",y);r.el.style.opacity=el>dur?0:1;});
+    if(el<total)raf=requestAnimationFrame(frame);else{$("packets").innerHTML="";done&&done();}})(t0);
+}
+function go(i,auto){cur=Math.max(0,Math.min(i,STEPS.length-1));render(cur);
+  animate(cur,()=>{if(auto&&playing){if(cur<STEPS.length-1)timer=setTimeout(()=>go(cur+1,true),2200/speed());else pause();}});}
+function play(){if(cur>=STEPS.length-1)cur=-1;playing=true;$("play").textContent="❚❚ 暂停";go(cur+1,true);}
+function pause(){playing=false;clearTimeout(timer);$("play").textContent="▶ 播放";}
+$("play").onclick=()=>playing?pause():play();
+$("next").onclick=()=>{pause();go(cur+1);};
+$("prev").onclick=()=>{pause();go(cur-1);};
+$("reset").onclick=()=>{pause();cancelAnimationFrame(raf);$("packets").innerHTML="";cur=-1;
+  Object.values(nodeEls).forEach(g=>g.classList.remove("on"));Object.values(edgeEls).forEach(e=>e.classList.remove("on"));
+  dots.forEach(d=>d.classList.remove("done","cur"));$("phase").textContent="STEP 0";$("title").textContent="准备就绪";
+  $("desc").textContent="点击\"播放\"或按空格键开始。左右方向键单步切换，也可点击下方时间轴跳转。";$("code").textContent="// 每一步会在这里显示真实的数据结构";
+  ["sTurn","sCkpt"].forEach(k=>$(k).textContent="0");["sCache","sStop","sTool","sPerm"].forEach(k=>{$(k).textContent="-";$(k).style.color="";});
+  setTok(0);$("loopring").classList.remove("on");$("log").innerHTML='<div class="h">messages[] · 发送给模型的对话历史</div>';};
+document.addEventListener("keydown",e=>{if(e.target.tagName==="SELECT")return;
+  if(e.code==="Space"){e.preventDefault();playing?pause():play();}
+  else if(e.key==="ArrowRight"){pause();go(cur+1);}else if(e.key==="ArrowLeft"){pause();go(cur-1);}});
+</script>
+</body>
+</html>
